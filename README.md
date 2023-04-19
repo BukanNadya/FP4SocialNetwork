@@ -56,3 +56,39 @@ App is ready to be deployed!
 If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from project.
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+____
+## Backend Part:
+
+*This project was bootstrapped with Spring Boot App*
+## Springboot-app
+### Requirements
+____
+For building and running the application you need:
+
++ [JDK 17](https://www.oracle.com/java/technologies/downloads/#java17)
++ [Maven 3.0.4](https://maven.apache.org/)
+### Running the application locally
+____
+There are several ways to run a Spring Boot application on your local machine. One way is to execute the `main` method in the `de.codecentric.springbootsample.Application` class from your IDE.
+
+Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins.html#build-tool-plugins.maven) like so:
+
+```mvn spring-boot:run```
+### Deploying the application to OpenShift
+____
+The easiest way to deploy the sample application to OpenShift is to use the [OpenShift CLI](https://docs.okd.io/latest/cli_reference/index.html):
+
+```
+oc new-app codecentric/springboot-maven3-centos~https://github.com/AlexKhmarenko/FP4SocialNetwork
+```
+#### This will create:
++ An ImageStream called "springboot-maven3-centos"
++ An ImageStream called "springboot-sample-app"
++ A BuildConfig called "springboot-sample-app"
++ DeploymentConfig called "springboot-sample-app"
++ Service called "springboot-sample-app"
+
+#### If you want to access the app from outside your OpenShift installation, you have to expose the springboot-sample-app service:
+```
+oc expose springboot-sample-app --hostname=www.example.com
+```
