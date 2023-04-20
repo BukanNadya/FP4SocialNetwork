@@ -1,0 +1,15 @@
+sudo: false
+install: true
+
+language: java
+
+addons:
+  sonarcloud:
+    organization: "fp4socialnetwork"
+    token:
+      secure: "40be665b291026b9a27f64f8bd8e0a51db5109aa"
+script:
+  - sonar-scanner
+
+after_success:
+  - mvn clean test jacoco:report coveralls:report
