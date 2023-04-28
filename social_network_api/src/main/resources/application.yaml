@@ -3,12 +3,17 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:tweeterDB
+    url: jdbc:h2:file:D:\Java\projects\FP4SocialNetwork\social_network_api\src\main\resources\data\tweeterDB;AUTO_SERVER=true
     username: tweeter
     password: tweeter2023
+    driverClassName: org.h2.Driver
   jpa:
     generate-ddl: true
     show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
   h2:
     console:
       enabled: true
