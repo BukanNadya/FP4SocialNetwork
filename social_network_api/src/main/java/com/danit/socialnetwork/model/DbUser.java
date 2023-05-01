@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -52,5 +52,15 @@ public class DbUser {
 
   @Column(name = "profile_image_url")
   private String profileImageUrl;
+
+  public DbUser(String username, String password,
+                String email, String name, LocalDate dateOfBirth) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.name = name;
+    this.dateOfBirth = dateOfBirth;
+
+  }
 
 }

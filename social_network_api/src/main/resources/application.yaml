@@ -3,17 +3,20 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:file:D:\Java\projects\FP4SocialNetwork\social_network_api\src\main\resources\data\tweeterDB;AUTO_SERVER=true
+#    url: jdbc:h2:mem:tweeterDB
+    url: jdbc:h2:file:~/employees;AUTO_SERVER=true
     username: tweeter
     password: tweeter2023
-    driverClassName: org.h2.Driver
   jpa:
+    open-in-view: false
     generate-ddl: true
     show-sql: true
+  thymeleaf:
+    check-template-location: false
     defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
+    sql:
+      init:
+        mode: always
   h2:
     console:
       enabled: true
@@ -25,4 +28,6 @@ spring:
     level:
       root:ERROR
       org:info
+
+
 
