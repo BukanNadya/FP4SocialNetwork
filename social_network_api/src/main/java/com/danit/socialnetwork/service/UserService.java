@@ -11,13 +11,11 @@ public interface UserService {
 
   byte[] getBackgroundImage(String username) throws IOException;
 
-  Optional<DbUser> findByUsername(String username);
+  Optional<DbUser> findByUsername(String username) throws IOException;
 
   public boolean activateUser(Integer code);
 
-
   boolean save(DbUser dbUser);
-
 
   boolean sendLetter(String name, String email);
 

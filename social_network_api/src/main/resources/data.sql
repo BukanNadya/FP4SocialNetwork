@@ -6,3 +6,5 @@ INSERT INTO USERS VALUES (3,'2023-04-05 13:32:42.000000', '2000-01-04','tom@gmai
 INSERT INTO USERS VALUES (4,'2023-04-07 23:22:42.000000', '1988-05-03','leyla@gmail.com', 'leyla', '1234', '/headerPhoto/railway2.png','/photo/avatar.png', 'Leyla');
 INSERT INTO USERS VALUES (5,'2023-04-13 21:32:42.000000', '1998-04-11','kate@gmail.com', 'kate', '1234', '/headerPhoto/railway1.png','/photo/dog.png', 'Katrin');
 INSERT INTO USERS VALUES (6,'2023-04-27 12:32:42.000000', '1999-09-30','dilan@gmail.com', 'dilan', '1234', '/headerPhoto/railway2.png','/photo/spiderman.png', 'Dilan');
+INSERT INTO USERS VALUES (7,'2023-04-29 12:32:42.000000', '1993-02-25','bob@gmail.com', 'bob', '1234', null,null, 'Bob');
+INSERT INTO USERS VALUES (8,'2023-04-29 12:32:42.000000', '1993-07-15','chris@gmail.com', 'chris', '1234', '/headerPhoto/railway21.png','/photo/spiderman1.png', 'Chris');

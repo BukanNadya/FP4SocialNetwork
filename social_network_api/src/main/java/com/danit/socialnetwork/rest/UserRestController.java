@@ -55,7 +55,7 @@ public class UserRestController {
 
   @RequestMapping(value = "/checkUsername", method = RequestMethod.POST)
   public ResponseEntity<?> handleCheckUsernamePost(
-      @RequestBody UsernameRequest request) {
+      @RequestBody UsernameRequest request) throws IOException {
 
     String username = request.getUsername();
     Map<String, String> response = new HashMap<>();
@@ -100,7 +100,7 @@ public class UserRestController {
   }
 
   @GetMapping("/{username}")
-  public Optional<DbUser> getUser(@PathVariable("username") String username) {
+  public Optional<DbUser> getUser(@PathVariable("username") String username) throws IOException {
     return userService.findByUsername(username);
   }
 

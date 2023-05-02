@@ -1,6 +1,9 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.exception.user.UserNotFoundException;
+import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
+import com.danit.socialnetwork.exception.user.HeaderPhotoNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +17,10 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Random;
 
-@Log4j2
+
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
@@ -24,23 +28,46 @@ public class UserServiceImpl implements UserService {
   private final MailSenderImpl mailSender;
   private final GuavaCache guavaCache;
 
+  private <T extends Object> Boolean isEmpty(T temp) {
+    return Optional.ofNullable(temp).isEmpty();
+  }
+
   @Override
   public Optional<DbUser> findByUsername(String username) {
-    return userRepository.findByUsername(username);
+    Optional<DbUser> maybeUser = userRepository.findByUsername(username);
+    if (maybeUser.isEmpty()) {
+      throw new UserNotFoundException("User with username " + username + " not found");
+    }
+    return maybeUser;
   }
 
   @Override
   public byte[] getProfileImage(String username) throws IOException {
     String profileImagePath = userRepository.findByUsername(username).get().getProfileImageUrl();
-    InputStream in = getClass().getResourceAsStream(profileImagePath);
-    return FileCopyUtils.copyToByteArray(in);
+    if (isEmpty(profileImagePath)) {
+      throw new PhotoNotFoundException("Photo for user with username " + username + " is absent");
+    } else {
+      InputStream in = getClass().getResourceAsStream(profileImagePath);
+      if (isEmpty(in)) {
+        throw new PhotoNotFoundException("Wrong path to photo for user with username " + username);
+      }
+      return FileCopyUtils.copyToByteArray(in);
+
+    }
   }
 
   @Override
   public byte[] getBackgroundImage(String username) throws IOException {
     String profileBackgroundImagePath = userRepository.findByUsername(username).get().getProfileBackgroundImageUrl();
-    InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
-    return FileCopyUtils.copyToByteArray(in);
+    if (isEmpty(profileBackgroundImagePath)) {
+      throw new HeaderPhotoNotFoundException("Header photo for user with username " + username + " is absent");
+    } else {
+      InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
+      if (isEmpty(in)) {
+        throw new HeaderPhotoNotFoundException("Wrong path to header photo for user with username " + username);
+      }
+      return FileCopyUtils.copyToByteArray(in);
+    }
   }
 
   public boolean save(DbUser dbUser) {
@@ -85,7 +112,6 @@ public class UserServiceImpl implements UserService {
     if (activationCode == null) {
       return false;
     }
-
     return code.equals(activationCode);
   }
 

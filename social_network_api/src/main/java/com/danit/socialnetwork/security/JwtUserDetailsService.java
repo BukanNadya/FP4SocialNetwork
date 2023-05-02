@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Configuration
@@ -27,11 +28,15 @@ public class JwtUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userService.findByUsername(username)
-        .map(this::mapper)
-        .orElseThrow(() -> new UsernameNotFoundException(
-            String.format("user `%s` not found", username)
-        ));
+    try {
+      return userService.findByUsername(username)
+          .map(this::mapper)
+          .orElseThrow(() -> new UsernameNotFoundException(
+              String.format("user `%s` not found", username)
+          ));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }
