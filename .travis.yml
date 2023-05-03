@@ -1,15 +1,13 @@
-sudo: false
-install: true
-
 language: java
-
+jdk:
+  - openjdk17
 addons:
   sonarcloud:
     organization: "fp4socialnetwork"
     token:
-      secure: "8952699bf634374231da04463b9c0c0556de6838"
-script:
-  - sonar-scanner
+      secure: "506f185a3ff3043be69834b4b93a168e491ec88a"
 
-after_success:
-  - mvn -e -fsocial_network_api/ clean test jacoco:report coveralls:report
+
+script:
+  - mvn -f social_network_api/ clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=AlexKhmarenko_FP4SocialNetwork
+  - mvn -f social_network_api/ clean test jacoco:report coveralls:report

@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-     - main
+      - main
   pull_request:
     branches:
-     - main
+      - main
 
 jobs:
   javascript-ci-checks:
@@ -28,7 +28,6 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
       - name: Setup Node.js 18.15.0
         uses: actions/setup-node@v3
         with:
@@ -55,4 +54,4 @@ jobs:
           cache: 'maven'
 
       - name: Compile and run tests with Maven
-        run: mvn -fsocial_network_api/ clean test
+        run: mvn -f social_network_api/ clean test
