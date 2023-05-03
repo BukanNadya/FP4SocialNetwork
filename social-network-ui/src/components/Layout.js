@@ -11,7 +11,7 @@ export function Layout() {
             <Outlet/>
             {/*<LoginModal/>*/}
             {/*<CreateAccountModal/>*/}
-            <Link to="*" variant="contained">To not found page 404</Link>
+            {/*<Link to="*" variant="contained">To not found page 404</Link>*/}
         </>
     );
 }

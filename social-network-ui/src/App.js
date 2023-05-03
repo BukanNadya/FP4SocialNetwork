@@ -10,6 +10,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<Layout/>}>
             <Route path="/" element={<HomePage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
+            <Route path="/explore" element={<HomePage/>}/>
         </Route>
     )
 );
