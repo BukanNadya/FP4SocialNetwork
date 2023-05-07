@@ -28,12 +28,10 @@ export function InputFieldWithError({
                 name={name}
                 type={passwordView}
                 sx={{ marginBottom: "5px", width: "100%", fontFamily: "'Lato', sans-serif",
-                    fontSize: "19px",
+                    fontSize: "15px",
                     lineHeight: "23px" }}
                 InputLabelProps={{
-                    sx: { color: hasError ? "error.main" : "text.primary",  fontFamily: "'Lato', sans-serif",
-                        fontSize: "19px",
-                        lineHeight: "23px" },
+                    sx: { color: hasError ? "error.main" : "text.primary" },
                     shrink: true,
                 }}
                 autoComplete={`username-${Math.random().toString(36).substr(2, 8)}`}
@@ -71,7 +69,7 @@ export function InputFieldWithError({
             />
             {hasError && (
                 <Typography color="error" sx={{ fontFamily: "'Lato', sans-serif",
-                    fontSize: "19px",
+                    fontSize: "15px",
                     lineHeight: "23px"}} variant="caption">
                     {errors[name]}
                 </Typography>
@@ -84,11 +82,11 @@ export function InputFieldWithError({
                     error={hasError}
                     name={name}
                     sx={{ marginBottom: "5px", width: "100%" , fontFamily: "'Lato', sans-serif",
-                        fontSize: "19px",
+                        fontSize: "15px",
                         lineHeight: "23px"}}
                     InputLabelProps={{
                         sx: { color: hasError ? "error.main" : "text.primary",  fontFamily: "'Lato', sans-serif",
-                            fontSize: "19px",
+                            fontSize: "15px",
                             lineHeight: "23px" },
                         shrink: true,
                     }}

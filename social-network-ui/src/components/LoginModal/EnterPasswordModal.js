@@ -30,31 +30,36 @@ export function EnterPasswordModal() {
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Enter your password</Typography>
-            <Formik validate={async (values) => {
-                // const url = new URL("http://localhost:8080/login");
-                // url.searchParams.append("username", values.userName);
-                // url.searchParams.append("password", values.password);
-                // url.searchParams.append("rememberMe", userDataState.rememberMe);
-                // const userPassword = await fetch(url.toString());
-                // const userToken = await userExist.json();
-                const userToken = true;
-                if (!userToken) {
-                    return { password: "wrong password" };
-                }else{
-                    localStorage.setItem('userToken', JSON.stringify(userToken));
-                }
-            }}
-                    initialValues={{
-                        userName: userDataState.userName || "",
-                        password: "",
-                    }} validationSchema={
+            <Formik
+                initialValues={{
+                    userName: userDataState.userName || "",
+                    password: "",
+                }} validationSchema={
                 Yup.object(
                     {
                         password: Yup.string().required("Password is required")
                     }
-                )} onSubmit={(values) => {
-                dispatch(setUserPassword(values));
-            }}>
+                )}
+                onSubmit={async (values, { setErrors }) => {
+                    dispatch(setUserPassword(values));
+                    const url = new URL("http://localhost:8080/login");
+                    url.searchParams.append("username", values.userName);
+                    url.searchParams.append("password", values.password);
+                    url.searchParams.append("rememberMe", userDataState.rememberMe);
+                    const userPassword = await fetch(url.toString());
+                    const userToken = await userPassword.json();
+
+                    if (!userToken) {
+                        setErrors({ password: "wrong password" });
+                    } else {
+                        if (userDataState.rememberMe) {
+                            localStorage.setItem("userToken", JSON.stringify(userToken));
+                        } else {
+                            sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                        }
+                    }
+                }}
+            >
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <FormControl sx={{ width: "400px" }} variant="outlined">

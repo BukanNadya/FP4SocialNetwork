@@ -36,15 +36,14 @@ export function EnterUserNameModal() {
                 Sign in width Google</Button>
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
-            <Formik validate={async (values, props) => {
-                // const url = new URL("http://localhost:8080/checkUsername");
-                // url.searchParams.append("username", values.userName);
-                // console.log(url)
-                // const userExist = await fetch(url.toString())
-                // const userExistData = await userExist.json();
-                const userExistData = true;
+            <Formik validate={async (values) => {
+                const url = new URL("http://localhost:8080/checkUsername");
+                url.searchParams.append("username", values.userName);
+                console.log(url)
+                const userExist = await fetch(url.toString())
+                const userExistData = await userExist.json();
                 if (!userExistData) {
-                    return { password: "User doesn't exist, please check your username" };
+                    return { userName: "User doesn't exist, please check your username" };
                 }
             }} initialValues={{
                 userName: "",
