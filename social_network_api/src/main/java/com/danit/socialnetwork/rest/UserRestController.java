@@ -1,5 +1,7 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.controller.PasswordChanger;
+import com.danit.socialnetwork.service.PasswordChangerService;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
@@ -10,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 import java.time.LocalDate;
@@ -32,6 +34,8 @@ import java.util.Optional;
 public class UserRestController {
 
   private final UserService userService;
+  PasswordChanger passChanger = new PasswordChanger();
+  private final PasswordChangerService passwordChangerService;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<?> handleRegistrationPost(
@@ -115,5 +119,4 @@ public class UserRestController {
   public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
     return userService.getBackgroundImage(username);
   }
-
 }

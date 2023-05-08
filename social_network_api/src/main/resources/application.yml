@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    #    url: jdbc:h2:file:D:\Java\projects\FP4SocialNetwork\social_network_api\src\main\resources\data\tweeterDB;AUTO_SERVER=true
+    url: jdbc:h2:mem:tweeterDB
+    username: tweeter
+    password: tweeter2023
+    driverClassName: org.h2.Driver
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  main:
+    banner-mode: off
+
+  logging:
+    level:
+      root:ERROR
+      org:info
+
+  security:
+    oauth2:
+      client:
+        registration:
+          #          github:
+          #            clientId: cbac0f2ee47bef6c00f2
+          #            clientSecret: 7f476417928b524d266d2d8ab17fce764be7e2a8
+          google:
+            client-id: 429648578915-3m7p1im834dvg26q30gvbvb940adac83.apps.googleusercontent.com
+            client-secret: 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

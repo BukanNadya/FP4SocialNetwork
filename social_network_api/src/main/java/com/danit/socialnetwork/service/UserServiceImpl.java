@@ -115,4 +115,13 @@ public class UserServiceImpl implements UserService {
     return code.equals(activationCode);
   }
 
+  //  @Override
+  public Optional<DbUser> findDbUserByEmail(String email) {
+    Optional<DbUser> maybeUser = userRepository.findDbUserByEmail(email);
+    if (maybeUser.isEmpty()) {
+      throw new UserNotFoundException("User with e-mail " + email + " not found");
+    }
+    return maybeUser;
+  }
+
 }
