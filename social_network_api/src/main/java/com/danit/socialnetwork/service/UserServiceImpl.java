@@ -14,8 +14,13 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
+import static com.danit.socialnetwork.config.GuavaCache.userCache;
 
 
 @Service
@@ -36,7 +41,7 @@ public class UserServiceImpl implements UserService {
   public Optional<DbUser> findByUsername(String username) {
     Optional<DbUser> maybeUser = userRepository.findByUsername(username);
     if (maybeUser.isEmpty()) {
-      throw new UserNotFoundException("User with username " + username + " not found");
+      throw new UserNotFoundException(String.format("User with username %s not found", username));
     }
     return maybeUser;
   }
@@ -78,7 +83,8 @@ public class UserServiceImpl implements UserService {
       return false;
     }
 
-    dbUser.setPassword(enc.encode(dbUser.getPassword()));
+    String hashedPassword = enc.encode(dbUser.getPassword());
+    dbUser.setPassword(hashedPassword);
     userRepository.save(dbUser);
     log.info(String.format("save user name = %s, email = %s",
         dbUser.getName(), dbUser.getEmail()));
@@ -91,7 +97,7 @@ public class UserServiceImpl implements UserService {
     Random rand = new Random();
     int randomNumber = rand.nextInt(900000) + 100000;
 
-    guavaCache.put("activationCode", randomNumber);
+    activateCodeCache.put("activationCode", randomNumber);
 
     try {
       String message = String.format(
@@ -108,11 +114,23 @@ public class UserServiceImpl implements UserService {
   }
 
   public boolean activateUser(Integer code) {
-    Integer activationCode = guavaCache.getUnchecked("activationCode");
+    Integer activationCode = activateCodeCache.getIfPresent("activationCode");
     if (activationCode == null) {
       return false;
     }
     return code.equals(activationCode);
+  }
+
+  public List<DbUser> filterCachedUsersByName(String userSearch) {
+    if (userCache.getIfPresent("UserCache") == null) {
+      List<DbUser> cacheUsers = userRepository.findAll();
+      userCache.put("UserCache", cacheUsers);
+    }
+
+    return userCache.getIfPresent("UserCache").stream()
+        .filter(user -> user.getName().toLowerCase()
+            .contains(userSearch.toLowerCase()))
+        .toList();
   }
 
   //  @Override

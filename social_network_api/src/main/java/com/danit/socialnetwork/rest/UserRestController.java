@@ -1,28 +1,31 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.controller.PasswordChanger;
+import com.danit.socialnetwork.dto.UsernameRequest;
+import com.danit.socialnetwork.dto.UserEmailRequest;
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
+import com.danit.socialnetwork.dto.SearchRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.service.PasswordChangerService;
 import com.danit.socialnetwork.service.UserService;
-import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
-import com.danit.socialnetwork.dto.UserEmailRequest;
-import com.danit.socialnetwork.dto.UsernameRequest;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import java.io.IOException;
@@ -57,7 +60,7 @@ public class UserRestController {
     return ResponseEntity.ok(response);
   }
 
-  @RequestMapping(value = "/checkUsername", method = RequestMethod.POST)
+  @PostMapping(value = "/checkUsername")
   public ResponseEntity<?> handleCheckUsernamePost(
       @RequestBody UsernameRequest request) throws IOException {
 
@@ -73,7 +76,7 @@ public class UserRestController {
   }
 
   @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
-  public ResponseEntity<?> handleSendLetterPost(
+  public ResponseEntity handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
     Map<String, String> response = new HashMap<>();
@@ -100,6 +103,17 @@ public class UserRestController {
     } else {
       response.put("activate", "false");
     }
+    return ResponseEntity.ok(response);
+  }
+
+  @RequestMapping(value = "/search", method = RequestMethod.POST)
+  public ResponseEntity<?> handleSearchPost(
+      @RequestBody SearchRequest request) {
+    String userSearch = request.getUserSearch();
+    List<DbUser> search = userService.filterCachedUsersByName(userSearch);
+    Map<String, List<DbUser>> response = new HashMap<>();
+    response.put("search", search);
+
     return ResponseEntity.ok(response);
   }
 
