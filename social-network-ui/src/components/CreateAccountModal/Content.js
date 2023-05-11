@@ -11,13 +11,12 @@ import { ContentFirstStep } from "./ContentFirstStep";
 import { ContentSecondStep } from "./ContentSecondStep";
 import { ContentThirdStep } from "./ContentThirdStep";
 import { ContentFourthStep } from "./ContentFourthStep";
-import { SET_STEP_MODAL, SET_VALUE_MODAL } from "../../store/types";
+import {CLOSE_LOGIN_MODAL, CLOSE_SIGN_UP_MODAL, SET_STEP_MODAL, SET_VALUE_MODAL} from "../../store/types";
 import { StyledContentModal, StyledContentBox, StyledContentTypography } from "./CreateAccountModalStyles";
 
 export function Content() {
   const dispatch = useDispatch();
   const stepInModal = useSelector((state) => state.stepModal.stepModal.step);
-  const [open, setOpen] = useState(true);
   console.log("stepInModal: ", stepInModal);
 
   useEffect(() => {
@@ -49,15 +48,16 @@ export function Content() {
 
   return (
     <Modal
-            open={open}
+            open={true}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            onClose={() => {dispatch({type: CLOSE_SIGN_UP_MODAL})}}
             sx={ StyledContentModal }>
             <Box sx={ StyledContentBox }>
                 <SvgIcon sx={{
                     position: "absolute", top: "20px",
-                    left: "20px",
-                }} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={()=>setOpen(false)}>
+                    left: "20px", cursor: "pointer"
+                }} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={()=>{dispatch({type: CLOSE_SIGN_UP_MODAL})}}>
                     <path fillRule="evenodd" clipRule="evenodd"
                           d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
                           fill="#000000"/>

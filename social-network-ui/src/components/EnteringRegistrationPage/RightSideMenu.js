@@ -1,7 +1,12 @@
 import React from 'react'
 import {Box, Button, Card, CardContent, SvgIcon, Typography} from "@mui/material";
+import {OPEN_SIGN_UP_MODAL} from "../../store/types";
+import {useDispatch} from "react-redux";
 
 export function RightSideMenu ()  {
+
+    const dispatch = useDispatch()
+
     return (
         <div style={{position: "relative"}}>
         <Box display="grid" gridTemplateColumns="350px" gap={2} sx={{  position: "fixed" }}>
@@ -60,7 +65,7 @@ export function RightSideMenu ()  {
                     fontWeight: 700,
                     borderRadius: "20px",
                     fontFamily: "'Lato', sans-serif",
-                }} fullWidth={true}>Create account</Button>
+                }} fullWidth={true} onClick={() => {dispatch({type: OPEN_SIGN_UP_MODAL})}}>Create account</Button>
                 <Typography sx={{fontWeight: "400", lineHeight: "16px", fontSize: "14px", color: "rgb(83, 100, 113)", padding: "0 12px", mb: "16px", fontFamily: "'Lato', sans-serif"}}>
                      By registering, you agree to the Terms of Service and Privacy Policy as well as the Cookie Policy.
                 </Typography>
