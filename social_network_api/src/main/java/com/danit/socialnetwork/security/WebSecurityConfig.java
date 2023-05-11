@@ -119,23 +119,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/"));
   }
 
-  //   CORS filter
-  //  @Bean
-  //  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-  //    return http.cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
-  //        .authorizeRequests(auth -> auth.anyRequest().authenticated()).httpBasic(Customizer.withDefaults()).build();
-  //  }
-
-  // CORS configuration
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
-    configuration.setAllowedHeaders(List.of("Authorization"));
-    configuration.setMaxAge(3600L);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
 }
