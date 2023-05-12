@@ -35,15 +35,15 @@ public class JwtAuthenticationRestController {
       @RequestBody JwtRequest authRequest)
       throws Exception {
 
-    String username = authRequest.getUsername();
+    String email = authRequest.getEmail();
     String password = authRequest.getPassword();
     boolean rememberMe = Boolean.parseBoolean(authRequest.getRememberMe());
 
-    authenticate(username, password);
-
-    Optional<DbUser> optionalDbUser = userService.findByUsername(username);
+    Optional<DbUser> optionalDbUser = userService.findDbUserByEmail(email);
 
     if (optionalDbUser.isPresent()) {
+      String username = optionalDbUser.get().getUsername();
+      authenticate(username, password);
       Integer id = optionalDbUser.get().getUserId();
       final String token = jwtTokenService.generateToken(id, rememberMe);
       Map<String, String> response = new HashMap<>();
@@ -52,7 +52,6 @@ public class JwtAuthenticationRestController {
     } else {
       throw new BadCredentialsException("Invalid username or password");
     }
-    
   }
 
   private void authenticate(String username, String password) throws Exception {

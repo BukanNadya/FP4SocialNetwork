@@ -42,7 +42,7 @@ public class UserServiceImplUnitTest {
   }
 
   @Test
-  public void findByUsername_shouldFindUser_WhenExists() throws IOException {
+  public void findByUsername_shouldFindUser_WhenExists() {
     DbUser testDbUser = new DbUser();
     testDbUser.setUsername("Nadya");
 
@@ -53,7 +53,7 @@ public class UserServiceImplUnitTest {
   }
 
   @Test
-  public void findByUsername_shouldNotFindUser_WhenNotExists() throws IOException {
+  public void findByUsername_shouldNotFindUser_WhenNotExists() {
     DbUser testDbUser = new DbUser();
     testDbUser.setUsername("TestUser");
 
@@ -81,6 +81,28 @@ public class UserServiceImplUnitTest {
     Mockito.verify(passwordEncoder).encode(testUser.getPassword());
 
     assertTrue(result);
+  }
+
+  @Test
+  public void findDbUserByEmail_shouldFindUser_WhenExists() {
+    DbUser testDbUser = new DbUser();
+    testDbUser.setEmail("bukan.nadya@gmail.com");
+
+    when(userRepository.findDbUserByEmail("bukan.nadya@gmail.com")).thenReturn(Optional.of(testDbUser));
+    Optional<DbUser> testUser = userRepository.findDbUserByEmail("bukan.nadya@gmail.com");
+
+    Assert.assertEquals(Optional.of(testDbUser), testUser);
+  }
+
+  @Test
+  public void findDbUserByEmail_shouldNotFindUser_WhenNotExists() {
+    DbUser testDbUser = new DbUser();
+    testDbUser.setEmail("TestUser@gmail.com");
+
+    when(userRepository.findDbUserByEmail("TestUser@gmail.com")).thenReturn(Optional.of(testDbUser));
+    Optional<DbUser> testUser = userRepository.findDbUserByEmail("TestUser@gmail.com");
+
+    Assert.assertEquals(Optional.of(testDbUser), testUser);
   }
 
   @Test

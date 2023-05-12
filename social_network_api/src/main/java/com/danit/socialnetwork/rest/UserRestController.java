@@ -1,7 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.controller.PasswordChanger;
-import com.danit.socialnetwork.dto.UsernameRequest;
+import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.SearchRequest;
@@ -60,17 +60,17 @@ public class UserRestController {
     return ResponseEntity.ok(response);
   }
 
-  @PostMapping(value = "/checkUsername")
+  @PostMapping(value = "/checkEmail")
   public ResponseEntity<?> handleCheckUsernamePost(
-      @RequestBody UsernameRequest request) throws IOException {
+      @RequestBody UserEmailForLoginRequest request) throws IOException {
 
-    String username = request.getUsername();
+    String email = request.getEmail();
     Map<String, String> response = new HashMap<>();
 
-    if (userService.findByUsername(username) == null) {
-      response.put("checkUsername", "false");
+    if (userService.findDbUserByEmail(email) == null) {
+      response.put("checkEmail", "false");
     } else {
-      response.put("checkUsername", "true");
+      response.put("checkEmail", "true");
     }
     return ResponseEntity.ok(response);
   }

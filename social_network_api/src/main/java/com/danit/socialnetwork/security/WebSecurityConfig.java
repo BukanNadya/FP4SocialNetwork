@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/h2/**",
             "/sendLetter",
             "/activate",
-            "/checkUsername",
+            "/checkEmail",
             "/registration",
             "/changepassword*",
             "/newpassword",
