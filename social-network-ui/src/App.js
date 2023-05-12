@@ -9,7 +9,6 @@ import { HomeScreen } from "./pages/HomeScreen";
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout/>}>
-            <Route path="/" element={<RegistrationPage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
             {/*<Route path="/explore" element={<RegistrationPage/>}/>*/}
             <Route path="/home" element={<HomeScreen/>}/>

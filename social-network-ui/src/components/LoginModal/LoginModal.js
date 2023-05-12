@@ -6,6 +6,7 @@ import { EnterPasswordModal } from "./EnterPasswordModal";
 import { EnterUserNameModal } from "./EnterUserNameModal";
 import { StyledModal, StyledBox, StyledTwitSvgIcon, StyledCloseSvgIcon } from "./loginModalStyles";
 import {CLOSE_LOGIN_MODAL} from "../../store/types";
+import { openSignUpModal,  closeLoginModal } from "../../store/actions";
 
 export function LoginModal() {
     const userDataState = useSelector(state => state.loginUserData.userData);
@@ -14,6 +15,11 @@ export function LoginModal() {
     useEffect(() => {
         console.log(userDataState);
     }, [userDataState]);
+
+    function OpenSignUpModalAndCloseLoginModal(){
+        dispatch(openSignUpModal())
+        dispatch(closeLoginModal())
+    }
 
     return (
         <Modal
@@ -106,7 +112,7 @@ export function LoginModal() {
                 </SvgIcon>
                 {userDataState.userName ? (<EnterPasswordModal userData={userDataState}/>) : (
                     <EnterUserNameModal userData={userDataState}/>)}
-                <Typography sx={{ marginTop: "30px" }}>Don`t have an account? <Link href="#">Sign Up</Link></Typography>
+                <Typography sx={{ marginTop: "30px" }}>Don`t have an account? <Link href="#" onClick={OpenSignUpModalAndCloseLoginModal}>Sign Up</Link></Typography>
             </Box>
         </Modal>
     );

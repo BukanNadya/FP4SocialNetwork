@@ -9,6 +9,7 @@ import {
     Checkbox,
     FormControlLabel,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,10 +23,15 @@ import {
     StyledWhiteButton,
     StyledCheckbox
 } from "./loginModalStyles";
+import { setUserToken } from "../../store/actions";
 
 export function EnterPasswordModal() {
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userData);
+    const userToken = useSelector(state => state.saveUserToken);
+    const navigate = useNavigate();
+
+    console.log(userToken);
 
     return (
         <>
@@ -40,23 +46,40 @@ export function EnterPasswordModal() {
                         password: Yup.string().required("Password is required")
                     }
                 )}
-                onSubmit={async (values, { setErrors }) => {
-                    dispatch(setUserPassword(values));
-                    const url = new URL("http://localhost:8080/login");
-                    url.searchParams.append("username", values.userName);
-                    url.searchParams.append("password", values.password);
-                    url.searchParams.append("rememberMe", userDataState.rememberMe);
-                    const userPassword = await fetch(url.toString());
-                    const userToken = await userPassword.json();
+                onSubmit={async (values, { setErrors, setSubmitting }) => {
+                    try {
+                        dispatch(setUserPassword(values));
+                        const userPassword = await fetch("http://localhost:8080/login", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                username: values.userName,
+                                password: values.password,
+                                rememberMe: userDataState.rememberMe
+                            }),
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
+                        });
 
-                    if (!userToken) {
-                        setErrors({ password: "wrong password" });
-                    } else {
-                        if (userDataState.rememberMe) {
-                            localStorage.setItem("userToken", JSON.stringify(userToken));
+                        if (userPassword.ok) {
+                            const userToken = await userPassword.json();
+                            if (userDataState.rememberMe) {
+                                dispatch(setUserToken(userToken));
+                                localStorage.setItem("userToken", JSON.stringify(userToken));
+                                console.log(userToken);
+                            } else {
+                                dispatch(setUserToken(userToken));
+                                sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                            }
+                            navigate("/home");
                         } else {
-                            sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                            setErrors({ password: "Wrong password" });
                         }
+                    } catch (error) {
+                        console.error("An error occurred:", error);
+                        setErrors({ password: "An error occurred, please try again" });
+                    } finally {
+                        setSubmitting(false);
                     }
                 }}
             >

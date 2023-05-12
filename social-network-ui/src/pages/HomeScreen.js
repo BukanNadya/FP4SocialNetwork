@@ -12,10 +12,12 @@ import {
     HomeScreenWrapper,
     PostWrapper
 } from "./pagesStyles/HomeScreenStyles";
+import { Post } from "../components/Posts/Post";
 
 export function HomeScreen() {
 
     return (
+        <>
         <div style={HomeScreenWrapper}>
             <div style={PostWrapper}>
                 <div style={SvgWrapper}>
@@ -41,6 +43,10 @@ export function HomeScreen() {
             }}
                     fullWidth={true}>Post</Button>
         </div>
-
+            <div style={{display:"flex", flexDirection:"column", alignItems:"center", maxWidth:"100%"}}>
+    <Post/>
+            <Post/>
+            </div>
+   </>
     );
 }

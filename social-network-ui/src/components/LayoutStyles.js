@@ -10,8 +10,6 @@ export const ContainerStyled = {
 
 export const OutletWrapper = {
     width: "600px",
-    height: "calc(100vh - 70px)",
-    paddingTop: "70px",
 };
 
 export const ContentContainer = {

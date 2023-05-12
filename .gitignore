@@ -20,7 +20,7 @@ package-lock.json
 /build
 
 # misc
-.idea
+.idea/
 .DS_Store
 .env.local
 .env.development.local
@@ -30,6 +30,5 @@ package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/.idea/
-/target/
-/data/
+target/
+data/
