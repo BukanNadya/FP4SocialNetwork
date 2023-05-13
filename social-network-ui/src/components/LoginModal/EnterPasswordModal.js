@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     Button,
     FormControl,
@@ -14,7 +14,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setRememberMeAction, setUserPassword } from "../../store/actions";
+import { closeLoginModal, setRememberMeAction, setUserName, setUserPassword } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledHeaderModalText,
@@ -26,6 +26,7 @@ import {
 import { setUserToken } from "../../store/actions";
 
 export function EnterPasswordModal() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userData);
     const userToken = useSelector(state => state.saveUserToken);
@@ -47,6 +48,7 @@ export function EnterPasswordModal() {
                     }
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
+                    setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
                         const userPassword = await fetch("http://localhost:8080/login", {
@@ -66,10 +68,14 @@ export function EnterPasswordModal() {
                             if (userDataState.rememberMe) {
                                 dispatch(setUserToken(userToken));
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
+                                dispatch(closeLoginModal())
                                 console.log(userToken);
+                                dispatch(setUserName({userName: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                                dispatch(closeLoginModal())
+                                dispatch(setUserName({userName: ''}));
                             }
                             navigate("/home");
                         } else {
@@ -79,6 +85,7 @@ export function EnterPasswordModal() {
                         console.error("An error occurred:", error);
                         setErrors({ password: "An error occurred, please try again" });
                     } finally {
+                        setIsSubmitting(false);
                         setSubmitting(false);
                     }
                 }}
@@ -109,7 +116,7 @@ export function EnterPasswordModal() {
                             ...StyledFormControl,
                         }}>
                             <Field as={InputFieldWithError} sx={{ width: "400px", marginTop: "40px" }}
-                                   label="Password" name={"password"} id="password"
+                                   label="Password" disabled={isSubmitting} name={"password"} id="password"
                                    type="password"/>
                             <FormControlLabel
                                 control={
@@ -123,7 +130,7 @@ export function EnterPasswordModal() {
                             />
                         </FormControl>
                         <Button type="submit"
-                                variant="contained" sx={StyledBlackButton} fullWidth={true}>Log in</Button>
+                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log in</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>

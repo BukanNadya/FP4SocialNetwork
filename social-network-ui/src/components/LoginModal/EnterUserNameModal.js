@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState }  from "react";
+
 import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -15,8 +16,10 @@ import {
 } from "./loginModalStyles";
 import PropTypes from "prop-types";
 
+
 export function EnterUserNameModal() {
     const dispatch = useDispatch();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     return (
         <>
@@ -44,6 +47,7 @@ export function EnterUserNameModal() {
                         userName: Yup.string().required("Username is required")
                     }
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
+                setIsSubmitting(true);
                 try {
                     const response = await fetch("http://localhost:8080/checkUsername", {
                         method: "POST",
@@ -61,16 +65,17 @@ export function EnterUserNameModal() {
                     console.error("An error occurred:", error);
                     setErrors({ userName: "An error occurred, please try again" });
                 } finally {
-                    setSubmitting(false); // This will trigger a re-render
+                    setIsSubmitting(false);
+                    setSubmitting(false);
                 }
             }}>
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <Field as={InputFieldWithError} sx={{ width: "400px" }} name={"userName"}
                                id="userName"
-                               label="Username" type="text"/>
+                               label="Username" disabled={isSubmitting} type="text"/>
                         <Button type="submit"
-                                variant="contained" sx={StyledBlackButton} fullWidth={true}>Next</Button>
+                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Next</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>

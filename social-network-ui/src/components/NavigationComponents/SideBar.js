@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { Box, Button, Fab, SvgIcon, Typography } from "@mui/material";
 
@@ -13,12 +14,15 @@ import {
     SidebarFabActive
 } from "./NavigationStyles";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
+import { setUserToken } from "../../store/actions";
 
 export function SideBar() {
+    const dispatch = useDispatch();
     const location = useLocation();
     const { pathname } = location;
 
     const clearLocaleStorage = () => {
+        dispatch(setUserToken(false))
         localStorage.clear();
         sessionStorage.clear();
     };
