@@ -88,4 +88,34 @@ public class JwtAuthenticationRestControllerTest {
     Mockito.verify(userService).findByUsername(username);
   }
 
+  @Test
+  public void testCreateAuthenticationTokenWithInvalidCredentials() throws Exception {
+    String email = "bukan.nadya@gmail.com";
+    String username = "Nadya";
+    String password = "12";
+    boolean rememberMe = true;
+
+    JwtRequest authRequest = new JwtRequest();
+    authRequest.setEmail(email);
+    authRequest.setPassword(password);
+    authRequest.setRememberMe(String.valueOf(rememberMe));
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUsername(username);
+    dbUser.setEmail(email);
+    dbUser.setPassword(password);
+
+    given(userService.findDbUserByEmail(email)).willReturn(Optional.of(dbUser));
+    given(userService.findByUsername(username)).willReturn(Optional.of(dbUser));
+
+    mockMvc.perform(post("/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(authRequest)))
+        .andExpect(status().isOk());
+
+    Mockito.verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+    Mockito.verify(userService).findDbUserByEmail(email);
+    Mockito.verify(userService).findByUsername(username);
+  }
+
 }
