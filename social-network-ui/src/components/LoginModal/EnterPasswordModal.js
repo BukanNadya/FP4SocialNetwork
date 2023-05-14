@@ -14,7 +14,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { closeLoginModal, setRememberMeAction, setUserName, setUserPassword } from "../../store/actions";
+import { closeLoginModal, setRememberMeAction, setUserEmail, setUserPassword } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledHeaderModalText,
@@ -39,7 +39,7 @@ export function EnterPasswordModal() {
             <Typography sx={StyledHeaderModalText}>Enter your password</Typography>
             <Formik
                 initialValues={{
-                    userName: userDataState.userName || "",
+                    email: userDataState.email || "",
                     password: "",
                 }} validationSchema={
                 Yup.object(
@@ -48,13 +48,14 @@ export function EnterPasswordModal() {
                     }
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
+                    console.log("values", values)
                     setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
                         const userPassword = await fetch("http://localhost:8080/login", {
                             method: "POST",
                             body: JSON.stringify({
-                                username: values.userName,
+                                email: values.email,
                                 password: values.password,
                                 rememberMe: userDataState.rememberMe
                             }),
@@ -63,6 +64,8 @@ export function EnterPasswordModal() {
                             }
                         });
 
+                        console.log("email", values.email)
+
                         if (userPassword.ok) {
                             const userToken = await userPassword.json();
                             if (userDataState.rememberMe) {
@@ -70,12 +73,12 @@ export function EnterPasswordModal() {
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
                                 console.log(userToken);
-                                dispatch(setUserName({userName: ''}));
+                                dispatch(setUserEmail({userEmail: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
-                                dispatch(setUserName({userName: ''}));
+                                dispatch(setUserEmail({userEmail: ''}));
                             }
                             navigate("/home");
                         } else {
@@ -93,22 +96,22 @@ export function EnterPasswordModal() {
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <FormControl sx={{ width: "400px" }} variant="outlined">
-                            <InputLabel htmlFor="userName" sx={{
+                            <InputLabel htmlFor="email" sx={{
                                 fontFamily: "'Lato', sans-serif",
                                 fontSize: "19px",
                                 lineHeight: "23px"
-                            }}>Username</InputLabel>
+                            }}>email</InputLabel>
                             <OutlinedInput sx={{
                                 fontFamily: "'Lato', sans-serif",
                                 fontSize: "19px",
                                 lineHeight: "23px"
                             }}
-                                           id="userName"
-                                           name="userName"
+                                           id="userEmail"
+                                           name="userEmail"
                                            type="text"
-                                           value={userDataState.userName}
+                                           value={userDataState.email}
                                            disabled
-                                           label="Username"
+                                           label="Email"
                                            startAdornment={<InputAdornment position="start"/>}
                             />
                         </FormControl>

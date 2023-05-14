@@ -13,7 +13,7 @@ export function userDataReducer(state = initialState, action) {
                 ...state,
                 userData: {
                     ...state.userData,
-                    userName: action.payload.userName,
+                    email: action.payload.email,
                 },
             };
         case UPDATE_USER_PASSWORD:

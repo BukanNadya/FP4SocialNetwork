@@ -3,9 +3,9 @@ import React, { useState }  from "react";
 import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setUserName } from "../../store/actions";
+import { setUserEmail } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledBlackButton,
@@ -17,8 +17,9 @@ import {
 import PropTypes from "prop-types";
 
 
-export function EnterUserNameModal() {
+export function EnterEmailModal() {
     const dispatch = useDispatch();
+    const userDataState = useSelector(state => state.loginUserData.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     return (
@@ -40,30 +41,30 @@ export function EnterUserNameModal() {
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
             <Formik initialValues={{
-                userName: "",
+                email: "",
             }} validationSchema={
                 Yup.object(
                     {
-                        userName: Yup.string().required("Username is required")
+                        email: Yup.string().email('Please enter a correct email').required("email is required")
                     }
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                 setIsSubmitting(true);
                 try {
-                    const response = await fetch("http://localhost:8080/checkUsername", {
+                    const response = await fetch("http://localhost:8080/checkEmail", {
                         method: "POST",
-                        body: JSON.stringify({ username: values.userName }),
+                        body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }
                     });
-
                     if (!response.ok) {
-                        setErrors({ userName: "User doesn't exist, please check your username" });
+                        setErrors({ email: "User doesn't exist, please check your email" });
                     } else {
                         const userExistData = await response.json();
-                        dispatch(setUserName(values));
+                        console.log("resp from server", userExistData)
+                        dispatch(setUserEmail(values));
                     }
                 } catch (error) {
                     console.error("An error occurred:", error);
-                    setErrors({ userName: "An error occurred, please try again" });
+                    setErrors({ email: "An error occurred, please try again" });
                 } finally {
                     setIsSubmitting(false);
                     setSubmitting(false);
@@ -71,9 +72,9 @@ export function EnterUserNameModal() {
             }}>
                 <Form>
                     <FormControl sx={StyledFormControl}>
-                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={"userName"}
-                               id="userName"
-                               label="Username" disabled={isSubmitting} type="text"/>
+                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={"email"}
+                               id="email"
+                               label="Email" disabled={isSubmitting} type="text"/>
                         <Button type="submit"
                                 variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Next</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
@@ -84,6 +85,6 @@ export function EnterUserNameModal() {
     );
 }
 
-EnterUserNameModal.propTypes = {
+EnterEmailModal.propTypes = {
     userData: PropTypes.object,
 };
