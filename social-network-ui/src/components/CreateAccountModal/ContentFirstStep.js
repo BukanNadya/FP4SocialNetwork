@@ -92,7 +92,7 @@ export function ContentFirstStep() {
         name: PropTypes.string,
     };
 
-    const handleSetName = (nameValue) => {
+    const handlesetName = (nameValue) => {
         setName(nameValue);
     };
     const handleSetEmail = (emailValue) => {
@@ -135,7 +135,7 @@ export function ContentFirstStep() {
                     }}
                     validationSchema={Yup.object({
                         name: Yup.string()
-                            .required("Name is required")
+                            .required("name is required")
                             .min(5, "Must be at least 5 digits"), email: Yup.string().required("Email is required")
                             .email("Not a proper email")
                             .min(5, "Must be at least 5 digits"),
@@ -165,7 +165,7 @@ export function ContentFirstStep() {
                                 onChange={(e) => {
                                     formikProps.handleChange(e);
                                     setNameCounter(e.target.value.length);
-                                    handleSetName(e.target.value);
+                                    handlesetName(e.target.value);
                                 }}
                                 sx={{ marginBottom: "5px" }}
                             />

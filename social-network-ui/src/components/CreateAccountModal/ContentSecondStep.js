@@ -10,8 +10,8 @@ import * as Yup from "yup";
 import { SET_STEP_MODAL } from "../../store/types";
 import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel,
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypographyCounter,
-    StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypographyDateofBirth,
-    StyledFirstStepTypographyDateofBirthInfo } from "./CreateAccountModalStyles";
+    StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
+    StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo } from "./CreateAccountModalStyles";
 
 export function ContentSecondStep() {
     const dispatch = useDispatch();
@@ -101,13 +101,37 @@ export function ContentSecondStep() {
                         month: valuesState.month,
                         year: valuesState.year
                     }}
-                    onSubmit={(values, { setSubmitting }) => {
-                        dispatch({ type: SET_STEP_MODAL, step: 3 });
-                        console.log(values);
+                    onSubmit={async (values, { setErrors }) => {
+                        const url = "http://localhost:8080/sendLetter";
+                        const requestBody = {
+                            name: valuesState.name,
+                            email: valuesState.email,
+                        };
+
+                        try {
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(requestBody),
+                            });
+
+                            if (response.ok) {
+                                const userToken = await response.json();
+                                dispatch({ type: SET_STEP_MODAL, step: 3 });
+                            } else {
+                                setErrors({ password: "wrong data" });
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            // Handle the error appropriately
+                        }
                     }}
                 >
                     {(formikProps) => (
                         <Form onSubmit={formikProps.handleSubmit}>
+                            <Typography component="span" sx={ StyledFirstStepTypography }>Please, check your information.</Typography>
                             <FormControl sx={ StyledFirstStepFormControl }>
                             <InputLabel htmlFor="name" sx={ StyledFirstStepInputLabel }>
                                 <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>name</Typography>
