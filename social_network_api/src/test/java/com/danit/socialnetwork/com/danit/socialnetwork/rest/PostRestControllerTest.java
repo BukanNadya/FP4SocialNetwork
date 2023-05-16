@@ -7,8 +7,6 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.PostLike;
-import com.danit.socialnetwork.repository.PostRepository;
-import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.PostService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,13 +46,12 @@ class PostRestControllerTest {
         "Tom", "tom", "Hello world 12",
         new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
     List<PostDtoResponse> postDtoResponseList = new ArrayList<>(Arrays.asList(postDtoResponse1, postDtoResponse2));
-    when(postService.getAllPosts()).thenReturn(postDtoResponseList);
-    List<PostDtoResponse> result = postRestController.getAllPosts(0);
+    when(postService.getAllPosts(0)).thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllPosts(0, 0);
 
     Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
     Assertions.assertEquals(2, result.toArray().length);
-
 
   }
 

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface PostService {
 
-  List<PostDtoResponse> getAllPostsFromToFollow(Integer userFollowerId);
+  List<PostDtoResponse> getAllPosts(Integer page);
 
-  List<PostDtoResponse> getAllPosts();
+  List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(Integer userFollowerId, Integer page);
 
   Post savePost(PostDtoSave thePostDtoSave);
 }

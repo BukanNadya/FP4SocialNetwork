@@ -11,6 +11,7 @@ import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,32 +31,31 @@ public class PostServiceImpl implements PostService {
   private final UserFollowRepository userFollowRepository;
   private final UserRepository userRepository;
 
-  // Method returns  all posts from users that a user follows by his id
-  @Override
-  public List<PostDtoResponse> getAllPostsFromToFollow(Integer userFollowerId) {
-    Optional<DbUser> tempUser = userRepository.findById(userFollowerId);
-    List<UserFollower> userFollowerList = userFollowRepository.findAllByUserFollowerId(tempUser);
-    List<PostDtoResponse> dtoPostList = new ArrayList<>();
-    for (UserFollower userFollower : userFollowerList) {
-      List<Post> postList = new ArrayList<>();
-      DbUser dbUser = userFollower.getUserFollowingId();
-      postList.addAll(postRepository.findAllByUserPost(dbUser));
-      for (Post post : postList) {
-        PostDtoResponse dtoPost = PostDtoResponse.from(post);
-        dtoPostList.add(dtoPost);
-      }
-    }
-    return dtoPostList;
-  }
 
   // Method returns all available posts
   @Override
-  public List<PostDtoResponse> getAllPosts() {
-    List<Post> listPost = postRepository.findAll(Sort.by(Sort.Direction.DESC, "sentDateTime"));
+  public List<PostDtoResponse> getAllPosts(Integer page) {
+    Pageable sortedByDateTimeDesc =
+        PageRequest.of(page, 12, Sort.by("sentDateTime").descending());
+    Page<Post> listPost = postRepository.findAll(sortedByDateTimeDesc);
     List<PostDtoResponse> postDtoResponseList = listPost.stream()
         .map(PostDtoResponse::from)
         .toList();
     return postDtoResponseList;
+  }
+
+  // Method returns  all posts from users that a user follows by his id
+  @Override
+  public List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(
+      Integer userFollowerId, Integer page) {
+    Pageable pagedByTenPosts =
+        PageRequest.of(page, 12);
+    List<Post> postList = postRepository.findAllPostsFromToFollow(
+        userFollowerId, pagedByTenPosts);
+    return postList.stream()
+        .map(PostDtoResponse::from)
+        .toList();
+
   }
 
   // Method save the post and returns it

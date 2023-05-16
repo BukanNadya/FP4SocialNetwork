@@ -1,13 +1,17 @@
 package com.danit.socialnetwork.repository;
 
-import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-  List<Post> findAllByUserPost(DbUser user);
+  @Query(nativeQuery = true, value = "SELECT * FROM POSTS "
+      + "LEFT JOIN USER_FOLLOWS ON POSTS.USER_ID = USER_FOLLOWS.USER_FOLLOWING_ID "
+      + "where USER_FOLLOWS.USER_FOLLOWER_ID = :userId order by POSTS.SENT_DATETIME DESC")
+  List<Post> findAllPostsFromToFollow(Integer userId, Pageable pageable);
 
 }

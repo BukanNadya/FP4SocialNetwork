@@ -26,11 +26,11 @@ public class PostRestController {
   @GetMapping(path = "/posts", produces = "application/json")
   @ResponseBody
   public List<PostDtoResponse> getAllPosts(@RequestParam(name = "userId",
-      defaultValue = "0") Integer useFollowingId) {
+      defaultValue = "0") Integer useFollowingId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (useFollowingId == 0) {
-      return postService.getAllPosts();
+      return postService.getAllPosts(page);
     }
-    return postService.getAllPostsFromToFollow(useFollowingId);
+    return postService.getAllPostsFromToFollowWithNativeQuery(useFollowingId, page);
   }
 
   @PostMapping(path = "/posts", consumes = "application/json", produces = "application/json")
