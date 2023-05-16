@@ -3,28 +3,23 @@ package com.danit.socialnetwork.controller;
 
 import com.danit.socialnetwork.controller.mail.MailSender;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 
 public class PasswordChanger {
   MailSender mailSender = new MailSender();
 
-  public String change(HttpServletRequest request, String userEmail) {
+  public String change(String userEmail) {
 
-    String url = request.getRequestURL().toString();
-
-    String uuid = UUID.randomUUID().toString();
-
-    String secretUrl = url + uuid;
+    String secretCode = UUID.randomUUID().toString().substring(0,8);
 
     String message = "If you really want to change your current "
         + "password for logging into your Capitweet account, "
-        + "please go to the following link and enter "
-        + "a new password: \n" + secretUrl;
-        
+        + "enter this code to create "
+        + "a new password: \n\n" + secretCode;
+
 
     mailSender.send(userEmail, "Change Capitweet password", message);
-    return uuid;
+    return secretCode;
   }
 }

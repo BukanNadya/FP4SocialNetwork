@@ -1,20 +1,26 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.JwtRequest;
-import com.danit.socialnetwork.security.JwtTokenService;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.security.JwtTokenService;
 import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -72,4 +78,31 @@ public class JwtAuthenticationRestController {
     }
   }
 
+
+  @GetMapping("/home")
+  public ResponseEntity<?> getUserId(Authentication authentication) throws IOException {
+    if (authentication == null) {
+      return null;
+    } else {
+      OAuth2User data = (OAuth2User) authentication.getPrincipal();
+      String email = (String) data.getAttributes().get("email");
+      Optional<DbUser> maybeUser = userService.findDbUserByEmail(email);
+
+      if (maybeUser.isPresent()) {
+        Integer userId = maybeUser.get().getUserId();
+        LocalDate dob = maybeUser.get().getDateOfBirth();
+        String birthday = "true";
+        if (dob.isEqual(LocalDate.of(1900, 1, 1))) {
+          birthday = "false";
+        }
+
+        final String token = jwtTokenService.generateToken(userId, true);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        response.put("birthday", birthday);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+      }
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
 }

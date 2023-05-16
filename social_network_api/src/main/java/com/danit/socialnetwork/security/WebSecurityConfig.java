@@ -12,18 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-//import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -91,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             DbUser newUser = new DbUser(latinName,
                 UUID.randomUUID().toString(), userMail,
-                userName[0], LocalDate.of(1970, 1, 1));
+                userName[0], LocalDate.of(1900, 1, 1));
             userRepository.save(newUser);
           }
           response.sendRedirect("/home");
@@ -112,11 +105,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.rememberMe();
 
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    //
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-//        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/"));
   }
 
 }
