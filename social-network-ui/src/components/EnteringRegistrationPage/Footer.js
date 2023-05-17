@@ -1,7 +1,7 @@
 import React from 'react'
 import {AppBar, Box, Button, Typography, Container} from "@mui/material"
-import {OPEN_LOGIN_MODAL, OPEN_SIGN_UP_MODAL} from "../../store/types";
 import {useDispatch} from "react-redux";
+import {openLoginModal, openSignUpModal} from "../../store/actions";
 
 
 export  function Footer () {
@@ -40,7 +40,7 @@ export  function Footer () {
                                 color: "#ffffff",
                                 borderColor: "#000000"
                             },
-                        }} onClick={() => {dispatch({type: OPEN_LOGIN_MODAL})}}>Log in</Button>
+                        }} onClick={() => {dispatch(openLoginModal())}}>Log in</Button>
                         <Button variant="contained" sx={{
                             background: "#ffffff",
                             color: "#000000",
@@ -54,7 +54,7 @@ export  function Footer () {
                                 backgroundColor: "#000000",
                                 color: "#ffffff"
                             },
-                        }} onClick={() => {dispatch({type: OPEN_SIGN_UP_MODAL})}}>Sign up</Button>
+                        }} onClick={() => {dispatch(openSignUpModal())}}>Sign up</Button>
                     </div>
                 </Box>
                 </Container>

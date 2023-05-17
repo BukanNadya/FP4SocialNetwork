@@ -1,14 +1,19 @@
 import React from 'react';
 import {TextField, Autocomplete} from "@mui/material";
 import {UserSearchTextField} from "../NavigationStyles";
+import {useSelector} from "react-redux";
 
 export const InputSearch = ({ ...props }) => {
+
+    const users = useSelector(state => state.usersSearch.users)
+
     return (
             <Autocomplete
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
-                options={top100Films.map((option) => option.title)}
+                noOptionsText="Try searching for people, topics, or keywords"
+                options={users.map((option) => option.name)}
                 renderInput={(params) => (
                     <TextField
                         {...props}
@@ -24,13 +29,3 @@ export const InputSearch = ({ ...props }) => {
             />
     )
 }
-
-const top100Films = [
-    { title: 'The Shawshank Redemption', year: 1994 },
-    { title: 'The Godfather', year: 1972 },
-    { title: 'The Godfather: Part II', year: 1974 },
-    { title: 'The Dark Knight', year: 2008 },
-    { title: '12 Angry Men', year: 1957 },
-    { title: "Schindler's List", year: 1993 },
-    { title: 'Pulp Fiction', year: 1994 }
-]
