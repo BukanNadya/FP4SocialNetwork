@@ -16,6 +16,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {closeSignUpModal} from "../../store/actions";
 
 export function ContentFourthStep() {
     const dispatch = useDispatch();
@@ -150,7 +151,11 @@ export function ContentFourthStep() {
                                     <ErrorText>{formikProps.errors.password}</ErrorText>
                                 )}
                                 </FormControl>
-                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}>Register</Button>
+                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}
+                                        onClick={()=>{
+                                            dispatch(closeSignUpModal())
+                                            localStorage.setItem("stepInModal", JSON.stringify(1))
+                                        }}>Register</Button>
                         </Form>
                     )}
                 </Formik>

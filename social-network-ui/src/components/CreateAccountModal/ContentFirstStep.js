@@ -136,7 +136,8 @@ export function ContentFirstStep() {
                     validationSchema={Yup.object({
                         name: Yup.string()
                             .required("name is required")
-                            .min(5, "Must be at least 5 digits"), email: Yup.string().required("Email is required")
+                            .min(5, "Must be at least 5 digits"),
+                        email: Yup.string().required("Email is required")
                             .email("Not a proper email")
                             .min(5, "Must be at least 5 digits"),
                         year: Yup.date()
@@ -146,9 +147,20 @@ export function ContentFirstStep() {
                                 "You must be at least 7 years old to create an account."
                             ),
                     })}
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={async(values, { setErrors, setSubmitting }) => {
                         dispatch({ type: NEW_USER_DATA_FIRST_STEP_REGISTRATION, payload: { valuesState: values } });
                         console.log(values);
+                        const response = await fetch("http://localhost:8080/checkEmail", {
+                            method: "POST",
+                            body: JSON.stringify({email: values.email}),
+                            headers: { "Content-Type": "application/json" }
+                        })
+                        if (response.ok) {
+                            //// НЕ РАБОТАЕТ setErrors ///////////////////////////////////////////////////////////
+
+                            setErrors({ email: "User doesn't exist, please check your email" })
+                            console.log("ERROR");
+                        }
                     }}
                 >
                     {(formikProps) => (

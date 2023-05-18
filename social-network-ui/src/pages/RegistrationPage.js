@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 
 import {Footer} from "../components/EnteringRegistrationPage/Footer";
@@ -16,6 +16,10 @@ export function RegistrationPage() {
 
     const isLoginModalOpen = useSelector(state => state.modal.isLoginModal)
     const isSignUpModalOpen = useSelector(state => state.modal.isSignUpModal)
+
+    useEffect(() => {
+        localStorage.setItem("stepInModal", JSON.stringify(1))
+    }, [])
 
     return (
         <>
