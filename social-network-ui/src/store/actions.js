@@ -4,10 +4,11 @@ import {
     UPDATE_REMEMBER_ME_ACTION,
     SAVE_USER_TOKEN,
     OPEN_SIGN_UP_MODAL,
-    CLOSE_LOGIN_MODAL,
     GET_USERS_SUCCESS,
     OPEN_LOGIN_MODAL,
-    CLOSE_SIGN_UP_MODAL
+    CLOSE_SIGN_UP_MODAL,
+    CLOSE_LOGIN_MODAL,
+    DELETE_USERS_SUCCESS
 } from "./types";
 
 export const setUserEmail = (userData) => ({
@@ -41,9 +42,11 @@ export const openLoginModal = () => ({
 export const closeSignUpModal = () => ({
     type: CLOSE_SIGN_UP_MODAL
 })
-
-    export const GetUsersSuccess = (data) => ({
+export const GetUsersSuccess = (data) => ({
     type: GET_USERS_SUCCESS,
     payload: {users : data.search}
+})
+export const DeleteUsersSuccess = () => ({
+    type: DELETE_USERS_SUCCESS
 })
 
