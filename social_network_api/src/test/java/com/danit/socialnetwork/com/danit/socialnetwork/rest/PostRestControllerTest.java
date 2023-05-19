@@ -6,11 +6,11 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.PostLike;
-import com.danit.socialnetwork.service.PostService;
+import com.danit.socialnetwork.service.PostServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,14 +19,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import static org.mockito.ArgumentMatchers.any;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +33,7 @@ class PostRestControllerTest {
   @InjectMocks
   PostRestController postRestController;
   @Mock
-  PostService postService;
+  PostServiceImpl postService;
 
   @Test
   void testGetAllPosts() {
@@ -75,15 +73,12 @@ class PostRestControllerTest {
     post1.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post1.setSentDateTime(dateTime);
-    post1.setPostLikes(new ArrayList<PostLike>() {
-    });
     post1.setPostComments(new ArrayList<PostComment>() {
     });
 
     when(postService.savePost(any(PostDtoSave.class))).thenReturn(post1);
     ResponseEntity<PostDtoResponse> responseEntity = postRestController.addPost(postDtoSave);
-    Assertions.assertEquals(201,responseEntity.getStatusCodeValue());
-//    Assertions.assertEquals(responseEntity.getHeaders().getLocation().getPath(), "/posts");
+    Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
     Assertions.assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
 
 

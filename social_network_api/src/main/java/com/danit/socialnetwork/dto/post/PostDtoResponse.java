@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,6 @@ public class PostDtoResponse {
   private String writtenText;
   private byte[] photoFileByteArray;
   private LocalDateTime sentDateTime;
-  private List<PostLike> postLikes;
   private List<PostComment> postComments;
 
   public PostDtoResponse(Integer postId, String username, String name, String writtenText, byte[] photoFileByteArray) {
@@ -42,9 +42,6 @@ public class PostDtoResponse {
     tempPostDto.setWrittenText(post.getWrittenText());
     tempPostDto.setPhotoFileByteArray(Base64.getDecoder().decode(post.getPhotoFile()));
     tempPostDto.setSentDateTime(post.getSentDateTime());
-    if (Objects.nonNull(post.getPostLikes())) {
-      tempPostDto.setPostLikes(post.getPostLikes());
-    }
     if (Objects.nonNull(post.getPostComments())) {
       tempPostDto.setPostComments(post.getPostComments());
     }

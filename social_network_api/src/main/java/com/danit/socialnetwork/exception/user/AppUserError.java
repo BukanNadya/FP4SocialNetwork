@@ -1,8 +1,6 @@
 package com.danit.socialnetwork.exception.user;
 
-import com.danit.socialnetwork.exception.AppError;
-
-public class AppUserError extends AppError {
+public class AppUserError extends RuntimeException {
 
   public AppUserError(String message) {
     super(message);

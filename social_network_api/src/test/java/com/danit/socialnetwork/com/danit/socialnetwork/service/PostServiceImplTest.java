@@ -6,18 +6,15 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.UserFollower;
 import com.danit.socialnetwork.repository.PostRepository;
-import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
-import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -34,22 +31,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
-public class PostServiceImplTest extends TestCase {
-
+@ExtendWith(MockitoExtension.class)
+public class PostServiceImplTest {
+  @InjectMocks
+  PostServiceImpl postService;
   @Mock
   PostRepository postRepository;
   @Mock
   UserRepository userRepository;
-  @Mock
-  UserFollowRepository userFollowRepository;
-  @Mock
-  PostService postService;
-
-  @Before
-  public void setUp() {
-    postService = new PostServiceImpl(postRepository, userFollowRepository, userRepository);
-  }
 
   @Test
   public void testGetAllPostsFromToFollow() {
@@ -86,8 +75,7 @@ public class PostServiceImplTest extends TestCase {
     post1.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post1.setSentDateTime(dateTime);
-    post1.setPostLikes(new ArrayList<PostLike>() {
-    });
+
     post1.setPostComments(new ArrayList<PostComment>() {
     });
 
@@ -98,8 +86,7 @@ public class PostServiceImplTest extends TestCase {
     post2.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime2 = LocalDateTime.now();
     post2.setSentDateTime(dateTime2);
-    post2.setPostLikes(new ArrayList<PostLike>() {
-    });
+
     post2.setPostComments(new ArrayList<PostComment>() {
     });
 
@@ -133,8 +120,6 @@ public class PostServiceImplTest extends TestCase {
     post1.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post1.setSentDateTime(dateTime);
-    post1.setPostLikes(new ArrayList<PostLike>() {
-    });
     post1.setPostComments(new ArrayList<PostComment>() {
     });
 
@@ -148,8 +133,7 @@ public class PostServiceImplTest extends TestCase {
     post2.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime2 = LocalDateTime.now();
     post2.setSentDateTime(dateTime2);
-    post2.setPostLikes(new ArrayList<PostLike>() {
-    });
+
     post2.setPostComments(new ArrayList<PostComment>() {
     });
 

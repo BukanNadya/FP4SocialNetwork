@@ -4,7 +4,6 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.PostLike;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,8 +51,6 @@ public class PostDtoUnitTest {
     post.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post.setSentDateTime(dateTime);
-    post.setPostLikes(new ArrayList<PostLike>() {
-    });
     post.setPostComments(new ArrayList<PostComment>() {
     });
 
