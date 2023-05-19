@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     Button,
     FormControl,
@@ -28,7 +28,7 @@ import { setUserToken } from "../../store/actions";
 export function EnterPasswordModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
-    const userDataState = useSelector(state => state.loginUserData.userData);
+    const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const userToken = useSelector(state => state.saveUserToken);
     const navigate = useNavigate();
 
@@ -48,7 +48,6 @@ export function EnterPasswordModal() {
                     }
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
-                    console.log("values", values)
                     setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
@@ -64,8 +63,6 @@ export function EnterPasswordModal() {
                             }
                         });
 
-                        console.log("email", values.email)
-
                         if (userPassword.ok) {
                             const userToken = await userPassword.json();
                             if (userDataState.rememberMe) {
@@ -77,8 +74,8 @@ export function EnterPasswordModal() {
                             } else {
                                 dispatch(setUserToken(userToken));
                                 sessionStorage.setItem("userToken", JSON.stringify(userToken));
-                                dispatch(closeLoginModal())
-                                dispatch(setUserEmail({userEmail: ''}));
+                                dispatch(closeLoginModal());
+                                dispatch(setUserEmail({ userEmail: "" }));
                             }
                             navigate("/home");
                         } else {
@@ -133,7 +130,8 @@ export function EnterPasswordModal() {
                             />
                         </FormControl>
                         <Button type="submit"
-                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log in</Button>
+                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log
+                            in</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>

@@ -26,9 +26,23 @@ export const ContentContainer = {
 };
 
 export const OutletContainer = {
+    position: "relative",
     width: "100%",
     display: "flex",
     justifyContent: "center",
     paddingBottom: "70px",
-
 };
+
+export const ItemWrapper = {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "700px",
+    position: "relative",
+    alignItems: "center",
+};
+export const ItemWrapperContainer={
+    position:"relative",
+    display: "flex",
+    flexDirection: "column",
+    width: "600px",
+}

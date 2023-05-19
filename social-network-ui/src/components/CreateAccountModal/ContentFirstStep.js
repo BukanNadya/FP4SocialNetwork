@@ -22,11 +22,11 @@ export function ContentFirstStep() {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [day, setDay] = useState(new Date().getDate());
     const [year, setYear] = useState(new Date().getFullYear());
-      
+
     const CustomMonthSelect = ({ field, form, ...props }) => {
         return (
             <Field name={props.name}>
-                {({ field, form }) => (
+                {({ field }) => (
                     <Select {...field} {...props}>
                         <MenuItem value="12">December</MenuItem>
                         <MenuItem value="1">January</MenuItem>

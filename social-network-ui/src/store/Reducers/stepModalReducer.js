@@ -61,7 +61,6 @@ export function stepModalReducer(state = initialState, action) {
           }
         };
       } else {
-        console.log("Saved step not recognized, defaulting to step 1.");
         return state;
       }
   }

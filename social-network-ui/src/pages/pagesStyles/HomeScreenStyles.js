@@ -11,12 +11,12 @@ export const SvgWrapper = {
     border: "1px solid black"
 };
 
-export const PostWrapper={
+export const PostWrapper = {
     width: "500px",
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "space-around",
-}
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "space-around",
+};
 
 export const NameOfUser = {
     fontFamily: "'Lato', sans-serif",
@@ -48,4 +48,11 @@ export const HomeScreenWrapper = {
     marginTop: "20px",
     paddingBottom: "30px",
     borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+};
+
+export const SendingPostButtonsContainer = {
+    display: "flex",
+    justifyContent: "space-between",
+    maxWidth: "400px",
+    width: "400px",
 };

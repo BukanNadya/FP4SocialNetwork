@@ -8,7 +8,7 @@ import { StyledModal, StyledBox, StyledTwitSvgIcon, StyledCloseSvgIcon } from ".
 import { openSignUpModal,  closeLoginModal } from "../../store/actions";
 
 export function LoginModal() {
-    const userDataState = useSelector(state => state.loginUserData.userData);
+    const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const dispatch = useDispatch()
 
     useEffect(() => {

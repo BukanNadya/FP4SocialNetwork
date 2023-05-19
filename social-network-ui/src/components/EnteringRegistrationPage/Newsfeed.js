@@ -1,6 +1,7 @@
 import React from 'react';
 import {AppBar, Box, Card, CardContent, Toolbar, Typography, Grid} from "@mui/material";
 import {RightSideMenu} from "./RightSideMenu";
+import { PostsDisplaying } from "../Posts/PostsDisplaying";
 
 export function Newsfeed ()  {
     return (
@@ -20,10 +21,9 @@ export function Newsfeed ()  {
                         </Toolbar>
                     </AppBar>
                 </CardContent>
+                <PostsDisplaying/>
             </Card>
-
             <RightSideMenu/>
-
         </Box>
         </Grid>
     )

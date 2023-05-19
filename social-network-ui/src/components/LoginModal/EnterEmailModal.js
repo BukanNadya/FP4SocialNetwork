@@ -1,4 +1,4 @@
-import React, { useState }  from "react";
+import React, { useState } from "react";
 
 import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
@@ -16,16 +16,20 @@ import {
 } from "./loginModalStyles";
 import PropTypes from "prop-types";
 
-
 export function EnterEmailModal() {
     const dispatch = useDispatch();
-    const userDataState = useSelector(state => state.loginUserData.userData);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+   async function signWidthGoogle (){
+       let dataAboutRegistration = await fetch("http://localhost:8080/oauth2/authorization/google");
+       let informAboutRegistration = await dataAboutRegistration.json()
+       console.log(informAboutRegistration)
+    }
 
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
-            <Button variant="contained" sx={{ ...StyledBlackButton, marginTop: "0px" }} fullWidth={true}>
+            <Button onClick={signWidthGoogle} variant="contained" sx={{ ...StyledBlackButton, marginTop: "0px" }} fullWidth={true}>
                 <SvgIcon sx={{ marginRight: "10px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                          width="48px" height="48px">
                     <path fill="#FFC107"
@@ -45,7 +49,7 @@ export function EnterEmailModal() {
             }} validationSchema={
                 Yup.object(
                     {
-                        email: Yup.string().email('Please enter a correct email').required("email is required")
+                        email: Yup.string().email("Please enter a correct email").required("email is required")
                     }
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                 setIsSubmitting(true);
@@ -55,11 +59,12 @@ export function EnterEmailModal() {
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }
                     });
+                    console.log(response)
                     if (!response.ok) {
                         setErrors({ email: "User doesn't exist, please check your email" });
                     } else {
                         const userExistData = await response.json();
-                        console.log("resp from server", userExistData)
+                        console.log("resp from server", userExistData);
                         dispatch(setUserEmail(values));
                     }
                 } catch (error) {
@@ -76,7 +81,8 @@ export function EnterEmailModal() {
                                id="email"
                                label="Email" disabled={isSubmitting} type="text"/>
                         <Button type="submit"
-                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting} fullWidth={true}>Next</Button>
+                                variant="contained" sx={StyledBlackButton} disabled={isSubmitting}
+                                fullWidth={true}>Next</Button>
                         <Button variant="contained" sx={StyledWhiteButton} fullWidth={true}>Forgot password?</Button>
                     </FormControl>
                 </Form>
