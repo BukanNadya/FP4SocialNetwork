@@ -3,17 +3,14 @@ package com.danit.socialnetwork.service;
 import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.exception.post.PostLikeNotFoundException;
 import com.danit.socialnetwork.exception.post.PostNotFoundException;
-import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
-import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.metadata.Db2CallMetaDataProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,7 +37,7 @@ public class PostLikeServiceImpl implements PostLikeService {
     }
 
     PostLike postLike = this.modelMapper.map(postLikeDto, PostLike.class);
-    postLike.setPostLikeId(4);
+    postLike.setPostLikeId(0);
     postLike.setCreatedDateTime(LocalDateTime.now());
     Optional<Post> tempPost = postRepository.findById(postLikeDto.getPostId());
     if (tempPost.isPresent()) {
