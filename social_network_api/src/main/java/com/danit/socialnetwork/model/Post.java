@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
-
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,11 +46,10 @@ public class Post {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "post_id")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "postID", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostComment> postComments;
 
-  @ManyToOne(targetEntity = DbUser.class)
+  @ManyToOne(targetEntity = DbUser.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private DbUser userPost;
 
