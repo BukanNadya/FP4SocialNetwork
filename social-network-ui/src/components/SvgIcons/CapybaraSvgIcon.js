@@ -1,6 +1,6 @@
 import React from "react";
 import { SvgIcon } from "@mui/material";
-import { StyledTwitSvgIcon } from "../LoginModal/loginModalStyles";
+// import { StyledTwitSvgIcon } from "../LoginModal/LoginModal"
 
 export function CapybaraSvgIcon() {
     return (

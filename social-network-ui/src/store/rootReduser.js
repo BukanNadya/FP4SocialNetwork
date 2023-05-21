@@ -3,6 +3,7 @@ import { stepModalReducer } from "./Reducers/stepModalReducer";
 import { userDataLoginReducer } from "./Reducers/userDataLoginReducer";
 import { loginPageReducer } from "./Reducers/loginPageReducer";
 import { userTokenSaveReducer } from "./Reducers/userTokenReducer";
+import { forgotPasswordReducer } from "./Reducers/forgotPasswordReducer";
 import {usersSearchReducer} from "./Reducers/usersSearchReducer";
 import { userDataReducer } from "./Reducers/userDataReducer";
 import { PostReducer } from "./Reducers/PostsReducer";
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     saveUserToken: userTokenSaveReducer,
     usersSearch: usersSearchReducer,
     userData: userDataReducer,
-    Posts: PostReducer
+    Posts: PostReducer,
+    forgot: forgotPasswordReducer
 });
 
 export default rootReducer;

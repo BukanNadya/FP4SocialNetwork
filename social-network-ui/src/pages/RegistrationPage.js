@@ -6,9 +6,8 @@ import {LeftNavigationBar} from "../components/EnteringRegistrationPage/LeftNavi
 import {Container, Grid,} from "@mui/material";
 import {Newsfeed} from "../components/EnteringRegistrationPage/Newsfeed";
 import {useSelector} from "react-redux";
-import {LoginModal} from "../components/LoginModal/LoginModal";
+import {LoginModal} from "../components/LoginModal/LoginModal"
 import {Content} from "../components/CreateAccountModal/Content";
-
 
 
 

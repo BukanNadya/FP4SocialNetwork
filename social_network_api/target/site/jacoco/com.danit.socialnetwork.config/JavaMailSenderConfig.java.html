@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaMailSenderConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FP4SocialNetwork</a> &gt; <a href="index.source.html" class="el_package">com.danit.socialnetwork.config</a> &gt; <span class="el_source">JavaMailSenderConfig.java</span></div><h1>JavaMailSenderConfig.java</h1><pre class="source lang-java linenums">package com.danit.socialnetwork.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import java.util.Properties;
+
+@Configuration
+@PropertySource(&quot;classpath:mail.properties&quot;)
+<span class="fc" id="L13">public class JavaMailSenderConfig {</span>
+  @Value(&quot;${spring.mail.host}&quot;)
+  private String host;
+  @Value(&quot;${spring.mail.username}&quot;)
+  private String username;
+  @Value(&quot;${spring.mail.password}&quot;)
+  private String password;
+  @Value(&quot;${spring.mail.properties.mail.smtp.port}&quot;)
+  private Integer port;
+  @Value(&quot;${spring.mail.properties.mail.smtp.auth}&quot;)
+  private String auth;
+  @Value(&quot;${spring.mail.properties.mail.smtp.starttls.enable}&quot;)
+  private String enable;
+  @Value(&quot;${mail.debug}&quot;)
+  private String debug;
+
+  @Bean
+  public JavaMailSender getJavaMailSender() {
+<span class="fc" id="L31">    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();</span>
+<span class="fc" id="L32">    mailSender.setHost(host);</span>
+<span class="fc" id="L33">    mailSender.setPort(port);</span>
+
+<span class="fc" id="L35">    mailSender.setUsername(username);</span>
+<span class="fc" id="L36">    mailSender.setPassword(password);</span>
+
+<span class="fc" id="L38">    Properties props = mailSender.getJavaMailProperties();</span>
+<span class="fc" id="L39">    props.put(&quot;mail.smtp.auth&quot;, auth);</span>
+<span class="fc" id="L40">    props.put(&quot;mail.smtp.starttls.enable&quot;, enable);</span>
+<span class="fc" id="L41">    props.put(&quot;mail.debug&quot;, debug);</span>
+
+<span class="fc" id="L43">    return mailSender;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

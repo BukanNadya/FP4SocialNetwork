@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Modal, Typography, Box, Link, SvgIcon } from "@mui/material";
+import { useModal } from '../../context/ModalContext';
 
 import { EnterPasswordModal } from "./EnterPasswordModal";
 import { EnterEmailModal } from "./EnterEmailModal";
