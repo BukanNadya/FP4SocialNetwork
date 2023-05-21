@@ -13,7 +13,13 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
   @Query(nativeQuery = true, value = "SELECT * FROM POSTS "
       + "LEFT JOIN USER_FOLLOWS ON POSTS.USER_ID = USER_FOLLOWS.USER_FOLLOWING_ID "
-      + "where USER_FOLLOWS.USER_FOLLOWER_ID = :userId or POSTS.USER_ID = :userId order by POSTS.SENT_DATETIME DESC")
+      + "where USER_FOLLOWS.USER_FOLLOWER_ID = :userId AND "
+      + "USER_FOLLOWS.RECEIVED_NOTIFICATION_POST = TRUE "
+      + "order by POSTS.SENT_DATETIME DESC")
   List<Post> findAllPostsFromToFollow(Integer userId, Pageable pageable);
+
+  @Query(nativeQuery = true, value = "SELECT * FROM POSTS WHERE POSTS.USER_ID = :userId "
+      + "order by POSTS.SENT_DATETIME DESC")
+  List<Post> findAllByUserId(Integer userId, Pageable pageable);
 
 }

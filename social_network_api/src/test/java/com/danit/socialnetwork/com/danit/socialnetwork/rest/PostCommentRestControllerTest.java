@@ -103,15 +103,14 @@ class PostCommentRestControllerTest {
     postComment2.setUserId(dbUser3);
     postComment2.setPostCommentId(2);
 
-    List<PostComment> postCommentList = Arrays.asList(postComment1,postComment2);
-    System.out.println(postCommentList);
-    when (postCommentService.getAllPostCommentsByPostId(postId, page)).thenReturn(postCommentList);
+    List<PostComment> postCommentList = Arrays.asList(postComment1, postComment2);
+    when(postCommentService.getAllPostCommentsByPostId(postId, page)).thenReturn(postCommentList);
 
     List<PostCommentDtoResponse> responseEntity = postCommentRestController.getAllComments(postId, page);
     Assertions.assertEquals("Hello world 1", responseEntity.get(0).getCommentText());
     Assertions.assertEquals("Hello world 2", responseEntity.get(1).getCommentText());
-    Assertions.assertEquals(userId2,responseEntity.get(0).getUserId());
-    Assertions.assertNotEquals(userId1,responseEntity.get(0).getUserId());
+    Assertions.assertEquals(userId2, responseEntity.get(0).getUserId());
+    Assertions.assertNotEquals(userId1, responseEntity.get(0).getUserId());
     Assertions.assertEquals("Nick", responseEntity.get(0).getUsername());
     Assertions.assertEquals(2, responseEntity.size());
   }

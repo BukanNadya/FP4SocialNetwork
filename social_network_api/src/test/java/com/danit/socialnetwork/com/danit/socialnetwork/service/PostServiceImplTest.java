@@ -120,7 +120,7 @@ public class PostServiceImplTest {
     post1.setPhotoFile("MTA6MjQ6MjY=");
     LocalDateTime dateTime = LocalDateTime.now();
     post1.setSentDateTime(dateTime);
-    post1.setPostComments(new ArrayList<PostComment>() {
+    post1.setPostComments(new ArrayList<>() {
     });
 
     Post post2 = new Post();
@@ -134,7 +134,7 @@ public class PostServiceImplTest {
     LocalDateTime dateTime2 = LocalDateTime.now();
     post2.setSentDateTime(dateTime2);
 
-    post2.setPostComments(new ArrayList<PostComment>() {
+    post2.setPostComments(new ArrayList<>() {
     });
 
     Pageable sortedByDateTimeDesc =
@@ -143,10 +143,8 @@ public class PostServiceImplTest {
     List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
     Page<Post> pagePost = new PageImpl<>(postList);
 
-    System.out.println(postList);
     when(postRepository.findAll(sortedByDateTimeDesc)).thenReturn(pagePost);
     List<PostDtoResponse> result = postService.getAllPosts(0);
-    System.out.println(result);
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
     Assertions.assertEquals(2, result.toArray().length);
@@ -169,16 +167,57 @@ public class PostServiceImplTest {
     Post tempPost = Post.from(postDtoSave, user);
 
     when(userRepository.findById(postDtoSave.getUserId())).thenReturn(Optional.of(user));
-
     when(postRepository.save(any(Post.class))).thenReturn(tempPost);
 
-
     Post post = postService.savePost(postDtoSave);
-    System.out.println(post);
 
     Assertions.assertEquals(post.getWrittenText(), postDtoSave.getWrittenText());
     Assertions.assertEquals(post.getUserPost().getUsername(), user.getUsername());
 
+  }
+
+  @Test
+  void getAllOwnPosts() {
+
+    Integer userId = 1;
+
+    DbUser user = new DbUser();
+    user.setUserId(userId);
+    user.setUsername("John1");
+    user.setName("Johny1");
+
+    Post post1 = new Post();
+    post1.setPostId(1);
+    post1.setUserPost(user);
+    post1.setWrittenText("Hello world1");
+    post1.setPhotoFile("MTA6MjQ6MjY=");
+    LocalDateTime dateTime = LocalDateTime.now();
+    post1.setSentDateTime(dateTime);
+
+    post1.setPostComments(new ArrayList<PostComment>() {
+    });
+
+    Post post2 = new Post();
+    post2.setPostId(2);
+    post2.setUserPost(user);
+    post2.setWrittenText("Hello world2");
+    post2.setPhotoFile("MTA6MjQ6MjY=");
+    LocalDateTime dateTime2 = LocalDateTime.now();
+    post2.setSentDateTime(dateTime2);
+
+    post2.setPostComments(new ArrayList<PostComment>() {
+    });
+
+    List<Post> postList = Arrays.asList(post1, post2);
+    Pageable pagedByTenPosts =
+        PageRequest.of(0, 10);
+
+    when(postRepository.findAllByUserId(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
+    List<PostDtoResponse> result = postService.getAllOwnPosts(userId, 0);
+
+    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
+    Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
+    Assertions.assertEquals(2, result.toArray().length);
 
   }
 }

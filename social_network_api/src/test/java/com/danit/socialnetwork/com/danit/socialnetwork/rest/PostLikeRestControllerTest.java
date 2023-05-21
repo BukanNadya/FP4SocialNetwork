@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
 import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
@@ -27,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PostLikeRestControllerTest{
+public class PostLikeRestControllerTest {
 
   @InjectMocks
   PostLikeRestController postLikeRestController;
@@ -52,7 +53,6 @@ public class PostLikeRestControllerTest{
     Post post = new Post();
     post.setPostId(postId);
     post.setUserPost(dbUser);
-
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
@@ -104,6 +104,7 @@ public class PostLikeRestControllerTest{
     Assertions.assertEquals(userId2, result.get(1).getUserId());
 
   }
+
   @Test
   public void testIsExistPostLike() {
 
@@ -121,6 +122,7 @@ public class PostLikeRestControllerTest{
 
 
   }
+
   @Test
   public void testDeletePostLike() {
 

@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,7 @@ public class PostRestController {
 
   @GetMapping(path = "/posts", produces = "application/json")
   @ResponseBody
-  public List<PostDtoResponse> getAllPosts(@RequestParam(name = "userId",
+  public List<PostDtoResponse> getAllPostsFromFollowing(@RequestParam(name = "userId",
       defaultValue = "0") Integer useFollowingId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (useFollowingId == 0) {
       return postService.getAllPosts(page);
@@ -38,5 +39,15 @@ public class PostRestController {
     Post dbPost = postService.savePost(thePostDtoSave);
     return new ResponseEntity<>(PostDtoResponse.from(dbPost), HttpStatus.CREATED);
   }
+
+  @GetMapping(path = "/posts/{userId}", produces = "application/json")
+  @ResponseBody
+  public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") Integer userId,
+                                              @RequestParam(name = "page", defaultValue = "0")
+                                              Integer page) {
+
+    return postService.getAllOwnPosts(userId, page);
+  }
+
 
 }

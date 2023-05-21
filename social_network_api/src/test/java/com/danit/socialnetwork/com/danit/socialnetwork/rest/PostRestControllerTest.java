@@ -43,9 +43,9 @@ class PostRestControllerTest {
     PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
         "Tom", "tom", "Hello world 12",
         new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
-    List<PostDtoResponse> postDtoResponseList = new ArrayList<>(Arrays.asList(postDtoResponse1, postDtoResponse2));
+    List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
     when(postService.getAllPosts(0)).thenReturn(postDtoResponseList);
-    List<PostDtoResponse> result = postRestController.getAllPosts(0, 0);
+    List<PostDtoResponse> result = postRestController.getAllPostsFromFollowing(0, 0);
 
     Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
@@ -81,7 +81,24 @@ class PostRestControllerTest {
     Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
     Assertions.assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
 
-
   }
+
+  @Test
+  void getAllOwnPosts() {
+    PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
+        "Nick", "nick", "Hello world 1",
+        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+    PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
+        "Tom", "tom", "Hello world 12",
+        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+    List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
+    when(postService.getAllOwnPosts(1, 0)).thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllOwnPosts(1, 0);
+
+    Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
+    Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
+    Assertions.assertEquals(2, result.toArray().length);
+  }
+
 
 }

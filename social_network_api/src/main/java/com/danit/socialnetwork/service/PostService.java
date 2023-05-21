@@ -13,4 +13,6 @@ public interface PostService {
   List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(Integer userFollowerId, Integer page);
 
   Post savePost(PostDtoSave thePostDtoSave);
+
+  List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page);
 }

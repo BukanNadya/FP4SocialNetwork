@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
 class PostCommentServiceImplTest {
   @InjectMocks
   PostCommentServiceImpl postCommentService;
-
   @Mock
   PostCommentRepository postCommentRepository;
 
@@ -74,10 +73,8 @@ class PostCommentServiceImplTest {
 
 
     List<PostComment> tempPostCommentList = Arrays.asList(postComment1, postComment2);
-    System.out.println(tempPostCommentList);
     when(postCommentRepository.findAllCommentsByPostId(postId, pagedByTenPosts)).thenReturn(tempPostCommentList);
     List<PostComment> postCommentList = postCommentService.getAllPostCommentsByPostId(postId, page);
-    System.out.println(postCommentList);
     Assertions.assertEquals(2, postCommentList.size());
     Assertions.assertEquals(postId, postCommentList.get(0).getPostId().getPostId());
     Assertions.assertEquals(userId2, postCommentList.get(0).getUserId().getUserId());
