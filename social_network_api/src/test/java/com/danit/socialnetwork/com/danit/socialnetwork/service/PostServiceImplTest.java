@@ -220,4 +220,48 @@ public class PostServiceImplTest {
     Assertions.assertEquals(2, result.toArray().length);
 
   }
+
+  @Test
+  void getAllLikedPosts() {
+    Integer userId = 1;
+
+    DbUser user = new DbUser();
+    user.setUserId(userId);
+    user.setUsername("John1");
+    user.setName("Johny1");
+
+    Post post1 = new Post();
+    post1.setPostId(1);
+    post1.setUserPost(user);
+    post1.setWrittenText("Hello world1");
+    post1.setPhotoFile("MTA6MjQ6MjY=");
+    LocalDateTime dateTime = LocalDateTime.now();
+    post1.setSentDateTime(dateTime);
+
+    post1.setPostComments(new ArrayList<PostComment>() {
+    });
+
+    Post post2 = new Post();
+    post2.setPostId(2);
+    post2.setUserPost(user);
+    post2.setWrittenText("Hello world2");
+    post2.setPhotoFile("MTA6MjQ6MjY=");
+    LocalDateTime dateTime2 = LocalDateTime.now();
+    post2.setSentDateTime(dateTime2);
+
+    post2.setPostComments(new ArrayList<PostComment>() {
+    });
+
+    List<Post> postList = Arrays.asList(post1, post2);
+    Pageable pagedByTenPosts =
+        PageRequest.of(0, 10);
+
+    when(postRepository.findAllByUserIdLiked(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
+    List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
+
+    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
+    Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
+    Assertions.assertEquals(2, result.toArray().length);
+
+  }
 }

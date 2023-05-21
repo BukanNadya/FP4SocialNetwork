@@ -15,4 +15,6 @@ public interface PostService {
   Post savePost(PostDtoSave thePostDtoSave);
 
   List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page);
+
+  List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page);
 }

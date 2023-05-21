@@ -21,4 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
       + "order by POSTS.SENT_DATETIME DESC")
   List<Post> findAllByUserId(Integer userId, Pageable pageable);
 
+  @Query(nativeQuery = true, value = "SELECT * FROM POSTS LEFT JOIN POST_LIKES on "
+      + "POSTS.P_ID = POST_LIKES.POST_ID WHERE POST_LIKES.USER_ID = :userId "
+      + "order by POSTS.SENT_DATETIME DESC")
+  List<Post> findAllByUserIdLiked(Integer userId, Pageable pageable);
 }

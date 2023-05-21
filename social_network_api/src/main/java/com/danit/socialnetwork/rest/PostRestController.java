@@ -49,5 +49,17 @@ public class PostRestController {
     return postService.getAllOwnPosts(userId, page);
   }
 
+  @GetMapping(path = "/posts/liked/{userId}", produces = "application/json")
+  @ResponseBody
+  public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") Integer userId,
+                                              @RequestParam(name = "page", defaultValue = "0")
+                                              Integer page) {
+    return postService.getAllLikedPosts(userId, page);
+  }
+
+
+
+
+
 
 }
