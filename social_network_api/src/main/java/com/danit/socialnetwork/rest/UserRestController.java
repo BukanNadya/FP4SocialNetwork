@@ -138,8 +138,8 @@ public class UserRestController {
 
   @GetMapping("/profile/{userId}")
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
-    DbUser tempUser = userService.findByUserId(userId);
-    return new ResponseEntity<>(UserDtoResponse.from(tempUser), HttpStatus.OK);
+    UserDtoResponse tempUser = userService.findByUserId(userId);
+    return new ResponseEntity<>(tempUser, HttpStatus.OK);
   }
 
 

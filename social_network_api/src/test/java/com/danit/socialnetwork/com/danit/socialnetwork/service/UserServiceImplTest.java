@@ -1,8 +1,11 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +34,9 @@ class UserServiceImplTest {
   UserServiceImpl userService;
   @Mock
   UserRepository userRepository;
+
+  @Mock
+  UserFollowRepository userFollowRepository;
   @Mock
   PasswordEncoder passwordEncoder;
   @Mock
@@ -201,5 +208,30 @@ class UserServiceImplTest {
     Mockito.verify(userRepository).findDbUserByEmail("TestUser@gmail.com");
 
     Assert.assertEquals(Optional.empty(), testUser);
+  }
+
+  @Test
+  void findByUserId() {
+    Integer userId = 3;
+    Integer followers = 3;
+    Integer followings = 1;
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUserId(userId);
+    dbUser.setUsername("John1");
+    dbUser.setName("Johny1");
+    dbUser.setCreatedDate(LocalDateTime.now());
+
+    when(userRepository.findById(userId)).thenReturn(Optional.of(dbUser));
+    when(userFollowRepository.findAllFollowers(userId)).thenReturn(followers);
+    when(userFollowRepository.findAllFollowings(userId)).thenReturn(followings);
+
+    UserDtoResponse result = userService.findByUserId(userId);
+
+    Assertions.assertEquals(followers, result.getFollowers());
+    Assertions.assertEquals(followings, result.getFollowings());
+    Assertions.assertEquals("John1", result.getUsername());
+    Assertions.assertEquals("Johny1", result.getName());
+
   }
 }

@@ -1,10 +1,12 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
 import com.danit.socialnetwork.exception.user.HeaderPhotoNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
   private final PasswordEncoder enc;
   private final MailSenderImpl mailSender;
   private final GuavaCache guavaCache;
+  private final UserFollowRepository userFollowRepository;
 
   private <T extends Object> Boolean isEmpty(T temp) {
     return Optional.ofNullable(temp).isEmpty();
@@ -142,12 +145,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public DbUser findByUserId(Integer userId) {
+  public UserDtoResponse findByUserId(Integer userId) {
     Optional<DbUser> maybeUser = userRepository.findById(userId);
     if (maybeUser.isEmpty()) {
       throw new UserNotFoundException(String.format("User with userId %s not found", userId));
     }
-    return maybeUser.get();
+    UserDtoResponse userDtoResponse = UserDtoResponse.from(maybeUser.get());
+    userDtoResponse.setFollowers(userFollowRepository.findAllFollowers(userId));
+    userDtoResponse.setFollowings(userFollowRepository.findAllFollowings(userId));
+    return userDtoResponse;
   }
 
   //  @Override

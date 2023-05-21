@@ -10,5 +10,6 @@ public interface UserFollowService {
 
   List<UserFollower> getAllUserByUserFollowerId(Integer userFollowerId);
 
+  List<UserFollower> getAllUserByUserFollowingId(Integer userFollowingId);
 
 }

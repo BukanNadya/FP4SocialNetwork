@@ -22,6 +22,9 @@ public class UserDtoResponse {
 
   private byte[] profileImageByteArray;
 
+  private Integer followers;
+  private Integer followings;
+
   public static UserDtoResponse from(DbUser dbUser) {
     UserDtoResponse userDtoResponse = new UserDtoResponse();
     userDtoResponse.setName(dbUser.getName());

@@ -20,8 +20,15 @@ public class UserFollowerRestController {
 
   @GetMapping("/following/{userID}")
   @ResponseBody
-  public List<UserFollower> getAllFollowing(@PathVariable("userID") Integer userId) {
-
+  public List<UserFollower> getAllFollowings(@PathVariable("userID") Integer userId) {
     return userFollowService.getAllUserByUserFollowerId(userId);
   }
+
+  @GetMapping("/followers/{userID}")
+  @ResponseBody
+  public List<UserFollower> getAllFollowers(@PathVariable("userID") Integer userId) {
+    return userFollowService.getAllUserByUserFollowingId(userId);
+  }
+
+
 }
