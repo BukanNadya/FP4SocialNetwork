@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-    Modal, Typography, Box, FormControl, InputLabel, Input, Button,
-    SvgIcon, OutlinedInput, MenuItem, Select
-} from "@mui/material";
+import {Typography, Box, FormControl, InputLabel, Button, OutlinedInput, MenuItem, Select} from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
@@ -148,19 +145,19 @@ export function ContentFirstStep() {
                             ),
                     })}
                     onSubmit={async(values, { setErrors, setSubmitting }) => {
-                        dispatch({ type: NEW_USER_DATA_FIRST_STEP_REGISTRATION, payload: { valuesState: values } });
-                        console.log(values);
-                        const response = await fetch("http://localhost:8080/checkEmail", {
-                            method: "POST",
-                            body: JSON.stringify({email: values.email}),
-                            headers: { "Content-Type": "application/json" }
-                        })
-                        if (response.ok) {
-                            //// НЕ РАБОТАЕТ setErrors ///////////////////////////////////////////////////////////
 
-                            setErrors({ email: "User doesn't exist, please check your email" })
-                            console.log("ERROR");
-                        }
+                            const response = await fetch("http://localhost:8080/checkEmail", {
+                                method: "POST",
+                                body: JSON.stringify({email: values.email}),
+                                headers: { "Content-Type": "application/json" }
+                            });
+                            if (response.ok) {
+                                setErrors({ email: "A user with this email already exists" });
+                            } else {
+                                const userExistData = await response.json();
+                                console.log("resp from server", userExistData)
+                                dispatch({ type: NEW_USER_DATA_FIRST_STEP_REGISTRATION, payload: { valuesState: values } });
+                            }
                     }}
                 >
                     {(formikProps) => (
