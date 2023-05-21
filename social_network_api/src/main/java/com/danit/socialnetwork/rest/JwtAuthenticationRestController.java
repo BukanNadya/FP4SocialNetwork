@@ -105,4 +105,5 @@ public class JwtAuthenticationRestController {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
+
 }

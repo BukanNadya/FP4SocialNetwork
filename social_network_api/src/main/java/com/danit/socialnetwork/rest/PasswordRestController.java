@@ -86,4 +86,5 @@ public class PasswordRestController {
     return new ResponseEntity<>("User with email " + userEmail + " is not registered",
         HttpStatus.BAD_REQUEST);
   }
+
 }

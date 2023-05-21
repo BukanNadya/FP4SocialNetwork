@@ -2,24 +2,22 @@ package com.danit.socialnetwork.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import junit.framework.TestCase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class JwtTokenServiceTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.*;
 
-  @Autowired
+@ExtendWith(MockitoExtension.class)
+class JwtTokenServiceTest {
+  @InjectMocks
   JwtTokenService jwtTokenService = new JwtTokenService();
 
   @Test
-  public void testGenerateToken() {
+  void generateToken() {
     int userId = 123;
     String token = jwtTokenService.generateToken(userId, true);
     Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
@@ -30,17 +28,17 @@ public class JwtTokenServiceTest extends TestCase {
   }
 
   @Test
-  public void testTokenToClaims() {
-    int userId = 123;
-    String token = jwtTokenService.generateToken(userId, true);
-    Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
+  void tokenToClaims() {
+      int userId = 123;
+      String token = jwtTokenService.generateToken(userId, true);
+      Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
 
-    assertTrue(claims.isPresent());
-    assertEquals(userId, Integer.parseInt(claims.get().getBody().getSubject()));
+      assertTrue(claims.isPresent());
+      assertEquals(userId, Integer.parseInt(claims.get().getBody().getSubject()));
   }
 
   @Test
-  public void testExtractTokenFromClaims() {
+  void extractTokenFromClaims() {
     String token = jwtTokenService.generateToken(123, true);
     Optional<Jws<Claims>> claims = jwtTokenService.tokenToClaims(token);
     Optional<Integer> userId = jwtTokenService.extractTokenFromClaims(claims.get());

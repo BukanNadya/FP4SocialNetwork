@@ -133,4 +133,5 @@ public class UserRestController {
   public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
     return userService.getBackgroundImage(username);
   }
+
 }

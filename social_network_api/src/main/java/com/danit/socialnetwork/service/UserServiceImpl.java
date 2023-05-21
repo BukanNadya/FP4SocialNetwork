@@ -47,6 +47,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public Optional<DbUser> findById(Integer userId) {
+    Optional<DbUser> maybeUser = userRepository.findById(userId);
+    if (maybeUser.isEmpty()) {
+      throw new UserNotFoundException(String.format("User with userId %s not found", userId));
+    }
+    return maybeUser;
+  }
+
+  @Override
   public byte[] getProfileImage(String username) throws IOException {
     String profileImagePath = userRepository.findByUsername(username).get().getProfileImageUrl();
     if (isEmpty(profileImagePath)) {
@@ -102,7 +111,7 @@ public class UserServiceImpl implements UserService {
     try {
       String message = String.format(
           "Hello, %s! \n "
-              + "Welcome to BlitzPost. Email confirmation code %s",
+              + "Welcome to Capitweet. Email confirmation code %s",
           name, randomNumber);
       log.info(String.format(message));
       mailSender.send(email, "Activation code", message);
@@ -141,4 +150,5 @@ public class UserServiceImpl implements UserService {
     }
     return maybeUser;
   }
+
 }

@@ -2,39 +2,39 @@ package com.danit.socialnetwork.security;
 
 import com.google.common.net.HttpHeaders;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class JwtAuthFilterTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-  @Autowired
-  private JwtTokenService tokenService;
+@ExtendWith(MockitoExtension.class)
+class JwtAuthFilterTest {
+  @Mock
+  JwtTokenService tokenService;
 
-  @Autowired
+  @InjectMocks
   private JwtAuthFilter filter;
 
-  @MockBean
+  @Mock
   private MockHttpServletRequest request;
 
-  @MockBean
+  @Mock
   private MockHttpServletResponse response;
 
-  @MockBean
+  @Mock
   private FilterChain filterChain;
 
   @Before
@@ -44,7 +44,7 @@ public class JwtAuthFilterTest {
   }
 
   @Test
-  public void testDoFilterInternal() throws Exception {
+  void doFilterInternal() throws ServletException, IOException {
     // Create a JWT token
     String token = tokenService.generateToken(123, true);
 
@@ -64,5 +64,4 @@ public class JwtAuthFilterTest {
     authentication = SecurityContextHolder.getContext().getAuthentication();
     assertTrue(authentication.isAuthenticated());
   }
-
 }

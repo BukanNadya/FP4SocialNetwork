@@ -1,35 +1,31 @@
 package com.danit.socialnetwork.security;
 
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.security.JwtUserDetailsService;
 import com.danit.socialnetwork.service.UserService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class JwtUserDetailsServiceTest {
-
-  @Autowired
-  private JwtUserDetailsService userDetailsService;
-
-  @MockBean
-  private UserService userService;
+@ExtendWith(MockitoExtension.class)
+class JwtUserDetailsServiceTest {
+  @InjectMocks
+  JwtUserDetailsService userDetailsService;
+  @Mock
+  UserService userService;
 
   @Test
-  public void testLoadUserByUsername() throws Exception {
+  void loadUserByUsername() throws IOException {
     DbUser dbUser = new DbUser();
     dbUser.setUsername("user123");
     dbUser.setPassword("password");
@@ -43,12 +39,11 @@ public class JwtUserDetailsServiceTest {
   }
 
   @Test
-  public void testLoadUserByUsernameWithNonexistentUser() throws Exception {
+  void loadUserByUsername_WithNonexistentUser() throws IOException {
     when(userService.findByUsername("nonexistentUser")).thenReturn(Optional.empty());
 
     assertThrows(UsernameNotFoundException.class, () -> {
       userDetailsService.loadUserByUsername("nonexistentUser");
     });
   }
-
 }
