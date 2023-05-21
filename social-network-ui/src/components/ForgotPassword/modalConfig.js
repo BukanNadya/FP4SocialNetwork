@@ -23,7 +23,7 @@ export const modalConfig = {
         secondLinkText: " if you don't have access.",
         boldText: "Send an email to",
         typeButton: "submit",
-        secondtypeButton: "cancel"
+        secondTypeButton: "cancel"
     },
     weSent: {
         title: "We sent you a code",
@@ -32,11 +32,10 @@ export const modalConfig = {
         secondaryButtonText: "back",
         placeholder: "Enter your code",
         inputType: "text",
-        typeButton: "submit",
-        typeButton: "button"
+        typeButton: "submit"
     },
     choose: {
-        title: "Chooose a new password",
+        title: "Choose a new password",
         link: "strong password",
         linkText: "Make sure your new password is 8 characters or more. Try including numbers, letters, and punctuation marks for a ",
         text: "You'll be logged out of all active Twitter sessions after your password is changed.",

@@ -6,9 +6,9 @@ import { PostsDisplaying } from "../Posts/PostsDisplaying";
 export function Newsfeed ()  {
     return (
         <Grid item xs={9}>
-        <Box display="grid" gridTemplateColumns="600px 350px" gap={2} sx={{height: "100%", position: "relative", width: "970px"}}>
+        <Box display="grid" gridTemplateColumns="600px 350px" gap={2} sx={{height: "100vh", position: "relative", width: "970px"}}>
 
-            <Card sx={{ minWidth: 275, position: "relative", width: "600px", paddingTop: "72px", overflow: "unset"}}>
+            <Card sx={{ minWidth: 275, position: "relative", width: "600px", paddingTop: "72px", overflow: "unset", paddingBottom: "90px"}}>
                 <CardContent sx={{padding: "0"}}>
                     <AppBar position="fixed" color="primary" sx={{ top: '0', right: "auto", backgroundColor: "rgba(255, 255, 255, 0.85)", boxShadow: "none", maxWidth: "600px"}}>
                         <Toolbar sx={{

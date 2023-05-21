@@ -1,12 +1,12 @@
 import React from "react";
 import { SvgIcon } from "@mui/material";
-import {StyledTwitSvgIcon} from "./style"
+import {StyledTwitSvgIcon2} from "./style"
 
 const Logo = () => {
 return(
     <>
-<SvgIcon sx={StyledTwitSvgIcon} height="50px" width="50px" version="1.1" id="Layer_1"
-viewBox="0 0 512 512">
+<SvgIcon sx={StyledTwitSvgIcon2} height="50px" width="50px" version="1.1" id="Layer_1"
+         viewBox="0 0 512 512">
 <g>
 <path style={{fill:"white"}} d="M22.777,401.568l-8.014-56.122l0.776-0.781c7.63-7.674,25.377-27.488,25.377-45.704
 c0-10.337-5.59-19.335-11.507-28.862c-7.391-11.879-15.033-24.158-15.033-41.911c0-20.741,10.471-45.665,27.326-65.048

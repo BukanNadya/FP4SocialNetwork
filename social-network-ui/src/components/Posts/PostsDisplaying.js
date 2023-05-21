@@ -43,7 +43,7 @@ export const PostsDisplaying = () => {
     }, [page]);
 
     return (
-        <div onScroll={handleScroll} style={{ height: "100vh" }}>
+        <div onScroll={handleScroll} style={ localStorage.getItem("userToken") ? { height: "100vh" } : { height: "auto" } }>
             {userPosts.map((post) => (
                 <Post key={post.postId} userName={post.username}
                       name={post.name} text={post.writtenText}

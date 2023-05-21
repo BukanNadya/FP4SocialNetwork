@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
@@ -25,6 +25,13 @@ export function HomeScreen() {
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+       fetch(`http://localhost:8080/profile/${userId}`)
+           .then(r => r.json())
+           .then(data => console.log(data))
+
+    }, [userId])
 
     const handlePostImageChange = (event) => {
         const file = event.target.files[0];
