@@ -6,11 +6,13 @@ import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.service.PasswordChangerService;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -133,5 +135,12 @@ public class UserRestController {
   public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
     return userService.getBackgroundImage(username);
   }
+
+  @GetMapping("/profile/{userId}")
+  public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
+    DbUser tempUser = userService.findByUserId(userId);
+    return new ResponseEntity<>(UserDtoResponse.from(tempUser), HttpStatus.OK);
+  }
+
 
 }

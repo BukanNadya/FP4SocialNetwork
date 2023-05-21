@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
@@ -140,6 +139,15 @@ public class UserServiceImpl implements UserService {
         .filter(user -> user.getName().toLowerCase()
             .contains(userSearch.toLowerCase()))
         .toList();
+  }
+
+  @Override
+  public DbUser findByUserId(Integer userId) {
+    Optional<DbUser> maybeUser = userRepository.findById(userId);
+    if (maybeUser.isEmpty()) {
+      throw new UserNotFoundException(String.format("User with userId %s not found", userId));
+    }
+    return maybeUser.get();
   }
 
   //  @Override

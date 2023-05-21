@@ -1,9 +1,11 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.*;
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,10 +13,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -152,4 +157,24 @@ class UserRestControllerTest {
   void getBackgroundImage() {
   }
 
+  @Test
+  void getUserById() throws IOException {
+    Integer userId = 1;
+
+    DbUser tempUser = new DbUser();
+    tempUser.setUserId(userId);
+    tempUser.setName("Nick");
+    tempUser.setUsername("Nicky");
+    tempUser.setCreatedDate(LocalDateTime.now());
+    tempUser.setProfileBackgroundImageUrl("MTA6MjQ6MjY=");
+    tempUser.setProfileImageUrl("MTA6MjQ6MjY=");
+
+    when (userService.findByUserId(userId)).thenReturn(tempUser);
+
+    ResponseEntity<UserDtoResponse> result = controller.getUserById(userId);
+
+    Assertions.assertEquals("Nick", result.getBody().getName());
+    Assertions.assertEquals("Nicky", result.getBody().getUsername());
+
+  }
 }
