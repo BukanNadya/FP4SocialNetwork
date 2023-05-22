@@ -24,11 +24,8 @@ import java.util.Optional;
 public class PostCommentServiceImpl implements PostCommentService {
 
   private final PostCommentRepository postCommentRepository;
-
   private final PostRepository postRepository;
-
-  @Autowired
-  private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
   @Override
   public PostComment savePostComment(PostCommentDtoSave postCommentDtoSave) {

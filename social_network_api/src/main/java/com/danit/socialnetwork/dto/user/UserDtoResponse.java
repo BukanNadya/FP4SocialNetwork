@@ -34,13 +34,13 @@ public class UserDtoResponse {
       userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
           .decode(dbUser.getProfileImageUrl()));
     } else {
-      userDtoResponse.setProfileImageByteArray(new byte[]{});
+      userDtoResponse.setProfileImageByteArray(null);
     }
     if (dbUser.getProfileBackgroundImageUrl() != null) {
       userDtoResponse.setProfileBackgroundImageByteArray(Base64.getDecoder()
           .decode(dbUser.getProfileBackgroundImageUrl()));
     } else {
-      userDtoResponse.setProfileBackgroundImageByteArray(new byte[]{});
+      userDtoResponse.setProfileBackgroundImageByteArray(null);
     }
     return userDtoResponse;
   }

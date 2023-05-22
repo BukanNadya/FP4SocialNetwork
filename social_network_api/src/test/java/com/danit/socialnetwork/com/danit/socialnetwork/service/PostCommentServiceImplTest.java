@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -7,7 +8,6 @@ import com.danit.socialnetwork.repository.PostCommentRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
@@ -29,6 +30,49 @@ class PostCommentServiceImplTest {
   PostCommentServiceImpl postCommentService;
   @Mock
   PostCommentRepository postCommentRepository;
+  @Mock
+  PostRepository postRepository;
+  @Mock
+  ModelMapper modelMapper;
+  @Test
+  void savePostComment() {
+
+    Integer postId = 2;
+    Integer userId1 = 3;
+    Integer userId2 = 2;
+
+    DbUser dbUser1 = new DbUser();
+    dbUser1.setUserId(userId1);
+
+    DbUser dbUser2 = new DbUser();
+    dbUser2.setUserId(userId2);
+    dbUser2.setUsername("Nick");
+
+    Post post = new Post();
+    post.setPostId(postId);
+    post.setUserPost(dbUser1);
+    post.setPostComments(new ArrayList<PostComment>());
+
+    PostComment postComment1 = new PostComment();
+    postComment1.setPostId(post);
+    postComment1.setCommentText("Hello world 1");
+    postComment1.setUserId(dbUser2);
+    postComment1.setPostCommentId(1);
+
+    PostCommentDtoSave postCommentDtoSave = new PostCommentDtoSave();
+    postCommentDtoSave.setCommentText("Hey Hello world!");
+    postCommentDtoSave.setUserId(userId1);
+    postCommentDtoSave.setPostId(postId);
+
+    when(postRepository.findById(postCommentDtoSave.getPostId())).thenReturn(Optional.of(post));
+    when(modelMapper.map(postCommentDtoSave, PostComment.class)).thenReturn(postComment1);
+    PostComment response = postCommentService.savePostComment(postCommentDtoSave);
+
+    Assertions.assertEquals(userId2, response.getUserId().getUserId());
+    Assertions.assertEquals(postId, response.getPostId().getPostId());
+    Assertions.assertEquals("Hello world 1", response.getCommentText());
+
+  }
 
   @Test
   void getAllPostCommentsByPostId() {

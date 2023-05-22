@@ -5,7 +5,6 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.repository.PostCommentRepository;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
