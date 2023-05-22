@@ -87,7 +87,7 @@ class PostLikeServiceImplTest {
     postLike2.setPostInPostLike(post);
 
     List<PostLike> postLikeList = new ArrayList<>(Arrays.asList(postLike1, postLike2));
-    when(postLikeRepository.findAllByPostId(postId)).thenReturn(postLikeList);
+    when(postLikeRepository.findAllPostLikesByPostId(postId)).thenReturn(postLikeList);
     List<PostLike> result = postLikeService.getAllPostLikesByPostId(postId);
     Assertions.assertEquals(postId, result.get(0).getPostInPostLike().getPostId());
     Assertions.assertEquals(userId1, result.get(0).getUserPostLike().getUserId());

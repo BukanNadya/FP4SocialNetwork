@@ -51,7 +51,7 @@ public class PostLikeServiceImpl implements PostLikeService {
 
   @Override
   public List<PostLike> getAllPostLikesByPostId(Integer postId) {
-    return postLikeRepository.findAllByPostId(postId);
+    return postLikeRepository.findAllPostLikesByPostId(postId);
   }
 
   @Override

@@ -50,10 +50,10 @@ public class DbUser {
   @NonNull
   private LocalDate dateOfBirth;
 
-  @Column(name = "profile_background_image_url")
+  @Column(name = "profile_background_image_url", columnDefinition = "text")
   private String profileBackgroundImageUrl;
 
-  @Column(name = "profile_image_url")
+  @Column(name = "profile_image_url", columnDefinition = "text")
   private String profileImageUrl;
 
   @ManyToMany(mappedBy = "dbUsers")

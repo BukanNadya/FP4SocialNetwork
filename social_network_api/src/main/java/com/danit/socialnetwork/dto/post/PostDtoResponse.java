@@ -23,7 +23,8 @@ public class PostDtoResponse {
   private String writtenText;
   private byte[] photoFileByteArray;
   private LocalDateTime sentDateTime;
-  private List<PostComment> postComments;
+  private Integer postCommentsCount;
+  private Integer likesCount;
 
   public PostDtoResponse(Integer postId, String username, String name, String writtenText, byte[] photoFileByteArray) {
     this.postId = postId;
@@ -42,9 +43,6 @@ public class PostDtoResponse {
     tempPostDto.setWrittenText(post.getWrittenText());
     tempPostDto.setPhotoFileByteArray(Base64.getDecoder().decode(post.getPhotoFile()));
     tempPostDto.setSentDateTime(post.getSentDateTime());
-    if (Objects.nonNull(post.getPostComments())) {
-      tempPostDto.setPostComments(post.getPostComments());
-    }
     return tempPostDto;
 
   }

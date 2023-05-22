@@ -13,10 +13,14 @@ import java.util.Optional;
 public interface PostLikeRepository extends JpaRepository<PostLike, Integer> {
 
   @Query(nativeQuery = true, value = "SELECT * FROM POST_LIKES WHERE POST_LIKES.POST_ID = :postId")
-  List<PostLike> findAllByPostId(Integer postId);
+  List<PostLike> findAllPostLikesByPostId(Integer postId);
 
   @Query(nativeQuery = true, value = "SELECT * FROM POST_LIKES"
       + " WHERE POST_LIKES.POST_ID = :postId AND POST_LIKES.USER_ID = :userId")
   Optional<PostLike> findPostLikeByPostIdAndUserId(Integer postId, Integer userId);
+
+  @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM POST_LIKES PL "
+      + "WHERE PL.POST_ID= :postId")
+  Integer findCountAllLikesByPostId(Integer postId);
 
 }
