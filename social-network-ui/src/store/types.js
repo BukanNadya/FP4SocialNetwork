@@ -4,6 +4,7 @@ export const UPDATE_REMEMBER_ME_ACTION = "UPDATE_REMEMBER_ME_ACTION";
 
 export const SAVE_USER_TOKEN = "SAVE_USER_TOKEN";
 export const SET_USER_ID = "SET_USER_ID";
+export const SET_USER_DATA = "SET_USER_DATA"
 export const SET_POSTS = "SET_POSTS";
 
 export const OPEN_LOGIN_MODAL = "OPEN_LOGIN_MODAL";

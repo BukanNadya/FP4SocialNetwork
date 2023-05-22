@@ -5,7 +5,7 @@ import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { setPosts } from "../store/actions";
+import {setPosts, setUserData} from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -27,9 +27,11 @@ export function HomeScreen() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (userId) {
        fetch(`http://localhost:8080/profile/${userId}`)
            .then(r => r.json())
-           .then(data => console.log(data))
+           .then(data => dispatch(setUserData(data)))
+        }
 
     }, [userId])
 

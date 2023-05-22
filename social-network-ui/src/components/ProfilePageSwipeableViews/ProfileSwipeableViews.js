@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import {TabStyles} from "./SwipeableViewsStyles";
+import {TabStyles} from "./ProfileSwipeableViewsStyles";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -33,7 +33,7 @@ function a11yProps(index) {
     };
 }
 
-export function SwipeableViews () {
+export function ProfileSwipeableViews () {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
