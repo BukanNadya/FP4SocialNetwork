@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, TextField, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import {setPosts, setUserData} from "../store/actions";
+import { setUserPostToPostsArr, sendPost } from "../store/actions";
+import { setPosts, setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -21,89 +22,73 @@ import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 
 export function HomeScreen() {
+    const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const fetchData = async () => {
+            if (userId) {
+                const response = await fetch(`http://localhost:8080/profile/${userId}`);
+                const userData = await response.json();
+                dispatch(setUserData(userData));
+            }
+        };
         if (userId) {
-       fetch(`http://localhost:8080/profile/${userId}`)
-           .then(r => r.json())
-           .then(data => dispatch(setUserData(data)))
+            fetchData();
         }
+    }, [userId]);
 
-    }, [userId])
-
-    const handlePostImageChange = (event) => {
+    const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
         setPostImage(file);
-    };
+    }, []);
 
-    const validationSchema = Yup.object({
-        postText: Yup.string().max(280, "Must be 280 characters or less"),
-    });
+    const handlePostSubmit = useCallback(async (values, setSubmitting) => {
+        if (values.postText.trim() !== "" || postImage) {
+            setSubmitting(true);
 
-    const fetchToSendAPost = (postObject, setSubmitting) => {
-        console.log(postObject)
-        fetch("http://localhost:8080/posts", {
-            method: "POST",
-            body: JSON.stringify(postObject),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then((response) => {
-            console.log("vse gud");
-            setPostText("");
-            setPostImage(null);
-        }).then(async()=>{
-            const userDataPosts = await fetch(`http://localhost:8080/posts?userId=${userId}`);
-            const usersPosts = await userDataPosts.json();
-            dispatch(setPosts(usersPosts));
-        }).catch((error) => {
-            console.log("Pizda");
-            console.error(error);
-        }).finally(() => {
-            setSubmitting(false);
-        });
-    };
+            let photoFileByteArray = [];
+            if (postImage) {
+                const reader = new FileReader();
 
-    const handlePostSubmit = (values, setSubmitting) => {
-        if (postImage) {
-            const reader = new FileReader();
-            const formData = new FormData();
-            formData.append("writtenText", postText);
-            formData.append("userId", userId);
+                reader.onloadend = async () => {
+                    const imageArrayBuffer = new Uint8Array(reader.result);
+                    photoFileByteArray = Array.from(imageArrayBuffer);
 
-            reader.onloadend = () => {
-                const imageArrayBuffer = new Uint8Array(reader.result);
-                const photoFileByteArray = Array.from(imageArrayBuffer);
+                    const postObject = {
+                        writtenText: values.postText,
+                        photoFileByteArray: photoFileByteArray,
+                        userId: userId
+                    };
+
+                    await dispatch(sendPost(postObject, setSubmitting));
+                };
+
+                reader.readAsArrayBuffer(postImage);
+            } else {
                 const postObject = {
                     writtenText: values.postText,
-                    photoFileByteArray: photoFileByteArray,
+                    photoFileByteArray: [],
                     userId: userId
                 };
-                console.log(postObject);
-                setSubmitting(true);
-                fetchToSendAPost(postObject, setSubmitting);
-            };
-            reader.readAsArrayBuffer(postImage);
-        } else {
-            const postObject = {
-                writtenText: values.postText,
-                photoFileByteArray: [],
-                userId: userId
-            };
-            setSubmitting(true);
-            fetchToSendAPost(postObject, setSubmitting);
-        }
-    };
+                await dispatch(sendPost(postObject, setSubmitting));
+            }
 
+            setPostImage(null);
+            setPostText("");
+        }
+    }, [postImage, postText, userId]);
 
     return (
         <Formik
             initialValues={{ postText: "" }}
-            validationSchema={validationSchema}
+            validationSchema={
+                Yup.object({
+                    postText: Yup.string().max(280, "Must be 280 characters or less"),
+                })}
             onSubmit={(values, { resetForm, setSubmitting }) => {
                 setSubmitting(true);
                 handlePostSubmit(values, setSubmitting);
@@ -115,10 +100,16 @@ export function HomeScreen() {
                     <div style={HomeScreenWrapper}>
                         <div style={PostWrapper}>
                             <div style={SvgWrapper}>
-                                <CapybaraSvgPhoto/>
+                                {userData.image ? <img src={ `data:image/png;base64,${userData.image}`}
+                                     style={{ width: "70px", height: "70px", borderRadius: "50px", margin: "0,auto" }}
+                                     alt=""/> : <CapybaraSvgPhoto/>}
                             </div>
                             <div style={WrittenPostWrapper}>
-                                <h2 style={NameOfUser}>Capybara name</h2>
+                                <div style={{ display: "flex", width: "120px", justifyContent: "space-between" }}>
+                                    <h2 style={NameOfUser}>{userData.name}</h2>
+                                    <h2 style={{...NameOfUser, color: "grey"}}>@ {userData.userName}</h2>
+
+                                </div>
                                 <Field
                                     values={postText}
                                     component={SendPostInput}
@@ -131,7 +122,7 @@ export function HomeScreen() {
                                 <div style={CharactersTextWrapper}>
                                     {
                                         280 - values.postText.length >= 0 ?
-                                            (280 - values.postText.length + " characters") : ("maximum number of characters 280")
+                                            (280 - values.postText.length + "characters") : ("maximum number of characters 280")
                                     }
                                 </div>
                                 <Box sx={PostImgWrapper}>

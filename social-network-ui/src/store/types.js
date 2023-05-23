@@ -6,6 +6,9 @@ export const SAVE_USER_TOKEN = "SAVE_USER_TOKEN";
 export const SET_USER_ID = "SET_USER_ID";
 export const SET_USER_DATA = "SET_USER_DATA"
 export const SET_POSTS = "SET_POSTS";
+export const SET_USER_POST ="SET_USER_POST";
+export const SET_PAGE = "SET_PAGE"
+export const SET_CLEAR_POSTS ="SET_CLEAR_POSTS"
 
 export const OPEN_LOGIN_MODAL = "OPEN_LOGIN_MODAL";
 export const CLOSE_LOGIN_MODAL = "CLOSE_LOGIN_MODAL";

@@ -77,7 +77,6 @@ export function ContentThirdStep() {
                                     dispatch({ type: SET_STEP_MODAL, step: 4 });
                                 } else {
                                     // Handle activation failure
-                                    console.error('Error:', error);
                                     setErrors({ code: "Activation failed" });
                                 }
                             } else {

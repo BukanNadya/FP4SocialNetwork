@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import {
-    Modal, Typography, Box, FormControl, InputLabel, Input, Button,
-    SvgIcon, OutlinedInput, MenuItem, Select
+     Typography, FormControl, InputLabel,  Button,
+    OutlinedInput,
 } from "@mui/material";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import Link from '@mui/material/Link';
 import * as Yup from "yup";
-import { step4, SET_VALUE_MODAL } from "../../store/types";
-import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel,
+import { step4,  SET_STEP_MODAL } from "../../store/types";
+import {  StyledFirstStepFormControl, StyledFirstStepInputLabel,
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypography,
-    StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypographyCounter } from "./CreateAccountModalStyles";
+     StyledFirstStepButton,  } from "./CreateAccountModalStyles";
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
@@ -26,9 +25,7 @@ export function ContentFourthStep() {
 
     const handleClickShowcode = () => setPassword((show) => !show);
 
-    const handleMouseDowncode = (event) => {
-        event.preventDefault();
-    };
+
 
     const handleSetPassword = (passwordValue) => {
         setPassword(passwordValue);
@@ -87,7 +84,6 @@ export function ContentFourthStep() {
                         });
 
                         if (response.ok) {
-                            const userToken = await response.json();
                             dispatch({ type: SET_STEP_MODAL, step: 3 });
                             dispatch(closeSignUpModal())
                             dispatch(openLoginModal())

@@ -25,7 +25,7 @@ export  function Footer () {
                         }}>
                             <span style={{ fontWeight: "700", fontSize: "23px" }}>Don&rsquo;t miss what&rsquo;s happening</span>
                             <br/>
-                            People on Twitter are the first to know.
+                            People on Capitweet are the first to know.
                         </Typography>
                         <div style={{display: "flex", justifyContent: "center"}}>
                             <Button variant="outlined" color="inherit" sx={{

@@ -21,7 +21,9 @@ export function Newsfeed ()  {
                         </Toolbar>
                     </AppBar>
                 </CardContent>
+                <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
                 <PostsDisplaying/>
+                </div>
             </Card>
             <RightSideMenu/>
         </Box>

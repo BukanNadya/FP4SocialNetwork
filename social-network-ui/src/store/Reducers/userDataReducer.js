@@ -4,7 +4,7 @@ const initialState = {
     userData: {
         userName: "",
         name: "",
-        userId: "",
+        userId: null,
     }
 };
 

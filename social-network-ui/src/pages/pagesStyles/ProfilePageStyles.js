@@ -36,7 +36,7 @@ export const SvgDateStyles = {
 }
 export const ProfilePageStyles = {
     display: "flex",
-    flexDirection: "column",
+    justifyContent:"space-around",
     marginBottom: "20px",
     padding: "12px 16px 0"
 }
