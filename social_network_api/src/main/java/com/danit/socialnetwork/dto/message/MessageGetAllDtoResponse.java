@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -17,15 +18,14 @@ public class MessageGetAllDtoResponse {
   private LocalDateTime createdAt;
 
   public static List<MessageGetAllDtoResponse> from(List<Message> messages) {
-    List<MessageGetAllDtoResponse> messagesDto = new ArrayList<>();
-    for (Message message : messages) {
+    return messages.stream().map(m -> {
       MessageGetAllDtoResponse messageGetAllDtoResponse = new MessageGetAllDtoResponse();
-      messageGetAllDtoResponse.setInboxUid(message.getInboxUid());
-      messageGetAllDtoResponse.setUserId(message.getUserId());
-      messageGetAllDtoResponse.setWrittenMessage(message.getMessage());
-      messageGetAllDtoResponse.setCreatedAt(message.getCreatedAt());
-      messagesDto.add(messageGetAllDtoResponse);
-    }
-    return messagesDto;
+      messageGetAllDtoResponse.setInboxUid(m.getInboxUid());
+      messageGetAllDtoResponse.setUserId(m.getUserId());
+      messageGetAllDtoResponse.setWrittenMessage(m.getMessage());
+      messageGetAllDtoResponse.setCreatedAt(m.getCreatedAt());
+      return messageGetAllDtoResponse;
+    }).toList();
   }
+
 }

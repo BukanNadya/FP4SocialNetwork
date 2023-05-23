@@ -3,7 +3,8 @@ package com.danit.socialnetwork.rest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.SearchRequest;
+import com.danit.socialnetwork.dto.search.SearchDtoResponse;
+import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.service.UserService;
@@ -36,10 +37,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRestController {
 
+  private static final String FALSE = "false";
+  private static final String TRUE = "true";
+
   private final UserService userService;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
-  public ResponseEntity<?> handleRegistrationPost(
+  public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
     int month = request.getMonth();
@@ -53,28 +57,35 @@ public class UserRestController {
     dbUser.setName(request.getName());
     dbUser.setDateOfBirth(dateOfBirth);
 
-    Map<String, Boolean> response = new HashMap<>();
-    response.put("registration", userService.save(dbUser));
-    return ResponseEntity.ok(response);
+    Map<String, String> response = new HashMap<>();
+    if (userService.save(dbUser)) {
+      response.put("registration", TRUE);
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("registration", FALSE);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PostMapping(value = "/checkEmail")
-  public ResponseEntity<?> handleCheckUsernamePost(
+  public ResponseEntity<Map<String, String>> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
 
     String email = request.getEmail();
     Map<String, String> response = new HashMap<>();
 
     if (userService.findDbUserByEmail(email) == null) {
-      response.put("checkEmail", "false");
+      response.put("checkEmail", FALSE);
+      return new  ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     } else {
-      response.put("checkEmail", "true");
+      response.put("checkEmail", TRUE);
+      return new  ResponseEntity<>(response, HttpStatus.FOUND);
+
     }
-    return ResponseEntity.ok(response);
   }
 
   @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
-  public ResponseEntity handleSendLetterPost(
+  public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
     Map<String, String> response = new HashMap<>();
@@ -82,37 +93,37 @@ public class UserRestController {
     String email = request.getEmail();
 
     if (userService.sendLetter(name, email)) {
-      response.put("sendLetter", "true");
+      response.put("sendLetter", TRUE);
+      return ResponseEntity.ok(response);
     } else {
-      response.put("sendLetter", "false");
+      response.put("sendLetter", FALSE);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    return ResponseEntity.ok(response);
   }
 
   @RequestMapping(value = "/activate", method = RequestMethod.POST)
-  public ResponseEntity<?> handleActivatePost(
+  public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
     boolean isActivated = userService.activateUser(code);
     Map<String, String> response = new HashMap<>();
 
     if (isActivated) {
-      response.put("activate", "true");
+      response.put("activate", TRUE);
+      return ResponseEntity.ok(response);
     } else {
-      response.put("activate", "false");
+      response.put("activate", FALSE);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    return ResponseEntity.ok(response);
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<?> handleSearchPost(
+  public ResponseEntity<List<SearchDtoResponse>> handleSearchPost(
       @RequestBody SearchRequest request) {
     String userSearch = request.getUserSearch();
     List<DbUser> search = userService.filterCachedUsersByName(userSearch);
-    Map<String, List<DbUser>> response = new HashMap<>();
-    response.put("search", search);
 
-    return ResponseEntity.ok(response);
+    return new ResponseEntity<>(SearchDtoResponse.from(search), HttpStatus.FOUND);
   }
 
   @GetMapping("/{username}")

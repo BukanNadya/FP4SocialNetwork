@@ -119,7 +119,7 @@ class UserServiceImplTest {
     existingUser.setUsername("Nadya");
     existingUser.setPassword("123");
     existingUser.setName("Nadya");
-    existingUser.setEmail("bukan.nadya@gmail.com");
+    existingUser.setEmail("Test@gmail.com");
     existingUser.setDateOfBirth(LocalDate.of(1999, 01, 27));
 
     when(userRepository.findByUsername(existingUser.getUsername())).thenReturn(Optional.of(existingUser));
@@ -128,7 +128,7 @@ class UserServiceImplTest {
     dbUser.setUsername("Nadya");
     dbUser.setPassword("123");
     dbUser.setName("Nadya");
-    dbUser.setEmail("bukan.nadya@gmail.com");
+    dbUser.setEmail("Test@gmail.com");
     dbUser.setDateOfBirth(LocalDate.of(1999, 01, 27));
 
     boolean result = userService.save(dbUser);
@@ -140,7 +140,7 @@ class UserServiceImplTest {
   @Test
   void sendLetter() {
     String name = "Nadya";
-    String email = "bukan.nadya@gmail.com";
+    String email = "Test@gmail.com";
 
     boolean result = userService.sendLetter(name, email);
 
@@ -193,10 +193,10 @@ class UserServiceImplTest {
   @Test
   void findDbUserByEmail_shouldFindUser_WhenExists() {
     DbUser testDbUser = new DbUser();
-    testDbUser.setEmail("bukan.nadya@gmail.com");
+    testDbUser.setEmail("Test@gmail.com");
 
-    when(userRepository.findDbUserByEmail("bukan.nadya@gmail.com")).thenReturn(Optional.of(testDbUser));
-    Optional<DbUser> testUser = userService.findDbUserByEmail("bukan.nadya@gmail.com");
+    when(userRepository.findDbUserByEmail("Test@gmail.com")).thenReturn(Optional.of(testDbUser));
+    Optional<DbUser> testUser = userService.findDbUserByEmail("Test@gmail.com");
 
     Assert.assertEquals(Optional.of(testDbUser), testUser);
   }

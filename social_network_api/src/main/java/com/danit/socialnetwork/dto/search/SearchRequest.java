@@ -1,4 +1,4 @@
-package com.danit.socialnetwork.dto;
+package com.danit.socialnetwork.dto.search;
 
 import lombok.Data;
 

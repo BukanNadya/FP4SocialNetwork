@@ -50,7 +50,7 @@ class JwtAuthenticationRestControllerTest {
 
   @Test
   void createAuthenticationToken() throws Exception {
-    String email = "bukan.nadya@gmail.com";
+    String email = "Test@gmail.com";
     String username = "Nadya";
     String password = "123";
     boolean rememberMe = true;
@@ -85,7 +85,7 @@ class JwtAuthenticationRestControllerTest {
 
   @Test
   void getUserId() throws Exception {
-    String email = "bukan.nadya@gmail.com";
+    String email = "Test@gmail.com";
     String username = "Nadya";
     String password = "12";
     boolean rememberMe = true;

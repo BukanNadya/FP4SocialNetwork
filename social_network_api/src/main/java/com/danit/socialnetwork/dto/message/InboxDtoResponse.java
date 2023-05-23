@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class InboxDtoResponse {
   private Integer inboxUid;
   private String username;
-  private String profileImageUrl;
+  private byte[] profileImageUrl;
   private String writtenMessage;
   private LocalDateTime createdAt;
 
@@ -29,7 +30,12 @@ public class InboxDtoResponse {
       Optional<DbUser> lastSentUser = userService.findById(inbox.getLastSentUserId());
       if (lastSentUser.isPresent()) {
         inboxDtoResponse.setUsername(lastSentUser.get().getUsername());
-        inboxDtoResponse.setProfileImageUrl(lastSentUser.get().getProfileImageUrl());
+        String photoFile = lastSentUser.get().getProfileImageUrl();
+        if (photoFile == null) {
+          inboxDtoResponse.setProfileImageUrl(null);
+        } else {
+          inboxDtoResponse.setProfileImageUrl(Base64.getDecoder().decode(lastSentUser.get().getProfileImageUrl()));
+        }
       }
       inboxDtoResponse.setWrittenMessage(inbox.getLastMessage());
       inboxDtoResponse.setCreatedAt(inbox.getCreatedAt());

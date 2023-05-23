@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.*;
+import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.UserService;
@@ -19,12 +20,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,8 +44,8 @@ class UserRestControllerTest {
   }
 
   @Test
-  void handleRegistrationPost() throws Exception {
-    String email = "bukan.nadya@gmail.com";
+  void handleRegistrationPostStatusOk() throws Exception {
+    String email = "Test@gmail.com";
     String username = "Nadya";
     String password = "123";
     String name = "Nadya";
@@ -79,8 +78,40 @@ class UserRestControllerTest {
   }
 
   @Test
-  void handleCheckUsernamePost() throws Exception {
-    String email = "bukan.nadya@gmail.com";
+  void handleRegistrationPostStatusBadRequest() throws Exception {
+    String email = "Test@";
+    String username = "Test";
+    String password = "Test";
+    String name = "Test";
+    LocalDate dateOfBirth = (LocalDate.of(2023, 01, 27));
+
+    RegistrationRequest registrationRequest = new RegistrationRequest();
+    registrationRequest.setEmail(email);
+    registrationRequest.setUsername(username);
+    registrationRequest.setPassword(password);
+    registrationRequest.setName(name);
+    registrationRequest.setDay(27);
+    registrationRequest.setMonth(01);
+    registrationRequest.setYear(1999);
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUsername(username);
+    dbUser.setEmail(email);
+    dbUser.setPassword(password);
+    dbUser.setName(name);
+    dbUser.setDateOfBirth(dateOfBirth);
+
+    when(userService.save(any(DbUser.class))).thenReturn(false);
+
+    mockMvc.perform(post("/registration")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(registrationRequest)))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void handleCheckUsernamePostStatusFound() throws Exception {
+    String email = "Test@gmail.com";
 
     UserEmailForLoginRequest emailRequest = new UserEmailForLoginRequest();
     emailRequest.setEmail(email);
@@ -93,19 +124,38 @@ class UserRestControllerTest {
     mockMvc.perform(post("/checkEmail")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
-        .andExpect(status().isOk());
+        .andExpect(status().isFound());
+
+    verify(userService).findDbUserByEmail("Test@gmail.com");
+  }
+
+  @Test
+  void handleCheckUsernamePostStatusNotFound() throws Exception {
+    String email = "Test@";
+
+    UserEmailForLoginRequest emailRequest = new UserEmailForLoginRequest();
+    emailRequest.setEmail(email);
+
+    when(userService.findDbUserByEmail(any(String.class))).thenReturn(null);
+
+    mockMvc.perform(post("/checkEmail")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(emailRequest)))
+        .andExpect(status().isNotFound());
 
     verify(userService).findDbUserByEmail(emailRequest.getEmail());
   }
 
   @Test
-  void handleSendLetterPost() throws Exception {
-    String email = "bukan.nadya@gmail.com";
+  void handleSendLetterPostStatusOk() throws Exception {
+    String email = "Test@gmail.com";
     String name = "Nadya";
 
     UserEmailRequest emailRequest = new UserEmailRequest();
     emailRequest.setEmail(email);
     emailRequest.setName(name);
+
+    when(userService.sendLetter(any(String.class), any(String.class))).thenReturn(true);
 
     mockMvc.perform(post("/sendLetter")
             .contentType(MediaType.APPLICATION_JSON)
@@ -116,16 +166,54 @@ class UserRestControllerTest {
   }
 
   @Test
-  void handleActivatePost() throws Exception {
+  void handleSendLetterPostStatusBadRequest() throws Exception {
+    String email = "Test@";
+    String name = "Test";
+
+    UserEmailRequest emailRequest = new UserEmailRequest();
+    emailRequest.setEmail(email);
+    emailRequest.setName(name);
+
+    when(userService.sendLetter(any(String.class), any(String.class))).thenReturn(false);
+
+    mockMvc.perform(post("/sendLetter")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(emailRequest)))
+        .andExpect(status().isBadRequest());
+
+    verify(userService).sendLetter(emailRequest.getName(), emailRequest.getEmail());
+  }
+
+  @Test
+  void handleActivatePostStatusOk() throws Exception {
     Integer code = 123456;
 
     ActivateCodeRequest codeRequest = new ActivateCodeRequest();
     codeRequest.setCode(code);
 
+    when(userService.activateUser(any(Integer.class))).thenReturn(true);
+
     mockMvc.perform(post("/activate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(codeRequest)))
         .andExpect(status().isOk());
+
+    verify(userService).activateUser(codeRequest.getCode());
+  }
+
+  @Test
+  void handleActivatePostStatusBadRequest() throws Exception {
+    Integer code = 123456;
+
+    ActivateCodeRequest codeRequest = new ActivateCodeRequest();
+    codeRequest.setCode(code);
+
+    when(userService.activateUser(any(Integer.class))).thenReturn(false);
+
+    mockMvc.perform(post("/activate")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(codeRequest)))
+        .andExpect(status().isBadRequest());
 
     verify(userService).activateUser(codeRequest.getCode());
   }
@@ -140,7 +228,7 @@ class UserRestControllerTest {
     mockMvc.perform(post("/search")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(userSearch)))
-        .andExpect(status().isOk());
+        .andExpect(status().isFound());
 
     verify(userService).filterCachedUsersByName(userSearch.getUserSearch());
   }
@@ -170,13 +258,13 @@ class UserRestControllerTest {
     userDtoResponse.setFollowers(followers);
     userDtoResponse.setFollowings(followings);
 
-    when (userService.findByUserId(userId)).thenReturn(userDtoResponse);
+    when(userService.findByUserId(userId)).thenReturn(userDtoResponse);
 
     ResponseEntity<UserDtoResponse> result = controller.getUserById(userId);
 
     Assertions.assertEquals("Nick", result.getBody().getName());
     Assertions.assertEquals("Nicky", result.getBody().getUsername());
-    Assertions.assertEquals(followers,result.getBody().getFollowers());
-    Assertions.assertEquals(followings,result.getBody().getFollowings());
+    Assertions.assertEquals(followers, result.getBody().getFollowers());
+    Assertions.assertEquals(followings, result.getBody().getFollowings());
   }
 }

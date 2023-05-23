@@ -111,7 +111,7 @@ class MessageRestControllerTest {
     mockMvc.perform(get("/inbox")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(inboxDtoRequest)))
-        .andExpect(status().isOk());
+        .andExpect(status().isFound());
 
     verify(inboxService)
         .getInboxesByInboxUid(inboxUid);
@@ -148,7 +148,7 @@ class MessageRestControllerTest {
     mockMvc.perform(get("/message")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(inboxParticipantsDtoRequest)))
-        .andExpect(status().isOk());
+        .andExpect(status().isFound());
 
     verify(messageService)
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);

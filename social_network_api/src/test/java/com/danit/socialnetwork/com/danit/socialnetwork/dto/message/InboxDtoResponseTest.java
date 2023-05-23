@@ -52,7 +52,7 @@ class InboxDtoResponseTest {
     testInboxDtoResponse1.setCreatedAt(null);
     InboxDtoResponse testInboxDtoResponse2 = new InboxDtoResponse();
     testInboxDtoResponse2.setInboxUid(testInbox2.getInboxUid());
-    testInboxDtoResponse2.setUsername("AlexX");
+    testInboxDtoResponse2.setUsername("Alex");
     testInboxDtoResponse2.setProfileImageUrl(null);
     testInboxDtoResponse2.setWrittenMessage("Hello, Sasha!");
     testInboxDtoResponse2.setCreatedAt(null);
@@ -62,9 +62,9 @@ class InboxDtoResponseTest {
     testInboxDtoResponse.add(testInboxDtoResponse2);
 
     when(userService.findById(34)).thenReturn(Optional.of(new DbUser(
-        "Asy", "123", "asy@gmail.com", "Asy", LocalDate.of(2000, 01, 01))));
+        "Asy", "123", "test@gmail.com", "Asy", LocalDate.of(2000, 01, 01))));
     when(userService.findById(36)).thenReturn(Optional.of(new DbUser(
-        "AlexX","123", "AlexX@gmail.com", "Alex", LocalDate.of(2000, 01, 01))));
+        "Alex","123", "test@gmail.com", "Alex", LocalDate.of(2000, 01, 01))));
 
     List<InboxDtoResponse> testInboxConvert = InboxDtoResponse.from(testInbox, userService);
 

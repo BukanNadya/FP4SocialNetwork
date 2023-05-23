@@ -65,7 +65,7 @@ public class MessageRestController {
     Integer inboxUid = inboxDtoRequest.getInboxUid();
     List<Inbox> inboxes =  inboxService.getInboxesByInboxUid(inboxUid);
 
-    return new ResponseEntity<>(InboxDtoResponse.from(inboxes, userService), HttpStatus.OK);
+    return new ResponseEntity<>(InboxDtoResponse.from(inboxes, userService), HttpStatus.FOUND);
   }
 
   @GetMapping(path = "/message")
@@ -78,6 +78,6 @@ public class MessageRestController {
     List<Message> messages =  messageService
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(inboxUid, userId, inboxUid, userId);
 
-    return new ResponseEntity<>(MessageGetAllDtoResponse.from(messages), HttpStatus.OK);
+    return new ResponseEntity<>(MessageGetAllDtoResponse.from(messages), HttpStatus.FOUND);
   }
 }
