@@ -1,13 +1,11 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.controller.PasswordChanger;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
-import com.danit.socialnetwork.service.PasswordChangerService;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +37,6 @@ import java.util.Optional;
 public class UserRestController {
 
   private final UserService userService;
-  PasswordChanger passChanger = new PasswordChanger();
-  private final PasswordChangerService passwordChangerService;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<?> handleRegistrationPost(
@@ -141,6 +137,4 @@ public class UserRestController {
     UserDtoResponse tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(tempUser, HttpStatus.OK);
   }
-
-
 }

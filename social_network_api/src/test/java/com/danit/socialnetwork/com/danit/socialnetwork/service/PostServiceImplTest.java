@@ -6,7 +6,7 @@ import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.UserFollower;
+import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -62,15 +62,15 @@ public class PostServiceImplTest {
     user2.setUsername("Jim");
     user2.setName("Jimmy");
 
-    UserFollower userFollower1 = new UserFollower();
-    userFollower1.setUserFollowId(1);
-    userFollower1.setUserFollowerId(user);
-    userFollower1.setUserFollowingId(user1);
+    UserFollow userFollow1 = new UserFollow();
+    userFollow1.setUserFollowId(1);
+    userFollow1.setUserFollowerId(user);
+    userFollow1.setUserFollowingId(user1);
 
-    UserFollower userFollower2 = new UserFollower();
-    userFollower2.setUserFollowId(2);
-    userFollower2.setUserFollowerId(user);
-    userFollower2.setUserFollowingId(user2);
+    UserFollow userFollow2 = new UserFollow();
+    userFollow2.setUserFollowId(2);
+    userFollow2.setUserFollowerId(user);
+    userFollow2.setUserFollowingId(user2);
 
     Post post1 = new Post();
     post1.setPostId(1);
@@ -98,7 +98,7 @@ public class PostServiceImplTest {
     Pageable pagedByFivePosts =
         PageRequest.of(0, 12);
 
-    List<UserFollower> userFollowerList = new ArrayList<>(Arrays.asList(userFollower1, userFollower2));
+    List<UserFollow> userFollowList = new ArrayList<>(Arrays.asList(userFollow1, userFollow2));
 
     when(postRepository.findAllPostsFromToFollow(user.getUserId(), pagedByFivePosts)).thenReturn(postList);
 

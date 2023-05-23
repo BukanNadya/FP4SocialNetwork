@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @Table(name = "user_follows")
-public class UserFollower {
+public class UserFollow {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

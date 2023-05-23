@@ -1,15 +1,22 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.model.UserFollower;
+import com.danit.socialnetwork.model.UserFollow;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserFollowService {
 
-  List<UserFollower> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId);
+  String saveUserFollower(UserFollow userFollow);
 
-  List<UserFollower> getAllUserByUserFollowerId(Integer userFollowerId);
+  List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId);
 
-  List<UserFollower> getAllUserByUserFollowingId(Integer userFollowingId);
+  List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId);
 
+  Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
+      Integer userFollower, Integer userFollowing);
+
+  List<UserFollow> getAllUserByUserFollowerIdAndReceivedNotificationPost(Integer userFollowerId, boolean notify);
+
+  public String deleteUserFollowByUserFollowId(Integer userFollowId);
 }
