@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.danit.socialnetwork.MethodWithGuavaCacheTests
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.5 s - in com.danit.socialnetwork.MethodWithGuavaCacheTests
