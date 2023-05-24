@@ -3,6 +3,7 @@ package com.danit.socialnetwork.rest;
 import com.danit.socialnetwork.dto.UserFollowRequest;
 import com.danit.socialnetwork.dto.UserNotificationRequest;
 import com.danit.socialnetwork.dto.UserUnfollowRequest;
+import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -32,15 +33,14 @@ public class UserFollowRestController {
   private final UserRepository userRepository;
 
   @GetMapping("/following/{userID}")
-  @ResponseBody
-  public List<UserFollow> getAllFollowings(@PathVariable("userID") Integer userId) {
-    return userFollowService.getAllUserByUserFollowerId(userId);
+  public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowings(@PathVariable("userID") Integer userId) {
+    return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowerId(userId), HttpStatus.OK);
   }
 
   @GetMapping("/followers/{userID}")
   @ResponseBody
-  public List<UserFollow> getAllFollowers(@PathVariable("userID") Integer userId) {
-    return userFollowService.getAllUserByUserFollowingId(userId);
+  public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowers(@PathVariable("userID") Integer userId) {
+    return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowingId(userId), HttpStatus.OK);
   }
 
   @PostMapping("api/follow")

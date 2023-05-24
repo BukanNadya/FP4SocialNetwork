@@ -3,7 +3,6 @@ package com.danit.socialnetwork.dto.user;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDateTime;
 import java.util.Base64;

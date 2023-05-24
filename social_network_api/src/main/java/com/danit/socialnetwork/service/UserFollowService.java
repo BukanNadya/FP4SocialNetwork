@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.model.UserFollow;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public interface UserFollowService {
 
   String saveUserFollower(UserFollow userFollow);
 
-  List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId);
+  List<UserFollowDtoResponse> getAllUsersByUserFollowerId(Integer userFollowerId);
 
-  List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId);
+  List<UserFollowDtoResponse> getAllUsersByUserFollowingId(Integer userFollowingId);
 
   Optional<UserFollow> getUserFollowByUserFollowerIdAndUserFollowingId(
       Integer userFollower, Integer userFollowing);

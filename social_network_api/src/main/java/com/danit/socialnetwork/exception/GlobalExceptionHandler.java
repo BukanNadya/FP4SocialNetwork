@@ -20,4 +20,12 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler
+  public ResponseEntity<ErrorResponse> catchIllegalArgumentException(RuntimeException exception) {
+    ErrorResponse error = new ErrorResponse();
+    error.setStatus(HttpStatus.NOT_FOUND.value());
+    error.setMessage(exception.getMessage());
+    error.setTimeStamp(System.currentTimeMillis());
+    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+  }
 }

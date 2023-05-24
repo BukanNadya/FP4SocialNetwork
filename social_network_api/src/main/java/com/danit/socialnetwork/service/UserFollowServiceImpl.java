@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +25,21 @@ public class UserFollowServiceImpl implements UserFollowService {
   }
 
   @Override
-  public List<UserFollow> getAllUserByUserFollowerId(Integer userFollowerId) {
+  public List<UserFollowDtoResponse> getAllUsersByUserFollowerId(Integer userFollowerId) {
     return userFollowRepository
-        .findAllByUserFollowerId(userFollowerId);
+        .findAllByUserFollowerId(userFollowerId)
+        .stream()
+        .map(UserFollowDtoResponse::fromUserFollowing)
+        .toList();
   }
 
   @Override
-  public List<UserFollow> getAllUserByUserFollowingId(Integer userFollowingId) {
+  public List<UserFollowDtoResponse> getAllUsersByUserFollowingId(Integer userFollowingId) {
     return userFollowRepository
-        .findAllByUserFollowingId(userFollowingId);
+        .findAllByUserFollowingId(userFollowingId)
+        .stream()
+        .map(UserFollowDtoResponse::fromUserFollower)
+        .toList();
   }
 
   @Override
