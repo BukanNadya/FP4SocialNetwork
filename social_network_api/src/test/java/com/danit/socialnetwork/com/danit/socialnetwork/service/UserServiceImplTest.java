@@ -1,6 +1,8 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -43,6 +45,10 @@ class UserServiceImplTest {
   MailSenderImpl mailSender;
   @Mock
   GuavaCache guavaCache;
+  @Mock
+  SearchDto searchDto;
+  @Mock
+  SearchMapper searchMapper;
 
   @Test
   void findByUsername_shouldFindUser_WhenExists() {
@@ -167,27 +173,58 @@ class UserServiceImplTest {
     testDbUser1.setName("Nadya");
     DbUser testDbUser2 = new DbUser();
     testDbUser2.setName("Nadin");
+    DbUser testDbUser3 = new DbUser();
+    testDbUser3.setName("Ron");
+    DbUser testDbUser4 = new DbUser();
+    testDbUser4.setName("Dima");
+    DbUser testDbUser5 = new DbUser();
+    testDbUser5.setName("Roma");
+    DbUser testDbUser6 = new DbUser();
+    testDbUser6.setName("Lena");
+    DbUser testDbUser7 = new DbUser();
+    testDbUser7.setName("Lina");
+    DbUser testDbUser8 = new DbUser();
+    testDbUser8.setName("Lenok");
+
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser1);
     dbUsers.add(testDbUser2);
+    dbUsers.add(testDbUser3);
+    dbUsers.add(testDbUser4);
+    dbUsers.add(testDbUser5);
+    dbUsers.add(testDbUser6);
+    dbUsers.add(testDbUser7);
+    dbUsers.add(testDbUser8);
     userCache.put("UserCache", dbUsers);
 
-    List<DbUser> testByName = userService.filterCachedUsersByName("nad");
+    List<DbUser> resultSearchDto1 = userService.filterCachedUsersByName("nad");
+    List<DbUser> resultSearchDto2 = userService.filterCachedUsersByName("ro");
+    List<DbUser> resultSearchDto3 = userService.filterCachedUsersByName("na");
 
-    Assert.assertEquals(dbUsers, testByName);
+    Assert.assertTrue(resultSearchDto1.size() <= 8);
+    Assert.assertEquals(2, resultSearchDto1.size());
+    Assert.assertTrue(resultSearchDto2.size() <= 8);
+    Assert.assertEquals(2,resultSearchDto2.size());
+    Assert.assertTrue(resultSearchDto3.size() <= 8);
+    Assert.assertEquals(4,resultSearchDto3.size());
+    Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase()));
+    Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase()));
+    Assert.assertTrue(resultSearchDto3.get(0).getName().toUpperCase().contains("na".toUpperCase()));
   }
 
   @Test
   void filterCachedUsersByName_WhenNotExists() {
     DbUser testDbUser = new DbUser();
     testDbUser.setName("Nadya");
+
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser);
     userCache.put("UserCache", dbUsers);
 
     List<DbUser> testByName = userService.filterCachedUsersByName("nid");
 
-    Assert.assertNotEquals(dbUsers, testByName);
+    Assert.assertEquals(0, testByName.size());
+    Assert.assertFalse(dbUsers.get(0).getName().toUpperCase().contains("nid".toUpperCase()));
   }
 
   @Test

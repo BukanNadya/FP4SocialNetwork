@@ -3,10 +3,11 @@ package com.danit.socialnetwork.rest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.search.SearchDtoResponse;
+import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,8 @@ public class UserRestController {
   private static final String TRUE = "true";
 
   private final UserService userService;
+
+  private final SearchMapper searchMapper;
 
   @RequestMapping(value = "registration", method = RequestMethod.POST)
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
@@ -118,12 +121,13 @@ public class UserRestController {
   }
 
   @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<List<SearchDtoResponse>> handleSearchPost(
+  public ResponseEntity<List<SearchDto>> handleSearchPost(
       @RequestBody SearchRequest request) {
     String userSearch = request.getUserSearch();
     List<DbUser> search = userService.filterCachedUsersByName(userSearch);
-
-    return new ResponseEntity<>(SearchDtoResponse.from(search), HttpStatus.FOUND);
+    log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
+    List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
+    return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
   @GetMapping("/{username}")

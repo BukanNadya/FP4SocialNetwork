@@ -3,6 +3,7 @@ package com.danit.socialnetwork.rest;
 import com.danit.socialnetwork.dto.*;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +35,9 @@ class UserRestControllerTest {
 
   @Mock
   UserService userService;
+
+  @Mock
+  SearchMapper searchMapper;
 
   @InjectMocks
   UserRestController controller;
@@ -220,10 +226,19 @@ class UserRestControllerTest {
 
   @Test
   void handleSearchPost() throws Exception {
-    String nameSearch = "dya";
+    DbUser testDbUser1 = new DbUser();
+    testDbUser1.setName("Nadya");
+    DbUser testDbUser2 = new DbUser();
+    testDbUser2.setName("Nadin");
+    List<DbUser> dbUsers = new ArrayList<>();
+    dbUsers.add(testDbUser1);
+    dbUsers.add(testDbUser2);
 
+    String nameSearch = "dya";
     SearchRequest userSearch = new SearchRequest();
     userSearch.setUserSearch(nameSearch);
+
+    when(userService.filterCachedUsersByName("dya")).thenReturn(dbUsers);
 
     mockMvc.perform(post("/search")
             .contentType(MediaType.APPLICATION_JSON)

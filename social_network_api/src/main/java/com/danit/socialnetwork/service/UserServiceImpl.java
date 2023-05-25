@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
       List<DbUser> cacheUsers = userRepository.findAll();
       userCache.put("UserCache", cacheUsers);
     }
-
+    log.debug("filterCachedUsersByName: " + userSearch + ". Should find all users by name.");
     return userCache.getIfPresent("UserCache").stream()
         .filter(user -> user.getName().toLowerCase()
             .contains(userSearch.toLowerCase()))

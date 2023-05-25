@@ -26,7 +26,7 @@ public class GuavaCache {
         }
       })
       .maximumSize(20)
-      .expireAfterWrite(5, TimeUnit.MINUTES)
+      .expireAfterWrite(1, TimeUnit.MINUTES)
       .build();
 
   public static Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
