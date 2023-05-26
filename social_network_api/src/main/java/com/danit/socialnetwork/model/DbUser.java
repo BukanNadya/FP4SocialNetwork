@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.Entity;
@@ -63,12 +65,15 @@ public class DbUser {
   private String profileImageUrl;
 
   @ManyToMany(mappedBy = "dbUsers")
+  @Fetch(FetchMode.JOIN)
   private Set<Message> messages = new HashSet<>();
 
   @ManyToMany(mappedBy = "dbUsers")
+  @Fetch(FetchMode.JOIN)
   private Set<InboxParticipants> inboxParticipants = new HashSet<>();
 
   @ManyToMany(mappedBy = "dbUsers")
+  @Fetch(FetchMode.JOIN)
   private Set<Inbox> inbox = new HashSet<>();
 
   public DbUser(String username, String password,

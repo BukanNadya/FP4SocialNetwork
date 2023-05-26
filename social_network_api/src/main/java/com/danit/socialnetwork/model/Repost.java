@@ -17,23 +17,30 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "post_shared")
+@Table(name = "reposts")
 @Data
 @NoArgsConstructor
-public class PostShared {
+public class Repost {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "post_shared_id")
-  private Integer postLikeId;
+  @Column(name = "repost_id")
+  private Integer sharedId;
 
-  @Column(name = "created_datetime", updatable = false)
+  @Column(name = "reposted_datetime", updatable = false)
   @NonNull
   @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
-  private LocalDateTime createdDateTime;
+  private LocalDateTime repostedDateTime;
 
   @ManyToOne(targetEntity = DbUser.class)
   @JoinColumn(name = "user_id")
-  private DbUser userPostShared;
+  private DbUser userId;
+
+  @ManyToOne(targetEntity = Post.class)
+  @JoinColumn(name = "post_id")
+  private Post postId;
+
+
+
 }

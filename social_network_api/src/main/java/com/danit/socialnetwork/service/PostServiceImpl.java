@@ -2,6 +2,7 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
@@ -36,6 +37,15 @@ public class PostServiceImpl implements PostService {
     return postDtoResponse;
   }
 
+  private PostRepostDtoMix from(Post post, Integer userId) {
+    PostRepostDtoMix postRepostDtoMix = PostRepostDtoMix.from(post, userId);
+    postRepostDtoMix.setLikesCount(postLikeRepository
+        .findCountAllLikesByPostId(post.getPostId()));
+    postRepostDtoMix.setPostCommentsCount(post.getPostComments().size());
+    postRepostDtoMix.setIsRepost(!post.getUserPost().getUserId().equals(userId));
+    return postRepostDtoMix;
+
+  }
 
   // Method returns all available posts
   @Override
@@ -48,12 +58,12 @@ public class PostServiceImpl implements PostService {
         .toList();
   }
 
-  // Method returns  all posts from users that a user follows by his id
+  /*Method returns  all posts from users that a user follows by his id*/
   @Override
   public List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(
       Integer userFollowerId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 12);
+    int pageSize = 12;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllPostsFromToFollow(
         userFollowerId, pagedByTenPosts);
     return postList.stream()
@@ -80,8 +90,8 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts done by user*/
   @Override
   public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 10);
+    int pageSize = 10;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);
     return listPost.stream()
         .map(this::from)
@@ -91,12 +101,27 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts liked by user*/
   @Override
   public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page) {
-    Pageable pagedByTenPosts =
-        PageRequest.of(page, 10);
+    int pageSize = 10;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
     return postList.stream()
         .map(this::from)
         .toList();
   }
 
+  /*Method returns all posts and reposts in descending order by time when
+   they were posted (for own posts) and reposted (for reposts) by user*/
+  @Override
+  public List<PostRepostDtoMix> getAllPostsAndRepostsByUserId(Integer userId, Integer page) {
+    int pageSize = 10;
+    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
+    List<Post> postList = postRepository.findAllPostsAndRepostsByUserIdAsPost(userId, pagedByTenPosts);
+    return postList.stream()
+        .map(post -> from(post, userId))
+        .toList();
+  }
+
 }
+
+
+

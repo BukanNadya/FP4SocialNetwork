@@ -3,6 +3,7 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -118,5 +119,19 @@ class PostRestControllerTest {
     Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
     Assertions.assertEquals(2, result.toArray().length);
 
+  }
+
+  @Test
+  void getAllPostsAndRepostsByUserId() {
+    PostRepostDtoMix postRepostDtoMix1=  new PostRepostDtoMix();
+    PostRepostDtoMix postRepostDtoMix2=  new PostRepostDtoMix();
+    PostRepostDtoMix postRepostDtoMix3=  new PostRepostDtoMix();
+    PostRepostDtoMix postRepostDtoMix4=  new PostRepostDtoMix();
+    PostRepostDtoMix postRepostDtoMix5=  new PostRepostDtoMix();
+    List<PostRepostDtoMix> repostDtoMixes = Arrays.asList(postRepostDtoMix1, postRepostDtoMix2,
+        postRepostDtoMix3, postRepostDtoMix4, postRepostDtoMix5);
+    when (postService.getAllPostsAndRepostsByUserId(1,0)).thenReturn(repostDtoMixes);
+    List<PostRepostDtoMix> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
+    Assertions.assertEquals(5, result.toArray().length);
   }
 }

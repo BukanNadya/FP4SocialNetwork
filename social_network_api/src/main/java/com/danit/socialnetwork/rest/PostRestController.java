@@ -2,6 +2,7 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -24,6 +26,8 @@ import java.util.List;
 public class PostRestController {
   private final PostService postService;
 
+  /*Method returns  all posts from users that a user follows by his id
+   * if userId is empty returns all posts descending by order based on created datetime*/
   @GetMapping(path = "/posts", produces = "application/json")
   @ResponseBody
   public List<PostDtoResponse> getAllPostsFromFollowing(@RequestParam(name = "userId",
@@ -34,12 +38,14 @@ public class PostRestController {
     return postService.getAllPostsFromToFollowWithNativeQuery(useFollowingId, page);
   }
 
+  /*Method save a new post*/
   @PostMapping(path = "/posts", consumes = "application/json", produces = "application/json")
   public ResponseEntity<PostDtoResponse> addPost(@RequestBody PostDtoSave thePostDtoSave) {
     Post dbPost = postService.savePost(thePostDtoSave);
     return new ResponseEntity<>(PostDtoResponse.from(dbPost), HttpStatus.CREATED);
   }
 
+  /*Method returns all posts done by user*/
   @GetMapping(path = "/posts/{userId}", produces = "application/json")
   @ResponseBody
   public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") Integer userId,
@@ -49,17 +55,30 @@ public class PostRestController {
     return postService.getAllOwnPosts(userId, page);
   }
 
+
+  /*Method returns all posts liked by user*/
   @GetMapping(path = "/posts/liked/{userId}", produces = "application/json")
   @ResponseBody
   public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") Integer userId,
-                                              @RequestParam(name = "page", defaultValue = "0")
-                                              Integer page) {
+                                                @RequestParam(name = "page", defaultValue = "0")
+                                                Integer page) {
     return postService.getAllLikedPosts(userId, page);
   }
 
+  /*Method returns all posts and reposts in descending order by time when
+   they were posted (for own posts) and reposted (for reposts) by user*/
+  @GetMapping("/posts/reposts")
+  @ResponseBody
+  public List<PostRepostDtoMix> getAllPostsAndRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
+                                                              Integer userId,
+                                                              @RequestParam(name = "page", defaultValue = "0")
+                                                              Integer page) {
+    if (userId == 0) {
+      return new ArrayList<>();
+    }
+    return postService.getAllPostsAndRepostsByUserId(userId, page);
 
-
-
+  }
 
 
 }
