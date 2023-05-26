@@ -2,9 +2,11 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.*;
 import com.danit.socialnetwork.dto.search.SearchRequest;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,10 +26,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.RequestEntity.put;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,6 +41,9 @@ class UserRestControllerTest {
 
   @Mock
   UserService userService;
+
+  @Mock
+  UserRepository userRepository;
 
   @Mock
   SearchMapper searchMapper;
@@ -282,4 +291,27 @@ class UserRestControllerTest {
     Assertions.assertEquals(followers, result.getBody().getFollowers());
     Assertions.assertEquals(followings, result.getBody().getFollowings());
   }
+
+  @Test
+  void testHandleEditionPost_successfulUpdate() {
+    EditingDtoRequest request = new EditingDtoRequest();
+    when(userService.update(request)).thenReturn(true);
+
+    ResponseEntity<Map<String, String>> response = controller.handleEditionPost(request);
+
+    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    Assertions.assertEquals("true", response.getBody().get("edition"));
+  }
+
+  @Test
+  void testHandleEditionPost_failedUpdate() {
+    EditingDtoRequest request = new EditingDtoRequest();
+    when(userService.update(request)).thenReturn(false);
+
+    ResponseEntity<Map<String, String>> response = controller.handleEditionPost(request);
+
+    Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    Assertions.assertEquals("false", response.getBody().get("edition"));
+  }
+
 }

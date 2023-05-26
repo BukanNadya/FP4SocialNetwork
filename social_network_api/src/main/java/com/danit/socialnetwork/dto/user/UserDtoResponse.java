@@ -4,6 +4,7 @@ import com.danit.socialnetwork.model.DbUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
@@ -17,6 +18,10 @@ public class UserDtoResponse {
 
   private LocalDateTime createdDateTime;
 
+  private LocalDate dateOfBirth;
+
+  private String address;
+
   private byte[] profileBackgroundImageByteArray;
 
   private byte[] profileImageByteArray;
@@ -29,6 +34,8 @@ public class UserDtoResponse {
     userDtoResponse.setName(dbUser.getName());
     userDtoResponse.setUsername(dbUser.getUsername());
     userDtoResponse.setCreatedDateTime(dbUser.getCreatedDate());
+    userDtoResponse.setDateOfBirth(dbUser.getDateOfBirth());
+    userDtoResponse.setAddress(dbUser.getAddress());
     if (dbUser.getProfileImageUrl() != null) {
       userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
           .decode(dbUser.getProfileImageUrl()));

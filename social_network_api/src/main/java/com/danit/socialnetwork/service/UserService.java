@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 
@@ -28,5 +29,7 @@ public interface UserService {
   List<DbUser> filterCachedUsersByName(String userSearch);
 
   UserDtoResponse findByUserId(Integer userId);
+
+  boolean update(EditingDtoRequest request);
 
 }

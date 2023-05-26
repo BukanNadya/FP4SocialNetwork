@@ -6,6 +6,7 @@ import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.service.UserService;
@@ -16,14 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -128,6 +129,19 @@ public class UserRestController {
     log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
     List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
+  }
+
+  @PutMapping(value = "edition")
+  public ResponseEntity<Map<String, String>> handleEditionPost(
+      @RequestBody EditingDtoRequest request) {
+    Map<String, String> response = new HashMap<>();
+    if (userService.update(request)) {
+      response.put("edition", TRUE);
+      return ResponseEntity.ok(response);
+    } else {
+      response.put("edition", FALSE);
+      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping("/{username}")

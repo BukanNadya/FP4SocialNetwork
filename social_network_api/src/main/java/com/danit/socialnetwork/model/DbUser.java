@@ -3,6 +3,7 @@ package com.danit.socialnetwork.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.ManyToMany;
@@ -26,6 +27,7 @@ public class DbUser {
   private Integer userId;
 
   @Column(name = "username")
+  @Unique
   @NonNull
   private String username;
 
@@ -34,6 +36,7 @@ public class DbUser {
   private String password;
 
   @Column(name = "email")
+  @Unique
   @NonNull
   private String email;
 
@@ -49,6 +52,9 @@ public class DbUser {
   @Column(name = "dateOfBirth")
   @NonNull
   private LocalDate dateOfBirth;
+
+  @Column(name = "address")
+  private String address;
 
   @Column(name = "profile_background_image_url", columnDefinition = "text")
   private String profileBackgroundImageUrl;

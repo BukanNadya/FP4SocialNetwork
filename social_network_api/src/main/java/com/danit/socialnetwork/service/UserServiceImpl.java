@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
@@ -16,6 +17,8 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -61,11 +64,11 @@ public class UserServiceImpl implements UserService {
   public byte[] getProfileImage(String username) throws IOException {
     String profileImagePath = userRepository.findByUsername(username).get().getProfileImageUrl();
     if (isEmpty(profileImagePath)) {
-      throw new PhotoNotFoundException("Photo for user with username " + username + " is absent");
+      throw new PhotoNotFoundException(String.format("Photo for user with username %s is absent", username));
     } else {
       InputStream in = getClass().getResourceAsStream(profileImagePath);
       if (isEmpty(in)) {
-        throw new PhotoNotFoundException("Wrong path to photo for user with username " + username);
+        throw new PhotoNotFoundException(String.format("Wrong path to photo for user with username %s.", username));
       }
       return FileCopyUtils.copyToByteArray(in);
 
@@ -76,20 +79,28 @@ public class UserServiceImpl implements UserService {
   public byte[] getBackgroundImage(String username) throws IOException {
     String profileBackgroundImagePath = userRepository.findByUsername(username).get().getProfileBackgroundImageUrl();
     if (isEmpty(profileBackgroundImagePath)) {
-      throw new HeaderPhotoNotFoundException("Header photo for user with username " + username + " is absent");
+      throw new HeaderPhotoNotFoundException(String.format("Header photo for user with username %S is absent.", username));
     } else {
       InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
       if (isEmpty(in)) {
-        throw new HeaderPhotoNotFoundException("Wrong path to header photo for user with username " + username);
+        throw new HeaderPhotoNotFoundException(String.format(
+            "Wrong path to header photo for user with username %s.", username));
       }
       return FileCopyUtils.copyToByteArray(in);
     }
   }
 
   public boolean save(DbUser dbUser) {
-    Optional<DbUser> userFromDb = userRepository.findByUsername(dbUser.getUsername());
+    Optional<DbUser> userFromDbByUsername = userRepository.findByUsername(dbUser.getUsername());
 
-    if (userFromDb.isPresent()) {
+    if (userFromDbByUsername.isPresent()) {
+      log.info("User exists!");
+      return false;
+    }
+
+    Optional<DbUser> userFromDbByEmail = userRepository.findDbUserByEmail(dbUser.getEmail());
+
+    if (userFromDbByEmail.isPresent()) {
       log.info("User exists!");
       return false;
     }
@@ -111,13 +122,10 @@ public class UserServiceImpl implements UserService {
     activateCodeCache.put("activationCode", randomNumber);
 
     try {
-      String message = String.format(
-          "Hello, %s! \n "
-              + "Welcome to Capitweet. Email confirmation code %s",
-          name, randomNumber);
-      log.info(String.format(message));
+      String message = String.format("Hello, %s! Welcome to Capitweet. Email confirmation code %s", name, randomNumber);
+      log.debug(message);
       mailSender.send(email, "Activation code", message);
-      log.info(String.format("mail Send to user name = %s, email = %s ", name, email));
+      log.debug(String.format("mail send to user %s.", name));
     } catch (Exception e) {
       return false;
     }
@@ -137,7 +145,7 @@ public class UserServiceImpl implements UserService {
       List<DbUser> cacheUsers = userRepository.findAll();
       userCache.put("UserCache", cacheUsers);
     }
-    log.debug("filterCachedUsersByName: " + userSearch + ". Should find all users by name.");
+    log.debug(String.format("filterCachedUsersByName: %s. Should find all users by name.", userSearch));
     return userCache.getIfPresent("UserCache").stream()
         .filter(user -> user.getName().toLowerCase()
             .contains(userSearch.toLowerCase()))
@@ -160,9 +168,42 @@ public class UserServiceImpl implements UserService {
   public Optional<DbUser> findDbUserByEmail(String email) {
     Optional<DbUser> maybeUser = userRepository.findDbUserByEmail(email);
     if (maybeUser.isEmpty()) {
-      throw new UserNotFoundException("User with e-mail " + email + " not found");
+      throw new UserNotFoundException(String.format("User with e-mail %s not found.", email));
     }
     return maybeUser;
+  }
+
+  public boolean update(EditingDtoRequest request) {
+    Integer userId = request.getUserId();
+    int day = request.getDay();
+    int month = request.getMonth();
+    int year = request.getYear();
+    LocalDate dateOfBirth = LocalDate.of(year, month, day);
+    Optional<DbUser> userFromDb = userRepository.findById(userId);
+    if (userFromDb.isEmpty()) {
+      log.debug(String.format("User with id %d not found.", userId));
+      return false;
+    } else {
+      DbUser updateUser = userFromDb.get();
+      updateUser.setName(request.getName());
+      updateUser.setDateOfBirth(dateOfBirth);
+      updateUser.setAddress(request.getAddress());
+      byte[] profile = request.getProfileImageUrl();
+      byte[] profileBackground = request.getProfileBackgroundImageUrl();
+      if (profile == null) {
+        updateUser.setProfileImageUrl(null);
+      } else {
+        updateUser.setProfileImageUrl(Base64.getEncoder().encodeToString(profile));
+      }
+      if (profileBackground == null) {
+        updateUser.setProfileBackgroundImageUrl(null);
+      } else {
+        updateUser.setProfileBackgroundImageUrl(Base64.getEncoder().encodeToString(profileBackground));
+      }
+      userRepository.save(updateUser);
+      log.debug(String.format("save user id = %s", userId));
+      return true;
+    }
   }
 
 }
