@@ -39,6 +39,7 @@ class PostCommentRestControllerTest {
 
     Integer userId = 3;
     Integer postId = 2;
+    Integer postCommentId = 1;
 
     DbUser dbUser = new DbUser();
     dbUser.setUserId(userId);
@@ -52,7 +53,7 @@ class PostCommentRestControllerTest {
     postComment.setPostId(post);
     postComment.setCommentText("Hello world!");
     postComment.setCreatedDateTime(LocalDateTime.now());
-    postComment.setPostCommentId(1);
+    postComment.setPostCommentId(postCommentId);
 
     PostCommentDtoSave postCommentDtoSave = new PostCommentDtoSave();
     postCommentDtoSave.setCommentText("Hey Hello world!");
@@ -60,8 +61,8 @@ class PostCommentRestControllerTest {
     postCommentDtoSave.setPostId(postId);
 
     when(postCommentService.savePostComment(any(PostCommentDtoSave.class))).thenReturn(postComment);
-    ResponseEntity<PostCommentDtoSave> responseEntity = postCommentRestController.addPostComment(postCommentDtoSave);
-    Assertions.assertEquals(postId, responseEntity.getBody().getPostId());
+    ResponseEntity<PostCommentDtoResponse> responseEntity = postCommentRestController.addPostComment(postCommentDtoSave);
+    Assertions.assertEquals(postCommentId, responseEntity.getBody().getPostCommentId());
     Assertions.assertEquals(userId, responseEntity.getBody().getUserId());
     Assertions.assertEquals("Hello world!", responseEntity.getBody().getCommentText());
 

@@ -40,9 +40,10 @@ public class PostCommentServiceImpl implements PostCommentService {
     postComment.setCreatedDateTime(LocalDateTime.now());
     postComment.setPostCommentId(0);
     tempPost.getPostComments().add(postComment);
-    postRepository.save(tempPost);
-    return postComment;
+    tempPost = postRepository.save(tempPost);
+    return tempPost.getPostComments().get(tempPost.getPostComments().size() - 1);
   }
+
 
   @Override
   public List<PostComment> getAllPostCommentsByPostId(Integer postId, Integer page) {

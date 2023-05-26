@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,6 +67,7 @@ class PostCommentServiceImplTest {
 
     when(postRepository.findById(postCommentDtoSave.getPostId())).thenReturn(Optional.of(post));
     when(modelMapper.map(postCommentDtoSave, PostComment.class)).thenReturn(postComment1);
+    when(postRepository.save(any(Post.class))).thenReturn(post);
     PostComment response = postCommentService.savePostComment(postCommentDtoSave);
 
     Assertions.assertEquals(userId2, response.getUserId().getUserId());

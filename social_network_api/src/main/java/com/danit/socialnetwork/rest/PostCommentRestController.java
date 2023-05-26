@@ -26,9 +26,9 @@ public class PostCommentRestController {
   private final PostCommentService postCommentService;
 
   @PostMapping(path = "/comments", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<PostCommentDtoSave> addPostComment(@RequestBody PostCommentDtoSave postCommentDto) {
+  public ResponseEntity<PostCommentDtoResponse> addPostComment(@RequestBody PostCommentDtoSave postCommentDto) {
     PostComment postComment = postCommentService.savePostComment(postCommentDto);
-    return new ResponseEntity<>(PostCommentDtoSave.from(postComment), HttpStatus.CREATED);
+    return new ResponseEntity<>(PostCommentDtoResponse.from(postComment), HttpStatus.CREATED);
   }
 
   @GetMapping("/comments")
