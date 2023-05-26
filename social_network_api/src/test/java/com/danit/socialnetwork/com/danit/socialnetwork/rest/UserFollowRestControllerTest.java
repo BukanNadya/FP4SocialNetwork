@@ -1,6 +1,8 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.UserFollowRequest;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
+import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.UserFollowServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,10 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;

@@ -5,6 +5,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.security.JwtTokenService;
 import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -26,14 +30,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 public class JwtAuthenticationRestController {
 
   private final AuthenticationManager authenticationManager;
-
   private final JwtTokenService jwtTokenService;
-
   private final UserService userService;
 
   @PostMapping("/login")
@@ -54,6 +57,7 @@ public class JwtAuthenticationRestController {
       final String token = jwtTokenService.generateToken(id, rememberMe);
       Map<String, String> response = new HashMap<>();
       response.put("token", token);
+      log.info(response);
       return ResponseEntity.ok(response);
     } else {
       throw new BadCredentialsException("Invalid username or password");
@@ -77,33 +81,4 @@ public class JwtAuthenticationRestController {
           String.format("User this username %s not found", username));
     }
   }
-
-
-  @GetMapping("/home")
-  public ResponseEntity<?> getUserId(Authentication authentication) throws IOException {
-    if (authentication == null) {
-      return null;
-    } else {
-      OAuth2User data = (OAuth2User) authentication.getPrincipal();
-      String email = (String) data.getAttributes().get("email");
-      Optional<DbUser> maybeUser = userService.findDbUserByEmail(email);
-
-      if (maybeUser.isPresent()) {
-        Integer userId = maybeUser.get().getUserId();
-        LocalDate dob = maybeUser.get().getDateOfBirth();
-        String birthday = "true";
-        if (dob.isEqual(LocalDate.of(1900, 1, 1))) {
-          birthday = "false";
-        }
-
-        final String token = jwtTokenService.generateToken(userId, true);
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        response.put("birthday", birthday);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-      }
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-  }
-
 }

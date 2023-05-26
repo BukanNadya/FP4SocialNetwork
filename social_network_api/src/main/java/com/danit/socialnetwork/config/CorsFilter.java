@@ -30,6 +30,4 @@ public class CorsFilter implements Filter {
     }
     filterChain.doFilter(servletRequest, servletResponse);
   }
-
 }
-

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAuthFilter jwtFilter;
   private final UserRepository userRepository;
+  private final JwtTokenService jwtTokenService;
 
   @Bean
   @Override
@@ -63,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .anyRequest()
         .authenticated();
     http.oauth2Login(l -> l
+        .loginPage("/oauth2/google")
         .successHandler((request, response, authentication) -> {
           OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
 
@@ -75,25 +78,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           log.info("User surname - {}", userSurname);
           log.info("User e-mail - {}", userMail);
           Optional<DbUser> maybeUser = userRepository.findDbUserByEmail(userMail);
-          if (maybeUser.isEmpty()) {
+          Integer userId = 0;
+          String birthday = "false";
 
+          if (maybeUser.isEmpty()) {
             Transliterator transliteratorUa = Transliterator.getInstance("Ukrainian-Latin/BGN");
             Transliterator transliteratorRu = Transliterator.getInstance("Russian-Latin/BGN");
             String latinName = transliteratorUa.transliterate(userName[0]);
             latinName = transliteratorRu.transliterate(latinName);
-
             DbUser newUser = new DbUser(latinName,
                 UUID.randomUUID().toString(), userMail,
                 userName[0], LocalDate.of(1900, 1, 1));
             userRepository.save(newUser);
+          } else {
+            userId = maybeUser.get().getUserId();
+            LocalDate dob = maybeUser.get().getDateOfBirth();
+            if (!dob.isEqual(LocalDate.of(1900, 1, 1))) {
+              birthday = "true";
+            }
           }
-          response.sendRedirect("/home");
+          String token = jwtTokenService.generateToken(userId, true);
+          log.info("token:" + token);
+          response.sendRedirect("http://localhost:3000?token=" + token + "&" + "birthday=" + birthday);
         }).permitAll()
+
     );
     http.logout(l -> l
         .logoutSuccessHandler((request, response, authentication) -> {
           log.info("User with username {} has logged out", userName[0]);
-          //                    response.sendRedirect("/oauth2/authorization/google");
           response.sendRedirect("/login");
         })
         .clearAuthentication(true)
@@ -103,10 +115,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     http.rememberMe();
+    http.sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
     http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-    //    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    //
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
