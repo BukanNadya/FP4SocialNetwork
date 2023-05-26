@@ -30,12 +30,12 @@ export function HomeScreen() {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (userId) {
+
                 const response = await fetch(`http://localhost:8080/profile/${userId}`);
                 const userData = await response.json();
                 dispatch(setUserData(userData));
-            }
         };
+
         if (userId) {
             fetchData();
         }

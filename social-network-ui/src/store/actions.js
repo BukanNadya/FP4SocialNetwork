@@ -61,6 +61,8 @@ export const setUserData = (data) => ({
         date: new Date(data.createdDateTime).toDateString().slice(4),
         image: data.profileImageByteArray,
         background: data.profileBackgroundImageByteArray,
+        followers: data.followers,
+        followings: data.followings,
     }
 })
 export const openSignUpModal = () => ({

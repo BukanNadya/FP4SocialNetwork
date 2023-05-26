@@ -40,12 +40,12 @@ export function ProfilePage () {
                 <div style={{ display: "flex", gap: "20px" }}>
                     <Link to="/subscribe" variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(1))}>
                         <Typography sx={LinkTextStyles}>
-                             <span style={LinkQuantityStyles}>0</span> following
+                             <span style={LinkQuantityStyles}>{userData.followings}</span> following
                         </Typography>
                     </Link>
                     <Link to="/subscribe" variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(0))}>
                         <Typography sx={LinkTextStyles}>
-                            <span style={LinkQuantityStyles}>0</span> followers
+                            <span style={LinkQuantityStyles}>{userData.followers}</span> followers
                         </Typography>
                     </Link>
                 </div>

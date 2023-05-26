@@ -28,6 +28,8 @@ export function userDataReducer(state = initialState, action) {
                     date: action.payload.date,
                     image: action.payload.image,
                     background: action.payload.background,
+                    followers: action.payload.followers,
+                    followings: action.payload.followings,
                 },
             };
         default:
