@@ -12,6 +12,7 @@ public interface SearchMapper {
   @Mapping(target = "profileImageUrl", expression = "java(MapperUtils.decodeProfile(dbUser))")
   @Mapping(target = "userId", expression = "java(MapperUtils.getUserId(dbUser))")
   @Mapping(target = "username", expression = "java(MapperUtils.getUsername(dbUser))")
+  @Mapping(target = "name", expression = "java(MapperUtils.getName(dbUser))")
   SearchDto dbUserToSearchDto(DbUser dbUser);
 }
 

@@ -49,4 +49,8 @@ public class MapperUtils {
     return dbUser.getUsername();
   }
 
+  public static String getName(DbUser dbUser) {
+    return dbUser.getName();
+  }
+
 }
