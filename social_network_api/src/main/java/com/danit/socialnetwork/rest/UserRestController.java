@@ -1,11 +1,12 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
-import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
@@ -67,7 +68,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("registration", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -80,10 +81,10 @@ public class UserRestController {
 
     if (userService.findDbUserByEmail(email) == null) {
       response.put("checkEmail", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     } else {
       response.put("checkEmail", TRUE);
-      return new  ResponseEntity<>(response, HttpStatus.FOUND);
+      return new ResponseEntity<>(response, HttpStatus.FOUND);
 
     }
   }
@@ -101,7 +102,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("sendLetter", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -117,7 +118,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("activate", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -140,7 +141,7 @@ public class UserRestController {
       return ResponseEntity.ok(response);
     } else {
       response.put("edition", FALSE);
-      return new  ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -165,5 +166,11 @@ public class UserRestController {
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     UserDtoResponse tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(tempUser, HttpStatus.OK);
+  }
+
+  @PostMapping("/api/change_dob")
+  public ResponseEntity<Map<String, String>> dbUserDobChange(
+      @RequestBody UserDobChangeRequest userDobChangeRequest) {
+    return userService.dbUserDobChange(userDobChangeRequest);
   }
 }

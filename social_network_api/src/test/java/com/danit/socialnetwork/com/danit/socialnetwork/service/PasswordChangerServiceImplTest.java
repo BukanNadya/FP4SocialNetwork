@@ -43,8 +43,6 @@ class PasswordChangerServiceImplTest {
     CodeCheckRequest codeCheckRequest = new CodeCheckRequest();
     codeCheckRequest.setCode("55555");
     codeCheckRequest.setEmail("test@test.com");
-
-
     PasswordChangeRequests passwordChangeRequests = new PasswordChangeRequests();
     passwordChangeRequests.setChangeRequest("55555");
     passwordChangeRequests.setEmail("test@test.com");

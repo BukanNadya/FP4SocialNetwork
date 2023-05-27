@@ -1,11 +1,15 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
@@ -32,4 +36,5 @@ public interface UserService {
 
   boolean update(EditingDtoRequest request);
 
+  ResponseEntity<Map<String, String>> dbUserDobChange(@RequestBody UserDobChangeRequest userDobChangeRequest);
 }

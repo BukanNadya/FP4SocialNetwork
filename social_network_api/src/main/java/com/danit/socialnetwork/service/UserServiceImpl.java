@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
+import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
@@ -11,15 +12,20 @@ import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -206,4 +212,25 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  @Override
+  public ResponseEntity<Map<String, String>> dbUserDobChange(
+      @RequestBody UserDobChangeRequest userDobChangeRequest) {
+    Optional<DbUser> maybeUser = userRepository.findById(userDobChangeRequest.getUserId());
+    Map<String, String> response = new HashMap<>();
+    response.put("userId", userDobChangeRequest.getUserId().toString());
+    if (maybeUser.isPresent()) {
+      LocalDate newDob = LocalDate.of(
+          userDobChangeRequest.getYear(),
+          userDobChangeRequest.getMonth(),
+          userDobChangeRequest.getDay());
+      DbUser user = maybeUser.get();
+      user.setDateOfBirth(newDob);
+      userRepository.save(user);
+      response.put("message", "User birthday changed");
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    } else {
+      response.put("message", "invalid User id");
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

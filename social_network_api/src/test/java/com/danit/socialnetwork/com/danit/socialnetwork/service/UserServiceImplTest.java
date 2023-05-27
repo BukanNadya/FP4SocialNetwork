@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
 
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
@@ -320,5 +323,19 @@ class UserServiceImplTest {
     assertEquals(testUpdateUser.getProfileBackgroundImageUrl(), testUser.getProfileBackgroundImageUrl());
     assertTrue(result);
   }
+  @Test
+  void dbUserDobChange(){
+    UserDobChangeRequest userDobChangeRequest = new UserDobChangeRequest();
+    userDobChangeRequest.setUserId(55);
+    userDobChangeRequest.setDay(1);
+    userDobChangeRequest.setMonth(11);
+    userDobChangeRequest.setYear(2000);
+    DbUser user = new DbUser();
+    user.setUserId(55);
+    user.setDateOfBirth(LocalDate.of(1995,12,10));
+    when(userRepository.findById(55)).thenReturn(Optional.of(user));
 
+    ResponseEntity<Map<String, String>> mapResponseEntity = userServiceImp.dbUserDobChange(userDobChangeRequest);
+    assertEquals("{message=User birthday changed, userId=55}", mapResponseEntity.getBody().toString());
+  }
 }
