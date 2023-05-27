@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, FormControl, Typography, SvgIcon } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { openSignUpModal,  closeLoginModal } from "../../store/actions";
+import { openSignUpModal, closeLoginModal } from "../../store/actions";
 
 import { setUserEmail } from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
@@ -16,37 +16,36 @@ import {
     StyledWhiteButton
 } from "./loginModalStyles";
 import PropTypes from "prop-types";
-import { useModal } from '../../context/ModalContext';
+import { useModal } from "../../context/ModalContext";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
-	const {openForgot, openSendCode, openWeSend, openChoose, openAllSet, setOpenForgot} = useModal()
+    const { openForgot, openSendCode, openWeSend, openChoose, openAllSet, setOpenForgot } = useModal();
 
-   async function signWidthGoogle (){
-       let dataAboutRegistration = await fetch("http://localhost:8080/oauth2/authorization/google");
-       console.log( dataAboutRegistration)
-    }
     const handleGoogleLogin = async () => {
         try {
             const response = await fetch("http://localhost:8080/oauth2/authorization/google");
+            console.log(response);
             if (response.ok) {
                 const data = await response.json();
-                // Обработка полученных данных
-                console.log(data);
             } else {
-                // Обработка ошибки, если запрос не успешен
                 console.error("Request failed:", response.status);
             }
         } catch (error) {
-            // Обработка ошибки, если произошла ошибка при выполнении запроса
             console.error("An error occurred:", error);
         }
     };
-const handleForgot = ()=>{
-    setOpenForgot(!openForgot)
-    dispatch(closeLoginModal())
-}
+
+    async function signWidthGoogle() {
+        let dataAboutRegistration = await fetch("http://localhost:8080/oauth2/authorization/google");
+        console.log(dataAboutRegistration);
+    }
+
+    const handleForgot = () => {
+        setOpenForgot(!openForgot);
+        dispatch(closeLoginModal());
+    };
 
     return (
         <>
@@ -64,7 +63,7 @@ const handleForgot = ()=>{
             {/*              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>*/}
             {/*    </SvgIcon>*/}
             {/*    Sign in width Google</Button>*/}
-            <a onClick={handleGoogleLogin}>Sign in with Google</a>
+            <a href="http://localhost:8080/oauth2/authorization/google">Sign in with Google</a>
             <Typography component="span" sx={StyledSpanElement}
             >or</Typography>
             <Formik initialValues={{
@@ -82,8 +81,7 @@ const handleForgot = ()=>{
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }
                     });
-                    console.log(response)
-                    if (!response.ok) {
+                    if (response.status !== 302) {
                         setErrors({ email: "User doesn't exist, please check your email" });
                     } else {
                         const userExistData = await response.json();
@@ -107,7 +105,8 @@ const handleForgot = ()=>{
                         <Button type="submit"
                                 variant="contained" sx={StyledBlackButton} disabled={isSubmitting}
                                 fullWidth={true}>Next</Button>
-                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={handleForgot}>Forgot password?</Button>
+                        <Button variant="contained" sx={StyledWhiteButton} fullWidth={true} onClick={handleForgot}>Forgot
+                            password?</Button>
                     </FormControl>
                 </Form>
             </Formik>

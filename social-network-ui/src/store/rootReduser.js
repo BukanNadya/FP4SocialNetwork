@@ -4,11 +4,12 @@ import { userDataLoginReducer } from "./Reducers/userDataLoginReducer";
 import { loginPageReducer } from "./Reducers/loginPageReducer";
 import { userTokenSaveReducer } from "./Reducers/userTokenReducer";
 import { forgotPasswordReducer } from "./Reducers/forgotPasswordReducer";
-import {usersSearchReducer} from "./Reducers/usersSearchReducer";
+import { usersSearchReducer } from "./Reducers/usersSearchReducer";
 import { userDataReducer } from "./Reducers/userDataReducer";
 import { PostReducer } from "./Reducers/PostsReducer";
-import {PageDisplaing} from "./Reducers/PageDisplaing"
-import {likeReducer} from  "./Reducers/likeReducer"
+import { PageDisplaing } from "./Reducers/PageDisplaing";
+import { likeReducer } from "./Reducers/likeReducer";
+import { CommentsReducer } from "./Reducers/CommentsReducer";
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -18,9 +19,10 @@ const rootReducer = combineReducers({
     usersSearch: usersSearchReducer,
     userData: userDataReducer,
     Posts: PostReducer,
-    pageCount:PageDisplaing,
-    isLikedPost:likeReducer,
-    forgot: forgotPasswordReducer
+    pageCount: PageDisplaing,
+    isLikedPost: likeReducer,
+    forgot: forgotPasswordReducer,
+    comments: CommentsReducer,
 });
 
 export default rootReducer;

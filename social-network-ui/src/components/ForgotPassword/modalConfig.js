@@ -1,6 +1,3 @@
-
-
-
 export const modalConfig = {
     forgot: {
         title: "find your twitter account",

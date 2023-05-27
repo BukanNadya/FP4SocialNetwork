@@ -25,6 +25,7 @@ export function SideBar() {
         dispatch(setUserToken(false))
         localStorage.clear();
         sessionStorage.clear();
+        window.location.reload();
     };
 
     return (

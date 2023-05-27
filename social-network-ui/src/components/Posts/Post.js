@@ -1,26 +1,24 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Box, Button, TextField } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
+import { Comments } from "./Comments.js";
 
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
-import { StyledBlackButton } from "../LoginModal/loginModalStyles";
-import { openLoginModal } from "../../store/actions";
+import { openLoginModal, setComments } from "../../store/actions";
 
-export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes }) => {
+export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes, postComments }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState("");
+    const comments = useSelector(state => state.comments.comments);
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
-    const [likeCount, setLikeCount] = useState(postLikes)
+    const [likeCount, setLikeCount] = useState(postLikes);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,17 +35,12 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
         fetchData();
     }, [userId, postId]);
 
-    const handleCommentToggle = () => {
+    const handleCommentToggle = async () => {
         setIsCommentOpen(!isCommentOpen);
-    };
-
-    const handleAddComment = () => {
-        setComments([...comments, newComment]);
-        setNewComment("");
-    };
-
-    const handleCommentChange = (e) => {
-        setNewComment(e.target.value);
+        let commentsResponse = await fetch(`http://localhost:8080/comments?postId=${postId}`);
+        let dataComments = await commentsResponse.json();
+        dispatch(setComments(dataComments));
+        // setComments(dataComments);
     };
 
     const addLikeHandle = useCallback(async () => {
@@ -63,7 +56,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                         "Content-Type": "application/json"
                     }
                 });
-                setLikeCount(likeCount+1)
+                setLikeCount(likeCount + 1);
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
             } else {
                 await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
@@ -72,7 +65,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                         "Content-Type": "application/json"
                     }
                 });
-                setLikeCount(likeCount-1)
+                setLikeCount(likeCount - 1);
                 setLikeArr(likeArr.filter(item => item.userId !== userId));
             }
 
@@ -82,9 +75,9 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore =() => {
+    const handleShowMore = () => {
         setShowMore(!showMore);
-    }
+    };
 
     const postDate = useMemo(() => {
         const date = new Date(dataTime);
@@ -97,7 +90,6 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
         } else {
             return format(date, "MMM d, yyyy");
         }
-        // Все то же самое
     }, [dataTime]);
 
     const renderText = () => {
@@ -142,10 +134,10 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
 
                 </div>) : null
             }
-
             <CardActions sx={{ padding: "20px 20px" }}>
                 <IconButton onClick={handleCommentToggle}>
                     <ChatBubbleOutline fontSize="small"/>
+                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postComments}</Typography>
                 </IconButton>
                 <IconButton>
                     <Repeat fontSize="small"/>
@@ -155,66 +147,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes 
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeCount}</Typography>
                 </IconButton>
             </CardActions>
-
-
-            {isCommentOpen && (
-                <Box style={{ padding: "10px 20px", borderTop: "1px solid #ddd", overflow: "scroll", height: "50xp" }}>
-                    <Typography variant="h6" sx={{ marginBottom: "10px", marginTop: "10px" }}>Comments:</Typography>
-                    {comments.map((comment, index) => (
-                        <Box key={index} style={{ marginTop: "10px", padding: "5px 0", borderTop: "1px solid #eee" }}>
-                            <Typography>{comment}</Typography>
-                        </Box>
-                    ))}
-                    <Box style={{
-                        padding: "5px 0",
-                        borderTop: "1px solid #eee",
-                        display: "flex",
-                        alignItems: "center",
-                        height: "60px"
-                    }}>
-                        <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
-                        <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
-                    </Box>
-                    <Box style={{
-                        padding: "5px 0",
-                        borderTop: "1px solid #eee",
-                        display: "flex",
-                        alignItems: "center",
-                        height: "60px"
-                    }}>
-                        <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
-                        <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
-                    </Box>
-                    <Box style={{
-                        padding: "5px 0",
-                        borderTop: "1px solid #eee",
-                        display: "flex",
-                        alignItems: "center",
-                        height: "60px"
-                    }}>
-                        <div style={{ width: "40px", height: "40px", backgroundColor: "blue", borderRadius: "30px" }}/>
-                        <Typography sx={{ marginLeft: "30px" }}>fk;lsdjf;lgm;slmg;rslgm</Typography>
-                    </Box>
-                    <TextField
-                        value={newComment}
-                        onChange={handleCommentChange}
-                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: "40px" }, marginTop: "10px" }}
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        label="Please enter your comment"
-                        multiline
-                    />
-                    <Button onClick={handleAddComment} color="primary" variant="contained"
-                            style={{
-                                ...StyledBlackButton,
-                                maxWidth: "140px",
-                                marginTop: "10px",
-                                marginBottom: "10px",
-                                fontSize: "12px"
-                            }}>Add comment</Button>
-                </Box>
-            )}
+            {isCommentOpen && <Comments comments={comments} postId={postId} userId={userId}/>}
         </Card>
     );
 };
@@ -225,7 +158,7 @@ Post.propTypes = {
     userName: PropTypes.string,
     name: PropTypes.string,
     photo: PropTypes.string,
-    postComments: PropTypes.array,
+    postComments: PropTypes.number,
     postLikes: PropTypes.number,
     text: PropTypes.string,
 };

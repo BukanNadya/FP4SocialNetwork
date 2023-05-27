@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Container, } from "@mui/material";
@@ -15,68 +15,95 @@ import {
     OutletContainer,
     OutletWrapper
 } from "./LayoutStyles";
-import {useNavigate} from "react-router-dom";
 
 import { RegistrationPage } from "../pages/RegistrationPage";
-import { setPosts, setUserId, setPage, fetchPostsByUserId, fetchPostsByPage } from "../store/actions";
-import { useState } from "react";
+import {
+    setUserId,
+    fetchPostsByUserId,
+    fetchPostsByPage,
+    fetchExplorePosts, setPage, setUserData, setUserBirthday
+} from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
+import { BirthdateForm } from "./LoginModal/BirthdateForm";
+
+export const ScrollContext = React.createContext(() => {
+});
 
 export function Layout() {
-    const userToken = useSelector(state => state.saveUserToken.userToken);
-    const page = useSelector(state=>state.pageCount.page)
-    const [isEnd, setIsEnd] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const userToken = JSON.parse(localStorage.getItem("userToken")) || JSON.parse(sessionStorage.getItem("userToken"));
+    const userBirthdateGoogle = useSelector(state => state.saveUserToken.userBirthdayFlag);
+    const page = useSelector(state => state.pageCount.page);
     const dispatch = useDispatch();
-
+    let location = useLocation();
 
     useEffect(() => {
-        fetchPosts(page);
-    }, [page]);
+            fetchPosts(page);
+            if(userBirthdateGoogle === undefined){
+                dispatch(setUserBirthday(true))
+            }
+    }, []);
+
+    const fetchData = async (userId) => {
+        const response = await fetch(`http://localhost:8080/profile/${userId}`);
+        const userData = await response.json();
+        dispatch(setUserData(userData));
+    };
 
     const fetchPosts = async (page) => {
         const decodedToken = decodeToken();
-        let data;
         if (decodedToken) {
             const userId = decodedToken.sub;
             dispatch(setUserId(userId));
-            data = await dispatch(fetchPostsByUserId(userId, page));
-        } else if(!decodedToken || navigate==="/explore"){
-            data = await dispatch(fetchPostsByPage(page));
-            console.log(data)
-        }
-        if (data.length === 0) {
-            setIsEnd(true);
-        } else {
-            dispatch(setPosts(data));
+            dispatch(fetchPostsByUserId(userId, page));
+            await fetchData(userId);
         }
     };
 
-    const handleScroll = (event) => {
+    useEffect(() => {
+        if (userToken && userBirthdateGoogle === "true" || userToken && userBirthdateGoogle === "false") {
+            navigate("/home");
+        }
+    }, []);
+
+    const handleParentScroll = (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-        if (scrollHeight - scrollTop <= clientHeight + 20 && !isEnd) {
-            let a = page + 1
-            dispatch(setPage(a));
+        if (scrollHeight - scrollTop <= clientHeight + 20) {
+            if (location.pathname === "/explore") {
+                console.log(location.pathname);
+                const page2 = page + 1;
+                dispatch(setPage(page2));
+                dispatch(fetchExplorePosts(page2));
+            } else if (location.pathname === "/home") {
+                const page2 = page + 1;
+                dispatch(setPage(page2));
+                fetchPosts(page2);
+            }
         }
     };
+    console.log(userBirthdateGoogle)
 
     return (
-        userToken ? (
-            <Container maxWidth="false" sx={ContainerStyled}>
-                <div style={ContentContainer} onScroll={handleScroll}>
-                    <SideBar/>
-                    <div style={ItemWrapper}>
-                        <div style={ItemWrapperContainer}>
-                            <HeaderInformation/>
-                            <div style={OutletContainer}>
-                                <div style={OutletWrapper}>
-                                    <Outlet/>
+        <ScrollContext.Provider value={{ handleScroll: handleParentScroll }}>
+            {userToken ? (
+                <Container maxWidth="false" sx={ContainerStyled}>
+                    <div style={ContentContainer} onScroll={handleParentScroll}>
+                        <SideBar/>
+                        <div style={ItemWrapper}>
+                            <div style={ItemWrapperContainer}>
+                                <HeaderInformation/>
+                                <div style={OutletContainer}>
+                                    <div style={OutletWrapper}>
+                                        <Outlet/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {userBirthdateGoogle ? null : <BirthdateForm/>}
+                        <UsersSearch/>
                     </div>
-                    <UsersSearch/>
-                </div>
-            </Container>) : (<RegistrationPage/>)
+                </Container>) : (<RegistrationPage/>)
+            }
+        </ScrollContext.Provider>
     );
-}
+};
