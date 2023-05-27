@@ -5,7 +5,7 @@ import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { sendPost } from "../store/actions";
+import { fetchPostsByUserId, sendPost, setUserId } from "../store/actions";
 import { setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
@@ -20,6 +20,7 @@ import {
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
+import { decodeToken } from "../components/Posts/decodeToken";
 
 export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
@@ -29,6 +30,7 @@ export function HomeScreen() {
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
     const dispatch = useDispatch();
+    const page = useSelector(state => state.pageCount.page);
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
@@ -47,7 +49,18 @@ export function HomeScreen() {
 
     useEffect(() => {
         fetchData(userId);
+        fetchPosts(page);
     }, []);
+
+    const fetchPosts = async (page) => {
+        const decodedToken = decodeToken();
+        if (decodedToken) {
+            const userId = decodedToken.sub;
+            dispatch(setUserId(userId));
+            dispatch(fetchPostsByUserId(userId, page));
+            await fetchData(userId);
+        }
+    };
 
     const handlePostSubmit = useCallback(async (values, setSubmitting) => {
         if (values.postText.trim() !== "" || postImage) {

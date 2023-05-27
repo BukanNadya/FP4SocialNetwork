@@ -32,23 +32,18 @@ export const ScrollContext = React.createContext(() => {
 export function Layout() {
     const navigate = useNavigate();
     const userToken = JSON.parse(localStorage.getItem("userToken")) || JSON.parse(sessionStorage.getItem("userToken"));
+    const userId = useSelector(state => state.userData.userData.userId);
     const userBirthdateGoogle = useSelector(state => state.saveUserToken.userBirthdayFlag);
     const page = useSelector(state => state.pageCount.page);
     const dispatch = useDispatch();
     let location = useLocation();
 
     useEffect(() => {
-            fetchPosts(page);
-            if(userBirthdateGoogle === undefined){
-                dispatch(setUserBirthday(true))
-            }
-    }, []);
+        if (userToken && userBirthdateGoogle === "true" || userToken && userBirthdateGoogle === "false") {
+            navigate("/home");
+        }
 
-    const fetchData = async (userId) => {
-        const response = await fetch(`http://localhost:8080/profile/${userId}`);
-        const userData = await response.json();
-        dispatch(setUserData(userData));
-    };
+    }, []);
 
     const fetchPosts = async (page) => {
         const decodedToken = decodeToken();
@@ -60,15 +55,17 @@ export function Layout() {
         }
     };
 
-    useEffect(() => {
-        if (userToken && userBirthdateGoogle === "true" || userToken && userBirthdateGoogle === "false") {
-            navigate("/home");
-        }
-    }, []);
+    const fetchData = async (userId) => {
+        const response = await fetch(`http://localhost:8080/profile/${userId}`);
+        const userData = await response.json();
+        dispatch(setUserData(userData));
+    };
+
+
 
     const handleParentScroll = (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-        if (scrollHeight - scrollTop <= clientHeight + 20) {
+        if (scrollHeight - scrollTop <= clientHeight + 5) {
             if (location.pathname === "/explore") {
                 console.log(location.pathname);
                 const page2 = page + 1;
@@ -81,7 +78,6 @@ export function Layout() {
             }
         }
     };
-    console.log(userBirthdateGoogle)
 
     return (
         <ScrollContext.Provider value={{ handleScroll: handleParentScroll }}>

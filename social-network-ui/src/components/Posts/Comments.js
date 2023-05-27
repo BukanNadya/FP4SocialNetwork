@@ -1,22 +1,22 @@
 import React from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, } from "formik";
 import * as Yup from "yup";
 import { Link } from 'react-router-dom';
-import { formatDistanceToNow, differenceInDays, format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
-import PropTypes from "prop-types";
-import { PostsDisplaying } from "./PostsDisplaying";
-import { useDispatch } from "react-redux";
 import { setCommentFromUser } from "../../store/actions";
 
-export function Comments({ comments, postId, userId }) {
+export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount }) {
     const dispatch = useDispatch();
     const validationSchema = Yup.object().shape({
         comment: Yup.string()
             .required("Please enter a comment").max(250, "Comment must be no longer than 250 characters")
     });
+
 
     return (
        <Formik
@@ -38,6 +38,7 @@ export function Comments({ comments, postId, userId }) {
                 console.log(userCommentData)
                 dispatch(setCommentFromUser(userCommentData))
                 actions.resetForm();
+                setPostCommentCount(postCommentCount+1)
             }
             }
             validationSchema={validationSchema}
@@ -124,7 +125,7 @@ export function Comments({ comments, postId, userId }) {
                                     marginTop: "10px",
                                     marginBottom: "10px",
                                     fontSize: "12px",
-                                }}>Add comment</Button>
+                                }} >Add comment</Button>
                     </Box>
                 </Form>
             )}
@@ -136,4 +137,6 @@ Comments.propTypes = {
     comments: PropTypes.array.isRequired,
     userId: PropTypes.string,
     postId: PropTypes.number,
+    postCommentCount: PropTypes.number,
+    setPostCommentCount:PropTypes.func,
 };

@@ -8,10 +8,8 @@ if (tokenUser) {
     localStorage.setItem("userToken", JSON.stringify({ token: tokenUser }));
 }
 let userBirthday = parsedUrl.searchParams.get("birthday");
-console.log(userBirthday)
 let userBirthdayCheck = userBirthday || true;
 
-console.log("userBirthday", userBirthday)
 
 const initialState = {
     userToken: localStorageToken || sessionStorageToken || false,

@@ -15,6 +15,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const dispatch = useDispatch();
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
+    const [postCommentCount, setPostCommentCount] = useState(postComments);
     const comments = useSelector(state => state.comments.comments);
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
@@ -36,11 +37,15 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     }, [userId, postId]);
 
     const handleCommentToggle = async () => {
-        setIsCommentOpen(!isCommentOpen);
-        let commentsResponse = await fetch(`http://localhost:8080/comments?postId=${postId}`);
-        let dataComments = await commentsResponse.json();
-        dispatch(setComments(dataComments));
-        // setComments(dataComments);
+        if (userId) {
+            setIsCommentOpen(!isCommentOpen);
+            let commentsResponse = await fetch(`http://localhost:8080/comments?postId=${postId}`);
+            let dataComments = await commentsResponse.json();
+            dispatch(setComments(dataComments));
+
+        } else {
+            dispatch(openLoginModal());
+        }
     };
 
     const addLikeHandle = useCallback(async () => {
@@ -90,6 +95,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         } else {
             return format(date, "MMM d, yyyy");
         }
+        // Все то же самое
     }, [dataTime]);
 
     const renderText = () => {
@@ -137,7 +143,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
             <CardActions sx={{ padding: "20px 20px" }}>
                 <IconButton onClick={handleCommentToggle}>
                     <ChatBubbleOutline fontSize="small"/>
-                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postComments}</Typography>
+                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
                 </IconButton>
                 <IconButton>
                     <Repeat fontSize="small"/>
@@ -147,7 +153,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeCount}</Typography>
                 </IconButton>
             </CardActions>
-            {isCommentOpen && <Comments comments={comments} postId={postId} userId={userId}/>}
+            {isCommentOpen && <Comments comments={comments} postCommentCount={postCommentCount} setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
         </Card>
     );
 };
