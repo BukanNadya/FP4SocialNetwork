@@ -28,7 +28,7 @@ export function ProfilePage () {
                  btnClick={() => dispatch(openEditModal())}
         />
             {isEditpModalOpen &&
-                (<EditProfile/>)
+                (<EditProfile name={userData.name}/>)
             }
         </>
     )

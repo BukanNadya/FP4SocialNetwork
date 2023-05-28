@@ -8,7 +8,12 @@ import {TabStyles} from "./ProfileSwipeableViewsStyles";
 import {PostsWrapper} from "../../Posts/PostStyles";
 import {PostsDisplaying} from "../../Posts/PostsDisplaying";
 import {useEffect} from "react";
-import {setPosts, setProfilePosts, setUserData, setUserPostsClear} from "../../../store/actions";
+import {
+    setProfileLikePosts,
+    setProfilePosts,
+    setProfileReposts,
+    setUserPostsClear
+} from "../../../store/actions";
 import {useDispatch, useSelector} from "react-redux";
 
 function TabPanel(props) {
@@ -42,6 +47,8 @@ export function ProfileSwipeableViews (props) {
     const [value, setValue] = React.useState(0);
     // const userId = useSelector(state => state.userData.userData.userId);
     const profilePosts = useSelector(state => state.Posts.profilePosts)
+    const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
+    const profileReposts = useSelector(state => state.Posts.profileReposts)
 
     const [isLoading, setIsLoading] = React.useState(false)
     const dispatch = useDispatch();
@@ -51,7 +58,8 @@ export function ProfileSwipeableViews (props) {
         const fetchUserPosts = async () => {
             try {
                 setIsLoading(true)
-                const response = await fetch(`http://localhost:8080/posts/${props.userId}?page=0`);
+                // const response = await fetch(`http://localhost:8080/posts/${props.userId}?page=0`);
+                const response = await fetch(`http://localhost:8080/posts/reposts?userId=${props.userId}`);
                 const userPosts = await response.json();
                 dispatch(setProfilePosts(userPosts))
             } catch (err) {
@@ -60,15 +68,38 @@ export function ProfileSwipeableViews (props) {
                 setIsLoading(false)
             }
         }
+
+        const fetchUserReposts = async () => {
+            try {
+                setIsLoading(true)
+                const response = await fetch(`http://localhost:8080/reposts?userId=${props.userId}`);
+                const userReposts = await response.json();
+                dispatch(setProfileReposts(userReposts))
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setIsLoading(false)
+            }
+        }
         const fetchUserLikedPosts = async () => {
+            try {
+                setIsLoading(true)
             const response = await fetch(`http://localhost:8080/posts/liked/${props.userId}?page=0`);
             const userLikedPosts = await response.json();
-            dispatch(setPosts(userLikedPosts))
+            dispatch(setProfileLikePosts(userLikedPosts))
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setIsLoading(false)
+            }
         }
 
         if (value === 0) {
             dispatch(setUserPostsClear([]))
             fetchUserPosts()
+        } else if (value === 1) {
+            dispatch(setUserPostsClear([]))
+            fetchUserReposts()
         } else if (value === 2) {
             dispatch(setUserPostsClear([]))
             fetchUserLikedPosts()
@@ -97,11 +128,14 @@ export function ProfileSwipeableViews (props) {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 Answers
+                <div style={PostsWrapper}>
+                    <PostsDisplaying userPosts={profileReposts} isLoading={isLoading}/>
+                </div>
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Likes
                 <div style={PostsWrapper}>
-                    {/*<PostsDisplaying userPosts={profilePosts} isLoading={isLoading}/>*/}
+                    <PostsDisplaying userPosts={profileLikePosts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
         </Box>

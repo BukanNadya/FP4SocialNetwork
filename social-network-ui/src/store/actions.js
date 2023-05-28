@@ -15,7 +15,7 @@ import {
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
     SET_SEARCH_ID, SET_SEARCH_DATA,
     SET_USER_DATA, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS,
-    SET_PROFILE_POSTS, OPEN_EDIT_MODAL, CLOSE_EDIT_MODAL,
+    SET_PROFILE_POSTS, OPEN_EDIT_MODAL, CLOSE_EDIT_MODAL, SET_PROFILE_LIKE_POSTS, SET_PROFILE_REPOSTS,
 } from "./types";
 
 export const setPage = (pageNumber) => ({
@@ -226,6 +226,14 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
 };
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
+    payload: posts
+})
+export const setProfileLikePosts = (posts) => ({
+    type: SET_PROFILE_LIKE_POSTS,
+    payload: posts
+})
+export const setProfileReposts = (posts) => ({
+    type: SET_PROFILE_REPOSTS,
     payload: posts
 })
 
