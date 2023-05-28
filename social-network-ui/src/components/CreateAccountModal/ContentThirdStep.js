@@ -68,7 +68,7 @@ export function ContentThirdStep() {
                                 body: JSON.stringify(requestBody),
                             });
 
-                            if (response.status === 302) {
+                            if (response.ok) {
                                 const responseData = await response.json();
                                 const isActivated = responseData.activate === 'true'; // Check the value of "activate" parameter
 
