@@ -16,11 +16,8 @@ import java.util.Properties;
 public class MailSender {
 
   public void send(String recipientEmail, String caption, String messageText) {
-    //    String username = "socialnetwork897@gmail.com";
-    //    String pass = "syqscxxgtkypnmxl"; // пароли приложений
-    String username = "capitweet.info@gmail.com";
-    String pass = "nmujmhfrfwcrsfmg"; // пароли приложений
-
+    String username = "socialnetwork897@gmail.com"; // "capitweet.info@gmail.com";
+    String pass = "syqscxxgtkypnmxl"; // пароли приложений "qxgjmpeeqjnslefd"
 
     Properties props = new Properties();
     props.put("mail.smtp.host", "smtp.gmail.com");
