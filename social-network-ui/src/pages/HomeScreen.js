@@ -42,6 +42,7 @@ export function HomeScreen() {
         if (userId) {
             const response = await fetch(`http://localhost:8080/profile/${userId}`);
             const userData = await response.json();
+            console.log(userData)
             dispatch(setUserData(userData));
             setIsLoading(false);
         }

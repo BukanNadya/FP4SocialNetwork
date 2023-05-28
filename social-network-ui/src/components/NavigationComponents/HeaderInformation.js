@@ -22,6 +22,10 @@ export function HeaderInformation() {
                 return 'Messages';
             case '/profile':
                 return 'Profile';
+            case '/subscribe':
+                return 'Subscribe';
+            case '/view':
+                return 'View';
             default:
                 return 'Home';
         }

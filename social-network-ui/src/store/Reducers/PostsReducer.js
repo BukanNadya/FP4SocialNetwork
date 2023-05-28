@@ -1,9 +1,12 @@
-import { SET_POSTS, SET_USER_POST, SET_CLEAR_POSTS, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS } from "../types";
+import { SET_POSTS, SET_USER_POST, SET_CLEAR_POSTS, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS, SET_PROFILE_POSTS } from "../types";
 
 const initialState = {
     posts: [],
     explorePosts: [],
     registrationPagePosts: [],
+    profilePosts: [],
+    profileLikePosts: [],
+    profileRepost: [],
 };
 
 export function PostReducer(state = initialState, action) {
@@ -35,6 +38,11 @@ export function PostReducer(state = initialState, action) {
             return {
                 ...state,
                 registrationPagePosts: [...state.registrationPagePosts, ...action.payload],
+            };
+        case SET_PROFILE_POSTS:
+            return {
+                ...state,
+                profilePosts: [...state.profilePosts, ...action.payload],
             };
         default:
             return state;

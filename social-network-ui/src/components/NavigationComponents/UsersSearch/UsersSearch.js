@@ -32,8 +32,10 @@ export function UsersSearch() {
                             body: JSON.stringify({userSearch: values.userName}),
                             headers: { "Content-Type": "application/json" }
                         })
-                            .then(r => r.json())
-                            .then(data => dispatch(GetUsersSuccess(data)))
+                        const userSearch = await response.json()
+                        if (response.status === 302) {
+                            dispatch(GetUsersSuccess(userSearch))
+                        }
                 }}>
                     <Form>
 

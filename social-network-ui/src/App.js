@@ -7,6 +7,7 @@ import { HomeScreen } from "./pages/HomeScreen";
 import {ProfilePage} from "./pages/ProfilePage";
 import {SubscriptionPage} from "./pages/SubscriptionPage";
 import { Explore } from "./pages/Explore";
+import {BrowsePage} from "./pages/BrowsePage";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
             <Route path="/home" element={<HomeScreen/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/subscribe" element={<SubscriptionPage/>}/>
+            <Route path="/view" element={<BrowsePage/>}/>
             <Route path="/explore" element={<Explore/>}/>
         </Route>
     )

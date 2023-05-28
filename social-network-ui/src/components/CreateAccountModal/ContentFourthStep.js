@@ -83,7 +83,7 @@ export function ContentFourthStep() {
                             body: JSON.stringify(requestBody),
                         });
 
-                        if (response.ok) {
+                        if (response.status === 302) {
                             dispatch({ type: SET_STEP_MODAL, step: 3 });
                             dispatch(closeSignUpModal())
                             dispatch(openLoginModal())

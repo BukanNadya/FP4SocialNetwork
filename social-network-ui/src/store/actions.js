@@ -13,7 +13,9 @@ import {
     DELETE_USERS_SUCCESS,
     CHECK_EMAIL,
     SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
-    SET_USER_DATA, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS
+    SET_SEARCH_ID, SET_SEARCH_DATA,
+    SET_USER_DATA, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS,
+    SET_PROFILE_POSTS, OPEN_EDIT_MODAL, CLOSE_EDIT_MODAL,
 } from "./types";
 
 export const setPage = (pageNumber) => ({
@@ -65,6 +67,10 @@ export const setUserId = (userId) => ({
     type: SET_USER_ID,
     payload: userId,
 });
+export const setSearchId = (userId) => ({
+    type: SET_SEARCH_ID,
+    payload: userId
+})
 
 export const setUserData = (data) => ({
     type: SET_USER_DATA,
@@ -76,6 +82,20 @@ export const setUserData = (data) => ({
         background: data.profileBackgroundImageByteArray,
         followers: data.followers,
         followings: data.followings,
+        address: data.address,
+    }
+})
+export const setSearchData = (data) => ({
+    type: SET_SEARCH_DATA,
+    payload: {
+        userName: data.username,
+        name: data.name,
+        date: new Date(data.createdDateTime).toDateString().slice(4),
+        image: data.profileImageByteArray,
+        background: data.profileBackgroundImageByteArray,
+        followers: data.followers,
+        followings: data.followings,
+        address: data.address,
     }
 });
 export const openSignUpModal = () => ({
@@ -91,9 +111,15 @@ export const openLoginModal = () => ({
 export const closeSignUpModal = () => ({
     type: CLOSE_SIGN_UP_MODAL
 });
+export const openEditModal = () => ({
+    type: OPEN_EDIT_MODAL
+})
+export const closeEditModal = () => ({
+    type: CLOSE_EDIT_MODAL
+})
 export const GetUsersSuccess = (data) => ({
     type: GET_USERS_SUCCESS,
-    payload: { users: data.search }
+    payload: { users: data }
 });
 export const DeleteUsersSuccess = () => ({
     type: DELETE_USERS_SUCCESS
@@ -198,5 +224,8 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
         throw error;
     }
 };
-
+export const setProfilePosts = (posts) => ({
+    type: SET_PROFILE_POSTS,
+    payload: posts
+})
 

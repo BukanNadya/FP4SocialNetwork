@@ -117,7 +117,7 @@ export function ContentSecondStep() {
                                 body: JSON.stringify(requestBody),
                             });
 
-                            if (response.ok) {
+                            if (response.status === 302) {
                                 const userToken = await response.json();
                                 dispatch({ type: SET_STEP_MODAL, step: 3 });
                             } else {

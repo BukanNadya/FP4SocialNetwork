@@ -151,7 +151,7 @@ export function ContentFirstStep() {
                                 body: JSON.stringify({email: values.email}),
                                 headers: { "Content-Type": "application/json" }
                             });
-                            if (response.ok) {
+                            if (response.status === 302) {
                                 setErrors({ email: "A user with this email already exists" });
                             } else {
                                 const userExistData = await response.json();
