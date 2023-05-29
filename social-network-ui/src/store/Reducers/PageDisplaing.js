@@ -11,6 +11,11 @@ export function PageDisplaing(state = initialState, action) {
                 ...state,
                 page: action.payload,
             };
+        case "SET_PAGE_ZERO":
+            return {
+                ...state,
+                page: 0,
+            };
         default:
             return state;
     }

@@ -5,7 +5,7 @@ import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-import { fetchPostsByUserId, sendPost, setUserId } from "../store/actions";
+import { fetchPostsByUserId, sendPost, setPageZero, setUserId } from "../store/actions";
 import { setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
@@ -42,7 +42,6 @@ export function HomeScreen() {
         if (userId) {
             const response = await fetch(`http://localhost:8080/profile/${userId}`);
             const userData = await response.json();
-            console.log(userData)
             dispatch(setUserData(userData));
             setIsLoading(false);
         }
@@ -51,7 +50,8 @@ export function HomeScreen() {
     useEffect(() => {
         fetchData(userId);
         fetchPosts(page);
-    }, []);
+        setPageZero();
+    }, [location.pathname]);
 
     const fetchPosts = async (page) => {
         const decodedToken = decodeToken();
@@ -150,7 +150,7 @@ export function HomeScreen() {
                                     <div style={CharactersTextWrapper}>
                                         {
                                             280 - values.postText.length >= 0 ?
-                                                (280 - values.postText.length + "characters") : ("maximum number of characters 280")
+                                                (280 - values.postText.length + " characters") : ("maximum number of characters 280")
                                         }
                                     </div>
                                     <Box sx={PostImgWrapper}>

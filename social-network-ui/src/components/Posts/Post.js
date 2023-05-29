@@ -19,6 +19,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const comments = useSelector(state => state.comments.comments);
     const [like, setLike] = useState(false);
     const [likeArr, setLikeArr] = useState([]);
+    const [isReposted, setIsReposted] = useState(false);
     const [likeCount, setLikeCount] = useState(postLikes);
 
     useEffect(() => {
@@ -35,6 +36,27 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         };
         fetchData();
     }, [userId, postId]);
+
+
+
+
+    const  sendRepost = async () => {
+        if (userId) {
+            setIsReposted(true);
+           await fetch(`http://localhost:8080/reposts`, {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+        } else {
+            dispatch(openLoginModal());
+        }
+    };
 
     const handleCommentToggle = async () => {
         if (userId) {
@@ -145,8 +167,8 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                     <ChatBubbleOutline fontSize="small"/>
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
                 </IconButton>
-                <IconButton>
-                    <Repeat fontSize="small"/>
+                <IconButton onClick={sendRepost}>
+                    <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"} />
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}

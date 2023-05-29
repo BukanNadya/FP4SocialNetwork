@@ -20,8 +20,9 @@ import { RegistrationPage } from "../pages/RegistrationPage";
 import {
     setUserId,
     fetchPostsByUserId,
-    fetchPostsByPage,
-    fetchExplorePosts, setPage, setUserData, setUserBirthday
+    fetchExplorePosts,
+    setPage,
+    setUserData,
 } from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
@@ -32,7 +33,6 @@ export const ScrollContext = React.createContext(() => {
 export function Layout() {
     const navigate = useNavigate();
     const userToken = JSON.parse(localStorage.getItem("userToken")) || JSON.parse(sessionStorage.getItem("userToken"));
-    const userId = useSelector(state => state.userData.userData.userId);
     const userBirthdateGoogle = useSelector(state => state.saveUserToken.userBirthdayFlag);
     const page = useSelector(state => state.pageCount.page);
     const dispatch = useDispatch();
@@ -67,7 +67,6 @@ export function Layout() {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
         if (scrollHeight - scrollTop <= clientHeight + 5) {
             if (location.pathname === "/explore") {
-                console.log(location.pathname);
                 const page2 = page + 1;
                 dispatch(setPage(page2));
                 dispatch(fetchExplorePosts(page2));

@@ -53,11 +53,11 @@ export const StyledBlackButton = {
     fontFamily: "'Lato', sans-serif",
     fontSize: "15px",
     lineHeight: "23px",
-
     fontStyle: "normal",
     height: "45px",
     marginTop: "30px", width: "400px", background: "#000000",
-    transition: "0.7s", "&:hover": {
+    transition: "0.7s",
+    "&:hover": {
         transition: "0.7s",
         backgroundColor: "#ffffff",
         color: "#000000"

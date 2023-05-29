@@ -67,7 +67,6 @@ export function EnterPasswordModal() {
                                 dispatch(setUserToken(userToken));
                                 localStorage.setItem("userToken", JSON.stringify(userToken));
                                 dispatch(closeLoginModal())
-                                console.log(userToken);
                                 dispatch(setUserEmail({userEmail: ''}));
                             } else {
                                 dispatch(setUserToken(userToken));

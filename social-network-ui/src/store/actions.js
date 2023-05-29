@@ -34,15 +34,15 @@ export const setComments = (comments) => {
     return {
         type: "SET_COMMENTS",
         payload: comments
-    }
-}
+    };
+};
 
 export const setCommentFromUser = (comment) => {
     return {
         type: "SET_COMMENT_FROM_USER",
         payload: comment
-    }
-}
+    };
+};
 
 export const setUserEmail = (userData) => ({
     type: UPDATE_USER_DATA_USERNAME,
@@ -70,7 +70,7 @@ export const setUserId = (userId) => ({
 export const setSearchId = (userId) => ({
     type: SET_SEARCH_ID,
     payload: userId
-})
+});
 
 export const setUserData = (data) => ({
     type: SET_USER_DATA,
@@ -84,7 +84,7 @@ export const setUserData = (data) => ({
         followings: data.followings,
         address: data.address,
     }
-})
+});
 export const setSearchData = (data) => ({
     type: SET_SEARCH_DATA,
     payload: {
@@ -113,10 +113,10 @@ export const closeSignUpModal = () => ({
 });
 export const openEditModal = () => ({
     type: OPEN_EDIT_MODAL
-})
+});
 export const closeEditModal = () => ({
     type: CLOSE_EDIT_MODAL
-})
+});
 export const GetUsersSuccess = (data) => ({
     type: GET_USERS_SUCCESS,
     payload: { users: data }
@@ -161,7 +161,7 @@ export const fetchPostsByPage = (page) => {
 
 export const setUserBirthday = (flag) => {
     return {
-        type: 'SET_USER_BIRTHDAY',
+        type: "SET_USER_BIRTHDAY",
         payload: flag,
     };
 };
@@ -224,16 +224,24 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
         throw error;
     }
 };
+
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
     payload: posts
-})
+});
 export const setProfileLikePosts = (posts) => ({
     type: SET_PROFILE_LIKE_POSTS,
     payload: posts
-})
+});
 export const setProfileReposts = (posts) => ({
     type: SET_PROFILE_REPOSTS,
     payload: posts
-})
+});
+
+export const setPageZero = () => {
+    return {
+        type: 'SET_PAGE_ZERO'
+    }
+}
+
 

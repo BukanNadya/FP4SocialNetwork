@@ -7,7 +7,10 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>
     } else if (userPosts.length === 0) {
-        return <div>Here will be posts from your friends</div>
+        return <div style={{ marginTop: "20%",   fontWeight: "400",
+            lineHeight: "20px",
+            fontSize: "22px",
+            fontFamily: "'Lato', sans-serif",}}>Here will be posts from your friends</div>
     } else {
         return (
             <div style={{ height: "100vh" }}>

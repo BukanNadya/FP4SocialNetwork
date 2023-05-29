@@ -29,7 +29,7 @@ export function Explore() {
             setIsLoading(true);
             getPosts();
         }
-    }, []);
+    }, [location.pathname]);
 
     const handleScroll = (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
