@@ -6,6 +6,13 @@ export const StyledModal = {
   outline: "none",
 };
 
+export const StyledInput = {
+marginBottom: "20px",
+width: "400px",
+position: "relative",
+
+};
+
 export const StyledBox = {
   width: 500,
   height: 600,

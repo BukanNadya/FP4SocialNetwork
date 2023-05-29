@@ -3,11 +3,9 @@ export const modalConfig = {
         title: "find your twitter account",
         text: "enter the email, phone number, ot username associated with your account to change your password",
         buttonText: "next",
-        placeholder: "email",
-        inputType: "email",
-        iconStatus: false,
+        inputType: "text",
         typeButton: "submit",
-        name: "userName"
+        name: "email"
     },
     sendCode: {
         title: "Where should we send a confirmation code?",
@@ -24,11 +22,12 @@ export const modalConfig = {
     },
     weSent: {
         title: "We sent you a code",
+        name: "password",
         text: "Check your email to get your confirmation code, go back and reselect a confirmation",
         buttonText: "next",
         secondaryButtonText: "back",
         placeholder: "Enter your code",
-        inputType: "text",
+        inputType: "password",
         typeButton: "submit"
     },
     choose: {

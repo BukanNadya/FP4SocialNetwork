@@ -7,30 +7,41 @@ import { WeSent } from './WeSent';
 import { Choose } from './Choose';
 import { AllSet } from './AllSet';
 import {StyledModal} from "./style.js"
+import { useModal } from '../../context/ModalContext';
 
 
-const BasicModal = ({handleClose, open, id}) => {
+export const ForgotPasswordModal = ({id}) => {
+  const {openForgot,
+    openSendCode,
+    openWeSend,
+    openChoose,
+    openAllSet} = useModal()
+const isOpen = openForgot ||
+openSendCode ||
+openWeSend ||
+openChoose ||
+openAllSet
     let content = null
     if(id==="forgot"){
-    content = <ForgotModal handleClose={handleClose} id={id}/>
+    content = <ForgotModal id={id}/>
     }
     if(id==="sendCode"){
-        content = <SendCodeModal handleClose={handleClose} id={id}/>
+        content = <SendCodeModal id={id}/>
     }
     if(id==="weSent"){
-        content = <WeSent handleClose={handleClose} id={id}/>
+        content = <WeSent id={id}/>
     }
     if(id==="choose"){
-        content = <Choose handleClose={handleClose} id={id}/>
+        content = <Choose id={id}/>
     }
     if(id==="allSet"){
-        content = <AllSet handleClose={handleClose} id={id}/>
+        content = <AllSet id={id}/>
     }
+    //render
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={isOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         sx={StyledModal}>
@@ -40,10 +51,6 @@ const BasicModal = ({handleClose, open, id}) => {
   );
 }
 
-BasicModal.propTypes = {
-    handleClose: PropTypes.func,
-    open: PropTypes.bool,
+ForgotPasswordModal.propTypes = {
     id: PropTypes.string
-};
-
-export default BasicModal
+}

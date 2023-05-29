@@ -3,24 +3,32 @@ import PropTypes from 'prop-types';
 import { modalConfig } from "./modalConfig";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { StyledBox, StyledHeaderModalText, StyledBlackButton, StyledFormControl, StyledSpanElement, StyledWhiteButton  } from "./style"
+import { StyledBox} from "./style"
 import BasicButton from '../common/button';
 import { useModal } from '../../context/ModalContext';
+import { useDispatch } from "react-redux"
+import { openLoginModal } from '../../store/actions';
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
 
 export const AllSet = ({ id }) => {
-    const {setOpenAllSet} = useModal()
+    const dispatch = useDispatch()
+    const {setOpenAllSet, setOpenForgot} = useModal()
     const { text,
         boldText,
         buttonText } = modalConfig[id]
-        const handleClick = () => {
-            setOpenAllSet(false)
+        const onclose = () => {
+            setOpenAllSet(false),
+            setOpenForgot(false)
         }
+const handleClick = ()=> {
+    onclose()
+    dispatch(openLoginModal())
+}
     return (
         <Box sx={StyledBox}>
-            <CloseIcon onClick={() => setOpenForgot(false)}/>
+            <CloseIcon onClick={onclose}/>
             <Logo/>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 {text}

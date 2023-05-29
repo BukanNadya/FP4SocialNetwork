@@ -21,12 +21,16 @@ import { useModal } from "../../context/ModalContext";
 export function EnterEmailModal() {
     const dispatch = useDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { openForgot,  setOpenForgot } = useModal();
+	const {openForgot, setOpenForgot} = useModal()
 
-    const handleForgot = () => {
-        setOpenForgot(!openForgot);
-        dispatch(closeLoginModal());
-    };
+    // const handleForgot = () => {
+    //     setOpenForgot(!openForgot);
+    //     dispatch(closeLoginModal());
+    // };
+const handleForgot = ()=>{
+setOpenForgot(true)
+    dispatch(closeLoginModal())
+}
 
     return (
         <>

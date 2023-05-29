@@ -135,10 +135,10 @@ export const setPosts = (posts) => ({
     payload: posts,
 });
 
-export const checkEmail = (data) => ({
+export const checkEmail = (email) => ({
     type: CHECK_EMAIL,
-    payload: data
-});
+    payload: email
+})
 export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });

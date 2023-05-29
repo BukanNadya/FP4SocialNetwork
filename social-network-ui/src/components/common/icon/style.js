@@ -9,4 +9,5 @@ export const StyledCloseSvgIcon2 = {
     position: "absolute",
     top: "20px",
     right: "20px",
+    cursor: "pointer"
 };
