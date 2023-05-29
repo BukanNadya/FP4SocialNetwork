@@ -20,6 +20,7 @@ public class PostDtoResponse {
   private Integer postId;
   private String username;
   private String name;
+  private Integer userId;
   private String writtenText;
   private byte[] photoFileByteArray;
   private LocalDateTime sentDateTime;
@@ -40,6 +41,7 @@ public class PostDtoResponse {
     tempPostDto.setPostId(post.getPostId());
     tempPostDto.setUsername(post.getUserPost().getUsername());
     tempPostDto.setName(post.getUserPost().getName());
+    tempPostDto.setUserId(post.getUserPost().getUserId());
     tempPostDto.setWrittenText(post.getWrittenText());
     tempPostDto.setPhotoFileByteArray(Base64.getDecoder().decode(post.getPhotoFile()));
     tempPostDto.setSentDateTime(post.getSentDateTime());

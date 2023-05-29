@@ -33,3 +33,4 @@ yarn-error.log*
 target/
 data/
 /social_network_api/target/
+/social_network_api/logs/

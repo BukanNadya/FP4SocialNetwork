@@ -20,12 +20,12 @@ public class UserDtoResponse {
 
   private LocalDate dateOfBirth;
 
-  private String address;
+  private Integer userId;
 
+  private String address;
   private byte[] profileBackgroundImageByteArray;
 
   private byte[] profileImageByteArray;
-
   private Integer followers;
   private Integer followings;
 
@@ -33,6 +33,7 @@ public class UserDtoResponse {
     UserDtoResponse userDtoResponse = new UserDtoResponse();
     userDtoResponse.setName(dbUser.getName());
     userDtoResponse.setUsername(dbUser.getUsername());
+    userDtoResponse.setUserId(dbUser.getUserId());
     userDtoResponse.setCreatedDateTime(dbUser.getCreatedDate());
     userDtoResponse.setDateOfBirth(dbUser.getDateOfBirth());
     userDtoResponse.setAddress(dbUser.getAddress());
@@ -50,6 +51,5 @@ public class UserDtoResponse {
     }
     return userDtoResponse;
   }
-
 
 }
