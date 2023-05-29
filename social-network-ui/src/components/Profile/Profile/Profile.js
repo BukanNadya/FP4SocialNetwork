@@ -5,64 +5,28 @@ import {
     imgStyle, LinkQuantityStyles, LinkStyles, LinkTextStyles,
     NameStyles,
     NicknameStyles,
-    ProfileStyles, SvgStyles, infoStyle,
+    ProfileStyles, SvgStyles, infoStyle, PhotoStyle,
 } from "./ProfileStyles";
 import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
 import {Link} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
-import {sendPost} from "../../../store/actions";
 
 export function Profile (props) {
-
-    // const handlePostSubmit = useCallback(async (values, setSubmitting) => {
-    //     if (values.postText.trim() !== "" || postImage) {
-    //         setSubmitting(true);
-    //
-    //         let photoFileByteArray = [];
-    //         if (postImage) {
-    //             const reader = new FileReader();
-    //
-    //             reader.onloadend = async () => {
-    //                 const imageArrayBuffer = new Uint8Array(reader.result);
-    //                 photoFileByteArray = Array.from(imageArrayBuffer);
-    //
-    //                 const postObject = {
-    //                     writtenText: values.postText,
-    //                     photoFileByteArray: photoFileByteArray,
-    //                     userId: userId
-    //                 };
-    //
-    //                 await dispatch(sendPost(postObject, setSubmitting));
-    //             };
-    //
-    //             reader.readAsArrayBuffer(postImage);
-    //         } else {
-    //             const postObject = {
-    //                 writtenText: values.postText,
-    //                 photoFileByteArray: [],
-    //                 userId: userId
-    //             };
-    //             await dispatch(sendPost(postObject, setSubmitting));
-    //         }
-    //
-    //         setPostImage(null);
-    //         setPostText("");
-    //     }
-    // }, [postImage, postText, userId]);
 
     return (
 
         <div>
             <div style={BgImgStyle}>
+                {props.background ?
+                    <img src={`data:image/png;base64,${props.background}`} alt={props.name} style={PhotoStyle} />
+                    :
+                    false
+                }
             </div>
             <div style={ProfileStyles}>
                 <div style={imgStyle}>
-                    {/*{props.image ? <img src={`${props.image}`} style={{ width: "150px", height: "150px", borderRadius: "80px", margin: "0,auto" }} alt=""/>*/}
-                    {/*    :<Avatar sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}></Avatar> }*/}
 
-                    {/*<Avatar alt={props.name} src={URL.createObjectURL(props.image)} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>*/}
-
-                    <Avatar alt={props.name} src={props.image} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
+                    <Avatar alt={props.name} src={props.image ? `data:image/png;base64,${props.image}` : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
 
                     <Button type="submit"
                             variant="contained" sx={{
@@ -128,6 +92,7 @@ export function Profile (props) {
 
 Profile.propTypes = {
     image: PropTypes.string.isRequired,
+    background: PropTypes.string.isRequired,
     buttonText: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     userName: PropTypes.string.isRequired,

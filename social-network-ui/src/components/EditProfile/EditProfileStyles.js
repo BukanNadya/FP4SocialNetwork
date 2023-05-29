@@ -39,7 +39,7 @@ export const StyleHead = {
     width: "100%",
     height: "53px",
     alignItems: "center",
-    margin: "14px",
+    padding: "14px",
     position: "sticky",
     top: "0",
     zIndex: "3",
@@ -66,13 +66,20 @@ export const StyleTitle = {
     fontSize: "20px",
     fontWeight: "700",
 }
-export const BgImgStyle = {
+export const BgPhotoStyle = {
     width: "100%",
     minHeight: "200px",
     backgroundColor: "#bdbdbd",
     display: "flex",
     gap: "20px",
     justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+}
+export const PhotoStyle = {
+    position: "absolute",
+    width: "100%",
+    height: "200px",
     alignItems: "center",
 }
 export const imgStyle = {
@@ -85,18 +92,30 @@ export const imgStyle = {
 export const svgStyle = {
     borderRadius: "50%",
     backgroundColor: "rgba(15, 20, 25, 0.4)",
-    width: "46px",
-    height: "46px",
+    minWidth: "42px",
+    minHeight: "42px",
     cursor: "pointer",
+    padding: "0",
+    zIndex: "1",
+    "&:hover": {
+        transition: "0.7s",
+        backgroundColor: "rgba(15, 20, 25, 0.3)",
+    },
 }
 export const svgAvatarStyle = {
     position: "absolute",
     borderRadius: "50%",
     backgroundColor: "rgba(15, 20, 25, 0.4)",
-    width: "46px",
-    height: "46px",
-    top: "-40%",
+    minWidth: "42px",
+    minHeight: "42px",
+    top: "20%",
     left: "37px",
     cursor: "pointer",
+    padding: "0",
+    zIndex: "1",
+    "&:hover": {
+        transition: "0.7s",
+        backgroundColor: "rgba(15, 20, 25, 0.3)",
+    },
 }
 

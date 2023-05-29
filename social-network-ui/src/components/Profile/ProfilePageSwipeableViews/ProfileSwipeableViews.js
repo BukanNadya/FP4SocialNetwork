@@ -13,7 +13,7 @@ import {
     setProfilePosts,
     setProfileReposts,
     setUserPostsClear
-} from '../../../store/actions';
+} from "../../../store/actions";
 import {useDispatch, useSelector} from "react-redux";
 
 function TabPanel(props) {

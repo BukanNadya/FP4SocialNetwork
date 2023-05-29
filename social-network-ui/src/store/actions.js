@@ -228,7 +228,7 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
     payload: posts
-});
+})
 export const setProfileLikePosts = (posts) => ({
     type: SET_PROFILE_LIKE_POSTS,
     payload: posts

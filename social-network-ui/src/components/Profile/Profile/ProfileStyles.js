@@ -13,6 +13,12 @@ export const BgImgStyle = {
     height: "200px",
     backgroundColor: "#bdbdbd"
 }
+export const PhotoStyle = {
+    position: "absolute",
+    width: "100%",
+    height: "200px",
+    alignItems: "center",
+}
 export const imgStyle = {
     display: "flex",
     justifyContent:"space-between",
