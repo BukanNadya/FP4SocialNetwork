@@ -7,6 +7,7 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>
     } else if (userPosts.length === 0) {
+        console.log(userPosts)
         return <div style={{ marginTop: "20%",   fontWeight: "400",
             lineHeight: "20px",
             fontSize: "22px",
@@ -22,6 +23,7 @@ export const PostsDisplaying = ({userPosts, isLoading}) => {
                           dataTime={post.sentDateTime}
                           postId={post.postId}
                           postLikes={post.likesCount}
+                          userIdWhoSendPost={post.userId}
                     />
                 ))}
             </div>

@@ -38,11 +38,16 @@ export function HomeScreen() {
     }, []);
 
     const fetchData = async (userId) => {
-        setIsLoading(true);
-        if (userId) {
-            const response = await fetch(`http://localhost:8080/profile/${userId}`);
-            const userData = await response.json();
-            dispatch(setUserData(userData));
+        try {
+            setIsLoading(true);
+            if (userId) {
+                const response = await fetch(`http://localhost:8080/profile/${userId}`);
+                const userData = await response.json();
+                dispatch(setUserData(userData));
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
             setIsLoading(false);
         }
     };
@@ -54,12 +59,19 @@ export function HomeScreen() {
     }, [location.pathname]);
 
     const fetchPosts = async (page) => {
-        const decodedToken = decodeToken();
-        if (decodedToken) {
-            const userId = decodedToken.sub;
-            dispatch(setUserId(userId));
-            dispatch(fetchPostsByUserId(userId, page));
-            await fetchData(userId);
+        try {
+            setIsLoading(true);
+            const decodedToken = decodeToken();
+            if (decodedToken) {
+                const userId = decodedToken.sub;
+                dispatch(setUserId(userId));
+                dispatch(fetchPostsByUserId(userId, page));
+                await fetchData(userId);
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -70,7 +82,7 @@ export function HomeScreen() {
             let photoFileByteArray = [];
             if (postImage) {
                 const reader = new FileReader();
-
+                reader.readAsArrayBuffer(postImage);
                 reader.onloadend = async () => {
                     const imageArrayBuffer = new Uint8Array(reader.result);
                     photoFileByteArray = Array.from(imageArrayBuffer);
@@ -83,8 +95,6 @@ export function HomeScreen() {
 
                     await dispatch(sendPost(postObject, setSubmitting));
                 };
-
-                reader.readAsArrayBuffer(postImage);
             } else {
                 const postObject = {
                     writtenText: values.postText,
@@ -121,7 +131,7 @@ export function HomeScreen() {
                                     {userData.image ? <img src={`data:image/png;base64,${userData.image}`}
                                                            style={{
                                                                width: "70px",
-                                                               height: "70px",
+                                                               height: "65px",
                                                                borderRadius: "50px",
                                                                margin: "0,auto"
                                                            }}

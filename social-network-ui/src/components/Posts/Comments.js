@@ -1,22 +1,27 @@
 import React from "react";
 import { Formik, Field, Form, } from "formik";
 import * as Yup from "yup";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
-import { setCommentFromUser } from "../../store/actions";
+import { setCommentFromUser, setSearchId } from "../../store/actions";
 
 export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const validationSchema = Yup.object().shape({
         comment: Yup.string()
             .required("Please enter a comment").max(250, "Comment must be no longer than 250 characters")
     });
 
+    const toAnotherUserPage = ()=>{
+        dispatch(setSearchId(String(userId)))
+        navigate("/view")
+    }
 
     return (
        <Formik
@@ -81,16 +86,16 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                                             fontSize: "13px",
                                             fontWeight: "400", marginRight: "10px"
                                         }}>
-                                            <Link to="/some/path"  style={{
+                                            <Link onClick={toAnotherUserPage}  style={{
                                                 color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
                                                 fontSize: "13px",
                                                 fontWeight: "400",
                                             }}> {comment.name}</Link>
                                         </li>
-                                        <li style={{
+                                        <li onClick={toAnotherUserPage} style={{
                                             color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
                                             fontSize: "13px",
-                                            fontWeight: "400", marginRight: "10px"
+                                            fontWeight: "400", marginRight: "10px", textDecoration:"underline", cursor:"pointer"
                                         }}>@{comment.username}
                                         </li>
                                         <li style={{

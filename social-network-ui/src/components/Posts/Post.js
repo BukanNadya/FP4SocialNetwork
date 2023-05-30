@@ -2,17 +2,19 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
+import {  useNavigate } from "react-router-dom";
 
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
-import { openLoginModal, setComments } from "../../store/actions";
+import { openLoginModal, setComments, setSearchId } from "../../store/actions";
 
-export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes, postComments }) => {
+export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes, postComments, userIdWhoSendPost }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [postCommentCount, setPostCommentCount] = useState(postComments);
@@ -37,13 +39,15 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         fetchData();
     }, [userId, postId]);
 
+    const toAnotherUserPage = ()=>{
+        dispatch(setSearchId(String(userIdWhoSendPost)))
+        navigate("/view")
+    }
 
-
-
-    const  sendRepost = async () => {
+    const sendRepost = async () => {
         if (userId) {
             setIsReposted(true);
-           await fetch(`http://localhost:8080/reposts`, {
+            await fetch(`http://localhost:8080/reposts`, {
                 method: "POST",
                 body: JSON.stringify({
                     postId: postId,
@@ -135,7 +139,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
                 <Avatar alt={userName} src="#"/>
                 <div style={{ marginLeft: 16, flex: 1 }}>
-                    <Typography variant="subtitle1" component="div">
+                    <Typography variant="subtitle1" component="div" sx={{textDecoration:"underline", cursor:"pointer"}} onClick={toAnotherUserPage}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
                     <Typography variant="body1" component="div" mt={1}
@@ -168,14 +172,15 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
                 </IconButton>
                 <IconButton onClick={sendRepost}>
-                    <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"} />
+                    <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"}/>
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeCount}</Typography>
                 </IconButton>
             </CardActions>
-            {isCommentOpen && <Comments comments={comments} postCommentCount={postCommentCount} setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
+            {isCommentOpen && <Comments comments={comments} postCommentCount={postCommentCount}
+                                        setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
         </Card>
     );
 };
@@ -189,6 +194,7 @@ Post.propTypes = {
     postComments: PropTypes.number,
     postLikes: PropTypes.number,
     text: PropTypes.string,
+    userIdWhoSendPost:PropTypes.number,
 };
 
 

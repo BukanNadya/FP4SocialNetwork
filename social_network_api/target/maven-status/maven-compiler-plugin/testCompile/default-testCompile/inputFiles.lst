@@ -1,22 +1,25 @@
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/MessageRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/UserRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/InboxDtoResponseTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/UserServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/UserFollowRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/JwtAuthenticationRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/MessageGetAllDtoResponseTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostLikeServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostLikeRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtUserDetailsServiceTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostCommentRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/UserFollowServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/InboxServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtTokenServiceTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/PostDtoUnitTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/MessageServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtAuthFilterTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/MessageDtoResponseTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/InboxParticipantsServiceImplTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostRestControllerTest.java
-/Users/alinabondarieva/Desktop/untitled folder 2/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostCommentServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/MessageGetAllDtoResponseTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtTokenServiceTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/JwtAuthenticationRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtAuthFilterTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/RepostServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostLikeRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostLikeServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PostCommentServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/InboxParticipantsServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/MessageServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/UserRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/UserFollowServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/PostCommentRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/PasswordChangerServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/RepostRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/InboxDtoResponseTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/InboxServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/UserFollowRestControllerTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/service/UserServiceImplTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/dto/message/MessageDtoResponseTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/PostDtoUnitTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/security/JwtUserDetailsServiceTest.java
+/Users/Asya/Desktop/SocialNetwork_step/FP4SocialNetwork/social_network_api/src/test/java/com/danit/socialnetwork/com/danit/socialnetwork/rest/MessageRestControllerTest.java

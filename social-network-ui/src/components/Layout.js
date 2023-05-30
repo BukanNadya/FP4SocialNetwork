@@ -42,7 +42,6 @@ export function Layout() {
         if (userToken && userBirthdateGoogle === "true" || userToken && userBirthdateGoogle === "false") {
             navigate("/home");
         }
-
     }, []);
 
     const fetchPosts = async (page) => {
@@ -65,7 +64,7 @@ export function Layout() {
 
     const handleParentScroll = (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-        if (scrollHeight - scrollTop <= clientHeight + 5) {
+        if (scrollHeight - scrollTop <= clientHeight + 20) {
             if (location.pathname === "/explore") {
                 const page2 = page + 1;
                 dispatch(setPage(page2));
