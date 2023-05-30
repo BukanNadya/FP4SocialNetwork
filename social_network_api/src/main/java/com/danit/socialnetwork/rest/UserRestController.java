@@ -5,11 +5,14 @@ import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
+import com.danit.socialnetwork.dto.user.UserDtoForPostLikeResponse;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
+import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
+import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +44,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
+  private final UserRepository userRepository;
 
   private static final String FALSE = "false";
   private static final String TRUE = "true";
@@ -173,4 +179,34 @@ public class UserRestController {
       @RequestBody UserDobChangeRequest userDobChangeRequest) {
     return userService.dbUserDobChange(userDobChangeRequest);
   }
+
+  @GetMapping("/users/likes")
+  @ResponseBody
+  public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
+      defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    if (postId == 0) {
+      return new ArrayList<>();
+    }
+    return userService.getUsersWhoLikedPostByPostId(postId, page)
+        .stream()
+        .map(UserDtoForPostLikeResponse::from)
+        .toList();
+  }
+
+
+  @GetMapping("/users/popular")
+  @ResponseBody
+  public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
+    return userService.getUsersWhoMostPopular(page)
+        .stream()
+        .map(UserDtoForSidebar::from)
+        .toList();
+  }
+
+
+
+
+
+
+
 }

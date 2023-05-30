@@ -1,12 +1,13 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.*;
+import com.danit.socialnetwork.dto.user.UserDtoForPostLikeResponse;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
+import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,7 +34,6 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.RequestEntity.put;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,9 +42,6 @@ class UserRestControllerTest {
 
   @Mock
   UserService userService;
-
-  @Mock
-  UserRepository userRepository;
 
   @Mock
   SearchMapper searchMapper;
@@ -314,4 +312,31 @@ class UserRestControllerTest {
     Assertions.assertEquals("false", response.getBody().get("edition"));
   }
 
+  @Test
+  void getUsersWhoLikedPostByPostId() {
+
+    DbUser dbUser1 = new DbUser();
+    DbUser dbUser2 = new DbUser();
+    List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
+
+    when(userService.getUsersWhoLikedPostByPostId(1, 1)).thenReturn(dbUserList);
+    List<UserDtoForPostLikeResponse> list = controller.getUsersWhoLikedPostByPostId(1, 1);
+
+    Assertions.assertEquals(2, list.size());
+
+
+  }
+
+  @Test
+  void getUsersWhoMostPopular() {
+
+    DbUser dbUser1 = new DbUser();
+    DbUser dbUser2 = new DbUser();
+    List<DbUser> dbUserList = Arrays.asList(dbUser1, dbUser2);
+
+    when(userService.getUsersWhoMostPopular(1)).thenReturn(dbUserList);
+    List<UserDtoForSidebar> list = controller.getUsersWhoMostPopular(1);
+
+    Assertions.assertEquals(2, list.size());
+  }
 }

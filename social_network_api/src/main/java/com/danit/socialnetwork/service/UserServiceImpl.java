@@ -12,6 +12,8 @@ import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -232,5 +234,19 @@ public class UserServiceImpl implements UserService {
       response.put("message", "invalid User id");
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @Override
+  public List<DbUser> getUsersWhoLikedPostByPostId(Integer postId, Integer page) {
+    int pageSize = 10;
+    Pageable pagedByPageSizePosts = PageRequest.of(page, pageSize);
+    return userRepository.getUsersWhoLikedPostByPostId(postId, pagedByPageSizePosts);
+  }
+
+  @Override
+  public List<DbUser> getUsersWhoMostPopular(Integer page) {
+    int pageSize = 10;
+    Pageable pagedByPageSizePosts = PageRequest.of(page, pageSize);
+    return userRepository.findAllWhoMostPopular(pagedByPageSizePosts) ;
   }
 }

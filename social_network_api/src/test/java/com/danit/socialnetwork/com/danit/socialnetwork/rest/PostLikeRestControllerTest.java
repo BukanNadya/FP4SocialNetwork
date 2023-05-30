@@ -69,7 +69,7 @@ public class PostLikeRestControllerTest {
   }
 
   @Test
-  public void testGetAllLikes() {
+  public void testGetCountAllLikesByPostId() {
 
     Integer userId1 = 3;
     Integer userId2 = 4;
@@ -80,7 +80,6 @@ public class PostLikeRestControllerTest {
 
     DbUser dbUser2 = new DbUser();
     dbUser2.setUserId(userId2);
-
 
     Post post = new Post();
     post.setPostId(postId);
@@ -95,13 +94,11 @@ public class PostLikeRestControllerTest {
     postLike2.setPostInPostLike(post);
 
     List<PostLike> postLikeList = new ArrayList<>(Arrays.asList(postLike1, postLike2));
-    when(postLikeService.getAllPostLikesByPostId(2)).thenReturn(postLikeList);
-    List<PostLikeDto> result = postLikeRestController.getAllLikes(postId);
+    when(postLikeService.getCountAllLikesByPostId(postId)).thenReturn(2);
+    Integer result = postLikeRestController.getCountAllLikesByPostId(postId);
 
-    Assertions.assertEquals(2, result.toArray().length);
-    Assertions.assertEquals(postId, result.get(0).getPostId());
-    Assertions.assertEquals(userId1, result.get(0).getUserId());
-    Assertions.assertEquals(userId2, result.get(1).getUserId());
+    Assertions.assertEquals(2, result);
+
 
   }
 

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +19,8 @@ public class PostCommentDtoResponse {
 
   private String username;
 
+  private byte[] photoFileByteArray;
+
   private Integer userId;
 
   private Integer postCommentId;
@@ -28,6 +31,12 @@ public class PostCommentDtoResponse {
     postCommentDtoResponse.setCreatedDateTime(postComment.getCreatedDateTime());
     postCommentDtoResponse.setName(postComment.getUserId().getName());
     postCommentDtoResponse.setUsername(postComment.getUserId().getUsername());
+    if (postComment.getUserId().getProfileImageUrl() != null) {
+      postCommentDtoResponse.setPhotoFileByteArray(Base64.getDecoder()
+          .decode(postComment.getUserId().getProfileImageUrl()));
+    } else {
+      postCommentDtoResponse.setPhotoFileByteArray(null);
+    }
     postCommentDtoResponse.setUserId(postComment.getUserId().getUserId());
     postCommentDtoResponse.setPostCommentId(postComment.getPostCommentId());
     return postCommentDtoResponse;

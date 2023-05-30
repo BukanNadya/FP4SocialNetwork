@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -31,18 +28,17 @@ public class PostLikeRestController {
     return new ResponseEntity<>(PostLikeDto.from(postLike), HttpStatus.CREATED);
   }
 
+
   @GetMapping("/likes")
   @ResponseBody
-  public List<PostLikeDto> getAllLikes(@RequestParam(name = "postId",
+  public Integer getCountAllLikesByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId) {
     if (postId == 0) {
-      return new ArrayList<>();
+      return 0;
     }
-    return postLikeService.getAllPostLikesByPostId(postId)
-        .stream()
-        .map(PostLikeDto::from)
-        .toList();
+    return postLikeService.getCountAllLikesByPostId(postId);
   }
+
 
   @GetMapping("/likes/active")
   @ResponseBody

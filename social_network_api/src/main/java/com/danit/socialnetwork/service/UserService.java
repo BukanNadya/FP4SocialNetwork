@@ -37,4 +37,8 @@ public interface UserService {
   boolean update(EditingDtoRequest request);
 
   ResponseEntity<Map<String, String>> dbUserDobChange(@RequestBody UserDobChangeRequest userDobChangeRequest);
+
+  List<DbUser> getUsersWhoLikedPostByPostId(Integer postId, Integer page);
+
+  List<DbUser> getUsersWhoMostPopular(Integer page);
 }

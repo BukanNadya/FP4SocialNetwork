@@ -51,6 +51,7 @@ public class PostLikeServiceImpl implements PostLikeService {
 
   @Override
   public List<PostLike> getAllPostLikesByPostId(Integer postId) {
+
     return postLikeRepository.findAllPostLikesByPostId(postId);
   }
 
@@ -70,5 +71,10 @@ public class PostLikeServiceImpl implements PostLikeService {
     }
     postLikeRepository.delete(tempPostLike.get());
     return tempPostLike.get();
+  }
+
+  @Override
+  public Integer getCountAllLikesByPostId(Integer postId) {
+    return postLikeRepository.findCountAllLikesByPostId(postId);
   }
 }

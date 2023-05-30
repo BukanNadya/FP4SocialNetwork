@@ -21,10 +21,8 @@ public class UserDtoResponse {
   private LocalDate dateOfBirth;
 
   private Integer userId;
-
   private String address;
   private byte[] profileBackgroundImageByteArray;
-
   private byte[] profileImageByteArray;
   private Integer followers;
   private Integer followings;
