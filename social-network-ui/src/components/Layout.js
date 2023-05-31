@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -62,7 +62,7 @@ export function Layout() {
 
 
 
-    const handleParentScroll = (event) => {
+    const handleParentScroll = useCallback((event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
         if (scrollHeight - scrollTop <= clientHeight + 20) {
             if (location.pathname === "/explore") {
@@ -75,7 +75,7 @@ export function Layout() {
                 fetchPosts(page2);
             }
         }
-    };
+    }, [dispatch, location.pathname, page, fetchPosts]);
 
     return (
         <ScrollContext.Provider value={{ handleScroll: handleParentScroll }}>

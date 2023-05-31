@@ -35,6 +35,7 @@ export function EnterEmailModal() {
             <a href="http://localhost:8080/oauth2/authorization/google"  style={{ ...StyledBlackButton, marginTop: "0px", color:"white", textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", height: "45px",
                 width: "400px",
                 background: "#000000",
+                textTransform:"uppercase",
                }}><SvgIcon
                 sx={{ marginRight: "10px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                 width="48px" height="48px">

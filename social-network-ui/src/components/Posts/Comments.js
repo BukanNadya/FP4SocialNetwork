@@ -10,7 +10,7 @@ import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import { setCommentFromUser, setSearchId } from "../../store/actions";
 
-export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount }) {
+export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount, photoFileByteArray }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const validationSchema = Yup.object().shape({
@@ -18,15 +18,15 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
             .required("Please enter a comment").max(250, "Comment must be no longer than 250 characters")
     });
 
-    const toAnotherUserPage = ()=>{
-        dispatch(setSearchId(String(userId)))
-        navigate("/view")
-    }
-
+    const toAnotherUserPage = () => {
+        dispatch(setSearchId(String(userId)));
+        navigate("/view");
+    };
+    photoFileByteArray = true;
     return (
-       <Formik
+        <Formik
             initialValues={{ comment: "" }}
-            onSubmit={async (values,  actions) => {
+            onSubmit={async (values, actions) => {
                 console.log(userId, postId, values.comment,);
                 let userCommentResponse = await fetch("http://localhost:8080/comments", {
                     method: "POST",
@@ -40,15 +40,15 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                     }
                 });
                 let userCommentData = await userCommentResponse.json();
-                console.log(userCommentData)
-                dispatch(setCommentFromUser(userCommentData))
+                console.log(userCommentData);
+                dispatch(setCommentFromUser(userCommentData));
                 actions.resetForm();
-                setPostCommentCount(postCommentCount+1)
+                setPostCommentCount(postCommentCount + 1);
             }
             }
             validationSchema={validationSchema}
         >
-           {() => (
+            {() => (
                 <Form>
                     <Box style={{
                         padding: "10px 20px",
@@ -65,7 +65,13 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                                 alignItems: "center",
                                 minHeight: "100px"
                             }}>
-                                <Avatar alt={comment.username} src="#"/>
+                                {photoFileByteArray ? <img src={`data:image/png;base64,${photoFileByteArray}`}
+                                                           style={{
+                                                               width: "50px",
+                                                               height: "50px",
+                                                               borderRadius: "30px",
+                                                           }} alt=""/> :
+                                    <Avatar alt={comment.username} src="#"/>}
                                 <div style={{
                                     display: "flex",
                                     height: "100%",
@@ -86,16 +92,20 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                                             fontSize: "13px",
                                             fontWeight: "400", marginRight: "10px"
                                         }}>
-                                            <Link onClick={toAnotherUserPage}  style={{
+                                            <Link onClick={toAnotherUserPage} style={{
                                                 color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
                                                 fontSize: "13px",
                                                 fontWeight: "400",
                                             }}> {comment.name}</Link>
                                         </li>
                                         <li onClick={toAnotherUserPage} style={{
-                                            color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
+                                            color: "rgb(113, 118, 123)",
+                                            fontFamily: "'Lato', sans-serif",
                                             fontSize: "13px",
-                                            fontWeight: "400", marginRight: "10px", textDecoration:"underline", cursor:"pointer"
+                                            fontWeight: "400",
+                                            marginRight: "10px",
+                                            textDecoration: "underline",
+                                            cursor: "pointer"
                                         }}>@{comment.username}
                                         </li>
                                         <li style={{
@@ -112,7 +122,8 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                                     }}>{comment.commentText}</Typography>
                                 </div>
                             </Box>
-                        ))) : <Typography variant="h6" sx={{ marginBottom: "10px", marginTop: "10px" }}>Add your first comment!</Typography>}
+                        ))) : <Typography variant="h6" sx={{ marginBottom: "10px", marginTop: "10px" }}>Add your first
+                            comment!</Typography>}
                         <Field
                             as={TextField}
                             sx={{ "& .MuiOutlinedInput-root": { borderRadius: "40px" }, marginTop: "10px" }}
@@ -130,7 +141,7 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
                                     marginTop: "10px",
                                     marginBottom: "10px",
                                     fontSize: "12px",
-                                }} >Add comment</Button>
+                                }}>Add comment</Button>
                     </Box>
                 </Form>
             )}
@@ -143,5 +154,6 @@ Comments.propTypes = {
     userId: PropTypes.string,
     postId: PropTypes.number,
     postCommentCount: PropTypes.number,
-    setPostCommentCount:PropTypes.func,
+    setPostCommentCount: PropTypes.func,
+    photoFileByteArray: PropTypes.string,
 };

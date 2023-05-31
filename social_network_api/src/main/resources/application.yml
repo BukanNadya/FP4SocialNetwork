@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://isilo.db.elephantsql.com/yofcgaph
-    username: yofcgaph
-    password: XzJChZAfOg7ew1UcwKSEO5K6yo6xTtPb
+    url: jdbc:postgresql://ruby.db.elephantsql.com:5432/txxwqzcm
+    username: txxwqzcm
+    password: zONa5d08Ds-7JC7X2pHk6egAIN2F4y-a
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
@@ -13,10 +13,10 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
-#    defer-datasource-initialization: true
-#  sql:
-#    init:
-#      mode: always
+  #    defer-datasource-initialization: true
+  #  sql:
+  #    init:
+  #      mode: always
   main:
     banner-mode: off
   security:

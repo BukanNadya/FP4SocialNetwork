@@ -1,7 +1,7 @@
 export const modalConfig = {
     forgot: {
-        title: "find your twitter account",
-        text: "enter the email, phone number, ot username associated with your account to change your password",
+        title: "Find your Capitweet account",
+        text: "Enter the email associated with your account to change your password",
         buttonText: "next",
         inputType: "text",
         typeButton: "submit",
@@ -13,7 +13,7 @@ export const modalConfig = {
         secondText: "Start by choosing where to send a confirmation code.",
         buttonText: "next",
         secondaryButtonText: "cancel",
-        link: "Twitter Support",
+        link: "Capitweet Support",
         linkText: "Contact ",
         secondLinkText: " if you don't have access.",
         boldText: "Send an email to",
@@ -34,7 +34,7 @@ export const modalConfig = {
         title: "Choose a new password",
         link: "strong password",
         linkText: "Make sure your new password is 8 characters or more. Try including numbers, letters, and punctuation marks for a ",
-        text: "You'll be logged out of all active Twitter sessions after your password is changed.",
+        text: "You'll be logged out of all active Capitweet sessions after your password is changed.",
         buttonText: "change password",
         placeholder: "Enter a new password",
         secondPlaceholder: "Confirm your password",
@@ -46,7 +46,7 @@ export const modalConfig = {
     allSet: {
         boldText: "You're all set",
         text: "You've successfully changed your password.",
-        buttonText: "continue to Twitter",
+        buttonText: "continue to Capitweet",
         typeButton: "button"
     }
 }

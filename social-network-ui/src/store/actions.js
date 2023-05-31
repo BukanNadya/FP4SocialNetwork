@@ -144,9 +144,12 @@ export const setUserPostsClear = (posts) => ({
 });
 
 export const fetchPostsByUserId = (userId, page) => {
+    console.log("userId_ACTIONS", userId)
+    console.log("page_ACTIONS", page)
     return async (dispatch) => {
         const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
+        console.log("posts/fetchPostsByUserId_ACTIONS", data)
         dispatch(setPosts(data));
     };
 };

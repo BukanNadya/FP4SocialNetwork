@@ -12,6 +12,7 @@ const initialState = {
 export function PostReducer(state = initialState, action) {
     switch (action.type) {
         case SET_POSTS:
+            console.log("action.payload/SET_POSTS_REDUCER", action.payload)
             return {
                 ...state,
                 posts: [...state.posts, ...action.payload],
@@ -19,7 +20,7 @@ export function PostReducer(state = initialState, action) {
         case SET_CLEAR_POSTS:
             return {
                 ...state,
-                posts: action.payload,
+                posts:action.payload,
                 profilePosts: action.payload,
                 profileLikePosts: action.payload,
                 profileReposts: action.payload,

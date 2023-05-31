@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { useLocation } from "react-router-dom";
 
-import { fetchPostsByUserId, sendPost, setPageZero, setUserId } from "../store/actions";
+import { fetchPostsByUserId, sendPost, setPageZero, setUserId, setUserPostsClear } from "../store/actions";
 import { setUserData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
@@ -22,7 +23,9 @@ import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
 
+
 export function HomeScreen() {
+    let location = useLocation();
     const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
@@ -39,7 +42,6 @@ export function HomeScreen() {
 
     const fetchData = async (userId) => {
         try {
-            setIsLoading(true);
             if (userId) {
                 const response = await fetch(`http://localhost:8080/profile/${userId}`);
                 const userData = await response.json();
@@ -47,15 +49,14 @@ export function HomeScreen() {
             }
         } catch (error) {
             console.error(error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
     useEffect(() => {
+        setUserPostsClear([])
+        setPageZero();
         fetchData(userId);
         fetchPosts(page);
-        setPageZero();
     }, [location.pathname]);
 
     const fetchPosts = async (page) => {
@@ -63,10 +64,13 @@ export function HomeScreen() {
             setIsLoading(true);
             const decodedToken = decodeToken();
             if (decodedToken) {
+                console.log("decodedToken_fetchPosts/HOME_SCREEN",decodedToken)
                 const userId = decodedToken.sub;
                 dispatch(setUserId(userId));
-                dispatch(fetchPostsByUserId(userId, page));
-                await fetchData(userId);
+                await Promise.all([
+                    dispatch(fetchPostsByUserId(userId, page)),
+                    fetchData(userId),
+                ]);
             }
         } catch (error) {
             console.error(error);
@@ -75,7 +79,7 @@ export function HomeScreen() {
         }
     };
 
-    const handlePostSubmit = useCallback(async (values, setSubmitting) => {
+    const handlePostSubmit = async (values, setSubmitting) => {
         if (values.postText.trim() !== "" || postImage) {
             setSubmitting(true);
 
@@ -107,7 +111,7 @@ export function HomeScreen() {
             setPostImage(null);
             setPostText("");
         }
-    }, [postImage, postText, userId]);
+    };
 
     return (
         <>

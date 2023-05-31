@@ -9,6 +9,7 @@ export const Header = {
     flexBasis: "600px",
     boxShadow: "none",
     borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+    backdropFilter: "blur(15px)",
 };
 
 export const SidebarBox = {

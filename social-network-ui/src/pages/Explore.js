@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import {
-    fetchExplorePosts, setPage,
+    fetchExplorePosts, setPage, setPageZero,
 } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollContext } from "../components/Layout.js";
@@ -14,6 +14,7 @@ export function Explore() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(setPageZero())
         async function getPosts() {
             try {
                 setIsLoading(true);

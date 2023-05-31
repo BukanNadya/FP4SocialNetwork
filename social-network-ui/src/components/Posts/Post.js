@@ -2,9 +2,9 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { formatDistanceToNow, differenceInDays, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
@@ -23,6 +23,18 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const [likeArr, setLikeArr] = useState([]);
     const [isReposted, setIsReposted] = useState(false);
     const [likeCount, setLikeCount] = useState(postLikes);
+    const [showLike, setShowLike] = useState(false);
+    const [usersWhoLike, setUsersWhoLike] = useState([]);
+
+
+    const ShowUsersWhoLike = async () => {
+        setShowLike(!showLike);
+        let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postld=${postId}&page=0`);
+        let usersWhoLike2 = await dataAboutUsersWhoLike.json();
+        console.log(usersWhoLike2)
+        setUsersWhoLike(usersWhoLike2);
+        console.log(postId)
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,10 +51,10 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         fetchData();
     }, [userId, postId]);
 
-    const toAnotherUserPage = ()=>{
-        dispatch(setSearchId(String(userIdWhoSendPost)))
-        navigate("/view")
-    }
+    const toAnotherUserPage = () => {
+        dispatch(setSearchId(String(userIdWhoSendPost)));
+        navigate("/view");
+    };
 
     const sendRepost = async () => {
         if (userId) {
@@ -106,7 +118,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         }
     }, [like, userId, postId, likeArr, dispatch]);
 
-    const handleShowMore = () => {
+    const handleShowMore = async () => {
         setShowMore(!showMore);
     };
 
@@ -121,7 +133,6 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         } else {
             return format(date, "MMM d, yyyy");
         }
-        // Все то же самое
     }, [dataTime]);
 
     const renderText = () => {
@@ -135,11 +146,12 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     };
 
     return (
-        <Card sx={PostCard}>
+        <Card sx={{ ...PostCard, position: "relative" }}>
             <CardContent sx={{ display: "flex", paddingBottom: 0 }}>
-                <Avatar alt={userName} src="#"/>
+              <Avatar alt={userName} src="#"/>
                 <div style={{ marginLeft: 16, flex: 1 }}>
-                    <Typography variant="subtitle1" component="div" sx={{textDecoration:"underline", cursor:"pointer"}} onClick={toAnotherUserPage}>
+                    <Typography variant="subtitle1" component="div"
+                                sx={{ textDecoration: "underline", cursor: "pointer" }} onClick={toAnotherUserPage}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate}
                     </Typography>
                     <Typography variant="body1" component="div" mt={1}
@@ -174,10 +186,32 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                 <IconButton onClick={sendRepost}>
                     <Repeat fontSize="small" htmlColor={isReposted ? "blue" : "inherit"}/>
                 </IconButton>
-                <IconButton onClick={addLikeHandle}>
+                <IconButton onClick={addLikeHandle} >
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
-                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{likeCount}</Typography>
+
                 </IconButton>
+                <Typography onClick={ShowUsersWhoLike} variant="body2" sx={{ marginLeft: "0px", textDecoration: "underline", cursor:"pointer" }}>{likeCount}</Typography>
+                {showLike ?
+                    <Paper elevation={3} sx={{
+                        width: "200px",
+                        marginLeft: "10px",
+                        maxHeight: "70px",
+                        position: "absolute",
+                        left: "170px",
+                        overflow: "scroll"
+                    }}>
+                        тут будуть юзери які лайкнули пост)
+                        {usersWhoLike.map(user => (
+                            <div key={postId} style={{
+                                display: "flex",
+                                borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+                                padding: "5px 10px"
+                            }}>
+                                <Typography>@{user.username}</Typography>
+                                <Typography sx={{ marginLeft: "10px" }}>{user.name}</Typography>
+                            </div>
+                        ))}
+                    </Paper> : null}
             </CardActions>
             {isCommentOpen && <Comments comments={comments} postCommentCount={postCommentCount}
                                         setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
@@ -194,7 +228,7 @@ Post.propTypes = {
     postComments: PropTypes.number,
     postLikes: PropTypes.number,
     text: PropTypes.string,
-    userIdWhoSendPost:PropTypes.number,
+    userIdWhoSendPost: PropTypes.number,
 };
 
 
