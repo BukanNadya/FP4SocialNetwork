@@ -45,7 +45,7 @@ function a11yProps(index) {
 
 export function ProfileSwipeableViews (props) {
     const [value, setValue] = React.useState(0);
-    // const userId = useSelector(state => state.userData.userData.userId);
+    const userId = useSelector(state => state.userData.searchData.userId);
     const profilePosts = useSelector(state => state.Posts.profilePosts)
     const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
     const profileReposts = useSelector(state => state.Posts.profileReposts)
@@ -105,7 +105,7 @@ export function ProfileSwipeableViews (props) {
             fetchUserLikedPosts()
         }
 
-    }, [value]);
+    }, [value, userId]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -116,24 +116,21 @@ export function ProfileSwipeableViews (props) {
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth">
                     <Tab label="Posts" {...a11yProps(0)} sx={TabStyles}/>
-                    <Tab label="Answers" {...a11yProps(1)} sx={TabStyles}/>
+                    <Tab label="Reposts" {...a11yProps(1)} sx={TabStyles}/>
                     <Tab label="Likes" {...a11yProps(2)} sx={TabStyles}/>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                Posts
                 <div style={PostsWrapper}>
                     <PostsDisplaying userPosts={profilePosts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Answers
                 <div style={PostsWrapper}>
                     <PostsDisplaying userPosts={profileReposts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Likes
                 <div style={PostsWrapper}>
                     <PostsDisplaying userPosts={profileLikePosts} isLoading={isLoading}/>
                 </div>

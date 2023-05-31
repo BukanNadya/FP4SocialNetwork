@@ -92,7 +92,7 @@ export function Profile (props) {
 
 Profile.propTypes = {
     image: PropTypes.string.isRequired,
-    background: PropTypes.string,
+    background: PropTypes.string.isRequired,
     buttonText: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     userName: PropTypes.string.isRequired,

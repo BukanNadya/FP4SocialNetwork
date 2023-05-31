@@ -35,9 +35,9 @@ export function InputProfilePhoto ({onImageUpload, ...props }) {
             <input {...props} type="file" accept="image/*" id="post-image-input" ref={inputFileRef} onChange={handleFileChange} style={{ display: "none" }}/>
                  <label htmlFor="post-image-input">
                      {selectedFile ?
-                         <Avatar alt="Selected" src={URL.createObjectURL(selectedFile.file)} sx={{ bgcolor: "rgb(29, 155, 240)", width: "120px", height: "120px", marginTop: "-10%" }}/>
+                         <Avatar alt="Selected" src={URL.createObjectURL(selectedFile.file)} sx={{ bgcolor: "rgb(29, 155, 240)", width: "120px", height: "120px", marginTop: "-40%" }}/>
                          :
-                         <Avatar alt="" src={`data:image/png;base64,${props.image}`} sx={{ bgcolor: "rgb(29, 155, 240)", width: "120px", height: "120px", marginTop: "-10%" }}/>
+                         <Avatar alt="" src={`data:image/png;base64,${props.image}`} sx={{ bgcolor: "rgb(29, 155, 240)", width: "120px", height: "120px", marginTop: "-40%" }}/>
                      }
              <Button sx={svgAvatarStyle} onClick={() => {
                              handleButtonClick()

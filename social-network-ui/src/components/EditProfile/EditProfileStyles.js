@@ -108,7 +108,7 @@ export const svgAvatarStyle = {
     backgroundColor: "rgba(15, 20, 25, 0.4)",
     minWidth: "42px",
     minHeight: "42px",
-    top: "20%",
+    top: "-20%",
     left: "37px",
     cursor: "pointer",
     padding: "0",

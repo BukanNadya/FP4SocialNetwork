@@ -11,7 +11,6 @@ export function InputPhoto ({onImageUpload, ...props }) {
 
     const handleButtonClick = () => {
         inputFileRef.current.click();
-        setBackground(null)
     };
     const handleDeleteClick = () => {
         setSelectedFile(null);
@@ -21,6 +20,7 @@ export function InputPhoto ({onImageUpload, ...props }) {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setSelectedFile(null)
+        setBackground(null)
         if (file) {
             const reader = new FileReader();
 
