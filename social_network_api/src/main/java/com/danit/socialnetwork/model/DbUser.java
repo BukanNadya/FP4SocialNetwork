@@ -6,8 +6,6 @@ import lombok.NonNull;
 import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
@@ -15,8 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity(name = "users")
 @Data
@@ -62,15 +58,6 @@ public class DbUser {
 
   @Column(name = "profile_image_url", columnDefinition = "text")
   private String profileImageUrl;
-
-  @ManyToMany(mappedBy = "dbUsers", fetch = FetchType.LAZY)
-  private Set<Message> messages = new HashSet<>();
-
-  @ManyToMany(mappedBy = "dbUsers", fetch = FetchType.LAZY)
-  private Set<InboxParticipants> inboxParticipants = new HashSet<>();
-
-  @ManyToMany(mappedBy = "dbUsers", fetch = FetchType.LAZY)
-  private Set<Inbox> inbox = new HashSet<>();
 
   public DbUser(String username, String password,
                 String email, String name, LocalDate dateOfBirth) {
