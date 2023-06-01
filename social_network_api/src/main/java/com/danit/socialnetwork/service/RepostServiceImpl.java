@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
+import com.danit.socialnetwork.exception.post.RepostNotFoundException;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +54,24 @@ public class RepostServiceImpl implements RepostService {
         .toList();
   }
 
+  @Override
+  public Repost deleteRepost(Integer postId, Integer userId) {
+    Optional<Repost> tempRepost = repostRepository.findRepostByPostIdAndUserId(
+        postId, userId);
+    if (tempRepost.isEmpty()) {
+      throw new RepostNotFoundException(String.format("Repost for postId %s by userId %s not found ",
+          postId, userId));
+    }
+    repostRepository.delete(tempRepost.get());
+    return tempRepost.get();
+
+  }
+
+
+  @Override
+  public Boolean isActiveRepost(Integer postId, Integer userId) {
+    Optional<Repost> tempRepost = repostRepository.findRepostByPostIdAndUserId(postId, userId);
+    return tempRepost.isPresent();
+  }
 
 }

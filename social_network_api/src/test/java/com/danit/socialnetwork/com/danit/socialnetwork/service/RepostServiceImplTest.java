@@ -4,7 +4,6 @@ import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -22,8 +21,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -132,6 +131,60 @@ class RepostServiceImplTest {
     Assertions.assertEquals(responseList.get(0).getUsername(), dbUser1.getUsername());
     Assertions.assertEquals(responseList.get(1).getUsername(), dbUser2.getUsername());
     Assertions.assertEquals(2, responseList.toArray().length);
+
+  }
+
+  @Test
+  void deleteRepost() {
+
+    Integer postId = 2;
+    Integer userId = 3;
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUserId(userId);
+    dbUser.setUsername("John1");
+
+    Post post = new Post();
+    post.setPostId(postId);
+    post.setUserPost(dbUser);
+
+    Repost repost = new Repost();
+    repost.setPostId(post);
+    repost.setSharedId(4);
+    repost.setUserId(dbUser);
+    repost.setRepostedDateTime(LocalDateTime.now());
+    when(repostRepository.findRepostByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(repost));
+    Repost result = repostService.deleteRepost(postId,userId);
+
+    Assertions.assertEquals(postId, result.getPostId().getPostId());
+    Assertions.assertEquals(userId, result.getUserId().getUserId());
+    Assertions.assertEquals("John1", result.getUserId().getUsername());
+
+  }
+
+  @Test
+  void isActiveRepost() {
+
+    Integer postId = 2;
+    Integer userId = 3;
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUserId(userId);
+
+    Post post = new Post();
+    post.setPostId(postId);
+    post.setUserPost(dbUser);
+
+    Repost repost = new Repost();
+    repost.setPostId(post);
+    repost.setSharedId(4);
+    repost.setUserId(dbUser);
+    repost.setRepostedDateTime(LocalDateTime.now());
+    when(repostRepository.findRepostByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(repost));
+    Boolean result = repostService.isActiveRepost(postId, userId);
+
+    Assertions.assertEquals(true, result);
+    Assertions.assertNotEquals(false, result);
 
   }
 }

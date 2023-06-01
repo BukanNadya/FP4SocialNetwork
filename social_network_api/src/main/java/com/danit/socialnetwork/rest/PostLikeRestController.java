@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
@@ -30,7 +29,6 @@ public class PostLikeRestController {
 
 
   @GetMapping("/likes")
-  @ResponseBody
   public Integer getCountAllLikesByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId) {
     if (postId == 0) {
@@ -41,13 +39,12 @@ public class PostLikeRestController {
 
 
   @GetMapping("/likes/active")
-  @ResponseBody
   public Boolean isExistPostLike(@RequestParam(name = "postId") Integer postId,
                                  @RequestParam(name = "userId") Integer userId) {
     return postLikeService.isPresentPostLike(postId, userId);
   }
 
-  @DeleteMapping("likes")
+  @DeleteMapping("/likes")
   public ResponseEntity<PostLikeDto> deletePostLike(@RequestParam(name = "postId") Integer postId,
                                                     @RequestParam(name = "userId") Integer userId) {
     PostLike postLike = postLikeService.deletePostLike(postId, userId);

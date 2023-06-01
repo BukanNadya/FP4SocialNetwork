@@ -1,10 +1,11 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.model.PostComment;
+import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.service.RepostServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +68,57 @@ class RepostRestControllerTest {
 
     Assertions.assertEquals(4, list.size());
 
+
+  }
+
+  @Test
+  void deleteRepost() {
+
+    Integer postId = 2;
+    Integer userId = 3;
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUserId(userId);
+
+    Post post = new Post();
+    post.setPostId(postId);
+    post.setUserPost(dbUser);
+
+
+    Repost repost = new Repost();
+    repost.setSharedId(4);
+    repost.setPostId(post);
+    repost.setUserId(dbUser);
+    repost.setRepostedDateTime(LocalDateTime.now());
+
+
+    when(repostService.deleteRepost(postId, userId)).thenReturn(repost);
+
+
+    Repost responseEntity = repostService.deleteRepost(postId, userId);
+
+    Assertions.assertEquals(postId, responseEntity.getPostId().getPostId());
+    Assertions.assertEquals(userId, responseEntity.getUserId().getUserId());
+    Assertions.assertNotEquals(userId + 1, responseEntity.getUserId().getUserId());
+    Assertions.assertNotEquals(postId + 1, responseEntity.getPostId().getPostId());
+
+
+  }
+
+  @Test
+  void isActiveRepost() {
+
+    Integer postId = 2;
+    Integer userId = 3;
+
+
+    when(repostService.isActiveRepost(postId, userId)).thenReturn(true);
+    when(repostService.isActiveRepost(postId + 1, userId + 1))
+        .thenReturn(false);
+    Boolean result1 = repostService.isActiveRepost(postId, userId);
+    Boolean result2 = repostService.isActiveRepost(postId + 1, userId + 1);
+    Assertions.assertEquals(true, result1);
+    Assertions.assertNotEquals(true, result2);
 
   }
 }

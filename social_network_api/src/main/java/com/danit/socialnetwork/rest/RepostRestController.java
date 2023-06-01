@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ public class RepostRestController {
 
   /*Method returns all reposts done by user*/
   @GetMapping("/reposts")
-  @ResponseBody
   public List<RepostDtoResponse> getAllRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                        Integer userId,
                                                        @RequestParam(name = "page", defaultValue = "0")
@@ -45,6 +44,21 @@ public class RepostRestController {
     return repostService.getAllRepostsByUserId(userId, page);
 
   }
+
+  @DeleteMapping("/reposts")
+  public ResponseEntity<RepostDtoSave> deleteRepost(@RequestParam(name = "postId") Integer postId,
+                                                    @RequestParam(name = "userId") Integer userId) {
+    Repost repost = repostService.deleteRepost(postId, userId);
+    return new ResponseEntity<>(RepostDtoSave.from(repost), HttpStatus.OK);
+  }
+
+
+  @GetMapping("/reposts/active")
+  public Boolean isActiveRepost(@RequestParam(name = "postId") Integer postId,
+                                @RequestParam(name = "userId") Integer userId) {
+    return repostService.isActiveRepost(postId, userId);
+  }
+
 
 
 }

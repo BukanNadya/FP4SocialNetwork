@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RepostRepository extends JpaRepository<Repost, Integer> {
@@ -14,5 +15,7 @@ public interface RepostRepository extends JpaRepository<Repost, Integer> {
       + "ORDER BY REPOSTS.REPOSTED_DATETIME DESC")
   List<Repost> findAllByUserId(Integer userId, Pageable pagedByTenPosts);
 
-
+  @Query(nativeQuery = true, value = "SELECT * FROM REPOSTS"
+      + " WHERE REPOSTS.POST_ID = :postId AND REPOSTS.USER_ID = :userId")
+  Optional<Repost> findRepostByPostIdAndUserId(Integer postId, Integer userId);
 }

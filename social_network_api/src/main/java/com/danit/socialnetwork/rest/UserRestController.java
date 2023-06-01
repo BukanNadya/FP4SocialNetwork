@@ -157,13 +157,11 @@ public class UserRestController {
   }
 
   @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
-  @ResponseBody
   public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
     return userService.getProfileImage(username);
   }
 
   @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
-  @ResponseBody
   public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
     return userService.getBackgroundImage(username);
   }
@@ -181,7 +179,6 @@ public class UserRestController {
   }
 
   @GetMapping("/users/likes")
-  @ResponseBody
   public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
@@ -195,7 +192,6 @@ public class UserRestController {
 
 
   @GetMapping("/users/popular")
-  @ResponseBody
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
         .stream()

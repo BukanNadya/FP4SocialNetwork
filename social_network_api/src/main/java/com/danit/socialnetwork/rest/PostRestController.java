@@ -29,7 +29,6 @@ public class PostRestController {
   /*Method returns  all posts from users that a user follows by his id
    * if userId is empty returns all posts descending by order based on created datetime*/
   @GetMapping(path = "/posts", produces = "application/json")
-  @ResponseBody
   public List<PostDtoResponse> getAllPostsFromFollowing(@RequestParam(name = "userId",
       defaultValue = "0") Integer useFollowingId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (useFollowingId == 0) {
@@ -47,7 +46,6 @@ public class PostRestController {
 
   /*Method returns all posts done by user*/
   @GetMapping(path = "/posts/{userId}", produces = "application/json")
-  @ResponseBody
   public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") Integer userId,
                                               @RequestParam(name = "page", defaultValue = "0")
                                               Integer page) {
