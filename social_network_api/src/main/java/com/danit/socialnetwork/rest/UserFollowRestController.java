@@ -35,6 +35,12 @@ public class UserFollowRestController {
     return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowingId(userId), HttpStatus.OK);
   }
 
+  @PostMapping("api/isfollowing")
+  public ResponseEntity<Map<String, String>> isFollowing(@RequestBody UserFollowRequest userFollowRequest) {
+    ResponseEntity<Map<String, String>> responseEntity = userFollowService.isFollowing(userFollowRequest);
+    return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
+  }
+
   @PostMapping("api/follow")
   public ResponseEntity<Map<String, String>> follow(@RequestBody UserFollowRequest userFollowRequest) {
     ResponseEntity<Map<String, String>> responseEntity = userFollowService.follow(userFollowRequest);

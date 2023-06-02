@@ -27,10 +27,10 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, Integer>
   List<UserFollow> findAllByUserFollowingId(Integer userFollowingId);
 
   @Query(nativeQuery = true, value = "select * from user_follows "
-      + "where user_follower_id = :follower "
-      + "and user_following_id = :following")
+      + "where user_follower_id = :userFollowerId "
+      + "and user_following_id = :userFollowingId")
   Optional<UserFollow> findUserFollowByUserFollowerIdAndUserFollowingId(
-      Integer follower, Integer following);
+      Integer userFollowerId, Integer userFollowingId);
 
   @Query(nativeQuery = true, value = "select * from user_follows "
       + "where user_follower_id = :userFollowerId "

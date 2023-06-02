@@ -27,6 +27,8 @@ public interface UserFollowService {
 
   String deleteUserFollowByUserFollowId(Integer userFollowId);
 
+  ResponseEntity<Map<String, String>> isFollowing(@RequestBody UserFollowRequest userFollowRequest);
+
   ResponseEntity<Map<String, String>> follow(@RequestBody UserFollowRequest userFollowRequest);
 
   ResponseEntity<Map<String, String>> unFollow(@RequestBody UserUnfollowRequest userUnfollowRequest);

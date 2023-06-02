@@ -8,7 +8,7 @@ spring:
     password: zONa5d08Ds-7JC7X2pHk6egAIN2F4y-a
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 5
+      maximum-pool-size: 3
       minimum-idle: 0
   jpa:
     generate-ddl: true
