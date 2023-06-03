@@ -25,8 +25,12 @@ public class UserDtoForSidebar {
     userDtoResponse.setUsername(dbUser.getUsername());
     userDtoResponse.setUserId(dbUser.getUserId());
     if (dbUser.getProfileImageUrl() != null) {
-      userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
-          .decode(dbUser.getProfileImageUrl()));
+      try {
+        userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
+            .decode(dbUser.getProfileImageUrl()));
+      } catch (RuntimeException exc) {
+        userDtoResponse.setProfileImageByteArray(null);
+      }
     } else {
       userDtoResponse.setProfileImageByteArray(null);
     }

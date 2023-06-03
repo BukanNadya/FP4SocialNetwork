@@ -12,7 +12,6 @@ import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
-import com.danit.socialnetwork.repository.UserRepository;
 import com.danit.socialnetwork.service.UserService;
 import com.danit.socialnetwork.model.DbUser;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,8 +42,6 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
-  private final UserRepository userRepository;
-
   private static final String FALSE = "false";
   private static final String TRUE = "true";
 
@@ -198,11 +194,6 @@ public class UserRestController {
         .map(UserDtoForSidebar::from)
         .toList();
   }
-
-
-
-
-
 
 
 }

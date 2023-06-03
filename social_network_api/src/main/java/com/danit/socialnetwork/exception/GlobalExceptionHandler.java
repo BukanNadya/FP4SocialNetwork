@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler
-  public ResponseEntity<ErrorResponse> catchNotFoundException(AppUserError exception) {
+  @ExceptionHandler ({AppUserError.class, RuntimeException.class})
+  public ResponseEntity<ErrorResponse> catchNotFoundException(Exception exception) {
     ErrorResponse error = new ErrorResponse();
     error.setStatus(HttpStatus.NOT_FOUND.value());
     error.setMessage(exception.getMessage());
@@ -20,12 +20,4 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler
-  public ResponseEntity<ErrorResponse> catchIllegalArgumentException(RuntimeException exception) {
-    ErrorResponse error = new ErrorResponse();
-    error.setStatus(HttpStatus.NOT_FOUND.value());
-    error.setMessage(exception.getMessage());
-    error.setTimeStamp(System.currentTimeMillis());
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-  }
 }

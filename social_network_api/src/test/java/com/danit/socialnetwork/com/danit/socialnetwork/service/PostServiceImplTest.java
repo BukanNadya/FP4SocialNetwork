@@ -23,6 +23,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,16 +101,28 @@ public class PostServiceImplTest {
     Pageable pagedByFivePosts =
         PageRequest.of(0, 12);
 
-    List<UserFollow> userFollowList = new ArrayList<>(Arrays.asList(userFollow1, userFollow2));
+    Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
+        2, "John1", "Johny1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        new BigInteger(String.valueOf(1))};
 
-    when(postRepository.findAllPostsFromToFollow(user.getUserId(), pagedByFivePosts)).thenReturn(postList);
+    Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
+        3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        new BigInteger(String.valueOf(1))};
+
+    int pageSize = 12;
+    int offset = 0 * pageSize;
+
+    List<Object[]> testList = Arrays.asList(objects1, objects2);
+
+
+    when(postRepository.findAllPostsFromToFollowOneRequest(user.getUserId(), offset, pageSize)).thenReturn(testList);
 
     List<PostDtoResponse> result = postService.getAllPostsFromToFollowWithNativeQuery(
         user.getUserId(), 0);
-    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
-    Assertions.assertEquals(result.get(1).getWrittenText(), post2.getWrittenText());
-    Assertions.assertEquals(result.get(0).getUsername(), user1.getUsername());
-    Assertions.assertEquals(result.get(1).getUsername(), user2.getUsername());
+    Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
+    Assertions.assertEquals(result.get(1).getWrittenText(), objects2[3]);
+    Assertions.assertEquals(result.get(0).getUsername(), objects1[5]);
+    Assertions.assertEquals(result.get(1).getUsername(), objects2[5]);
     Assertions.assertEquals(2, result.toArray().length);
 
   }
@@ -128,6 +142,10 @@ public class PostServiceImplTest {
     post1.setPostComments(new ArrayList<>() {
     });
 
+    Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
+        2, "John1", "Johny1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        new BigInteger(String.valueOf(1))};
+
     Post post2 = new Post();
     post2.setPostId(2);
     DbUser user2 = new DbUser();
@@ -142,16 +160,25 @@ public class PostServiceImplTest {
     post2.setPostComments(new ArrayList<>() {
     });
 
-    Pageable sortedByDateTimeDesc =
-        PageRequest.of(0, 12, Sort.by("sentDateTime").descending());
+    Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
+        3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        new BigInteger(String.valueOf(1))};
+
+//    Pageable sortedByDateTimeDesc =
+//        PageRequest.of(0, 12, Sort.by("sentDateTime").descending());
+
+    int pageSize = 12;
+    int offset = 0 * pageSize;
 
     List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
     Page<Post> pagePost = new PageImpl<>(postList);
 
-    when(postRepository.findAll(sortedByDateTimeDesc)).thenReturn(pagePost);
+    List<Object[]> testList = Arrays.asList(objects1, objects2);
+
+    when(postRepository.findAll(offset, pageSize)).thenReturn(testList);
     List<PostDtoResponse> result = postService.getAllPosts(0);
-    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
-    Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
+    Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
+    Assertions.assertEquals(result.get(1).getName(), objects2[6]);
     Assertions.assertEquals(2, result.toArray().length);
 
   }
@@ -308,7 +335,7 @@ public class PostServiceImplTest {
 
     when(postRepository.findAllPostsAndRepostsByUserIdAsPost(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
 
-    List<PostRepostDtoMix> result = postService.getAllPostsAndRepostsByUserId(userId,0);
+    List<PostRepostDtoMix> result = postService.getAllPostsAndRepostsByUserId(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());

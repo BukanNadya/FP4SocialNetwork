@@ -49,25 +49,26 @@ public class PostServiceImpl implements PostService {
 
   // Method returns all available posts
   @Override
-  public List<PostDtoResponse> getAllPosts(Integer page) {
-    Pageable sortedByDateTimeDesc =
-        PageRequest.of(page, 12, Sort.by("sentDateTime").descending());
-    Page<Post> listPost = postRepository.findAll(sortedByDateTimeDesc);
-    return listPost.stream()
-        .map(this::from)
+  public List<PostDtoResponse> getAllPosts(Integer pageNumber) {
+    int pageSize = 12;
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = postRepository.findAll(
+         offset, pageSize);
+    return results.stream()
+        .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
 
   /*Method returns  all posts from users that a user follows by his id*/
   @Override
   public List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(
-      Integer userFollowerId, Integer page) {
+      Integer userFollowerId, Integer pageNumber) {
     int pageSize = 12;
-    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
-    List<Post> postList = postRepository.findAllPostsFromToFollow(
-        userFollowerId, pagedByTenPosts);
-    return postList.stream()
-        .map(this::from)
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = postRepository.findAllPostsFromToFollowOneRequest(
+        userFollowerId, offset, pageSize);
+    return results.stream()
+        .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
 
