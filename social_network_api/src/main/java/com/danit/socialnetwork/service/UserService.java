@@ -1,6 +1,8 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
+import com.danit.socialnetwork.dto.search.SearchDto;
+import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
@@ -30,7 +32,7 @@ public interface UserService {
 
   boolean sendLetter(String name, String email);
 
-  List<DbUser> filterCachedUsersByName(String userSearch);
+  List<SearchDto> filterCachedUsersByName(SearchRequest request);
 
   UserDtoResponse findByUserId(Integer userId);
 

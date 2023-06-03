@@ -49,7 +49,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @RequestMapping(value = "registration", method = RequestMethod.POST)
+  @PostMapping(path = "registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
@@ -91,7 +91,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/sendLetter", method = RequestMethod.POST)
+  @PostMapping(value = "/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
@@ -108,7 +108,7 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/activate", method = RequestMethod.POST)
+  @PostMapping(value = "/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
@@ -124,17 +124,15 @@ public class UserRestController {
     }
   }
 
-  @RequestMapping(value = "/search", method = RequestMethod.POST)
-  public ResponseEntity<List<SearchDto>> handleSearchPost(
-      @RequestBody SearchRequest request) {
-    String userSearch = request.getUserSearch();
-    List<DbUser> search = userService.filterCachedUsersByName(userSearch);
-    log.debug("filterCachedUsersByName: " + userSearch + ". Find all users by name.");
-    List<SearchDto> searchDto = search.stream().map(searchMapper::dbUserToSearchDto).toList();
+  @GetMapping(value = "/api/search")
+  public ResponseEntity<List<SearchDto>> handleSearchPost(@RequestBody SearchRequest request) {
+    List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
+    log.debug(String.format("filterCachedUsersByName: %s. Find all users by name.",
+        request.getSearch()));
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
-  @PutMapping(value = "edition")
+  @PutMapping(value = "/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();

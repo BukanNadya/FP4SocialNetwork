@@ -2,6 +2,7 @@ package com.danit.socialnetwork.config;
 
 
 import com.danit.socialnetwork.model.DbUser;
+import com.danit.socialnetwork.model.Message;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
@@ -29,9 +30,14 @@ public class GuavaCache {
       .expireAfterWrite(1, TimeUnit.MINUTES)
       .build();
 
-  public static Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
+  public static final Cache<String, List<DbUser>> userCache = CacheBuilder.newBuilder()
       .maximumSize(1000)
-      .expireAfterWrite(5, TimeUnit.MINUTES)
+      .expireAfterWrite(1, TimeUnit.MINUTES)
+      .build();
+
+  public static final Cache<String, List<Message>> messageCache = CacheBuilder.newBuilder()
+      .maximumSize(1000)
+      .expireAfterWrite(1, TimeUnit.MINUTES)
       .build();
 
 }

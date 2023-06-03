@@ -1,6 +1,10 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.dto.*;
+import com.danit.socialnetwork.dto.UserEmailRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
+import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.user.UserDtoForPostLikeResponse;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
@@ -33,7 +37,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.RequestEntity.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -232,31 +236,40 @@ class UserRestControllerTest {
   }
 
   @Test
-  void handleSearchPost() throws Exception {
+  void handleSearch() throws Exception {
     DbUser testDbUser1 = new DbUser();
     testDbUser1.setName("Nadya");
     DbUser testDbUser2 = new DbUser();
     testDbUser2.setName("Nadin");
+    DbUser testDbUser3 = new DbUser();
+    testDbUser3.setName("Katya");
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser1);
     dbUsers.add(testDbUser2);
+    dbUsers.add(testDbUser3);
 
-    String nameSearch = "dya";
-    SearchRequest userSearch = new SearchRequest();
-    userSearch.setUserSearch(nameSearch);
+    String nameSearch = "ya";
+    String userId = "2";
+    SearchRequest search = new SearchRequest();
+    search.setSearch(nameSearch);
+    search.setUserId(userId);
 
-    when(userService.filterCachedUsersByName("dya")).thenReturn(dbUsers);
+    SearchDto testSearchDto1 = new SearchDto();
+    testSearchDto1.setName("Nadya");
+    SearchDto testSearchDto2 = new SearchDto();
+    testSearchDto2.setName("Katya");
+    List<SearchDto> testSearchDto = new ArrayList<>();
+    testSearchDto.add(testSearchDto1);
+    testSearchDto.add(testSearchDto2);
 
-    mockMvc.perform(post("/search")
+    when(userService.filterCachedUsersByName(search)).thenReturn(testSearchDto);
+
+    mockMvc.perform(get("/api/search")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(new ObjectMapper().writeValueAsString(userSearch)))
+            .content(new ObjectMapper().writeValueAsString(search)))
         .andExpect(status().isFound());
 
-    verify(userService).filterCachedUsersByName(userSearch.getUserSearch());
-  }
-
-  @Test
-  void getUser() {
+    verify(userService).filterCachedUsersByName(search);
   }
 
   @Test

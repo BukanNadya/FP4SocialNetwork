@@ -2,6 +2,7 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
+import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.mappers.SearchMapper;
@@ -24,15 +25,13 @@ import com.danit.socialnetwork.config.GuavaCache;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
@@ -178,20 +177,24 @@ class UserServiceImplTest {
   void filterCachedUsersByName_WhenExists() {
     DbUser testDbUser1 = new DbUser();
     testDbUser1.setName("Nadya");
+    testDbUser1.setUsername("NNN");
+    testDbUser1.setUserId(1); // Set the userId property
     DbUser testDbUser2 = new DbUser();
-    testDbUser2.setName("Nadin");
+    testDbUser2.setName("NNN");
+    testDbUser2.setUsername("Nadin");
+    testDbUser2.setUserId(2); // Set the userId property
     DbUser testDbUser3 = new DbUser();
     testDbUser3.setName("Ron");
+    testDbUser3.setUsername("RRR");
+    testDbUser3.setUserId(3); // Set the userId property
     DbUser testDbUser4 = new DbUser();
-    testDbUser4.setName("Dima");
+    testDbUser4.setName("DDD");
+    testDbUser4.setUsername("Dima");
+    testDbUser4.setUserId(4); // Set the userId property
     DbUser testDbUser5 = new DbUser();
     testDbUser5.setName("Roma");
-    DbUser testDbUser6 = new DbUser();
-    testDbUser6.setName("Lena");
-    DbUser testDbUser7 = new DbUser();
-    testDbUser7.setName("Lina");
-    DbUser testDbUser8 = new DbUser();
-    testDbUser8.setName("Lenok");
+    testDbUser5.setUsername("RRR");
+    testDbUser5.setUserId(5); // Set the userId property
 
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser1);
@@ -199,39 +202,59 @@ class UserServiceImplTest {
     dbUsers.add(testDbUser3);
     dbUsers.add(testDbUser4);
     dbUsers.add(testDbUser5);
-    dbUsers.add(testDbUser6);
-    dbUsers.add(testDbUser7);
-    dbUsers.add(testDbUser8);
+
     userCache.put("UserCache", dbUsers);
 
-    List<DbUser> resultSearchDto1 = userServiceImp.filterCachedUsersByName("nad");
-    List<DbUser> resultSearchDto2 = userServiceImp.filterCachedUsersByName("ro");
-    List<DbUser> resultSearchDto3 = userServiceImp.filterCachedUsersByName("na");
+    SearchDto testSearchDto1 = new SearchDto();
+    testSearchDto1.setName("Nadya");
+    testSearchDto1.setUsername("NNN");
+    SearchDto testSearchDto2 = new SearchDto();
+    testSearchDto2.setName("NNN");
+    testSearchDto2.setUsername("Nadin");
 
-    Assert.assertTrue(resultSearchDto1.size() <= 8);
-    Assert.assertEquals(2, resultSearchDto1.size());
-    Assert.assertTrue(resultSearchDto2.size() <= 8);
-    Assert.assertEquals(2, resultSearchDto2.size());
-    Assert.assertTrue(resultSearchDto3.size() <= 8);
-    Assert.assertEquals(4, resultSearchDto3.size());
-    Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase()));
-    Assert.assertTrue(resultSearchDto2.get(0).getName().toUpperCase().contains("ro".toUpperCase()));
-    Assert.assertTrue(resultSearchDto3.get(0).getName().toUpperCase().contains("na".toUpperCase()));
+    List<SearchDto> testSearchDto = new ArrayList<>();
+    testSearchDto.add(testSearchDto1);
+    testSearchDto.add(testSearchDto2);
+
+    String nameSearch = "nad";
+    String userId = "3";
+    SearchRequest search = new SearchRequest();
+    search.setSearch(nameSearch);
+    search.setUserId(userId);
+
+    when(searchMapper.dbUserToSearchDto(testDbUser1)).thenReturn(testSearchDto1);
+    when(searchMapper.dbUserToSearchDto(testDbUser2)).thenReturn(testSearchDto2);
+
+    List<SearchDto> resultSearchDto = userServiceImp.filterCachedUsersByName(search);
+
+    Assert.assertTrue(resultSearchDto.size() <= 5);
+    Assert.assertEquals(2, resultSearchDto.size());
+    Assert.assertTrue(resultSearchDto.get(0).getName().toUpperCase().contains("nad".toUpperCase())
+        || resultSearchDto.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
   }
+
 
   @Test
   void filterCachedUsersByName_WhenNotExists() {
     DbUser testDbUser = new DbUser();
     testDbUser.setName("Nadya");
+    testDbUser.setUsername("Nadya");
 
     List<DbUser> dbUsers = new ArrayList<>();
     dbUsers.add(testDbUser);
     userCache.put("UserCache", dbUsers);
 
-    List<DbUser> testByName = userServiceImp.filterCachedUsersByName("nid");
+    String nameSearch = "nid";
+    String userId = "2";
+    SearchRequest search = new SearchRequest();
+    search.setSearch(nameSearch);
+    search.setUserId(userId);
+
+    List<SearchDto> testByName = userServiceImp.filterCachedUsersByName(search);
 
     Assert.assertEquals(0, testByName.size());
-    Assert.assertFalse(dbUsers.get(0).getName().toUpperCase().contains("nid".toUpperCase()));
+    Assert.assertFalse(dbUsers.get(0).getName().toUpperCase().contains("nid".toUpperCase())
+        || dbUsers.get(0).getUsername().toUpperCase().contains("nid".toUpperCase()));
   }
 
   @Test
@@ -327,6 +350,7 @@ class UserServiceImplTest {
     assertTrue(result);
   }
 
+
   @Test
   void dbUserDobChange() {
     UserDobChangeRequest userDobChangeRequest = new UserDobChangeRequest();
@@ -390,7 +414,6 @@ class UserServiceImplTest {
     Assertions.assertEquals(1, userList.get(0).getUserId());
     Assertions.assertEquals("John", userList.get(0).getUsername());
     Assertions.assertEquals("Johny", userList.get(0).getName());
-
-
   }
+
 }

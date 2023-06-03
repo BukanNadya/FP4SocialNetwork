@@ -2,11 +2,14 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
+import com.danit.socialnetwork.dto.search.SearchDto;
+import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
 import com.danit.socialnetwork.exception.user.HeaderPhotoNotFoundException;
+import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
@@ -41,6 +44,7 @@ import static com.danit.socialnetwork.config.GuavaCache.userCache;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final SearchMapper searchMapper;
   private final PasswordEncoder enc;
   private final MailSenderImpl mailSender;
   private final GuavaCache guavaCache;
@@ -148,16 +152,22 @@ public class UserServiceImpl implements UserService {
     return code.equals(activationCode);
   }
 
-  public List<DbUser> filterCachedUsersByName(String userSearch) {
+  public List<SearchDto> filterCachedUsersByName(SearchRequest request) {
+    Integer userId = Integer.valueOf(request.getUserId());
+    String userSearch = request.getSearch();
     if (userCache.getIfPresent("UserCache") == null) {
       List<DbUser> cacheUsers = userRepository.findAll();
       userCache.put("UserCache", cacheUsers);
     }
     log.debug(String.format("filterCachedUsersByName: %s. Should find all users by name.", userSearch));
     return userCache.getIfPresent("UserCache").stream()
-        .filter(user -> user.getName().toLowerCase()
-            .contains(userSearch.toLowerCase()))
-        .toList();
+        .filter(user -> (user.getName().toLowerCase()
+            .contains(userSearch.toLowerCase())
+            && !user.getUserId().equals(userId))
+            || user.getUsername().toLowerCase()
+            .contains(userSearch.toLowerCase())
+            && !user.getUserId().equals(userId))
+        .map(searchMapper::dbUserToSearchDto).toList();
   }
 
   @Override
