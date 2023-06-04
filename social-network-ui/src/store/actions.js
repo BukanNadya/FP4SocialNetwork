@@ -12,10 +12,21 @@ import {
     CLOSE_LOGIN_MODAL,
     DELETE_USERS_SUCCESS,
     CHECK_EMAIL,
-    SET_PAGE, SET_CLEAR_POSTS, SET_USER_POST,
-    SET_SEARCH_ID, SET_SEARCH_DATA,
-    SET_USER_DATA, ADD_EXPLORE_POSTS, ADD_REGISTRATION_POSTS,
-    SET_PROFILE_POSTS, OPEN_EDIT_MODAL, CLOSE_EDIT_MODAL, SET_PROFILE_LIKE_POSTS, SET_PROFILE_REPOSTS,
+    SET_PAGE,
+    SET_CLEAR_POSTS,
+    SET_USER_POST,
+    SET_SEARCH_ID,
+    SET_SEARCH_DATA,
+    SET_USER_DATA,
+    ADD_EXPLORE_POSTS,
+    ADD_REGISTRATION_POSTS,
+    SET_PROFILE_POSTS,
+    OPEN_EDIT_MODAL,
+    CLOSE_EDIT_MODAL,
+    SET_PROFILE_LIKE_POSTS,
+    SET_PROFILE_REPOSTS,
+    SET_USER_FOLLOW,
+    SET_USER_UNFOLLOW, BUTTON_ENABLED, BUTTON_DISABLED,
 } from "./types";
 
 export const setPage = (pageNumber) => ({
@@ -246,5 +257,16 @@ export const setPageZero = () => {
         type: 'SET_PAGE_ZERO'
     }
 }
-
+export const userFollow = () => ({
+    type: SET_USER_FOLLOW
+});
+export const userUnfollow = () => ({
+    type: SET_USER_UNFOLLOW
+});
+export const buttonDisabled = () => ({
+    type: BUTTON_DISABLED
+});
+export const buttonEnabled = () => ({
+    type: BUTTON_ENABLED
+});
 

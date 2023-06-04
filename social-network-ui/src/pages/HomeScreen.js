@@ -51,19 +51,6 @@ export function HomeScreen() {
             console.error(error);
         }
     };
-    // const fetchFollow = async (userId) => {
-    //
-    //         const response = await fetch(`http://localhost:8080/api/follow`, {
-    //             method: "POST",
-    //             body: JSON.stringify({
-    //                 userFollower: userId,
-    //                 userFollowing: userId,
-    //             }),
-    //             headers: { "Content-Type": "application/json" }
-    //         })
-    //         const userFollow = await response.json();
-    //         console.log(userFollow)
-    // };
 
     useEffect(() => {
         setUserPostsClear([])

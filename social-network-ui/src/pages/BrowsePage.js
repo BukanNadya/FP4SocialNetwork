@@ -1,30 +1,38 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Profile} from "../components/Profile/Profile/Profile";
-import {setSearchData} from "../store/actions";
+import {setSearchData, userFollow} from "../store/actions";
+import {fetchFollow} from "../store/Thunks/fetchFollowThunk";
+import {useNavigate} from "react-router-dom";
 
 export function BrowsePage () {
 
+    const isFollow = useSelector(state => state.userData.followData.userFollow)
     const searchData = useSelector(state => state.userData.searchData)
-    const userId = useSelector(state => state.userData.searchData.userId);
+    const searchId = useSelector(state => state.userData.searchData.userId);
+    const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
 
-            const response = await fetch(`http://localhost:8080/profile/${userId}`);
+            const response = await fetch(`http://localhost:8080/profile/${searchId}`);
             const userData = await response.json();
             dispatch(setSearchData(userData));
         };
-        if (userId) {
+        if (searchId) {
             fetchData();
         }
-    }, [userId]);
+    }, [searchId, isFollow]);
+
 
     return (
-        <Profile buttonText="Read"
-                 buttonColor="#000000"
-                 textColor="#ffffff"
+        <>
+        {userId === searchId ?
+            navigate("/profile")
+            :
+            <Profile buttonText="Subscribe"
                  image={searchData.image}
                  name={searchData.name}
                  userName={searchData.userName}
@@ -33,6 +41,9 @@ export function BrowsePage () {
                  followings={searchData.followings}
                  followers={searchData.followers}
                  userId={searchData.userId}
-        />
+                 btnClick={() => dispatch(fetchFollow())}
+            />
+        }
+        </>
     )
 }
