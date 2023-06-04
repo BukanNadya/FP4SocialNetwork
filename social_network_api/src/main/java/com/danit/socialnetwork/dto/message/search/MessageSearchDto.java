@@ -11,12 +11,12 @@ public class MessageSearchDto {
   private Integer userId;
   private String username;
   private String name;
-  private byte[] profileImageUrl;
+  private String profileImageUrl;
   private String message;
   private LocalDateTime createdAt;  // create message
 
   public MessageSearchDto(Integer userId, String username, String name,
-                          byte[] profileImageUrl, String message, LocalDateTime createdAt) {
+                          String profileImageUrl, String message, LocalDateTime createdAt) {
     this.userId = userId;
     this.username = username;
     this.name = name;

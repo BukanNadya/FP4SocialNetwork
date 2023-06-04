@@ -13,28 +13,36 @@ public class MapperUtils {
   private MapperUtils() {
   }
 
-  public static byte[] decodeProfile(Message message) {
-    String profileImageUrl = message.getUserId().getProfileImageUrl();
-    if (profileImageUrl == null) {
-      return null;
-    }
-    return Base64.getDecoder().decode(profileImageUrl);
+  public static String getProfileImageUrl(DbUser dbUser) {
+    return dbUser.getProfileImageUrl();
   }
 
-  public static byte[] decodeProfile(Inbox inbox) {
-    String profileImageUrl = inbox.getUserId().getProfileImageUrl();
-    if (profileImageUrl == null) {
-      return null;
-    }
-    return Base64.getDecoder().decode(profileImageUrl);
+  public static String getProfileImageUrl(Inbox inbox) {
+    return inbox.getUserId().getProfileImageUrl();
   }
 
-  public static byte[] decodeProfile(DbUser dbUser) {
-    String profileImageUrl = dbUser.getProfileImageUrl();
-    if (profileImageUrl == null) {
+  public static String getProfileImageUrl(Message message) {
+    return message.getUserId().getProfileImageUrl();
+  }
+
+  public static String getProfileBackgroundImageUrl(DbUser dbUser) {
+    return dbUser.getProfileBackgroundImageUrl();
+  }
+
+  public static String encodeProfile(EditingDtoRequest editingDtoRequest) {
+    byte[] profile = editingDtoRequest.getProfileImageUrl();
+    if (profile == null) {
       return null;
     }
-    return Base64.getDecoder().decode(profileImageUrl);
+    return Base64.getEncoder().encodeToString(profile);
+  }
+
+  public static String encodeProfileBackground(EditingDtoRequest editingDtoRequest) {
+    byte[] profileBackground = editingDtoRequest.getProfileBackgroundImageUrl();
+    if (profileBackground == null) {
+      return null;
+    }
+    return Base64.getEncoder().encodeToString(profileBackground);
   }
 
   public static Integer getUserId(DbUser dbUser) {

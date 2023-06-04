@@ -12,12 +12,12 @@ public class InboxDtoResponse {
   private Integer inboxUid;
   private String username;
   private String name;
-  private byte[] profileImageUrl;
+  private String profileImageUrl;
   private String message;
   private LocalDateTime createdAt;
 
   public InboxDtoResponse(Integer userId, Integer inboxUid, String username, String name,
-                          byte[] profileImageUrl, String message, LocalDateTime createdAt) {
+                          String profileImageUrl, String message, LocalDateTime createdAt) {
     this.userId = userId;
     this.inboxUid = inboxUid;
     this.username = username;
