@@ -20,4 +20,6 @@ public interface PostService {
   List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page);
 
   List<PostRepostDtoMix> getAllPostsAndRepostsByUserId(Integer userId, Integer page);
+
+  List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer page);
 }

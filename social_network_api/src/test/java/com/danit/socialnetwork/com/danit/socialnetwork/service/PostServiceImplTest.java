@@ -21,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -342,5 +341,32 @@ public class PostServiceImplTest {
     Assertions.assertEquals(2, result.toArray().length);
 
 
+  }
+
+  @Test
+  void getAllPostsWithShowingRepostByUserId() {
+
+    Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
+        2, "John1", "Johny1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        new BigInteger(String.valueOf(1))};
+
+    Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
+        3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        new BigInteger(String.valueOf(1))};
+
+
+    List<Object[]> testList = Arrays.asList(objects1, objects2);
+
+    int pageSize = 12;
+    int offset = 0 * pageSize;
+
+    when(postRepository.findAllPostsWithShowingRepostsByUserId(1, offset, pageSize)).thenReturn(testList);
+    List<PostDtoResponse> result = postService.getAllPostsWithShowingRepostByUserId(1, 0);
+
+    Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
+    Assertions.assertEquals(result.get(1).getWrittenText(), objects2[3]);
+    Assertions.assertEquals(result.get(0).getUsername(), objects1[5]);
+    Assertions.assertEquals(result.get(1).getUsername(), objects2[5]);
+    Assertions.assertEquals(2, result.toArray().length);
   }
 }

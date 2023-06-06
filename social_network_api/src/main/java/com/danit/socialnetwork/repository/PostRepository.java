@@ -69,4 +69,22 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
       + " REPOSTS R on POSTS.P_ID = R.POST_ID WHERE R.USER_ID = :userId or  POSTS.USER_ID = :userId"
       + " ORDER BY JOINED_TIME DESC")
   List<Post> findAllPostsAndRepostsByUserIdAsPost(Integer userId, Pageable pagedByTenPosts);
+
+
+  @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME, "
+      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, "
+      + "USERS.USERNAME, USERS.NAME, USERS.PROFILE_IMAGE_URL, "
+      + "(SELECT COUNT(*) FROM POST_LIKES WHERE POST_LIKES.POST_ID = POSTS.P_ID) AS likesCount, "
+      + "(SELECT COUNT(*) FROM POST_COMMENTS WHERE POST_COMMENTS.POST_ID = POSTS.P_ID) AS commentsCount, "
+      + "(CASE "
+      + "WHEN EXISTS (SELECT 1 FROM REPOSTS R WHERE R.USER_ID = :userId AND R.POST_ID = POSTS.P_ID) "
+      + "THEN 'true' "
+      + "ELSE 'false' "
+      + "END) AS repostExists "
+      + "FROM POSTS "
+      + "INNER JOIN USERS ON POSTS.USER_ID = USERS.USER_ID "
+      + "ORDER BY POSTS.SENT_DATETIME DESC "
+      + "OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY;")
+  List<Object[]> findAllPostsWithShowingRepostsByUserId(Integer userId, @Param("offset") int offset,
+                                                        @Param("pageSize") int pageSize);
 }

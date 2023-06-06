@@ -134,4 +134,21 @@ class PostRestControllerTest {
     List<PostRepostDtoMix> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
     Assertions.assertEquals(5, result.toArray().length);
   }
+
+  @Test
+  void getAllPostsWithShowingRepostByUserId() {
+    PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
+        "Nick", "nick", "Hello world 1",
+        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+    PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
+        "Tom", "tom", "Hello world 12",
+        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+    List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
+    when(postService.getAllPostsWithShowingRepostByUserId(1, 0)).thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllPostsWithShowingRepostByUserId(1, 0);
+
+    Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
+    Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
+    Assertions.assertEquals(2, result.toArray().length);
+  }
 }

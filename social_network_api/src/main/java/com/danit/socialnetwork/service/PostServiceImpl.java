@@ -11,10 +11,8 @@ import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -119,6 +117,17 @@ public class PostServiceImpl implements PostService {
     List<Post> postList = postRepository.findAllPostsAndRepostsByUserIdAsPost(userId, pagedByTenPosts);
     return postList.stream()
         .map(post -> from(post, userId))
+        .toList();
+  }
+
+  @Override
+  public List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer pageNumber) {
+    int pageSize = 12;
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = postRepository.findAllPostsWithShowingRepostsByUserId(
+        userId, offset, pageSize);
+    return results.stream()
+        .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
 
