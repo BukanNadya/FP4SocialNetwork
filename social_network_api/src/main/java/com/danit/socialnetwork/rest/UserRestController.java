@@ -150,16 +150,6 @@ public class UserRestController {
     return userService.findByUsername(username);
   }
 
-  @GetMapping(value = "/{username}/photo", produces = MediaType.IMAGE_PNG_VALUE)
-  public byte[] getProfileImage(@PathVariable("username") String username) throws IOException {
-    return userService.getProfileImage(username);
-  }
-
-  @GetMapping(value = "/{username}/header_photo", produces = MediaType.IMAGE_PNG_VALUE)
-  public byte[] getBackgroundImage(@PathVariable("username") String username) throws IOException {
-    return userService.getBackgroundImage(username);
-  }
-
   @GetMapping("/profile/{userId}")
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     UserDtoResponse tempUser = userService.findByUserId(userId);

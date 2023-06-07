@@ -3,24 +3,37 @@ package com.danit.socialnetwork.config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Map;
 
+@Log4j2
 @Configuration
+@PropertySource("classpath:cloud.properties")
 public class ImageHandlingConf {
-  private final Cloudinary cloudinary;
+  @Value("${spring.cloud.cloud_name}")
+  private String cloudName;
+  @Value("${spring.cloud.api_key}")
+  private String apiKey;
+  @Value("${spring.cloud.api_secret}")
+  private String apiSecret;
 
-  public ImageHandlingConf() {
-    cloudinary = new Cloudinary(ObjectUtils.asMap(
-        "cloud_name", "dir4ciwiy",
-        "api_key", "513546648638538",
-        "api_secret", "2Yne0iSd_IvMe0fdPnhmRVb5QqA"
+  public Cloudinary getImageHandlingConf(String cloudName, String apiKey, String apiSecret) {
+    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+        "cloud_name", cloudName,
+        "api_key", apiKey,
+        "api_secret", apiSecret
     ));
+    log.info("Connecting to the Cloudinary successfully");
+    return cloudinary;
   }
 
+  /*The method writes the picture to the cloud storage to the specified folder
+ ("local" or "production") and returns the url.*/
   public String uploadImage(byte[] imageBytes, String folderName) {
     if (imageBytes != null) {
       try {
@@ -28,9 +41,11 @@ public class ImageHandlingConf {
             "folder", folderName,
             "resource_type", "image"
         );
-        Map<String, Object> uploadResult = cloudinary.uploader().upload(imageBytes, uploadParams);
+        Map<String, Object> uploadResult = getImageHandlingConf(cloudName, apiKey, apiSecret)
+            .uploader().upload(imageBytes, uploadParams);
         return uploadResult.get("url").toString();
       } catch (IOException e) {
+        log.debug("Photo not found");
         throw new PhotoNotFoundException("Photo not found");
       }
     } else {

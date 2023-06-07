@@ -1,5 +1,6 @@
 package com.danit.socialnetwork;
 
+import com.danit.socialnetwork.config.ImageHandlingConf;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -25,4 +26,8 @@ public class NetworkApp {
     return new ModelMapper();
   }
 
+  @Bean
+  public ImageHandlingConf getImageHandling() {
+    return new ImageHandlingConf();
+  }
 }

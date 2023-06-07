@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
@@ -54,6 +55,8 @@ class UserServiceImplTest {
   SearchDto searchDto;
   @Mock
   SearchMapper searchMapper;
+  @Mock
+  ImageHandlingConf imageHandlingConf;
 
   @Test
   void findByUsername_shouldFindUser_WhenExists() {

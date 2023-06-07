@@ -16,10 +16,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-  byte[] getProfileImage(String username) throws IOException;
-
-  byte[] getBackgroundImage(String username) throws IOException;
-
   Optional<DbUser> findByUsername(String username) throws IOException;
 
   Optional<DbUser> findById(Integer userId) throws IOException;

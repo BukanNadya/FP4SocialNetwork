@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
   private final MailSenderImpl mailSender;
   private final GuavaCache guavaCache;
   private final UserFollowRepository userFollowRepository;
+  private final ImageHandlingConf imageHandlingConf;
 
   private <T extends Object> Boolean isEmpty(T temp) {
     return Optional.ofNullable(temp).isEmpty();
@@ -71,36 +72,6 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException(String.format("User with userId %s not found", userId));
     }
     return maybeUser;
-  }
-
-  @Override
-  public byte[] getProfileImage(String username) throws IOException {
-    String profileImagePath = userRepository.findByUsername(username).get().getProfileImageUrl();
-    if (isEmpty(profileImagePath)) {
-      throw new PhotoNotFoundException(String.format("Photo for user with username %s is absent", username));
-    } else {
-      InputStream in = getClass().getResourceAsStream(profileImagePath);
-      if (isEmpty(in)) {
-        throw new PhotoNotFoundException(String.format("Wrong path to photo for user with username %s.", username));
-      }
-      return FileCopyUtils.copyToByteArray(in);
-    }
-  }
-
-  @Override
-  public byte[] getBackgroundImage(String username) throws IOException {
-    String profileBackgroundImagePath = userRepository.findByUsername(username).get().getProfileBackgroundImageUrl();
-    if (isEmpty(profileBackgroundImagePath)) {
-      throw new HeaderPhotoNotFoundException(String.format("Header photo for user with username %S is absent.", username));
-    } else {
-      InputStream in = getClass().getResourceAsStream(profileBackgroundImagePath);
-      if (isEmpty(in)) {
-
-        throw new HeaderPhotoNotFoundException(String.format(
-            "Wrong path to header photo for user with username %s.", username));
-      }
-      return FileCopyUtils.copyToByteArray(in);
-    }
   }
 
   public boolean save(DbUser dbUser) {
@@ -209,11 +180,10 @@ public class UserServiceImpl implements UserService {
       updateUser.setDateOfBirth(dateOfBirth);
       updateUser.setAddress(request.getAddress());
 
-      ImageHandlingConf imageHandling = new ImageHandlingConf();
       byte[] profileImage = request.getProfileImageUrl();
-      updateUser.setProfileImageUrl(imageHandling.uploadImage(profileImage, "production"));
+      updateUser.setProfileImageUrl(imageHandlingConf.uploadImage(profileImage, "production"));
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
-      updateUser.setProfileBackgroundImageUrl(imageHandling
+      updateUser.setProfileBackgroundImageUrl(imageHandlingConf
           .uploadImage(profileBackgroundImage, "production"));
 
       userRepository.save(updateUser);
