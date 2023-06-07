@@ -12,6 +12,7 @@ import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypographyCounter,
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo } from "./CreateAccountModalStyles";
+import {apiUrl} from "../../apiConfig";
 
 export function ContentSecondStep() {
     const dispatch = useDispatch();
@@ -102,7 +103,7 @@ export function ContentSecondStep() {
                         year: valuesState.year
                     }}
                     onSubmit={async (values, { setErrors }) => {
-                        const url = "http://localhost:8080/sendLetter";
+                        const url = `${apiUrl}/sendLetter`;
                         const requestBody = {
                             name: valuesState.name,
                             email: valuesState.email,

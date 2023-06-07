@@ -17,6 +17,7 @@ import {
 } from "./loginModalStyles";
 import PropTypes from "prop-types";
 import { useModal } from "../../context/ModalContext";
+import {apiUrl} from "../../apiConfig";
 
 export function EnterEmailModal() {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export function EnterEmailModal() {
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
-            <a href="http://localhost:8080/oauth2/authorization/google"  style={{ ...StyledBlackButton, marginTop: "0px", color:"white", textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", height: "45px",
+            <a href={`${apiUrl}/oauth2/authorization/google`}  style={{ ...StyledBlackButton, marginTop: "0px", color:"white", textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", height: "45px",
                 width: "400px",
                 background: "#000000",
                 textTransform:"uppercase",
@@ -60,7 +61,7 @@ export function EnterEmailModal() {
                 )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                 setIsSubmitting(true);
                 try {
-                    const response = await fetch("http://localhost:8080/checkEmail", {
+                    const response = await fetch(`${apiUrl}/checkEmail`, {
                         method: "POST",
                         body: JSON.stringify(values),
                         headers: { "Content-Type": "application/json" }

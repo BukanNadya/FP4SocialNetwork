@@ -4,6 +4,7 @@ import {Profile} from "../components/Profile/Profile/Profile";
 import {setSearchData, userFollow} from "../store/actions";
 import {fetchFollow} from "../store/Thunks/fetchFollowThunk";
 import {useNavigate} from "react-router-dom";
+import {apiUrl} from "../apiConfig";
 
 export function BrowsePage () {
 
@@ -17,7 +18,7 @@ export function BrowsePage () {
     useEffect(() => {
         const fetchData = async () => {
 
-            const response = await fetch(`http://localhost:8080/profile/${searchId}`);
+            const response = await fetch(`${apiUrl}/profile/${searchId}`);
             const userData = await response.json();
             dispatch(setSearchData(userData));
         };

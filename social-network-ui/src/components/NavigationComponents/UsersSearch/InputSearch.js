@@ -4,6 +4,7 @@ import {UserSearchTextField} from "../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
 import {useNavigate} from "react-router-dom";
+import {apiUrl} from "../../../apiConfig";
 
 export const InputSearch = ({ ...props }) => {
 
@@ -15,7 +16,7 @@ export const InputSearch = ({ ...props }) => {
     useEffect(() => {
         const fetchData = async () => {
 
-            const response = await fetch(`http://localhost:8080/profile/${userId}`);
+            const response = await fetch(`${apiUrl}/profile/${userId}`);
             const userData = await response.json();
             dispatch(setSearchData(userData));
         };

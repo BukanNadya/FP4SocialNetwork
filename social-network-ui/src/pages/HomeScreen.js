@@ -22,6 +22,7 @@ import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
+import {apiUrl} from "../apiConfig";
 
 
 export function HomeScreen() {
@@ -43,7 +44,7 @@ export function HomeScreen() {
     const fetchData = async (userId) => {
         try {
             if (userId) {
-                const response = await fetch(`http://localhost:8080/profile/${userId}`);
+                const response = await fetch(`${apiUrl}/profile/${userId}`);
                 const userData = await response.json();
                 dispatch(setUserData(userData));
             }

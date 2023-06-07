@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSearchData, userFollow, userUnfollow} from "../../../store/actions";
 import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
 import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscriptionButton";
+import {apiUrl} from "../../../apiConfig";
 
 export function Profile (props) {
 
@@ -27,7 +28,7 @@ export function Profile (props) {
     useEffect(() => {
         const fetchIsFollow = async () => {
 
-            const response = await fetch(`http://localhost:8080/api/isfollowing`, {
+            const response = await fetch(`${apiUrl}/api/isfollowing`, {
                 method: "POST",
                         body: JSON.stringify({
                             userFollower: userId,

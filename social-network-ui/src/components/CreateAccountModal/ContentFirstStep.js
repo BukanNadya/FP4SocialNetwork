@@ -9,6 +9,7 @@ import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypographyCounter,
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo} from "./CreateAccountModalStyles";
+import {apiUrl} from "../../apiConfig";
 
 export function ContentFirstStep() {
     const dispatch = useDispatch();
@@ -146,7 +147,7 @@ export function ContentFirstStep() {
                     })}
                     onSubmit={async(values, { setErrors, setSubmitting }) => {
 
-                            const response = await fetch("http://localhost:8080/checkEmail", {
+                            const response = await fetch(`${apiUrl}/checkEmail`, {
                                 method: "POST",
                                 body: JSON.stringify({email: values.email}),
                                 headers: { "Content-Type": "application/json" }

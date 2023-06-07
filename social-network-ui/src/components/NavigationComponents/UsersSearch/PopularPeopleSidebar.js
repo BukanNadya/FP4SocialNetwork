@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { setSearchId } from "../../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+import {apiUrl} from "../../../apiConfig";
 
 
 export function PopularPeopleSidebar() {
@@ -17,7 +18,7 @@ export function PopularPeopleSidebar() {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch("http://localhost:8080/users/popular?page=0");
+                const response = await fetch(`${apiUrl}/users/popular?page=0`);
                 const popularPeople = await response.json();
                 setMostPopularPeople(popularPeople);
                 console.log(popularPeople);

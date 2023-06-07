@@ -13,6 +13,7 @@ import CloseIcon from '../common/icon/CloseIcon';
 
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import {apiUrl} from "../../apiConfig";
 
 export const WeSent = ({ id }) => {
     const email = useSelector(state => state.forgot.forgotPasswordEmail)
@@ -52,7 +53,7 @@ export const WeSent = ({ id }) => {
                     }
                 )} onSubmit= {async (values, { setErrors, setSubmitting }) => {
                     try {
-                        const res = await fetch("http://localhost:8080/api/codecheck", {
+                        const res = await fetch(`${apiUrl}/api/codecheck`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({

@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import { setCommentFromUser, setSearchId } from "../../store/actions";
+import {apiUrl} from "../../apiConfig";
 
 export function Comments({ comments, postId, userId, setPostCommentCount, postCommentCount, photoFileByteArray }) {
     const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export function Comments({ comments, postId, userId, setPostCommentCount, postCo
             initialValues={{ comment: "" }}
             onSubmit={async (values, actions) => {
                 console.log(userId, postId, values.comment,);
-                let userCommentResponse = await fetch("http://localhost:8080/comments", {
+                let userCommentResponse = await fetch(`${apiUrl}/comments`, {
                     method: "POST",
                     body: JSON.stringify({
                         userId: userId,

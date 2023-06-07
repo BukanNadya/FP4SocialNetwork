@@ -28,6 +28,7 @@ import {
     SET_USER_FOLLOW,
     SET_USER_UNFOLLOW, BUTTON_ENABLED, BUTTON_DISABLED,
 } from "./types";
+import {apiUrl} from "../apiConfig";
 
 export const setPage = (pageNumber) => ({
     type: SET_PAGE,
@@ -158,7 +159,7 @@ export const fetchPostsByUserId = (userId, page) => {
     console.log("userId_ACTIONS", userId)
     console.log("page_ACTIONS", page)
     return async (dispatch) => {
-        const response = await fetch(`http://localhost:8080/posts?userId=${userId}&page=${page}`);
+        const response = await fetch(`${apiUrl}/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
         console.log("posts/fetchPostsByUserId_ACTIONS", data)
         dispatch(setPosts(data));
@@ -167,7 +168,7 @@ export const fetchPostsByUserId = (userId, page) => {
 
 export const fetchPostsByPage = (page) => {
     return async (dispatch) => {
-        const response = await fetch(`http://localhost:8080/posts?page=${page}`);
+        const response = await fetch(`${apiUrl}/posts?page=${page}`);
         let posts = await response.json();
         dispatch(addRegistrationPosts(posts));
     };
@@ -182,7 +183,7 @@ export const setUserBirthday = (flag) => {
 
 export const fetchExplorePosts = (page) => {
     return async (dispatch) => {
-        const response = await fetch(`http://localhost:8080/posts?page=${page}`);
+        const response = await fetch(`${apiUrl}/posts?page=${page}`);
         let posts = await response.json();
         dispatch(addExplorePosts(posts));
     };
@@ -199,7 +200,7 @@ export const addRegistrationPosts = (posts) => ({
 export const sendEmailCheckRequest = (values) => {
     return async (dispatch) => {
         try {
-            const response = await fetch("http://localhost:8080/checkEmail", {
+            const response = await fetch(`${apiUrl}/checkEmail`, {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: { "Content-Type": "application/json" }
@@ -219,7 +220,7 @@ export const sendEmailCheckRequest = (values) => {
 
 export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
     try {
-        const response = await fetch("http://localhost:8080/posts", {
+        const response = await fetch(`${apiUrl}/posts`, {
             method: "POST",
             body: JSON.stringify(postObject),
             headers: {

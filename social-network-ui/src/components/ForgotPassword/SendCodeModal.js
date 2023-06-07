@@ -21,6 +21,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
+import {apiUrl} from "../../apiConfig";
 
 export const SendCodeModal = ({ id }) => {
     const dispatch = useDispatch()
@@ -40,7 +41,7 @@ export const SendCodeModal = ({ id }) => {
     const handleClick = async (event) => {
         event.preventDefault()
         try {
-            const res = await fetch("http://localhost:8080/api/changepassword", {
+            const res = await fetch(`${apiUrl}/api/changepassword`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

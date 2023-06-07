@@ -10,6 +10,7 @@ import { Comments } from "./Comments.js";
 
 import { PostCard, PostText, ShowMoreLinkStyles } from "./PostStyles";
 import { openLoginModal, setComments, setSearchId } from "../../store/actions";
+import {apiUrl} from "../../apiConfig";
 
 export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes, postComments, userIdWhoSendPost }) => {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -29,7 +30,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
 
     const ShowUsersWhoLike = async () => {
         setShowLike(!showLike);
-        let dataAboutUsersWhoLike = await fetch(`http://localhost:8080/users/likes?postld=${postId}&page=0`);
+        let dataAboutUsersWhoLike = await fetch(`${apiUrl}/users/likes?postld=${postId}&page=0`);
         let usersWhoLike2 = await dataAboutUsersWhoLike.json();
         console.log(usersWhoLike2)
         setUsersWhoLike(usersWhoLike2);
@@ -40,7 +41,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
         const fetchData = async () => {
             if (userId) {
                 try {
-                    const activeLikesResponse = await fetch(`http://localhost:8080/likes/active?postId=${postId}&userId=${userId}`);
+                    const activeLikesResponse = await fetch(`${apiUrl}/likes/active?postId=${postId}&userId=${userId}`);
                     const activeLikes = await activeLikesResponse.json();
                     setLike(activeLikes);
                 } catch (error) {
@@ -59,7 +60,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const sendRepost = async () => {
         if (userId) {
             setIsReposted(true);
-            await fetch(`http://localhost:8080/reposts`, {
+            await fetch(`${apiUrl}/reposts`, {
                 method: "POST",
                 body: JSON.stringify({
                     postId: postId,
@@ -77,7 +78,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const handleCommentToggle = async () => {
         if (userId) {
             setIsCommentOpen(!isCommentOpen);
-            let commentsResponse = await fetch(`http://localhost:8080/comments?postId=${postId}`);
+            let commentsResponse = await fetch(`${apiUrl}/comments?postId=${postId}`);
             let dataComments = await commentsResponse.json();
             dispatch(setComments(dataComments));
 
@@ -89,7 +90,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
     const addLikeHandle = useCallback(async () => {
         if (userId) {
             if (!like) {
-                await fetch("http://localhost:8080/likes", {
+                await fetch(`${apiUrl}/likes`, {
                     method: "POST",
                     body: JSON.stringify({
                         postId: postId,
@@ -102,7 +103,7 @@ export const Post = ({ userName, name, photo, text, dataTime, postId, postLikes,
                 setLikeCount(likeCount + 1);
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
             } else {
-                await fetch(`http://localhost:8080/likes?postId=${postId}&userId=${userId}`, {
+                await fetch(`${apiUrl}/likes?postId=${postId}&userId=${userId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json"

@@ -12,6 +12,7 @@ import * as Yup from "yup";
 
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
+import {apiUrl} from "../../apiConfig";
 
 export const Choose = ({ id }) => {
     const { setOpenChoose, setOpenAllSet, setOpenForgot } = useModal()
@@ -57,7 +58,7 @@ export const Choose = ({ id }) => {
                     )}  onSubmit={async (values, { setErrors}) => {
                 setIsSubmitting(true);
                 try {
-                    const res = await fetch("http://localhost:8080/api/newpassword", {
+                    const res = await fetch(`${apiUrl}/api/newpassword`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({

@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {closeSignUpModal, openLoginModal} from "../../store/actions";
+import {apiUrl} from "../../apiConfig";
 
 export function ContentFourthStep() {
     const dispatch = useDispatch();
@@ -64,7 +65,7 @@ export function ContentFourthStep() {
                     valuesState.password = values.password;
                     valuesState.username = values.username;
                     dispatch({ type: step4, payload: { valuesState: valuesState } });
-                    const url = "http://localhost:8080/registration";
+                    const url = `${apiUrl}/registration`;
                     const requestBody = {
                         username: valuesState.username,
                         password: valuesState.password,

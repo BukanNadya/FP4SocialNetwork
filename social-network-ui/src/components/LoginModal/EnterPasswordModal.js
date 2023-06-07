@@ -24,6 +24,7 @@ import {
     StyledCheckbox
 } from "./loginModalStyles";
 import { setUserToken } from "../../store/actions";
+import {apiUrl} from "../../apiConfig";
 
 export function EnterPasswordModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +50,7 @@ export function EnterPasswordModal() {
                     setIsSubmitting(true);
                     try {
                         dispatch(setUserPassword(values));
-                        const userPassword = await fetch("http://localhost:8080/login", {
+                        const userPassword = await fetch(`${apiUrl}/login`, {
                             method: "POST",
                             body: JSON.stringify({
                                 email: values.email,

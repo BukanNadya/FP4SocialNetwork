@@ -17,6 +17,7 @@ import {InputPhoto} from "./Input/InputPhoto";
 import {InputProfilePhoto} from "./Input/InputProfilePhoto";
 
 import PropTypes from "prop-types";
+import {apiUrl} from "../../apiConfig";
 
 export function EditProfile (props) {
 
@@ -55,7 +56,7 @@ export function EditProfile (props) {
                     )} onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true)
                     try {
-                        const response = await fetch("http://localhost:8080/edition", {
+                        const response = await fetch(`${apiUrl}/edition`, {
                             method: "PUT",
                             body: JSON.stringify({
                                 userId: props.userId,
@@ -75,7 +76,7 @@ export function EditProfile (props) {
                         } else {
                             // const userExistData = await response.json();
 
-                            const response = await fetch(`http://localhost:8080/profile/${userId}`);
+                            const response = await fetch(`${apiUrl}/profile/${userId}`);
                             const userData = await response.json();
                             dispatch(setUserData(userData));
 

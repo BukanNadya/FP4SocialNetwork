@@ -1,4 +1,5 @@
 import {buttonDisabled, buttonEnabled, userFollow} from "../actions";
+import {apiUrl} from "../../apiConfig";
 
 
 export function fetchFollow () {
@@ -9,7 +10,7 @@ export function fetchFollow () {
         const userId = state.userData.userData.userId
         dispatch(buttonDisabled())
 
-        fetch(`http://localhost:8080/api/follow`, {
+        fetch(`${apiUrl}/api/follow`, {
                 method: "POST",
                 body: JSON.stringify({
                     userFollower: userId,

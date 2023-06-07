@@ -13,6 +13,7 @@ import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypographyCounter,
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo} from "./CreateAccountModalStyles";
+import {apiUrl} from "../../apiConfig";
 
 
 export function ContentThirdStep() {
@@ -54,7 +55,7 @@ export function ContentThirdStep() {
                             .max(6, "Must be 6 digits")
                     })}
                     onSubmit={async (values, { setErrors }) => {
-                        const url = "http://localhost:8080/activate";
+                        const url = `${apiUrl}/activate`;
                         const requestBody = {
                             code: code,
                         };

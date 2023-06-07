@@ -6,8 +6,10 @@ import com.danit.socialnetwork.repository.UserRepository;
 import com.ibm.icu.text.Transliterator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,11 +27,14 @@ import java.util.UUID;
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Log4j2
+@PropertySource("classpath:deploy.properties")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAuthFilter jwtFilter;
   private final UserRepository userRepository;
   private final JwtTokenService jwtTokenService;
+  @Value("${uiUrl}")
+  private String uiUrl;
 
   @Bean
   @Override
@@ -99,7 +104,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           }
           String token = jwtTokenService.generateToken(userId, true);
           log.info("token:" + token);
-          response.sendRedirect("http://localhost:3000?token=" + token + "&" + "birthday=" + birthday);
+
+          response.sendRedirect(uiUrl + "?token=" + token + "&" + "birthday=" + birthday);
         }).permitAll()
 
     );

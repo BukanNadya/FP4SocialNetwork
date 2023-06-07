@@ -26,6 +26,7 @@ import {
 } from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
+import {apiUrl} from "../apiConfig";
 
 export const ScrollContext = React.createContext(() => {
 });
@@ -55,7 +56,7 @@ export function Layout() {
     };
 
     const fetchData = async (userId) => {
-        const response = await fetch(`http://localhost:8080/profile/${userId}`);
+        const response = await fetch(`${apiUrl}/profile/${userId}`);
         const userData = await response.json();
         dispatch(setUserData(userData));
     };

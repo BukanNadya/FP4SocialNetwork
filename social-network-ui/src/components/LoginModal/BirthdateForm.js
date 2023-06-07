@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import {apiUrl} from "../../apiConfig";
 
 export function BirthdateForm() {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -138,7 +139,7 @@ export function BirthdateForm() {
                             }
                         )}
                     onSubmit={async (values) => {
-                        fetch("http://localhost:8080/api/change_dob", {
+                        fetch(`${apiUrl}/api/change_dob`, {
                             method: "POST",
                             body: JSON.stringify({
                                 userId: userId,
