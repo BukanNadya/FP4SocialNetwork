@@ -145,12 +145,8 @@ public class UserRestController {
     }
   }
 
-  @GetMapping("/{username}")
-  public Optional<DbUser> getUser(@PathVariable("username") String username) throws IOException {
-    return userService.findByUsername(username);
-  }
 
-  @GetMapping("/profile/{userId}")
+  @GetMapping("/api/profile/{userId}")
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     UserDtoResponse tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(tempUser, HttpStatus.OK);
@@ -162,7 +158,7 @@ public class UserRestController {
     return userService.dbUserDobChange(userDobChangeRequest);
   }
 
-  @GetMapping("/users/likes")
+  @GetMapping("/api/users/likes")
   public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
@@ -175,7 +171,7 @@ public class UserRestController {
   }
 
 
-  @GetMapping("/users/popular")
+  @GetMapping("/api/users/popular")
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
         .stream()

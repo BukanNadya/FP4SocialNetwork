@@ -21,14 +21,14 @@ public class PostLikeRestController {
 
   private final PostLikeService postLikeService;
 
-  @PostMapping(path = "/likes", consumes = "application/json", produces = "application/json")
+  @PostMapping(path = "/api/likes")
   public ResponseEntity<PostLikeDto> addPostLike(@RequestBody PostLikeDto thePostLikeDto) {
     PostLike postLike = postLikeService.savePostLike(thePostLikeDto);
     return new ResponseEntity<>(PostLikeDto.from(postLike), HttpStatus.CREATED);
   }
 
 
-  @GetMapping("/likes")
+  @GetMapping("/api/likes")
   public Integer getCountAllLikesByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId) {
     if (postId == 0) {
@@ -38,13 +38,13 @@ public class PostLikeRestController {
   }
 
 
-  @GetMapping("/likes/active")
+  @GetMapping("/api/likes/active")
   public Boolean isExistPostLike(@RequestParam(name = "postId") Integer postId,
                                  @RequestParam(name = "userId") Integer userId) {
     return postLikeService.isPresentPostLike(postId, userId);
   }
 
-  @DeleteMapping("/likes")
+  @DeleteMapping("/api/likes")
   public ResponseEntity<PostLikeDto> deletePostLike(@RequestParam(name = "postId") Integer postId,
                                                     @RequestParam(name = "userId") Integer userId) {
     PostLike postLike = postLikeService.deletePostLike(postId, userId);

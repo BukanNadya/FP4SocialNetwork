@@ -26,14 +26,14 @@ public class RepostRestController {
   private final RepostService repostService;
 
   /*Method save a repost*/
-  @PostMapping(path = "/reposts", consumes = "application/json", produces = "application/json")
+  @PostMapping(path = "/api/reposts")
   public ResponseEntity<RepostDtoSave> addRepost(@RequestBody RepostDtoSave theRepostDto) {
     Repost repost = repostService.saveRepost(theRepostDto);
     return new ResponseEntity<>(RepostDtoSave.from(repost), HttpStatus.CREATED);
   }
 
   /*Method returns all reposts done by user*/
-  @GetMapping("/reposts")
+  @GetMapping("/api/reposts")
   public List<RepostDtoResponse> getAllRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                        Integer userId,
                                                        @RequestParam(name = "page", defaultValue = "0")
@@ -45,7 +45,7 @@ public class RepostRestController {
 
   }
 
-  @DeleteMapping("/reposts")
+  @DeleteMapping("/api/reposts")
   public ResponseEntity<RepostDtoSave> deleteRepost(@RequestParam(name = "postId") Integer postId,
                                                     @RequestParam(name = "userId") Integer userId) {
     Repost repost = repostService.deleteRepost(postId, userId);
@@ -53,7 +53,7 @@ public class RepostRestController {
   }
 
 
-  @GetMapping("/reposts/active")
+  @GetMapping("/api/reposts/active")
   public Boolean isActiveRepost(@RequestParam(name = "postId") Integer postId,
                                 @RequestParam(name = "userId") Integer userId) {
     return repostService.isActiveRepost(postId, userId);

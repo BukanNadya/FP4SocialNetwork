@@ -25,12 +25,12 @@ public class UserFollowRestController {
 
   private final UserFollowService userFollowService;
 
-  @GetMapping("/following/{userID}")
+  @GetMapping("/api/following/{userID}")
   public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowings(@PathVariable("userID") Integer userId) {
     return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowerId(userId), HttpStatus.OK);
   }
 
-  @GetMapping("/followers/{userID}")
+  @GetMapping("/api/followers/{userID}")
   public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowers(@PathVariable("userID") Integer userId) {
     return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowingId(userId), HttpStatus.OK);
   }

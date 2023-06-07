@@ -8,6 +8,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
+import com.danit.socialnetwork.repository.RepostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +29,15 @@ public class PostServiceImpl implements PostService {
   private final UserRepository userRepository;
   private final PostLikeRepository postLikeRepository;
 
+  private final RepostRepository repostRepository;
+
   private PostDtoResponse from(Post post) {
     PostDtoResponse postDtoResponse = PostDtoResponse.from(post);
     postDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
     postDtoResponse.setPostCommentsCount(post.getPostComments().size());
+    postDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
+        post.getPostId(), post.getUserPost().getUserId())).isPresent());
     return postDtoResponse;
   }
 

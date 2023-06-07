@@ -24,13 +24,13 @@ public class PostCommentRestController {
 
   private final PostCommentService postCommentService;
 
-  @PostMapping(path = "/comments", consumes = "application/json", produces = "application/json")
+  @PostMapping(path = "/api/comments")
   public ResponseEntity<PostCommentDtoResponse> addPostComment(@RequestBody PostCommentDtoSave postCommentDto) {
     PostComment postComment = postCommentService.savePostComment(postCommentDto);
     return new ResponseEntity<>(PostCommentDtoResponse.from(postComment), HttpStatus.CREATED);
   }
 
-  @GetMapping("/comments")
+  @GetMapping("/api/comments")
   public List<PostCommentDtoResponse> getAllComments(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
