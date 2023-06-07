@@ -49,7 +49,7 @@ public class UserRestController {
 
   private final SearchMapper searchMapper;
 
-  @PostMapping(path = "registration")
+  @PostMapping(path = "/api/registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     int day = request.getDay();
@@ -74,7 +74,7 @@ public class UserRestController {
     }
   }
 
-  @PostMapping(value = "/checkEmail")
+  @PostMapping(value = "/api/checkEmail")
   public ResponseEntity<Map<String, String>> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
 
@@ -91,7 +91,7 @@ public class UserRestController {
     }
   }
 
-  @PostMapping(value = "/sendLetter")
+  @PostMapping(value = "/api/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
 
@@ -108,7 +108,7 @@ public class UserRestController {
     }
   }
 
-  @PostMapping(value = "/activate")
+  @PostMapping(value = "/api/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     Integer code = request.getCode();
@@ -132,7 +132,7 @@ public class UserRestController {
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
-  @PutMapping(value = "/edition")
+  @PutMapping(value = "/api/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();
@@ -144,7 +144,6 @@ public class UserRestController {
       return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
   }
-
 
   @GetMapping("/api/profile/{userId}")
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
@@ -170,7 +169,6 @@ public class UserRestController {
         .toList();
   }
 
-
   @GetMapping("/api/users/popular")
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
@@ -178,6 +176,5 @@ public class UserRestController {
         .map(UserDtoForSidebar::from)
         .toList();
   }
-
 
 }

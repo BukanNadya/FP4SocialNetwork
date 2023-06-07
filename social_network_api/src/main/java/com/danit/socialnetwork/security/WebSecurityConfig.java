@@ -54,17 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.csrf().disable().headers().frameOptions().disable();
 
-    http.authorizeRequests().antMatchers("/login",
-            "/h2/**",
-            "/sendLetter",
-            "/activate",
-            "/checkEmail",
-            "/registration",
-            "/changepassword*",
-            "/newpassword",
-            "/home",
-            "/",
-            "/**").permitAll()
+    http.authorizeRequests().antMatchers("/login", "/api/**", "/h2/**", "/**").permitAll()
         .antMatchers()
         .authenticated()
         .anyRequest()

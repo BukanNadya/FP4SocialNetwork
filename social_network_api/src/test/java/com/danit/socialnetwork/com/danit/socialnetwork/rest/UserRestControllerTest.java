@@ -46,10 +46,6 @@ class UserRestControllerTest {
 
   @Mock
   UserService userService;
-
-  @Mock
-  SearchMapper searchMapper;
-
   @InjectMocks
   UserRestController controller;
 
@@ -86,7 +82,7 @@ class UserRestControllerTest {
 
     when(userService.save(any(DbUser.class))).thenReturn(true);
 
-    mockMvc.perform(post("/registration")
+    mockMvc.perform(post("/api/registration")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(registrationRequest)))
         .andExpect(status().isOk());
@@ -120,7 +116,7 @@ class UserRestControllerTest {
 
     when(userService.save(any(DbUser.class))).thenReturn(false);
 
-    mockMvc.perform(post("/registration")
+    mockMvc.perform(post("/api/registration")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(registrationRequest)))
         .andExpect(status().isBadRequest());
@@ -138,7 +134,7 @@ class UserRestControllerTest {
 
     when(userService.findDbUserByEmail(any(String.class))).thenReturn(Optional.of(dbUser));
 
-    mockMvc.perform(post("/checkEmail")
+    mockMvc.perform(post("/api/checkEmail")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isFound());
@@ -155,7 +151,7 @@ class UserRestControllerTest {
 
     when(userService.findDbUserByEmail(any(String.class))).thenReturn(null);
 
-    mockMvc.perform(post("/checkEmail")
+    mockMvc.perform(post("/api/checkEmail")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isNotFound());
@@ -174,7 +170,7 @@ class UserRestControllerTest {
 
     when(userService.sendLetter(any(String.class), any(String.class))).thenReturn(true);
 
-    mockMvc.perform(post("/sendLetter")
+    mockMvc.perform(post("/api/sendLetter")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isOk());
@@ -193,7 +189,7 @@ class UserRestControllerTest {
 
     when(userService.sendLetter(any(String.class), any(String.class))).thenReturn(false);
 
-    mockMvc.perform(post("/sendLetter")
+    mockMvc.perform(post("/api/sendLetter")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isBadRequest());
@@ -210,7 +206,7 @@ class UserRestControllerTest {
 
     when(userService.activateUser(any(Integer.class))).thenReturn(true);
 
-    mockMvc.perform(post("/activate")
+    mockMvc.perform(post("/api/activate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(codeRequest)))
         .andExpect(status().isOk());
@@ -227,7 +223,7 @@ class UserRestControllerTest {
 
     when(userService.activateUser(any(Integer.class))).thenReturn(false);
 
-    mockMvc.perform(post("/activate")
+    mockMvc.perform(post("/api/activate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(codeRequest)))
         .andExpect(status().isBadRequest());
