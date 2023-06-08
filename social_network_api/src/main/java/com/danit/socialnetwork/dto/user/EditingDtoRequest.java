@@ -16,5 +16,7 @@ public class EditingDtoRequest {
   private String address;
   private byte [] profileBackgroundImageUrl;
   private byte [] profileImageUrl;
+  private String profileBackgroundImageUrlString;
+  private String profileImageUrlString;
 
 }

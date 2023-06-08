@@ -400,7 +400,6 @@ class UserServiceImplTest {
     assertEquals(ResponseEntity.ok(responseTest) , result);
   }
 
-
   @Test
   void dbUserDobChange() {
     UserDobChangeRequest userDobChangeRequest = new UserDobChangeRequest();

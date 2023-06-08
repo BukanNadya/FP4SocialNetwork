@@ -218,13 +218,23 @@ public class UserServiceImpl implements UserService {
       updateUser.setName(request.getName());
       updateUser.setDateOfBirth(dateOfBirth);
       updateUser.setAddress(request.getAddress());
-
       byte[] profileImage = request.getProfileImageUrl();
-      updateUser.setProfileImageUrl(imageHandlingConf.uploadImage(profileImage, "production"));
       byte[] profileBackgroundImage = request.getProfileBackgroundImageUrl();
-      updateUser.setProfileBackgroundImageUrl(imageHandlingConf
-          .uploadImage(profileBackgroundImage, "production"));
-
+      String profileImageString = request.getProfileImageUrlString();
+      String profileBackgroundImageString = request.getProfileBackgroundImageUrlString();
+      if (profileImage != null && profileImage.length != 0 && profileImageString == null) {
+        updateUser.setProfileImageUrl(imageHandlingConf
+            .uploadImage(profileImage, "production"));
+      } else if (profileImage == null) {
+        updateUser.setProfileImageUrl(null);
+      }
+      if (profileBackgroundImage != null && profileBackgroundImage
+          .length != 0 && profileBackgroundImageString == null) {
+        updateUser.setProfileBackgroundImageUrl(imageHandlingConf
+            .uploadImage(profileBackgroundImage, "production"));
+      } else if (profileBackgroundImage == null) {
+        updateUser.setProfileBackgroundImageUrl(null);
+      }
       userRepository.save(updateUser);
       log.debug(String.format("save user id = %s", userId));
       response.put("edition", TRUE);
