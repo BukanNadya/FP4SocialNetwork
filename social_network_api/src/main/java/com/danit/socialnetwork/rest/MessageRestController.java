@@ -30,7 +30,6 @@ public class MessageRestController {
   private final MessageService messageService;
   private final InboxService inboxService;
   private final UserService userService;
-  private final SearchMapper searchMapper;
 
   /*Method save a new message*/
   @PostMapping(path = "/api/message")
@@ -40,7 +39,7 @@ public class MessageRestController {
   }
 
   /*The method finds inbox by message sender and receiver */
-  @GetMapping(path = "/api/inbox")
+  @PostMapping(path = "/api/inbox")
   public ResponseEntity<List<InboxDtoResponse>> getInbox(@RequestBody InboxDtoRequest request) {
     List<InboxDtoResponse> inboxes =  inboxService.getInboxesByInboxUid(request);
     return new ResponseEntity<>(inboxes, HttpStatus.FOUND);
@@ -57,7 +56,7 @@ public class MessageRestController {
 
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string*/
-  @GetMapping(path = "/api/messageSearch")
+  @PostMapping(path = "/api/messageSearch")
   public ResponseEntity<Object> handleMessageSearchPost(@RequestBody SearchRequest request) {
     List<MessageSearchDto> messageSearchDto = messageService.filterCachedMessageByString(request);
     if (messageSearchDto.isEmpty()) {

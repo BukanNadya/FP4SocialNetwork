@@ -42,89 +42,43 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class UserRestController {
-  private static final String FALSE = "false";
-  private static final String TRUE = "true";
-
   private final UserService userService;
 
-  private final SearchMapper searchMapper;
-
+  /*The method saves a new user*/
   @PostMapping(path = "/api/registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
-    int day = request.getDay();
-    int month = request.getMonth();
-    int year = request.getYear();
-    LocalDate dateOfBirth = LocalDate.of(year, month, day);
-
-    DbUser dbUser = new DbUser();
-    dbUser.setUsername(request.getUsername());
-    dbUser.setPassword(request.getPassword());
-    dbUser.setEmail(request.getEmail());
-    dbUser.setName(request.getName());
-    dbUser.setDateOfBirth(dateOfBirth);
-
-    Map<String, String> response = new HashMap<>();
-    if (userService.save(dbUser)) {
-      response.put("registration", TRUE);
-      return ResponseEntity.ok(response);
-    } else {
-      response.put("registration", FALSE);
-      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+    ResponseEntity<Map<String, String>> responseEntity = userService.save(request);
+    return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
+  /*The method finds a user by email*/
   @PostMapping(value = "/api/checkEmail")
   public ResponseEntity<Map<String, String>> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
-
-    String email = request.getEmail();
-    Map<String, String> response = new HashMap<>();
-
-    if (userService.findDbUserByEmail(email) == null) {
-      response.put("checkEmail", FALSE);
-      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    } else {
-      response.put("checkEmail", TRUE);
-      return new ResponseEntity<>(response, HttpStatus.FOUND);
-
-    }
+    ResponseEntity<Map<String, String>> responseEntity = userService.findDbUserByEmail(request);
+    return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
+  /*The method sends an email to the new user with a code to confirm his mail*/
   @PostMapping(value = "/api/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
-
-    Map<String, String> response = new HashMap<>();
-    String name = request.getName();
-    String email = request.getEmail();
-
-    if (userService.sendLetter(name, email)) {
-      response.put("sendLetter", TRUE);
-      return ResponseEntity.ok(response);
-    } else {
-      response.put("sendLetter", FALSE);
-      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+    ResponseEntity<Map<String, String>> responseEntity = userService.sendLetter(request);
+    return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
+  /*The method checks the code entered by the user against the code from the cache*/
   @PostMapping(value = "/api/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
-    Integer code = request.getCode();
-    boolean isActivated = userService.activateUser(code);
-    Map<String, String> response = new HashMap<>();
-
-    if (isActivated) {
-      response.put("activate", TRUE);
-      return ResponseEntity.ok(response);
-    } else {
-      response.put("activate", FALSE);
-      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+    ResponseEntity<Map<String, String>> responseEntity = userService.activateUser(request);
+    return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
-  @GetMapping(value = "/api/search")
+  /*The method finds all users by name or username that matches the string
+ entered in the form*/
+  @PostMapping(value = "/api/search")
   public ResponseEntity<List<SearchDto>> handleSearchPost(@RequestBody SearchRequest request) {
     List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
     log.debug(String.format("filterCachedUsersByName: %s. Find all users by name.",
@@ -132,17 +86,13 @@ public class UserRestController {
     return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
   }
 
+  /*The method saves changes to the existing user made by the user in the form*/
   @PutMapping(value = "/api/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();
-    if (userService.update(request)) {
-      response.put("edition", TRUE);
-      return ResponseEntity.ok(response);
-    } else {
-      response.put("edition", FALSE);
-      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+    ResponseEntity<Map<String, String>> responseEntity = userService.update(request);
+    return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @GetMapping("/api/profile/{userId}")

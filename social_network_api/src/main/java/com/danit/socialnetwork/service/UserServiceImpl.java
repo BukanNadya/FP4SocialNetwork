@@ -2,14 +2,16 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.GuavaCache;
 import com.danit.socialnetwork.config.ImageHandlingConf;
+import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
+import com.danit.socialnetwork.dto.UserEmailRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
-import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
-import com.danit.socialnetwork.exception.user.HeaderPhotoNotFoundException;
 import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
@@ -22,13 +24,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +49,10 @@ public class UserServiceImpl implements UserService {
   private final GuavaCache guavaCache;
   private final UserFollowRepository userFollowRepository;
   private final ImageHandlingConf imageHandlingConf;
+  private static final String FALSE = "false";
+  private static final String TRUE = "true";
 
+  /*The method finds a user by username and returns it*/
   @Override
   public Optional<DbUser> findByUsername(String username) {
     Optional<DbUser> maybeUser = userRepository.findByUsername(username);
@@ -61,6 +62,7 @@ public class UserServiceImpl implements UserService {
     return maybeUser;
   }
 
+  /*The method finds a user by id and returns it*/
   @Override
   public Optional<DbUser> findById(Integer userId) {
     Optional<DbUser> maybeUser = userRepository.findById(userId);
@@ -70,56 +72,78 @@ public class UserServiceImpl implements UserService {
     return maybeUser;
   }
 
-  public boolean save(DbUser dbUser) {
+  /*The method saves a new user if there is no such user in the database*/
+  @Override
+  public ResponseEntity<Map<String, String>> save(RegistrationRequest request) {
+    int day = request.getDay();
+    int month = request.getMonth();
+    int year = request.getYear();
+    LocalDate dateOfBirth = LocalDate.of(year, month, day);
+    DbUser dbUser = new DbUser();
+    dbUser.setUsername(request.getUsername());
+    dbUser.setPassword(request.getPassword());
+    dbUser.setEmail(request.getEmail());
+    dbUser.setName(request.getName());
+    dbUser.setDateOfBirth(dateOfBirth);
+    Map<String, String> response = new HashMap<>();
     Optional<DbUser> userFromDbByUsername = userRepository.findByUsername(dbUser.getUsername());
-
     if (userFromDbByUsername.isPresent()) {
       log.info("User exists!");
-      return false;
+      response.put("registration", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
     Optional<DbUser> userFromDbByEmail = userRepository.findDbUserByEmail(dbUser.getEmail());
-
     if (userFromDbByEmail.isPresent()) {
       log.info("User exists!");
-      return false;
+      response.put("registration", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
     String hashedPassword = enc.encode(dbUser.getPassword());
     dbUser.setPassword(hashedPassword);
     userRepository.save(dbUser);
     log.info(String.format("save user name = %s, email = %s", dbUser.getName(), dbUser.getEmail()));
-    return true;
+    response.put("registration", TRUE);
+    return ResponseEntity.ok(response);
   }
 
+  /*The method sends an email to the new user with a code to confirm his mail*/
   @Override
-  public boolean sendLetter(String name, String email) {
-
+  public ResponseEntity<Map<String, String>> sendLetter(UserEmailRequest request) {
+    String name = request.getName();
+    String email = request.getEmail();
     Random rand = new Random();
     int randomNumber = rand.nextInt(900000) + 100000;
-
     activateCodeCache.put("activationCode", randomNumber);
-
+    Map<String, String> response = new HashMap<>();
     try {
-
       String message = String.format("Hello, %s! Welcome to Capitweet. Email confirmation code %s", name, randomNumber);
       log.debug(message);
       mailSender.send(email, "Activation code", message);
       log.debug(String.format("mail send to user %s.", name));
     } catch (Exception e) {
-      return false;
+      response.put("sendLetter", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    return true;
+    response.put("sendLetter", TRUE);
+    return ResponseEntity.ok(response);
   }
 
-  public boolean activateUser(Integer code) {
+  /*The method checks the code entered by the user against the code from the cache*/
+  public ResponseEntity<Map<String, String>> activateUser(ActivateCodeRequest request) {
+    Integer code = request.getCode();
     Integer activationCode = activateCodeCache.getIfPresent("activationCode");
-    if (activationCode == null) {
-      return false;
+    Map<String, String> response = new HashMap<>();
+    if (activationCode == null || !activationCode.equals(code)) {
+      response.put("activate", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-    return code.equals(activationCode);
+    response.put("activate", TRUE);
+    return ResponseEntity.ok(response);
   }
 
+  /*The method finds all users by name or username that matches the string
+   entered in the form and returns them*/
+  @Override
   public List<SearchDto> filterCachedUsersByName(SearchRequest request) {
     Integer userId = Integer.valueOf(request.getUserId());
     String userSearch = request.getSearch();
@@ -138,6 +162,7 @@ public class UserServiceImpl implements UserService {
         .map(searchMapper::dbUserToSearchDto).toList();
   }
 
+  /*The method finds a user by id and returns it*/
   @Override
   public UserDtoResponse findByUserId(Integer userId) {
     Optional<DbUser> maybeUser = userRepository.findById(userId);
@@ -150,6 +175,7 @@ public class UserServiceImpl implements UserService {
     return userDtoResponse;
   }
 
+  /*The method finds a user by email and returns it*/
   //  @Override
   public Optional<DbUser> findDbUserByEmail(String email) {
     Optional<DbUser> maybeUser = userRepository.findDbUserByEmail(email);
@@ -159,17 +185,34 @@ public class UserServiceImpl implements UserService {
     return maybeUser;
   }
 
+  /*The method finds a user by email and returns it*/
   @Override
-  public boolean update(EditingDtoRequest request) {
+  public ResponseEntity<Map<String, String>> findDbUserByEmail(UserEmailForLoginRequest request) {
+    String email = request.getEmail();
+    Optional<DbUser> maybeUser = userRepository.findDbUserByEmail(email);
+    Map<String, String> response = new HashMap<>();
+    if (maybeUser.isEmpty()) {
+      response.put("checkEmail", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+    response.put("checkEmail", TRUE);
+    return new ResponseEntity<>(response, HttpStatus.FOUND);
+  }
+
+  /*The method saves changes to the existing user made by the user in the form*/
+  @Override
+  public ResponseEntity<Map<String, String>> update(EditingDtoRequest request) {
     Integer userId = request.getUserId();
     int day = request.getDay();
     int month = request.getMonth();
     int year = request.getYear();
     LocalDate dateOfBirth = LocalDate.of(year, month, day);
     Optional<DbUser> userFromDb = userRepository.findById(userId);
+    Map<String, String> response = new HashMap<>();
     if (userFromDb.isEmpty()) {
       log.debug(String.format("User with id %d not found.", userId));
-      return false;
+      response.put("edition", FALSE);
+      return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     } else {
       DbUser updateUser = userFromDb.get();
       updateUser.setName(request.getName());
@@ -184,7 +227,8 @@ public class UserServiceImpl implements UserService {
 
       userRepository.save(updateUser);
       log.debug(String.format("save user id = %s", userId));
-      return true;
+      response.put("edition", TRUE);
+      return ResponseEntity.ok(response);
     }
   }
 

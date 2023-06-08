@@ -28,8 +28,8 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -89,7 +89,7 @@ class MessageRestControllerTest {
 
     when(inboxService.getInboxesByInboxUid(request)).thenReturn(testInboxDto);
 
-    mockMvc.perform(get("/api/inbox")
+    mockMvc.perform(post("/api/inbox")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());
@@ -130,7 +130,7 @@ class MessageRestControllerTest {
 
     when(messageService.filterCachedMessageByString(request)).thenReturn(messageSearchDto);
 
-    mockMvc.perform(get("/api/messageSearch")
+    mockMvc.perform(post("/api/messageSearch")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());

@@ -1,5 +1,9 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
+import com.danit.socialnetwork.dto.UserEmailRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
@@ -22,17 +26,19 @@ public interface UserService {
 
   Optional<DbUser> findDbUserByEmail(String email) throws IOException;
 
-  boolean activateUser(Integer code);
+  ResponseEntity<Map<String, String>> findDbUserByEmail(UserEmailForLoginRequest request) throws IOException;
 
-  boolean save(DbUser dbUser);
+  ResponseEntity<Map<String, String>> activateUser(ActivateCodeRequest request);
 
-  boolean sendLetter(String name, String email);
+  ResponseEntity<Map<String, String>> save(RegistrationRequest request);
+
+  ResponseEntity<Map<String, String>> sendLetter(UserEmailRequest request);
 
   List<SearchDto> filterCachedUsersByName(SearchRequest request);
 
   UserDtoResponse findByUserId(Integer userId);
 
-  boolean update(EditingDtoRequest request);
+  ResponseEntity<Map<String, String>> update(EditingDtoRequest request);
 
   ResponseEntity<Map<String, String>> dbUserDobChange(@RequestBody UserDobChangeRequest userDobChangeRequest);
 

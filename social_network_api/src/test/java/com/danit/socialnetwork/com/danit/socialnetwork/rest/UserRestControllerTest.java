@@ -10,7 +10,6 @@ import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
 import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
-import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,27 +28,22 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class UserRestControllerTest {
-
   @Mock
   UserService userService;
   @InjectMocks
   UserRestController controller;
-
   private MockMvc mockMvc;
+  private static final String FALSE = "false";
+  private static final String TRUE = "true";
 
   @BeforeEach
   public void setUp() {
@@ -80,14 +74,17 @@ class UserRestControllerTest {
     dbUser.setName(name);
     dbUser.setDateOfBirth(dateOfBirth);
 
-    when(userService.save(any(DbUser.class))).thenReturn(true);
+    Map<String, String> response = new HashMap<>();
+    response.put("registration", TRUE);
+
+    when(userService.save(any(RegistrationRequest.class))).thenReturn(ResponseEntity.ok(response));
 
     mockMvc.perform(post("/api/registration")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(registrationRequest)))
         .andExpect(status().isOk());
 
-    verify(userService).save(dbUser);
+    verify(userService).save(registrationRequest);
   }
 
   @Test
@@ -114,7 +111,11 @@ class UserRestControllerTest {
     dbUser.setName(name);
     dbUser.setDateOfBirth(dateOfBirth);
 
-    when(userService.save(any(DbUser.class))).thenReturn(false);
+    Map<String, String> response = new HashMap<>();
+    response.put("registration", FALSE);
+
+    when(userService.save(any(RegistrationRequest.class)))
+        .thenReturn(new ResponseEntity<>(response, HttpStatus.BAD_REQUEST));
 
     mockMvc.perform(post("/api/registration")
             .contentType(MediaType.APPLICATION_JSON)
@@ -123,112 +124,121 @@ class UserRestControllerTest {
   }
 
   @Test
-  void handleCheckUsernamePostStatusFound() throws Exception {
+  void handleCheckEmailStatusFound() throws Exception {
     String email = "Test@gmail.com";
-
     UserEmailForLoginRequest emailRequest = new UserEmailForLoginRequest();
     emailRequest.setEmail(email);
-
     DbUser dbUser = new DbUser();
     dbUser.setEmail(email);
+    Map<String, String> response = new HashMap<>();
+    response.put("checkEmail", TRUE);
 
-    when(userService.findDbUserByEmail(any(String.class))).thenReturn(Optional.of(dbUser));
+    when(userService.findDbUserByEmail(any(UserEmailForLoginRequest.class)))
+        .thenReturn(new ResponseEntity<>(response, HttpStatus.FOUND));
 
     mockMvc.perform(post("/api/checkEmail")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isFound());
 
-    verify(userService).findDbUserByEmail("Test@gmail.com");
+    verify(userService).findDbUserByEmail(emailRequest);
   }
 
   @Test
-  void handleCheckUsernamePostStatusNotFound() throws Exception {
+  void handleCheckEmailStatusNotFound() throws Exception {
     String email = "Test@";
-
     UserEmailForLoginRequest emailRequest = new UserEmailForLoginRequest();
     emailRequest.setEmail(email);
+    Map<String, String> response = new HashMap<>();
+    response.put("checkEmail", FALSE);
 
-    when(userService.findDbUserByEmail(any(String.class))).thenReturn(null);
+    when(userService.findDbUserByEmail(any(UserEmailForLoginRequest.class)))
+        .thenReturn(new ResponseEntity<>(response, HttpStatus.NOT_FOUND));
 
     mockMvc.perform(post("/api/checkEmail")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isNotFound());
 
-    verify(userService).findDbUserByEmail(emailRequest.getEmail());
+    verify(userService).findDbUserByEmail(emailRequest);
   }
 
   @Test
   void handleSendLetterPostStatusOk() throws Exception {
     String email = "Test@gmail.com";
     String name = "Nadya";
-
     UserEmailRequest emailRequest = new UserEmailRequest();
     emailRequest.setEmail(email);
     emailRequest.setName(name);
+    Map<String, String> response = new HashMap<>();
+    response.put("sendLetter", TRUE);
 
-    when(userService.sendLetter(any(String.class), any(String.class))).thenReturn(true);
+    when(userService.sendLetter(any(UserEmailRequest.class))).thenReturn(ResponseEntity.ok(response));
 
     mockMvc.perform(post("/api/sendLetter")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isOk());
 
-    verify(userService).sendLetter(emailRequest.getName(), emailRequest.getEmail());
+    verify(userService).sendLetter(emailRequest);
   }
 
   @Test
   void handleSendLetterPostStatusBadRequest() throws Exception {
     String email = "Test@";
     String name = "Test";
-
     UserEmailRequest emailRequest = new UserEmailRequest();
     emailRequest.setEmail(email);
     emailRequest.setName(name);
+    Map<String, String> response = new HashMap<>();
+    response.put("sendLetter", FALSE);
 
-    when(userService.sendLetter(any(String.class), any(String.class))).thenReturn(false);
+    when(userService.sendLetter(any(UserEmailRequest.class)))
+        .thenReturn(new ResponseEntity<>(response, HttpStatus.BAD_REQUEST));
 
     mockMvc.perform(post("/api/sendLetter")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(emailRequest)))
         .andExpect(status().isBadRequest());
 
-    verify(userService).sendLetter(emailRequest.getName(), emailRequest.getEmail());
+    verify(userService).sendLetter(emailRequest);
   }
 
   @Test
   void handleActivatePostStatusOk() throws Exception {
     Integer code = 123456;
-
     ActivateCodeRequest codeRequest = new ActivateCodeRequest();
     codeRequest.setCode(code);
+    Map<String, String> response = new HashMap<>();
+    response.put("activate", TRUE);
 
-    when(userService.activateUser(any(Integer.class))).thenReturn(true);
+    when(userService.activateUser(any(ActivateCodeRequest.class))).thenReturn(ResponseEntity.ok(response));
 
     mockMvc.perform(post("/api/activate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(codeRequest)))
         .andExpect(status().isOk());
 
-    verify(userService).activateUser(codeRequest.getCode());
+    verify(userService).activateUser(codeRequest);
   }
 
   @Test
   void handleActivatePostStatusBadRequest() throws Exception {
     Integer code = 123456;
-
     ActivateCodeRequest codeRequest = new ActivateCodeRequest();
     codeRequest.setCode(code);
+    Map<String, String> response = new HashMap<>();
+    response.put("activate", FALSE);
 
-    when(userService.activateUser(any(Integer.class))).thenReturn(false);
+    when(userService.activateUser(any(ActivateCodeRequest.class)))
+        .thenReturn(new ResponseEntity<>(response, HttpStatus.BAD_REQUEST));
 
     mockMvc.perform(post("/api/activate")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(codeRequest)))
         .andExpect(status().isBadRequest());
 
-    verify(userService).activateUser(codeRequest.getCode());
+    verify(userService).activateUser(codeRequest);
   }
 
   @Test
@@ -260,7 +270,7 @@ class UserRestControllerTest {
 
     when(userService.filterCachedUsersByName(search)).thenReturn(testSearchDto);
 
-    mockMvc.perform(get("/api/search")
+    mockMvc.perform(post("/api/search")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(search)))
         .andExpect(status().isFound());
@@ -302,23 +312,28 @@ class UserRestControllerTest {
   @Test
   void testHandleEditionPost_successfulUpdate() {
     EditingDtoRequest request = new EditingDtoRequest();
-    when(userService.update(request)).thenReturn(true);
+    Map<String, String> responseTest = new HashMap<>();
+    responseTest.put("edition", TRUE);
+    when(userService.update(request)).thenReturn(ResponseEntity.ok(responseTest));
 
     ResponseEntity<Map<String, String>> response = controller.handleEditionPost(request);
 
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertEquals("true", response.getBody().get("edition"));
+    Assertions.assertEquals(TRUE, response.getBody().get("edition"));
   }
 
   @Test
   void testHandleEditionPost_failedUpdate() {
     EditingDtoRequest request = new EditingDtoRequest();
-    when(userService.update(request)).thenReturn(false);
+    Map<String, String> responseTest = new HashMap<>();
+    responseTest.put("edition", FALSE);
+    when(userService.update(request))
+        .thenReturn(new ResponseEntity<>(responseTest, HttpStatus.BAD_REQUEST));
 
     ResponseEntity<Map<String, String>> response = controller.handleEditionPost(request);
 
     Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    Assertions.assertEquals("false", response.getBody().get("edition"));
+    Assertions.assertEquals(FALSE, response.getBody().get("edition"));
   }
 
   @Test

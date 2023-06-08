@@ -1,7 +1,10 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.ImageHandlingConf;
+import com.danit.socialnetwork.dto.ActivateCodeRequest;
+import com.danit.socialnetwork.dto.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
+import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
@@ -10,6 +13,7 @@ import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
+import com.google.common.cache.Cache;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
@@ -34,6 +39,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
@@ -57,6 +63,8 @@ class UserServiceImplTest {
   SearchMapper searchMapper;
   @Mock
   ImageHandlingConf imageHandlingConf;
+  private static final String FALSE = "false";
+  private static final String TRUE = "true";
 
   @Test
   void findByUsername_shouldFindUser_WhenExists() {
@@ -115,17 +123,27 @@ class UserServiceImplTest {
     testUser.setName("Testuser");
     testUser.setEmail("testuser@example.com");
     testUser.setDateOfBirth(LocalDate.of(2000, 01, 01));
+    RegistrationRequest registrationRequest = new RegistrationRequest();
+    registrationRequest.setUsername("testuser");
+    registrationRequest.setPassword("password");
+    registrationRequest.setName("Testuser");
+    registrationRequest.setEmail("testuser@example.com");
+    registrationRequest.setDay(1);
+    registrationRequest.setMonth(1);
+    registrationRequest.setYear(2000);
+    Map<String, String> responseTest = new HashMap<>();
+    responseTest.put("registration", TRUE);
 
     when(userRepository.findByUsername(testUser.getUsername())).thenReturn(Optional.empty());
     when(userRepository.findDbUserByEmail(testUser.getEmail())).thenReturn(Optional.empty());
     when(passwordEncoder.encode(testUser.getPassword())).thenReturn("password");
 
-    boolean result = userServiceImp.save(testUser);
+    ResponseEntity<Map<String, String>> result = userServiceImp.save(registrationRequest);
 
     Mockito.verify(userRepository).save(testUser);
     Mockito.verify(passwordEncoder).encode(testUser.getPassword());
 
-    assertTrue(result);
+    assertEquals(ResponseEntity.ok(responseTest) , result);
   }
 
   @Test
@@ -136,6 +154,16 @@ class UserServiceImplTest {
     existingUser.setName("Nadya");
     existingUser.setEmail("Test@gmail.com");
     existingUser.setDateOfBirth(LocalDate.of(1999, 01, 27));
+    RegistrationRequest registrationRequest = new RegistrationRequest();
+    registrationRequest.setUsername("Nadya");
+    registrationRequest.setPassword("123");
+    registrationRequest.setName("Nadya");
+    registrationRequest.setEmail("Test@gmail.com");
+    registrationRequest.setDay(27);
+    registrationRequest.setMonth(1);
+    registrationRequest.setYear(1999);
+    Map<String, String> responseTest = new HashMap<>();
+    responseTest.put("registration", FALSE);
 
     when(userRepository.findByUsername(existingUser.getUsername())).thenReturn(Optional.of(existingUser));
 
@@ -146,34 +174,51 @@ class UserServiceImplTest {
     dbUser.setEmail("Test@gmail.com");
     dbUser.setDateOfBirth(LocalDate.of(1999, 01, 27));
 
-    boolean result = userServiceImp.save(dbUser);
+    ResponseEntity<Map<String, String>> result = userServiceImp.save(registrationRequest);
     Mockito.verify(userRepository, never()).save(any(DbUser.class));
 
-    assertFalse(result);
+    assertEquals(new ResponseEntity<>(responseTest, HttpStatus.BAD_REQUEST), result);
   }
 
   @Test
   void sendLetter() {
-    String name = "Nadya";
     String email = "Test@gmail.com";
+    String name = "Nadya";
+    UserEmailRequest emailRequest = new UserEmailRequest();
+    emailRequest.setEmail(email);
+    emailRequest.setName(name);
+    Map<String, String> response = new HashMap<>();
+    response.put("sendLetter", TRUE);
 
-    boolean result = userServiceImp.sendLetter(name, email);
+    ResponseEntity<Map<String, String>> result = userServiceImp.sendLetter(emailRequest);
 
-    assertTrue(result);
+    assertEquals(ResponseEntity.ok(response) , result);
   }
 
   @Test
   void activateUser_WithValidActivationCode() {
+    ActivateCodeRequest codeRequest = new ActivateCodeRequest();
+    codeRequest.setCode(123456);
+    Map<String, String> response = new HashMap<>();
+    response.put("activate", TRUE);
     activateCodeCache.put("activationCode", 123456);
+    ResponseEntity<Map<String, String>> result = userServiceImp.activateUser(codeRequest);
 
-    assertTrue(userServiceImp.activateUser(123456));
+    assertEquals(ResponseEntity.ok(response), result);
   }
+
+
 
   @Test
   void activateUser_WithInvalidActivationCode() {
     activateCodeCache.put("activationCode", 123456);
+    ActivateCodeRequest codeRequest = new ActivateCodeRequest();
+    codeRequest.setCode(654321);
+    Map<String, String> response = new HashMap<>();
+    response.put("activate", FALSE);
 
-    assertFalse(userServiceImp.activateUser(654321));
+    ResponseEntity<Map<String, String>> result = userServiceImp.activateUser(codeRequest);
+    assertEquals(new ResponseEntity<>(response, HttpStatus.BAD_REQUEST), result);
   }
 
   @Test
@@ -340,17 +385,19 @@ class UserServiceImplTest {
     request.setAddress("XXX");
     request.setProfileImageUrl(null);
     request.setProfileBackgroundImageUrl(null);
+    Map<String, String> responseTest = new HashMap<>();
+    responseTest.put("edition", TRUE);
 
     when(userRepository.findById(1)).thenReturn(Optional.of(testUser));
 
-    boolean result = userServiceImp.update(request);
+    ResponseEntity<Map<String, String>> result = userServiceImp.update(request);
 
     assertEquals(testUpdateUser.getName(), testUser.getName());
     assertEquals(testUpdateUser.getDateOfBirth(), testUser.getDateOfBirth());
     assertEquals(testUpdateUser.getAddress(), testUser.getAddress());
     assertEquals(testUpdateUser.getProfileImageUrl(), testUser.getProfileImageUrl());
     assertEquals(testUpdateUser.getProfileBackgroundImageUrl(), testUser.getProfileBackgroundImageUrl());
-    assertTrue(result);
+    assertEquals(ResponseEntity.ok(responseTest) , result);
   }
 
 
