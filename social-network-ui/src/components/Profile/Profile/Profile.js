@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {
     BgImgStyle, infoTextStyles,
@@ -8,11 +8,10 @@ import {
     ProfileStyles, SvgStyles, infoStyle, PhotoStyle, editButtonStyles
 } from "./ProfileStyles";
 import {Avatar, Button, SvgIcon, Typography} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {ProfileSwipeableViews} from "../ProfilePageSwipeableViews/ProfileSwipeableViews";
 import {useDispatch, useSelector} from "react-redux";
-import {setSearchData, userFollow, userUnfollow} from "../../../store/actions";
-import {fetchUnfollow} from "../../../store/Thunks/fetchUnfollowThunk";
+import {userFollow, userSearchFollow, userSearchUnfollow, userUnfollow} from "../../../store/actions";
 import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscriptionButton";
 import {apiUrl} from "../../../apiConfig";
 
@@ -20,9 +19,15 @@ export function Profile (props) {
 
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
-    const disabled = useSelector(state => state.userData.disabled.disabled);
     const isFollow = useSelector(state => state.userData.followData.userFollow)
     const dispatch = useDispatch()
+
+    const gogi = async () => {
+        const response = await fetch(`${apiUrl}/api/profile/${userId}`);
+        const userData = await response.json();
+        console.log(userData)
+    }
+
 
 
     useEffect(() => {
@@ -46,6 +51,7 @@ export function Profile (props) {
         };
         if (searchId) {
             fetchIsFollow();
+            gogi()
         }
 
     }, [searchId])
@@ -55,7 +61,8 @@ export function Profile (props) {
         <div>
             <div style={BgImgStyle}>
                 {props.background ?
-                    <img src={`data:image/png;base64,${props.background}`} alt={props.name} style={PhotoStyle} />
+                    // <img src={`data:image/png;base64,${props.background}`} alt={props.name} style={PhotoStyle} />
+                    <img src={props.background} alt={props.name} style={PhotoStyle} />
                     :
                     false
                 }
@@ -63,13 +70,18 @@ export function Profile (props) {
             <div style={ProfileStyles}>
                 <div style={imgStyle}>
 
-                    <Avatar alt={props.name} src={props.image ? `data:image/png;base64,${props.image}` : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
+                    {/*<Avatar alt={props.name} src={props.image ? `data:image/png;base64,${props.image}` : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>*/}
+                    <Avatar alt={props.name} src={props.image ? props.image : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
 
                     {isFollow
                         ?
-                        <UnSubscriptionButton/>
+                        <UnSubscriptionButton width="170px" height="45px" searchId={props.userId} btnClick={() => dispatch(userSearchUnfollow())}/>
                         :
-                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => props.btnClick()} disabled={disabled}>{props.buttonText}</Button>
+                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => {
+                            dispatch(userSearchFollow())
+                            dispatch(userFollow())
+                            props.btnClick()
+                        }}>{props.buttonText}</Button>
                     }
 
                 </div>
@@ -100,12 +112,12 @@ export function Profile (props) {
                         </div>
                     </div>
                     <div style={{ display: "flex", gap: "20px" }}>
-                        <Link to="/subscribe" variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(1))}>
+                        <Link to="/subscribe" state={{ userId: props.userId }} variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(1))}>
                             <Typography sx={LinkTextStyles}>
                                 <span style={LinkQuantityStyles}>{props.followings}</span> following
                             </Typography>
                         </Link>
-                        <Link to="/subscribe" variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(0))}>
+                        <Link to="/subscribe" state={{ userId: props.userId }} variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(0))}>
                             <Typography sx={LinkTextStyles}>
                                 <span style={LinkQuantityStyles}>{props.followers}</span> followers
                             </Typography>

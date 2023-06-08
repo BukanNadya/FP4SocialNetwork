@@ -39,12 +39,14 @@ export function InputPhoto ({onImageUpload, ...props }) {
     return (
         <div style={BgPhotoStyle}>
             {selectedFile ?
-                <img src={props.background ? URL.createObjectURL(selectedFile.file): `data:image/png;base64,${background}`} alt="Selected" style={PhotoStyle} />
+                // <img src={props.background ? URL.createObjectURL(selectedFile.file): `data:image/png;base64,${background}`} alt="Selected" style={PhotoStyle} />
+                <img src={props.background ? URL.createObjectURL(selectedFile.file): background} alt="Selected" style={PhotoStyle} />
                 :
                 false
             }
             {background ?
-                <img src={`data:image/png;base64,${background}`} alt="" style={PhotoStyle} />
+                // <img src={`data:image/png;base64,${background}`} alt="" style={PhotoStyle} />
+                <img src={background} alt="" style={PhotoStyle} />
                 :
                 false
             }

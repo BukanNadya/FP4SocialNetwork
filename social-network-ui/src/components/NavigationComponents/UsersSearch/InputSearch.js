@@ -16,7 +16,7 @@ export const InputSearch = ({ ...props }) => {
     useEffect(() => {
         const fetchData = async () => {
 
-            const response = await fetch(`${apiUrl}/profile/${userId}`);
+            const response = await fetch(`${apiUrl}/api/profile/${userId}`);
             const userData = await response.json();
             dispatch(setSearchData(userData));
         };

@@ -26,7 +26,7 @@ import {
     SET_PROFILE_LIKE_POSTS,
     SET_PROFILE_REPOSTS,
     SET_USER_FOLLOW,
-    SET_USER_UNFOLLOW, BUTTON_ENABLED, BUTTON_DISABLED,
+    SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW,
 } from "./types";
 import { apiUrl } from "../apiConfig";
 
@@ -90,11 +90,12 @@ export const setUserData = (data) => ({
         userName: data.username,
         name: data.name,
         date: new Date(data.createdDateTime).toDateString().slice(4),
-        image: data.profileImageByteArray,
-        background: data.profileBackgroundImageByteArray,
+        image: data.profileImageLink,
+        background: data.profileBackgroundImageLink,
         followers: data.followers,
         followings: data.followings,
         address: data.address,
+        birthday: data.dateOfBirth,
     }
 });
 export const setSearchData = (data) => ({
@@ -103,11 +104,12 @@ export const setSearchData = (data) => ({
         userName: data.username,
         name: data.name,
         date: new Date(data.createdDateTime).toDateString().slice(4),
-        image: data.profileImageByteArray,
-        background: data.profileBackgroundImageByteArray,
+        image: data.profileImageLink,
+        background: data.profileBackgroundImageLink,
         followers: data.followers,
         followings: data.followings,
         address: data.address,
+        birthday: data.dateOfBirth,
     }
 });
 export const openSignUpModal = () => ({
@@ -496,10 +498,9 @@ export const userFollow = () => ({
 export const userUnfollow = () => ({
     type: SET_USER_UNFOLLOW
 });
-export const buttonDisabled = () => ({
-    type: BUTTON_DISABLED
+export const userSearchFollow = () => ({
+    type: SET_SEARCH_USER_FOLLOW
 });
-export const buttonEnabled = () => ({
-    type: BUTTON_ENABLED
+export const userSearchUnfollow = () => ({
+    type: SET_SEARCH_USER_UNFOLLOW
 });
-
