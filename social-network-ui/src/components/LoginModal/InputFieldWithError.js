@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {ErrorField } from "./loginModalStyles"
 import { useFormikContext } from "formik";
 import { Typography, TextField, InputAdornment } from "@mui/material";
 import PropTypes from "prop-types";
@@ -27,9 +27,7 @@ export function InputFieldWithError({
                 error={hasError}
                 name={name}
                 type={passwordView}
-                sx={{ marginBottom: "5px", width: "100%", fontFamily: "'Lato', sans-serif",
-                    fontSize: "15px",
-                    lineHeight: "23px" }}
+                sx={ErrorField}
                 InputLabelProps={{
                     sx: { color: hasError ? "error.main" : "text.primary" },
                     shrink: true,
@@ -68,9 +66,7 @@ export function InputFieldWithError({
                 }}
             />
             {hasError && (
-                <Typography color="error" sx={{ fontFamily: "'Lato', sans-serif",
-                    fontSize: "15px",
-                    lineHeight: "23px"}} variant="caption">
+                <Typography color="error" sx={ErrorField} variant="caption">
                     {errors[name]}
                 </Typography>
             )}
@@ -81,13 +77,9 @@ export function InputFieldWithError({
                     variant="outlined"
                     error={hasError}
                     name={name}
-                    sx={{ marginBottom: "5px", width: "100%" , fontFamily: "'Lato', sans-serif",
-                        fontSize: "15px",
-                        lineHeight: "23px"}}
+                    sx={ErrorField}
                     InputLabelProps={{
-                        sx: { color: hasError ? "error.main" : "text.primary",  fontFamily: "'Lato', sans-serif",
-                            fontSize: "15px",
-                            lineHeight: "23px" },
+                        sx: { color: hasError ? "error.main" : "text.primary",  ...ErrorField  },
                         shrink: true,
                     }}
                     autoComplete={`username-${Math.random().toString(36).substr(2, 8)}`}

@@ -28,7 +28,7 @@ import {
     SET_USER_FOLLOW,
     SET_USER_UNFOLLOW, BUTTON_ENABLED, BUTTON_DISABLED,
 } from "./types";
-import {apiUrl} from "../apiConfig";
+import { apiUrl } from "../apiConfig";
 
 export const setPage = (pageNumber) => ({
     type: SET_PAGE,
@@ -150,25 +150,255 @@ export const setPosts = (posts) => ({
 export const checkEmail = (email) => ({
     type: CHECK_EMAIL,
     payload: email
-})
+});
 export const setUserPostsClear = (posts) => ({
     type: SET_CLEAR_POSTS, payload: posts
 });
 
-export const fetchPostsByUserId = (userId, page) => {
-    console.log("userId_ACTIONS", userId)
-    console.log("page_ACTIONS", page)
+export const checkEmailFetch = (values, setErrors) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/posts?userId=${userId}&page=${page}`);
+        try {
+            console.log(values);
+            const response = await fetch(`${apiUrl}/api/checkEmail`, {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-Type": "application/json" }
+            });
+            if (response.status === 302) {
+                dispatch(setUserEmail(values));
+            } else {
+                setErrors({ email: "User doesn't exist, please check your email" });
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+    };
+};
+
+export const sendComments = (values, userId, postId) => {
+    return async (dispatch) => {
+        console.log("hi");
+        try {
+            let userCommentResponse = await fetch(`${apiUrl}/api/comments`, {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: userId,
+                    postId: postId,
+                    commentText: values.comment,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            let userCommentData = await userCommentResponse.json();
+            console.log(userCommentData);
+            dispatch(setCommentFromUser(userCommentData));
+        } catch (error) {
+            console.error("Ошибка:", error);
+        }
+    };
+};
+
+export const getComments = (setIsLoadingComments, isCommentOpen, setIsCommentOpen, postId) => {
+    return async (dispatch) => {
+        try {
+            setIsCommentOpen(!isCommentOpen);
+            setIsLoadingComments(true);
+            let commentsResponse = await fetch(`${apiUrl}/api/comments?postId=${postId}`);
+            let dataComments = await commentsResponse.json();
+            dispatch(setComments(dataComments));
+        } catch (error) {
+            console.log(err);
+        } finally {
+            setIsLoadingComments(false);
+        }
+    };
+};
+
+
+export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
+    return async (dispatch) => {
+        try {
+            setLikesIsLoading(true);
+            let dataAboutUsersWhoLike = await fetch(`${apiUrl}/api/users/likes?postId=${postId}&page=0`);
+            let usersWhoLike2 = await dataAboutUsersWhoLike.json();
+            setUsersWhoLike(usersWhoLike2);
+        } catch (error) {
+            console.log(err);
+        } finally {
+            setLikesIsLoading(false);
+        }
+    };
+};
+
+export const activeLikesFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            const activeLikesResponse = await fetch(`${apiUrl}/api/likes/active?postId=${postId}&userId=${userId}`);
+            const activeLikes = await activeLikesResponse.json();
+            setLike(activeLikes);
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const sendRepostFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            await fetch(`${apiUrl}/api/reposts`, {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const addLikeFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            await fetch(`${apiUrl}/api/likes`, {
+                method: "POST",
+                body: JSON.stringify({
+                    postId: postId,
+                    userId: userId,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const deleteLikeFetch = (postId, userId) => {
+    return async (dispatch) => {
+        try {
+            await fetch(`${apiUrl}/api/likes?postId=${postId}&userId=${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+export const fetchData = (userId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`${apiUrl}/api/profile/${userId}`);
+            const userData = await response.json();
+            dispatch(setUserData(userData));
+        } catch (error) {
+            console.error("Ошибка при получении данных:", error);
+        }
+    };
+};
+
+
+
+export const checkPasswordFetch = (values, userDataState, setErrors) => {
+    return async (dispatch) => {
+        console.log("hi");
+        try {
+            const userPassword = await fetch(`${apiUrl}/login`, {
+                method: "POST",
+                body: JSON.stringify({
+                    email: values.email,
+                    password: values.password,
+                    rememberMe: userDataState.rememberMe
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (userPassword.ok) {
+                const userToken = await userPassword.json();
+                if (userDataState.rememberMe) {
+                    dispatch(setUserToken(userToken));
+                    localStorage.setItem("userToken", JSON.stringify(userToken));
+                    dispatch(closeLoginModal());
+                    dispatch(setUserEmail({ userEmail: "" }));
+                } else {
+                    dispatch(setUserToken(userToken));
+                    sessionStorage.setItem("userToken", JSON.stringify(userToken));
+                    dispatch(closeLoginModal());
+                    dispatch(setUserEmail({ userEmail: "" }));
+                }
+            } else {
+                setErrors({ password: "Wrong password" });
+            }
+        } catch (err) {
+            setErrors({ password: "An error occurred, please try again" });
+            console.error("Ошибка:", err);
+        }
+
+    };
+};
+
+export const PopularPeopleFetch = (setIsLoading, setMostPopularPeople) => {
+    return async (dispatch) => {
+        console.log("hi");
+        try {
+            setIsLoading(true);
+            const response = await fetch(`${apiUrl}/api/users/popular?page=0`);
+            const popularPeople = await response.json();
+            setMostPopularPeople(popularPeople);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+};
+
+export const changeDob = (userId, values) => {
+    return async (dispatch) => {
+        const response = await fetch(`${apiUrl}/api/change_dob`, {
+            method: "POST",
+            body: JSON.stringify({
+                userId: userId,
+                day: values.day,
+                month: values.month,
+                year: values.year,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+
         const data = await response.json();
-        console.log("posts/fetchPostsByUserId_ACTIONS", data)
+        dispatch(setUserBirthday(true));
+        return data;
+    };
+};
+
+export const fetchPostsByUserId = (userId, page) => {
+    return async (dispatch) => {
+        const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
+        const data = await response.json();
+        console.log(data, "fetchPostsByUserId")
         dispatch(setPosts(data));
+        return data;
     };
 };
 
 export const fetchPostsByPage = (page) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/posts?page=${page}`);
+        const response = await fetch(`${apiUrl}/api/posts?page=${page}`);
         let posts = await response.json();
         dispatch(addRegistrationPosts(posts));
     };
@@ -181,11 +411,12 @@ export const setUserBirthday = (flag) => {
     };
 };
 
-export const fetchExplorePosts = (page) => {
+export const fetchExplorePosts = (userId, page) => {
     return async (dispatch) => {
-        const response = await fetch(`${apiUrl}/posts?page=${page}`);
+        const response = await fetch(`${apiUrl}/api/posts/explorer?userld=${userId}&page=${page}`);
         let posts = await response.json();
         dispatch(addExplorePosts(posts));
+        return posts;
     };
 };
 
@@ -200,7 +431,7 @@ export const addRegistrationPosts = (posts) => ({
 export const sendEmailCheckRequest = (values) => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${apiUrl}/checkEmail`, {
+            const response = await fetch(`${apiUrl}/api/checkEmail`, {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: { "Content-Type": "application/json" }
@@ -220,7 +451,7 @@ export const sendEmailCheckRequest = (values) => {
 
 export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
     try {
-        const response = await fetch(`${apiUrl}/posts`, {
+        const response = await fetch(`${apiUrl}/api/posts`, {
             method: "POST",
             body: JSON.stringify(postObject),
             headers: {
@@ -243,7 +474,7 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
     payload: posts
-})
+});
 export const setProfileLikePosts = (posts) => ({
     type: SET_PROFILE_LIKE_POSTS,
     payload: posts
@@ -255,9 +486,10 @@ export const setProfileReposts = (posts) => ({
 
 export const setPageZero = () => {
     return {
-        type: 'SET_PAGE_ZERO'
-    }
-}
+        type: "SET_PAGE_ZERO"
+    };
+};
+
 export const userFollow = () => ({
     type: SET_USER_FOLLOW
 });

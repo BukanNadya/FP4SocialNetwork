@@ -1,11 +1,10 @@
 export const ContainerStyled = {
     padding: "0!important",
-    overflowX: "hidden",
-    overflowY: "scroll",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
+    overflowX:"hidden",
 };
 
 export const OutletWrapper = {
@@ -21,8 +20,14 @@ export const ContentContainer = {
     height: "100vh",
     position: "sticky",
     top: 0,
-    overflowY: "scroll",
-    overflowX: "hidden",
+    overflowY: "auto",
+    overflowX:"hidden",
+    scrollbarWidth: "none",
+    msOverflowStyle: "none",
+    marginRight: "-40px",
+    "&:::WebkitScrollbar": {
+        display: "none"
+    },
 };
 
 export const OutletContainer = {
@@ -40,9 +45,9 @@ export const ItemWrapper = {
     position: "relative",
     alignItems: "center",
 };
-export const ItemWrapperContainer={
-    position:"relative",
+export const ItemWrapperContainer = {
+    position: "relative",
     display: "flex",
     flexDirection: "column",
     width: "600px",
-}
+};

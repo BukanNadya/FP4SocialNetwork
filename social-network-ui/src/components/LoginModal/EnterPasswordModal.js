@@ -14,24 +14,29 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 
-import { closeLoginModal, setRememberMeAction, setUserEmail, setUserPassword } from "../../store/actions";
+import {
+    checkPasswordFetch,
+    closeLoginModal,
+    setRememberMeAction,
+    setUserEmail,
+    setUserPassword
+} from "../../store/actions";
 import { InputFieldWithError } from "./InputFieldWithError";
 import {
     StyledHeaderModalText,
     StyledFormControl,
     StyledBlackButton,
     StyledWhiteButton,
-    StyledCheckbox
+    StyledCheckbox, EnterPasswordLabel
 } from "./loginModalStyles";
 import { setUserToken } from "../../store/actions";
-import {apiUrl} from "../../apiConfig";
+import { apiUrl } from "../../apiConfig";
 
 export function EnterPasswordModal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const navigate = useNavigate();
-
 
     return (
         <>
@@ -48,59 +53,18 @@ export function EnterPasswordModal() {
                 )}
                 onSubmit={async (values, { setErrors, setSubmitting }) => {
                     setIsSubmitting(true);
-                    try {
-                        dispatch(setUserPassword(values));
-                        const userPassword = await fetch(`${apiUrl}/login`, {
-                            method: "POST",
-                            body: JSON.stringify({
-                                email: values.email,
-                                password: values.password,
-                                rememberMe: userDataState.rememberMe
-                            }),
-                            headers: {
-                                "Content-Type": "application/json"
-                            }
-                        });
-
-                        if (userPassword.ok) {
-                            const userToken = await userPassword.json();
-                            if (userDataState.rememberMe) {
-                                dispatch(setUserToken(userToken));
-                                localStorage.setItem("userToken", JSON.stringify(userToken));
-                                dispatch(closeLoginModal())
-                                dispatch(setUserEmail({userEmail: ''}));
-                            } else {
-                                dispatch(setUserToken(userToken));
-                                sessionStorage.setItem("userToken", JSON.stringify(userToken));
-                                dispatch(closeLoginModal());
-                                dispatch(setUserEmail({ userEmail: "" }));
-                            }
-                            navigate("/home");
-                        } else {
-                            setErrors({ password: "Wrong password" });
-                        }
-                    } catch (error) {
-                        console.error("An error occurred:", error);
-                        setErrors({ password: "An error occurred, please try again" });
-                    } finally {
-                        setIsSubmitting(false);
-                        setSubmitting(false);
-                    }
+                    dispatch(setUserPassword(values));
+                    await dispatch(checkPasswordFetch(values, userDataState, setErrors));
+                    navigate("/home");
+                    setIsSubmitting(false);
+                    setSubmitting(false);
                 }}
             >
                 <Form>
                     <FormControl sx={StyledFormControl}>
                         <FormControl sx={{ width: "400px" }} variant="outlined">
-                            <InputLabel htmlFor="email" sx={{
-                                fontFamily: "'Lato', sans-serif",
-                                fontSize: "19px",
-                                lineHeight: "23px"
-                            }}>email</InputLabel>
-                            <OutlinedInput sx={{
-                                fontFamily: "'Lato', sans-serif",
-                                fontSize: "19px",
-                                lineHeight: "23px"
-                            }}
+                            <InputLabel htmlFor="email" sx={EnterPasswordLabel}>email</InputLabel>
+                            <OutlinedInput sx={EnterPasswordLabel}
                                            id="userEmail"
                                            name="userEmail"
                                            type="text"

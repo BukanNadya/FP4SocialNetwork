@@ -3,7 +3,7 @@ import {useLocation} from "react-router-dom";
 
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
-import { Header } from "./NavigationStyles";
+import { Header, HeaderInformationParagraph } from "./NavigationStyles";
 
 
 export function HeaderInformation() {
@@ -34,7 +34,7 @@ export function HeaderInformation() {
     return (
         <AppBar position="fixed" color="primary" sx={Header}>
             <Toolbar sx={{ height: "70px" }}>
-                <Typography variant="h5" component="div" sx={{ fontFamily: "'Lato', sans-serif", color: "#000000" }}>
+                <Typography variant="h5" component="div" sx={HeaderInformationParagraph }>
                     {getRouteName(pathname)}
                 </Typography>
             </Toolbar>

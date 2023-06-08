@@ -57,7 +57,7 @@ export function Newsfeed() {
                             </Toolbar>
                         </AppBar>
                     </CardContent>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}>
                         <PostsDisplaying userPosts={registrationPageUsersPosts} isLoading={isLoading}/>
                     </div>
                 </Card>

@@ -9,10 +9,12 @@ import {SubscriptionPage} from "./pages/SubscriptionPage";
 import { Explore } from "./pages/Explore";
 import {BrowsePage} from "./pages/BrowsePage";
 import { Notifications } from "./pages/Notifications";
+import {PostPage} from "./pages/PostPage"
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout/>}>
+            <Route path="/" element={<HomeScreen/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
             <Route path="/home" element={<HomeScreen/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
@@ -20,6 +22,7 @@ const router = createBrowserRouter(
             <Route path="/view" element={<BrowsePage/>}/>
             <Route path="/explore" element={<Explore/>}/>
             <Route path="/notifications" element={<Notifications/>}/>
+            <Route path="/post" element={<PostPage/>}/>
         </Route>
     )
 );

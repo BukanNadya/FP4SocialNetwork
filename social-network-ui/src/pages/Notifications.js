@@ -17,7 +17,6 @@ const notifications = [
         text: 'retweeted your tweet',
         time: '2h'
     },
-    // ...другие уведомления
 ];
 
 export  function Notifications() {

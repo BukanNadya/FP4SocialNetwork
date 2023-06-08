@@ -11,7 +11,7 @@ import {
     SidebarTypography,
     SidebarLogOutButton,
     SidebarIconBackground,
-    SidebarFabActive
+    SidebarFabActive, SvgIconStyles
 } from "./NavigationStyles";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { setUserToken } from "../../store/actions";
@@ -62,7 +62,7 @@ export function SideBar() {
                     </Link>
                     <Link to="/explore" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/explore" ? SidebarFabActive : SidebarFab}>
-                            <SvgIcon sx={{ width: "25px", height: "25px", marginLeft: "10px" }} viewBox="0 0 24 24"
+                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
                                 <g>
@@ -77,7 +77,7 @@ export function SideBar() {
                     </Link>
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab}>
-                            <SvgIcon sx={{ width: "25px", height: "25px", marginLeft: "10px" }} viewBox="0 0 24 24"
+                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
                                 <g>
@@ -93,7 +93,7 @@ export function SideBar() {
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/messages" ? SidebarFabActive : SidebarFab}>
-                            <SvgIcon sx={{ width: "25px", height: "25px", marginLeft: "10px" }} viewBox="0 0 24 24"
+                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
                                 <g>
@@ -108,7 +108,7 @@ export function SideBar() {
                     </Link>
                     <Link to="/profile" variant="contained" style={{ textDecoration: "none", marginBottom: "30px" }}>
                         <Fab variant="extended" sx={pathname === "/profile" ? SidebarFabActive : SidebarFab}>
-                            <SvgIcon sx={{ width: "25px", height: "25px", marginLeft: "10px" }} viewBox="0 0 24 24"
+                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
                                 <g>

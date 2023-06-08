@@ -17,6 +17,11 @@ export const StyledBox = {
     borderRadius: "10px",
     overflow: "visible",
     position: "relative",
+    "@media(max-width: 576px)": {
+        width: "100% !important",
+        height: "100% !important",
+        overflow: "hidden"
+    }
 };
 
 export const StyledTwitSvgIcon = {
@@ -118,3 +123,55 @@ export const StyledSpanElement = {
         transform: "translateY(-50%)",
     },
 };
+
+export const BirthDateForm = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+};
+export const BirthDateParagraph = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "25px",
+    textAlign: "center",
+    margin: "0 auto"
+};
+export const BirthDateBox = {
+    width: "400px",
+    display: "flex",
+    justifyContent: "space-around",
+    marginTop: "40px",
+
+};
+
+export const  BirthDateErrorMessage = {
+    color: "red", fontFamily: "'Lato', sans-serif",
+    fontSize: "13px",
+    lineHeight: "15px",
+}
+
+export const EnterEmailModalLink = {
+    marginTop: "0px",
+    color: "white",
+    textAlign: "center",
+    textDecoration: "none",
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+    height: "45px",
+    width: "400px",
+    background: "#000000",
+    textTransform: "uppercase",
+}
+
+export const EnterPasswordLabel = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "19px",
+    lineHeight: "23px"
+}
+
+export const ErrorField = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    lineHeight: "23px"
+}

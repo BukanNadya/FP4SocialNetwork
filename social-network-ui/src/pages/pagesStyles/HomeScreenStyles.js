@@ -10,6 +10,12 @@ export const SvgWrapper = {
     alignSelf: "start",
     border: "1px solid black"
 };
+export const imgStyles = {
+    width: "70px",
+    height: "65px",
+    borderRadius: "50px",
+    margin: "0,auto"
+}
 
 export const PostWrapper = {
     width: "500px",
@@ -56,3 +62,7 @@ export const SendingPostButtonsContainer = {
     maxWidth: "400px",
     width: "400px",
 };
+
+export const textWrapper = {
+    display: "flex", minWidth: "120px", justifyContent: "space-between"
+}

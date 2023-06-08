@@ -17,9 +17,9 @@ export function BrowsePage () {
 
     useEffect(() => {
         const fetchData = async () => {
-
-            const response = await fetch(`${apiUrl}/profile/${searchId}`);
+            const response = await fetch(`${apiUrl}/api/profile/${searchId}`);
             const userData = await response.json();
+            console.log(userData, "userData")
             dispatch(setSearchData(userData));
         };
         if (searchId) {
