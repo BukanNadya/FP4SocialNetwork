@@ -31,7 +31,7 @@ public class PostDtoUnitTest {
     DbUser user = new DbUser();
     user.setUsername("John");
 
-    Post post = Post.from(postDtoSave, user);
+    Post post = Post.from(postDtoSave, user, "photoLink");
 
     assertEquals(post.getUserPost().getUsername(), user.getUsername());
     assertEquals(post.getWrittenText(), postDtoSave.getWrittenText());
@@ -61,7 +61,7 @@ public class PostDtoUnitTest {
     assertEquals(post.getUserPost().getName(), postDtoResponse.getName());
     assertEquals(post.getWrittenText(), postDtoResponse.getWrittenText());
     assertEquals(post.getSentDateTime(), postDtoResponse.getSentDateTime());
-    assertArrayEquals(Base64.getDecoder().decode(post.getPhotoFile()), postDtoResponse.getPhotoFileByteArray());
+    assertEquals(post.getPhotoFile(), postDtoResponse.getPhotoFileLink());
   }
 
 

@@ -1,9 +1,9 @@
 package com.danit.socialnetwork.service;
 
 
+import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
-import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -49,6 +49,9 @@ public class PostServiceImplTest {
   PostLikeRepository postLikeRepository;
   @Mock
   RepostRepository repostRepository;
+
+  @Mock
+  ImageHandlingConf imageHandlingConf;
 
   @Test
   public void testGetAllPostsFromToFollow() {
@@ -187,20 +190,23 @@ public class PostServiceImplTest {
   @Test
   public void testSavePost() {
 
+    byte [] photoFileByteArray = new byte[]{49, 48, 58, 50, 52, 58, 50, 54};
+
     PostDtoSave postDtoSave = new PostDtoSave();
     postDtoSave.setUserId(2);
     postDtoSave.setWrittenText("Hello world1");
-    postDtoSave.setPhotoFileByteArray(new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+    postDtoSave.setPhotoFileByteArray(photoFileByteArray);
 
     DbUser user = new DbUser();
     user.setUserId(2);
     user.setUsername("John1");
     user.setName("Johny1");
 
-    Post tempPost = Post.from(postDtoSave, user);
+    Post tempPost = Post.from(postDtoSave, user, "photoLink");
 
     when(userRepository.findById(postDtoSave.getUserId())).thenReturn(Optional.of(user));
     when(postRepository.save(any(Post.class))).thenReturn(tempPost);
+    when(imageHandlingConf.uploadImage(photoFileByteArray, "production")).thenReturn("photoLink");
 
     Post post = postService.savePost(postDtoSave);
 
@@ -344,7 +350,7 @@ public class PostServiceImplTest {
 
     when(postRepository.findAllPostsAndRepostsByUserIdAsPost(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
 
-    List<PostRepostDtoMix> result = postService.getAllPostsAndRepostsByUserId(userId, 0);
+    List<PostDtoResponse> result = postService.getAllPostsAndRepostsByUserId(userId, 0);
 
     Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());

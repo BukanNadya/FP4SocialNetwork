@@ -16,7 +16,7 @@ public class UserDtoForSidebar {
 
   private String name;
 
-  private byte[] profileImageByteArray;
+  private String profileImageLink;
 
 
   public static UserDtoForSidebar from(DbUser dbUser) {
@@ -24,18 +24,8 @@ public class UserDtoForSidebar {
     userDtoResponse.setName(dbUser.getName());
     userDtoResponse.setUsername(dbUser.getUsername());
     userDtoResponse.setUserId(dbUser.getUserId());
-    if (dbUser.getProfileImageUrl() != null) {
-      try {
-        userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
-            .decode(dbUser.getProfileImageUrl()));
-      } catch (RuntimeException exc) {
-        userDtoResponse.setProfileImageByteArray(null);
-      }
-    } else {
-      userDtoResponse.setProfileImageByteArray(null);
-    }
+    userDtoResponse.setProfileImageLink(dbUser.getProfileImageUrl());
     return userDtoResponse;
-
   }
 
 }

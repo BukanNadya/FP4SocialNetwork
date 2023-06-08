@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Base64;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +18,7 @@ public class RepostDtoResponse extends PostDtoResponse {
     tempPostDto.setUsername(repost.getPostId().getUserPost().getUsername());
     tempPostDto.setName(repost.getPostId().getUserPost().getName());
     tempPostDto.setWrittenText(repost.getPostId().getWrittenText());
-    tempPostDto.setPhotoFileByteArray(Base64.getDecoder().decode(repost.getPostId().getPhotoFile()));
+    tempPostDto.setPhotoFileLink(repost.getPostId().getPhotoFile());
     tempPostDto.setSentDateTime(repost.getPostId().getSentDateTime());
     tempPostDto.setRepostDateTime(repost.getRepostedDateTime());
     return tempPostDto;

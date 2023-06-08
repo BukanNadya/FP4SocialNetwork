@@ -3,7 +3,6 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
-import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -40,10 +39,10 @@ class PostRestControllerTest {
   void testGetAllPosts() {
     PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
         "Nick", "nick", "Hello world 1",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink1");
     PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
         "Tom", "tom", "Hello world 12",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
     when(postService.getAllPosts(0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllPostsFromFollowing(0, 0);
@@ -88,10 +87,10 @@ class PostRestControllerTest {
   void getAllOwnPosts() {
     PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
         "Nick", "nick", "Hello world 1",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink1");
     PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
         "Tom", "tom", "Hello world 12",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
     when(postService.getAllOwnPosts(1, 0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllOwnPosts(1, 0);
@@ -107,10 +106,10 @@ class PostRestControllerTest {
 
     PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
         "Nick", "nick", "Hello world 1",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink1");
     PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
         "Tom", "tom", "Hello world 12",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
     when(postService.getAllLikedPosts(1, 0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllLikedPosts(1, 0);
@@ -123,26 +122,25 @@ class PostRestControllerTest {
 
   @Test
   void getAllPostsAndRepostsByUserId() {
-    PostRepostDtoMix postRepostDtoMix1=  new PostRepostDtoMix();
-    PostRepostDtoMix postRepostDtoMix2=  new PostRepostDtoMix();
-    PostRepostDtoMix postRepostDtoMix3=  new PostRepostDtoMix();
-    PostRepostDtoMix postRepostDtoMix4=  new PostRepostDtoMix();
-    PostRepostDtoMix postRepostDtoMix5=  new PostRepostDtoMix();
-    List<PostRepostDtoMix> repostDtoMixes = Arrays.asList(postRepostDtoMix1, postRepostDtoMix2,
-        postRepostDtoMix3, postRepostDtoMix4, postRepostDtoMix5);
+    PostDtoResponse post1 =  new PostDtoResponse();
+    PostDtoResponse post2 =  new PostDtoResponse();
+    PostDtoResponse post3 =  new PostDtoResponse();
+    PostDtoResponse post4 =  new PostDtoResponse();
+
+    List<PostDtoResponse> repostDtoMixes = Arrays.asList(post1, post2, post3, post4);
     when (postService.getAllPostsAndRepostsByUserId(1,0)).thenReturn(repostDtoMixes);
-    List<PostRepostDtoMix> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
-    Assertions.assertEquals(5, result.toArray().length);
+    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
+    Assertions.assertEquals(4, result.toArray().length);
   }
 
   @Test
   void getAllPostsWithShowingRepostByUserId() {
     PostDtoResponse postDtoResponse1 = new PostDtoResponse(1,
         "Nick", "nick", "Hello world 1",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink1");
     PostDtoResponse postDtoResponse2 = new PostDtoResponse(12,
         "Tom", "tom", "Hello world 12",
-        new byte[]{49, 48, 58, 50, 52, 58, 50, 54});
+        "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
     when(postService.getAllPostsWithShowingRepostByUserId(1, 0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllPostsWithShowingRepostByUserId(1, 0);

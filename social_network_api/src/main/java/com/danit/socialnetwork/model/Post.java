@@ -37,7 +37,7 @@ public class Post {
   @Column(name = "written_text")
   private String writtenText;
 
-  @Column(name = "photo_file", columnDefinition = "text")
+  @Column(name = "photo_file")
   private String photoFile;
 
   @Column(name = "sent_datetime", updatable = false)
@@ -54,13 +54,12 @@ public class Post {
   @JoinColumn(name = "user_id")
   private DbUser userPost;
 
-  public static Post from(PostDtoSave postDtoSave, DbUser userPost) {
+  public static Post from(PostDtoSave postDtoSave, DbUser userPost, String photoFile) {
     Post tempPost = new Post();
     tempPost.setPostId(0);
     tempPost.setSentDateTime(LocalDateTime.now());
     tempPost.setWrittenText(postDtoSave.getWrittenText());
-    tempPost.setPhotoFile(Base64.getEncoder()
-        .encodeToString(postDtoSave.getPhotoFileByteArray()));
+    tempPost.setPhotoFile(photoFile);
     tempPost.setUserPost(userPost);
     return tempPost;
   }

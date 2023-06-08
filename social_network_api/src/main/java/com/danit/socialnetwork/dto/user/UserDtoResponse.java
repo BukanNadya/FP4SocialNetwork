@@ -22,8 +22,8 @@ public class UserDtoResponse {
 
   private Integer userId;
   private String address;
-  private byte[] profileBackgroundImageByteArray;
-  private byte[] profileImageByteArray;
+  private String profileBackgroundImageLink;
+  private String profileImageLink;
   private Integer followers;
   private Integer followings;
 
@@ -35,18 +35,8 @@ public class UserDtoResponse {
     userDtoResponse.setCreatedDateTime(dbUser.getCreatedDate());
     userDtoResponse.setDateOfBirth(dbUser.getDateOfBirth());
     userDtoResponse.setAddress(dbUser.getAddress());
-    if (dbUser.getProfileImageUrl() != null) {
-      userDtoResponse.setProfileImageByteArray(Base64.getDecoder()
-          .decode(dbUser.getProfileImageUrl()));
-    } else {
-      userDtoResponse.setProfileImageByteArray(null);
-    }
-    if (dbUser.getProfileBackgroundImageUrl() != null) {
-      userDtoResponse.setProfileBackgroundImageByteArray(Base64.getDecoder()
-          .decode(dbUser.getProfileBackgroundImageUrl()));
-    } else {
-      userDtoResponse.setProfileBackgroundImageByteArray(null);
-    }
+    userDtoResponse.setProfileImageLink(dbUser.getProfileImageUrl());
+    userDtoResponse.setProfileBackgroundImageLink(dbUser.getProfileBackgroundImageUrl());
     return userDtoResponse;
   }
 

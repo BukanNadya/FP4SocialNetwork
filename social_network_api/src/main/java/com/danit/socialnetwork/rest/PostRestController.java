@@ -2,7 +2,6 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
-import com.danit.socialnetwork.dto.post.PostRepostDtoMix;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +78,7 @@ public class PostRestController {
    they were posted (for own posts) and reposted (for reposts) by user*/
   @GetMapping("/api/posts/reposts")
   @ResponseBody
-  public List<PostRepostDtoMix> getAllPostsAndRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
+  public List<PostDtoResponse> getAllPostsAndRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                               Integer userId,
                                                               @RequestParam(name = "page", defaultValue = "0")
                                                               Integer page) {
@@ -89,6 +88,5 @@ public class PostRestController {
     return postService.getAllPostsAndRepostsByUserId(userId, page);
 
   }
-
 
 }

@@ -53,10 +53,10 @@ public class DbUser {
   @Column(name = "address")
   private String address;
 
-  @Column(name = "profile_background_image_url", columnDefinition = "text")
+  @Column(name = "profile_background_image_url")
   private String profileBackgroundImageUrl;
 
-  @Column(name = "profile_image_url", columnDefinition = "text")
+  @Column(name = "profile_image_url")
   private String profileImageUrl;
 
   public DbUser(String username, String password,

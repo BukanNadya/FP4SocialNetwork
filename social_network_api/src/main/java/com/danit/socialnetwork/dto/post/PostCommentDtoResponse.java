@@ -19,7 +19,7 @@ public class PostCommentDtoResponse {
 
   private String username;
 
-  private byte[] photoFileByteArray;
+  private String profileImageLink;
 
   private Integer userId;
 
@@ -31,12 +31,7 @@ public class PostCommentDtoResponse {
     postCommentDtoResponse.setCreatedDateTime(postComment.getCreatedDateTime());
     postCommentDtoResponse.setName(postComment.getUserId().getName());
     postCommentDtoResponse.setUsername(postComment.getUserId().getUsername());
-    if (postComment.getUserId().getProfileImageUrl() != null) {
-      postCommentDtoResponse.setPhotoFileByteArray(Base64.getDecoder()
-          .decode(postComment.getUserId().getProfileImageUrl()));
-    } else {
-      postCommentDtoResponse.setPhotoFileByteArray(null);
-    }
+    postCommentDtoResponse.setProfileImageLink((postComment.getUserId().getProfileImageUrl()));
     postCommentDtoResponse.setUserId(postComment.getUserId().getUserId());
     postCommentDtoResponse.setPostCommentId(postComment.getPostCommentId());
     return postCommentDtoResponse;

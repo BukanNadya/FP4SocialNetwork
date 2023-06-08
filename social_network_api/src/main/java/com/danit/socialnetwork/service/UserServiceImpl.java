@@ -52,10 +52,6 @@ public class UserServiceImpl implements UserService {
   private final UserFollowRepository userFollowRepository;
   private final ImageHandlingConf imageHandlingConf;
 
-  private <T extends Object> Boolean isEmpty(T temp) {
-    return Optional.ofNullable(temp).isEmpty();
-  }
-
   @Override
   public Optional<DbUser> findByUsername(String username) {
     Optional<DbUser> maybeUser = userRepository.findByUsername(username);
