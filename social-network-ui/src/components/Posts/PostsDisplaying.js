@@ -1,10 +1,15 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Post } from "./Post";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { PostDisplayingEmptyPostsText } from "./PostStyles";
 
 export const PostsDisplaying = ({ userPosts, isLoading }) => {
+
+    useEffect(()=>{
+        console.log(userPosts, "userPosts")
+    }, [])
+
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>;
     } else if (userPosts.length === 0) {

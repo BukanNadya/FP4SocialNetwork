@@ -56,7 +56,7 @@ export function PopularPeopleSidebar() {
                                 borderBottom: index !== mostPopularPeople.length - 1 ? "1px solid rgba(0, 0, 0, 0.1)" : "none"
                             }}>
                                 <div style={Wrapper}>
-                                    {user.profileImageByteArray ?
+                                    {user.profileImageLink ?
                                         <img src={user.profileImageLink}
                                              style={imgStyles}
                                              alt=""/> :

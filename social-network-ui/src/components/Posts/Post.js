@@ -91,9 +91,9 @@ export const Post = ({
 
     useEffect(() => {
         if (userId) {
-            dispatch(activeLikesFetch(postId, userId));
+            dispatch(activeLikesFetch(postId, userId, setLike));
         }
-    }, [userId, postId]);
+    }, []);
 
     const toAnotherUserPage = (userIdWhoSendPost) => {
         if (userId) {
@@ -155,6 +155,8 @@ export const Post = ({
         }
     }, [dataTime]);
 
+    console.log(photo)
+
     return (
         <Card sx={PostCard}>
             <CardContent sx={CardContentPost}>
@@ -194,6 +196,7 @@ export const Post = ({
                 </IconButton>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
+
                 </IconButton>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
                 <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}

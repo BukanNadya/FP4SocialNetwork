@@ -158,7 +158,8 @@ export const PostPaper = {
     maxHeight: "70px",
     position: "absolute",
     left: "170px",
-    overflow: "scroll",
+    overflowY: "scroll",
+    overflowX: "hidden",
 };
 
 export const LikesCircular = { marginLeft: "40%", width: "5px", height: "5px" };

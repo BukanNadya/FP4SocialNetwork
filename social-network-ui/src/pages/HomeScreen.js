@@ -156,7 +156,7 @@ export function HomeScreen() {
                         <div style={HomeScreenWrapper}>
                             <div style={PostWrapper}>
                                 <div style={SvgWrapper}>
-                                    {userData.image ? <img src={`data:image/png;base64,${userData.image}`}
+                                    {userData.image ? <img src={userData.image}
                                                            style={imgStyles}
                                                            alt=""/> : <CapybaraSvgPhoto/>}
                                 </div>
