@@ -4,9 +4,10 @@ import {Tabs, Tab,       Box, List, ListItem, ListItemAvatar, Avatar, ListItemTe
 import CircularProgress from "@mui/material/CircularProgress";
 import {TabStyles} from "./SubscriptionSwipeableViewsStyles";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {setSearchId} from "../../../store/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {setSearchId, userFollowing} from "../../../store/actions";
 import {ToggleButton} from "../../Buttons/ToggleButton/ToggleButton";
+import { apiUrl } from "../../../apiConfig";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -35,6 +36,7 @@ function a11yProps(index) {
 
 export function SubscriptionSwipeableViews () {
     const [value, setValue] = React.useState(Number(localStorage.getItem("subscribe")));
+    const idUser = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false)
     const [followings, setFollowings] = useState([])
     const [followers, setFollowers] = useState([])
@@ -47,7 +49,7 @@ export function SubscriptionSwipeableViews () {
         const followingsData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch(`http://localhost:8080/following/${state.userId}`)
+                const response = await fetch(`${apiUrl}/api/following/${state.userId}`)
                 const followData = await response.json()
                 setFollowings(followData)
                 console.log(followData)
@@ -60,7 +62,7 @@ export function SubscriptionSwipeableViews () {
         const followersData = async () => {
             try {
                 setIsLoading(true);
-            const response = await fetch(`http://localhost:8080/followers/${state.userId}`)
+            const response = await fetch(`${apiUrl}/api/followers/${state.userId}`)
             const followData = await response.json()
             setFollowers(followData)
             console.log(followData)
@@ -70,12 +72,27 @@ export function SubscriptionSwipeableViews () {
                 setIsLoading(false);
             }
         }
+        const userFollowingData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch(`${apiUrl}/api/following/${idUser}`)
+                const followData = await response.json()
+                const followArr = followData.map(el => String(el.userId))
+                dispatch(userFollowing(followArr))
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
 
         if (state.userId) {
+            userFollowingData()
             followingsData()
             followersData()
         }
-    }, [state.userId])
+    }, [value])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -102,7 +119,7 @@ export function SubscriptionSwipeableViews () {
                                 backgroundColor: "rgba(0, 0, 0, 0.05)",
                             }}}>
                             <ListItemAvatar>
-                                <Avatar alt="" src={el.profileImageByteArray ? `data:image/png;base64,${el.profileImageByteArray}` : ""} onClick={() => toUserPage(el.userId)}/>
+                                <Avatar alt="" src={el.profileImageLink ? el.profileImageLink : ""} onClick={() => toUserPage(el.userId)}/>
                             </ListItemAvatar>
                             <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)}/>
                             <ToggleButton width="140px" height="40px" searchId={String(el.userId)}/>
@@ -119,7 +136,7 @@ export function SubscriptionSwipeableViews () {
                             backgroundColor: "rgba(0, 0, 0, 0.05)",
                         }}}>
                         <ListItemAvatar>
-                            <Avatar alt="" src={el.profileImageByteArray ? `data:image/png;base64,${el.profileImageByteArray}` : ""} onClick={() => toUserPage(el.userId)}/>
+                            <Avatar alt="" src={el.profileImageLink ? el.profileImageLink : ""} onClick={() => toUserPage(el.userId)}/>
                         </ListItemAvatar>
                         <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)}/>
                         <ToggleButton width="140px" height="40px" searchId={String(el.userId)}/>

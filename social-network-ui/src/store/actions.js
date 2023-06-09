@@ -26,7 +26,7 @@ import {
     SET_PROFILE_LIKE_POSTS,
     SET_PROFILE_REPOSTS,
     SET_USER_FOLLOW,
-    SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW,
+    SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW, SET_USER_FOLLOWING,
 } from "./types";
 import { apiUrl } from "../apiConfig";
 
@@ -505,3 +505,7 @@ export const userSearchFollow = () => ({
 export const userSearchUnfollow = () => ({
     type: SET_SEARCH_USER_UNFOLLOW
 });
+export const userFollowing = (data) => ({
+    type: SET_USER_FOLLOWING,
+    payload: { following: data }
+})

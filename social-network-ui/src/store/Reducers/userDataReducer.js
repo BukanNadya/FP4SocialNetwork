@@ -1,4 +1,4 @@
-import {SET_USER_ID, SET_USER_DATA, SET_SEARCH_ID, SET_SEARCH_DATA, SET_USER_FOLLOW, SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW } from "../types";
+import {SET_USER_ID, SET_USER_DATA, SET_SEARCH_ID, SET_SEARCH_DATA, SET_USER_FOLLOW, SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW, SET_USER_FOLLOWING } from "../types";
 
 const initialState = {
     userData: {
@@ -11,6 +11,9 @@ const initialState = {
     },
     followData: {
         userFollow: false,
+    },
+    userFollowing: {
+        following: [],
     }
 };
 
@@ -91,6 +94,13 @@ export function userDataReducer(state = initialState, action) {
                 ...state,
                 followData: {
                     userFollow: false,
+                },
+            };
+        case SET_USER_FOLLOWING:
+            return {
+                ...state,
+                userFollowing: {
+                    following: action.payload.following,
                 },
             };
         default:
