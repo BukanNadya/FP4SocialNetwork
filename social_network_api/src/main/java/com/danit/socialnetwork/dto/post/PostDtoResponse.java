@@ -5,11 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.math.BigInteger;
-import java.sql.Clob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -65,21 +61,7 @@ public class PostDtoResponse {
 
     PostDtoResponse postDtoResponse = new PostDtoResponse();
     postDtoResponse.setPostId((Integer) result[0]);
-    if (result[1] instanceof Clob) {
-      Clob clob = (Clob) result[1];
-      try (Reader reader = clob.getCharacterStream()) {
-        StringBuilder clobData = new StringBuilder();
-        char[] buffer = new char[1024];
-        int bytesRead;
-        while ((bytesRead = reader.read(buffer)) != -1) {
-          clobData.append(buffer, 0, bytesRead);
-        }
-        postDtoResponse.setPhotoFileLink(clobData.toString());
-      } catch (IOException | SQLException e) {
-        log.warn(String.format("Cannot get photo for post with postId = %s",
-            postDtoResponse.getPostId()));
-      }
-    }
+    postDtoResponse.setPhotoFileLink((String) result[1]);
     Timestamp timestamp = (Timestamp) result[2];
     LocalDateTime sentDateTime = timestamp.toLocalDateTime();
     postDtoResponse.setSentDateTime(sentDateTime);
@@ -87,21 +69,7 @@ public class PostDtoResponse {
     postDtoResponse.setUserId((Integer) result[4]);
     postDtoResponse.setUsername((String) result[5]);
     postDtoResponse.setName((String) result[6]);
-    if (result[7] instanceof Clob) {
-      Clob clob = (Clob) result[7];
-      try (Reader reader = clob.getCharacterStream()) {
-        StringBuilder clobData = new StringBuilder();
-        char[] buffer = new char[1024];
-        int bytesRead;
-        while ((bytesRead = reader.read(buffer)) != -1) {
-          clobData.append(buffer, 0, bytesRead);
-        }
-        postDtoResponse.setProfileImageLink(clobData.toString());
-      } catch (IOException | SQLException e) {
-        log.warn(String.format("Cannot get photoProfileImage for user who posted with postId = %s ",
-            postDtoResponse.getPostId()));
-      }
-    }
+    postDtoResponse.setProfileImageLink((String) result[7]);
     postDtoResponse.setLikesCount(((BigInteger) result[8]).intValue()); // Convert BigInteger to Integer
     postDtoResponse.setPostCommentsCount(((BigInteger) result[9]).intValue()); // Convert BigInteger to Integer
     try {
@@ -111,6 +79,5 @@ public class PostDtoResponse {
     }
     return postDtoResponse;
   }
-
 
 }

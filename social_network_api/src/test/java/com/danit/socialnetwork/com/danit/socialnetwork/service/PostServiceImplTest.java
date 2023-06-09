@@ -8,7 +8,6 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.Repost;
-import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -19,8 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -44,7 +41,6 @@ public class PostServiceImplTest {
   PostRepository postRepository;
   @Mock
   UserRepository userRepository;
-
   @Mock
   PostLikeRepository postLikeRepository;
   @Mock
@@ -61,59 +57,13 @@ public class PostServiceImplTest {
     user.setUsername("John1");
     user.setName("Johny1");
 
-    DbUser user1 = new DbUser();
-    user1.setUserId(2);
-    user1.setUsername("Tom");
-    user1.setName("Tommy");
-
-    DbUser user2 = new DbUser();
-    user2.setUserId(3);
-    user2.setUsername("Jim");
-    user2.setName("Jimmy");
-
-    UserFollow userFollow1 = new UserFollow();
-    userFollow1.setUserFollowId(1);
-    userFollow1.setUserFollowerId(user);
-    userFollow1.setUserFollowingId(user1);
-
-    UserFollow userFollow2 = new UserFollow();
-    userFollow2.setUserFollowId(2);
-    userFollow2.setUserFollowerId(user);
-    userFollow2.setUserFollowingId(user2);
-
-    Post post1 = new Post();
-    post1.setPostId(1);
-    post1.setUserPost(user1);
-    post1.setWrittenText("Hello world1");
-    post1.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime = LocalDateTime.now();
-    post1.setSentDateTime(dateTime);
-
-    post1.setPostComments(new ArrayList<PostComment>() {
-    });
-
-    Post post2 = new Post();
-    post2.setPostId(2);
-    post2.setUserPost(user2);
-    post2.setWrittenText("Hello world2");
-    post2.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime2 = LocalDateTime.now();
-    post2.setSentDateTime(dateTime2);
-
-    post2.setPostComments(new ArrayList<PostComment>() {
-    });
-
-    List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
-    Pageable pagedByFivePosts =
-        PageRequest.of(0, 12);
-
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
-        2, "John1", "Johny1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
-        new BigInteger(String.valueOf(1))};
+        2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
-        3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
-        new BigInteger(String.valueOf(1))};
+        3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        false};
 
     int pageSize = 12;
     int offset = 0 * pageSize;
@@ -135,47 +85,17 @@ public class PostServiceImplTest {
 
   @Test
   public void testGetAllPosts() {
-    Post post1 = new Post();
-    post1.setPostId(1);
-    DbUser user = new DbUser();
-    user.setUsername("John1");
-    user.setName("Johny1");
-    post1.setUserPost(user);
-    post1.setWrittenText("Hello world1");
-    post1.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime = LocalDateTime.now();
-    post1.setSentDateTime(dateTime);
-    post1.setPostComments(new ArrayList<>() {
-    });
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
-        2, "John1", "Johny1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
-        new BigInteger(String.valueOf(1))};
-
-    Post post2 = new Post();
-    post2.setPostId(2);
-    DbUser user2 = new DbUser();
-    user2.setUsername("John2");
-    user2.setName("Johny2");
-    post2.setUserPost(user);
-    post2.setWrittenText("Hello world2");
-    post2.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime2 = LocalDateTime.now();
-    post2.setSentDateTime(dateTime2);
-
-    post2.setPostComments(new ArrayList<>() {
-    });
+        2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
-        3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
-        new BigInteger(String.valueOf(1))};
-
+        3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        false};
 
     int pageSize = 12;
     int offset = 0 * pageSize;
-
-    List<Post> postList = new ArrayList<>(Arrays.asList(post1, post2));
-    Page<Post> pagePost = new PageImpl<>(postList);
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
@@ -363,12 +283,12 @@ public class PostServiceImplTest {
   void getAllPostsWithShowingRepostByUserId() {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
-        2, "John1", "Johny1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
-        new BigInteger(String.valueOf(1))};
+        2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
-        3, "John2", "Johny2", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
-        new BigInteger(String.valueOf(1))};
+        3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        false};
 
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);

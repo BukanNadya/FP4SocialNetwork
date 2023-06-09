@@ -35,7 +35,7 @@ public class UserFollowDtoResponse {
     userFollowDtoResponse.setUserId(userFollower.getUserFollowerId().getUserId());
     userFollowDtoResponse.setName(userFollower.getUserFollowerId().getName());
     userFollowDtoResponse.setUsername(userFollower.getUserFollowerId().getUsername());
-    userFollowDtoResponse.setProfileImageLink(userFollower.getUserFollowingId().getProfileImageUrl());
+    userFollowDtoResponse.setProfileImageLink(userFollower.getUserFollowerId().getProfileImageUrl());
     return userFollowDtoResponse;
   }
 

@@ -85,10 +85,13 @@ public class PostServiceImpl implements PostService {
           thePostDtoSave.getUserId()));
     } else {
       DbUser user = userPost.get();
-      String photoFileLink = imageHandlingConf.uploadImage(thePostDtoSave.getPhotoFileByteArray(),
-          "production");
-      Post thePostSave = Post.from(thePostDtoSave, user, photoFileLink);
-      return postRepository.save(thePostSave);
+      byte[] photoFileByteArray = thePostDtoSave.getPhotoFileByteArray();
+      if (photoFileByteArray != null && photoFileByteArray.length != 0) {
+        return postRepository.save(Post.from(thePostDtoSave, user,
+            imageHandlingConf.uploadImage(photoFileByteArray,
+                "production")));
+      }
+      return postRepository.save(Post.from(thePostDtoSave, user, null));
     }
   }
 
