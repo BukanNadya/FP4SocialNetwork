@@ -227,6 +227,8 @@ public class UserServiceImpl implements UserService {
             .uploadImage(profileImage, "production"));
       } else if (profileImage == null) {
         updateUser.setProfileImageUrl(null);
+      } else if (profileImageString != null) {
+        updateUser.setProfileImageUrl(userFromDb.get().getProfileImageUrl());
       }
       if (profileBackgroundImage != null && profileBackgroundImage
           .length != 0 && profileBackgroundImageString == null) {
@@ -234,6 +236,8 @@ public class UserServiceImpl implements UserService {
             .uploadImage(profileBackgroundImage, "production"));
       } else if (profileBackgroundImage == null) {
         updateUser.setProfileBackgroundImageUrl(null);
+      } else if (profileImageString != null) {
+        updateUser.setProfileBackgroundImageUrl(userFromDb.get().getProfileBackgroundImageUrl());
       }
       userRepository.save(updateUser);
       log.debug(String.format("save user id = %s", userId));
