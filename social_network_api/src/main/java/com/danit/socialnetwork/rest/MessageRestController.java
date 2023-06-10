@@ -1,14 +1,12 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.message.MessageDtoResponse;
-import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.search.MessageSearchDto;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
-import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.MessageService;
 import com.danit.socialnetwork.service.UserService;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -32,21 +31,21 @@ public class MessageRestController {
   private final UserService userService;
 
   /*Method save a new message*/
-  @PostMapping(path = "/api/message")
+  @PostMapping(path = "/api/addMessage")
   public ResponseEntity<MessageDtoResponse> addMessage(@RequestBody MessageDtoRequest request) {
     MessageDtoResponse dbMessage = messageService.saveMessage(request);
     return new ResponseEntity<>(dbMessage, HttpStatus.CREATED);
   }
 
   /*The method finds inbox by message sender and receiver */
-  @PostMapping(path = "/api/inbox")
-  public ResponseEntity<List<InboxDtoResponse>> getInbox(@RequestBody InboxDtoRequest request) {
-    List<InboxDtoResponse> inboxes =  inboxService.getInboxesByInboxUid(request);
+  @GetMapping(path = "/api/inbox/{inboxUid}")
+  public ResponseEntity<List<InboxDtoResponse>> getInbox(@PathVariable("inboxUid") Integer inboxUid) {
+    List<InboxDtoResponse> inboxes =  inboxService.getInboxesByInboxUid(inboxUid);
     return new ResponseEntity<>(inboxes, HttpStatus.FOUND);
   }
 
   /*The method finds all messages between the sender and the receiver*/
-  @GetMapping(path = "/api/message")
+  @PostMapping(path = "/api/getMessages")
   public ResponseEntity<List<MessageDtoResponse>> getMessage(
       @RequestBody InboxParticipantsDtoRequest request) {
     List<MessageDtoResponse> messages =  messageService

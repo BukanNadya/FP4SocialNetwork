@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
@@ -184,8 +183,7 @@ class InboxServiceImplTest {
     InboxDtoResponse testInboxDtoResponse4 = new InboxDtoResponse();
     testInboxDtoResponse4.setUserId(5);
 
-    InboxDtoRequest request = new InboxDtoRequest();
-    request.setInboxUid(1);
+    Integer inboxUidTest = 1;
     when(inboxRepository.getInboxesByInboxUid(testUser1)).thenReturn(testInbox);
     when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
     when(mapper.inboxToInboxDtoResponse(testInbox1)).thenReturn(testInboxDtoResponse1);
@@ -193,7 +191,7 @@ class InboxServiceImplTest {
     when(mapper.inboxToInboxDtoResponse(testInbox3)).thenReturn(testInboxDtoResponse3);
     when(mapper.inboxToInboxDtoResponse(testInbox4)).thenReturn(testInboxDtoResponse4);
 
-    List<InboxDtoResponse> testFindInbox = inboxServiceImpl.getInboxesByInboxUid(request);
+    List<InboxDtoResponse> testFindInbox = inboxServiceImpl.getInboxesByInboxUid(inboxUidTest);
 
     Assert.assertEquals(4, testFindInbox.size());
     Assert.assertEquals(Integer.valueOf(2), testFindInbox.get(0).getUserId());

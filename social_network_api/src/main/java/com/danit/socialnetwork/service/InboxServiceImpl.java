@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.dto.message.InboxDtoRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,12 +61,11 @@ public class InboxServiceImpl implements InboxService {
 
   /*The method finds the inbox by sender and returns it*/
   @Override
-  public List<InboxDtoResponse> getInboxesByInboxUid(InboxDtoRequest request) {
-    Integer userId = request.getInboxUid();
+  public List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid) {
     List<InboxDtoResponse> inboxesDto;
-    Optional<DbUser> oInboxUid = userRepository.findById(userId);
+    Optional<DbUser> oInboxUid = userRepository.findById(inboxUid);
     if (oInboxUid.isEmpty()) {
-      throw new UserNotFoundException(String.format("User with userId %s not found", userId));
+      throw new UserNotFoundException(String.format("User with userId %s not found", inboxUid));
     } else {
       List<Inbox> inboxes = inboxRepository.getInboxesByInboxUid(oInboxUid.get());
       inboxesDto = inboxes.stream()
