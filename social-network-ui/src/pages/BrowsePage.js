@@ -34,6 +34,7 @@ export function BrowsePage () {
             :
             <Profile buttonText="Subscribe"
                  image={searchData.image}
+                 background={searchData.background}
                  name={searchData.name}
                  userName={searchData.userName}
                  date={searchData.date}
