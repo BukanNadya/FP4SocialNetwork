@@ -25,6 +25,7 @@ public class PostDtoResponse {
   private LocalDateTime sentDateTime;
   private Integer postCommentsCount;
   private Integer likesCount;
+  private Integer repostsCount;
   private Boolean isReposted;
 
   public PostDtoResponse(Integer postId, String username, String name, String writtenText, String photoFileLink) {
@@ -77,6 +78,7 @@ public class PostDtoResponse {
     } catch (RuntimeException exc) {
       postDtoResponse.setIsReposted(null);
     }
+    postDtoResponse.setRepostsCount(((BigInteger) result[11]).intValue());
     return postDtoResponse;
   }
 

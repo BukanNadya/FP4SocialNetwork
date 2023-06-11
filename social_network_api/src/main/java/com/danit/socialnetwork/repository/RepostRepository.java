@@ -18,4 +18,8 @@ public interface RepostRepository extends JpaRepository<Repost, Integer> {
   @Query(nativeQuery = true, value = "SELECT * FROM REPOSTS"
       + " WHERE REPOSTS.POST_ID = :postId AND REPOSTS.USER_ID = :userId")
   Optional<Repost> findRepostByPostIdAndUserId(Integer postId, Integer userId);
+
+  @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM REPOSTS R "
+      + "WHERE R.POST_ID= :postId")
+  Integer findCountAllRepostsByPostId(Integer postId);
 }

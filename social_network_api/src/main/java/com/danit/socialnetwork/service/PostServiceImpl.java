@@ -40,14 +40,18 @@ public class PostServiceImpl implements PostService {
     postDtoResponse.setPostCommentsCount(post.getPostComments().size());
     postDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
         post.getPostId(), post.getUserPost().getUserId())).isPresent());
+    postDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
+        post.getPostId()));
     return postDtoResponse;
   }
 
   private PostDtoResponse from(Post post, Integer userId) {
-    PostDtoResponse postRepostDtoMix = PostDtoResponse.from(post, userId);
-    postRepostDtoMix.setLikesCount(postLikeRepository
+    PostDtoResponse postDtoResponse = PostDtoResponse.from(post, userId);
+    postDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
-    return postRepostDtoMix;
+    postDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
+        post.getPostId()));
+    return postDtoResponse;
 
   }
 
