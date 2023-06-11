@@ -27,7 +27,6 @@ export function PopularPeopleSidebar() {
     useEffect(() => {
         const fetchData = async () => {
             dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople));
-
         };
         fetchData();
     }, []);

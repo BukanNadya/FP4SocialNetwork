@@ -10,6 +10,7 @@ import { openSignUpModal, closeLoginModal } from "../../store/actions";
 import { SvgIconCapybara } from "./SvgIconCapybara";
 import { CloseSvgIcon } from "./CloseSvgIcon";
 
+
 export function LoginModal() {
     const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const dispatch = useDispatch();

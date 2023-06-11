@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button } from "@mui/material";
+import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button , Tooltip} from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 
@@ -121,7 +121,11 @@ export const Post = ({
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
                 await dispatch(addLikeFetch(postId, userId));
             } else {
-                setLikeCount(likeCount - 1);
+                if(likeCount===0){
+                    setLikeCount(likeCount);
+                }else{
+                    setLikeCount(likeCount - 1);
+                }
                 setLikeArr(likeArr.filter(item => item.userId !== userId));
                 dispatch(deleteLikeFetch(postId, userId));
             }
@@ -165,17 +169,23 @@ export const Post = ({
                 </div>) : null
             }
             <CardActions sx={{ padding: "20px 20px" }}>
+                <Tooltip title={"See comments"}>
                 <IconButton onClick={handleCommentToggle}>
                     <ChatBubbleOutline fontSize="small"/>
                     <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
                 </IconButton>
+                </Tooltip>
+                <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
                 <IconButton onClick={sendRepost}>
                     <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
                 </IconButton>
+                </Tooltip>
+                <Tooltip title={like ? "Undo like" : "Like"}>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
 
                 </IconButton>
+                </Tooltip>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
                 <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}
                             toAnotherUserPage={toAnotherUserPage}/>

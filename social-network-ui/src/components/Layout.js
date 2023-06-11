@@ -24,6 +24,7 @@ import {
     fetchData,
 } from "../store/actions";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
+import { decodeToken } from "./Posts/decodeToken";
 
 export const ScrollContext = React.createContext(() => {
 });
@@ -50,9 +51,13 @@ export function Layout() {
         loadingPostsRef.current = false;
     }, [location.pathname])
 
-    useEffect(() => {
-        dispatch(fetchData(userId));
-    }, []);
+    useEffect(()=>{
+        console.log(userId, "userIdFromLayout")
+    },[userId])
+
+    // useEffect(() => {
+    //     dispatch(fetchData(userId));
+    // }, []);
 
     const handleParentScroll = useCallback(async (event) => {
         const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
@@ -66,6 +71,7 @@ export function Layout() {
                 console.log("newPostsExplore",newPosts )
             } else if (location.pathname === "/home") {
                 console.log('fetching posts by user id in layout scroll callback', page);
+                console.log(userId)
                 newPosts = await dispatch(fetchPostsByUserId(userId, page2));
                 console.log("newPostsHome", newPosts )
             }
@@ -78,7 +84,7 @@ export function Layout() {
                 loadingPostsRef.current = false;
             }
         }
-    }, [dispatch, location.pathname, page]);
+    }, [dispatch, location.pathname, page, userId]);
 
     return (
         <ScrollContext.Provider value={handleParentScroll}>

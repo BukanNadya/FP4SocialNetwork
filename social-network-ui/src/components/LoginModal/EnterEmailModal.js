@@ -34,7 +34,7 @@ export function EnterEmailModal() {
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Sign in to Capitweet</Typography>
-            <a href="http://localhost:8080/oauth2/authorization/google" style={{
+            <a href={`${apiUrl}/oauth2/authorization/google`} style={{
                 ...StyledBlackButton,
                ...EnterEmailModalLink,
             }}><GoogleSvgIcon/> Sign in with Google</a>

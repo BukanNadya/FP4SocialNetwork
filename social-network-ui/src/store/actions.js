@@ -267,7 +267,7 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
             }
         }else if(!isReposted){
             try {
-                await fetch(`${apiUrl}/reposts?postId=${postId}&userId=${userId}`, {
+                await fetch(`${apiUrl}/api/reposts?postId=${postId}&userId=${userId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json"
@@ -319,6 +319,7 @@ export const deleteLikeFetch = (postId, userId) => {
 export const fetchData = (userId) => {
     return async (dispatch) => {
         try {
+            console.log(userId)
             const response = await fetch(`${apiUrl}/api/profile/${userId}`);
             const userData = await response.json();
             dispatch(setUserData(userData));
@@ -404,6 +405,7 @@ export const changeDob = (userId, values) => {
 };
 
 export const fetchPostsByUserId = (userId, page) => {
+    console.log(userId, "userIdFromActionFEtchByPosts")
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
         const data = await response.json();

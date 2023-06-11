@@ -6,6 +6,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
 import {
+    fetchData,
     fetchPostsByUserId,
     sendPost,
     setPageZero,
@@ -55,6 +56,8 @@ export function HomeScreen() {
                 if (decodedToken) {
                     const userId = decodedToken.sub;
                     dispatch(setUserId(userId));
+                    dispatch(fetchData(userId));
+                    console.log(userId, "userIdHomeScreen")
                     // it's initial loading, we're always starting from the first (0) page
                     await dispatch(fetchPostsByUserId(userId, 0));
                 }
