@@ -3,6 +3,15 @@ export const StyledModal = {
     justifyContent: "center",
     alignItems: "center",
     outline: "none",
+    "@media(max-width: 576px)": {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        outline: "none",
+        width: "100%",
+        height: "100vh",
+        overflow: "hidden"
+    }
 };
 
 export const StyledBox = {
@@ -141,7 +150,10 @@ export const BirthDateBox = {
     display: "flex",
     justifyContent: "space-around",
     marginTop: "40px",
-
+    "@media(max-width: 576px)": {
+        width: "80% !important",
+        overflow: "hidden"
+    }
 };
 
 export const  BirthDateErrorMessage = {

@@ -4,8 +4,6 @@ import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { useLocation } from "react-router-dom";
-
 
 import {
     fetchPostsByUserId,
@@ -14,7 +12,6 @@ import {
     setUserId,
     setUserPostsClear
 } from "../store/actions";
-import { setUserData, fetchData } from "../store/actions";
 import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import { CapybaraSvgPhoto } from "../components/SvgIcons/CapybaraSvgPhoto";
 import {
@@ -31,20 +28,17 @@ import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } fr
 import { decodeToken } from "../components/Posts/decodeToken";
 
 import { ScrollContext } from "../components/Layout.js";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export function HomeScreen() {
-    let location = useLocation();
     const userData = useSelector(state => state.userData.userData);
     const [postText, setPostText] = useState("");
     const [postImage, setPostImage] = useState(null);
-    const { handleParentScroll } = useContext(ScrollContext);
+    const handleParentScroll = useContext(ScrollContext);
     const userId = useSelector(state => state.userData.userData.userId);
     const [isLoading, setIsLoading] = useState(false);
     const userPosts = useSelector(state => state.Posts.posts);
     const dispatch = useDispatch();
     const [posts, setPosts] = useState([]);
-    const page = useSelector(state => state.pageCount.page);
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
 
@@ -53,34 +47,30 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    console.log(userData)
-
     useEffect(() => {
-        // setUserPostsClear([]);
-        // setPageZero();
-        fetchPosts(page);
-    }, []);
-
-
-
-    const fetchPosts = async (page) => {
-        try {
-            setIsLoading(true);
-            const decodedToken = decodeToken();
-            if (decodedToken) {
-                const userId = decodedToken.sub;
-                dispatch(setUserId(userId));
-                await Promise.all([
-                    dispatch(fetchPostsByUserId(userId, page)),
-                    dispatch(fetchData(userId)),
-                ]);
+        const fetchPosts = async () => {
+            try {
+                setIsLoading(true);
+                const decodedToken = decodeToken();
+                if (decodedToken) {
+                    const userId = decodedToken.sub;
+                    dispatch(setUserId(userId));
+                    // it's initial loading, we're always starting from the first (0) page
+                    await dispatch(fetchPostsByUserId(userId, 0));
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
             }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+        };
+        const initHomeScreen = () => {
+            dispatch(setUserPostsClear([]));
+            dispatch(setPageZero());
+            fetchPosts();
+        };
+        initHomeScreen();
+    }, []);
 
     const handlePostSubmit = async (values, setSubmitting) => {
         if (values.postText.trim() !== "" || postImage) {
@@ -103,6 +93,7 @@ export function HomeScreen() {
                     await dispatch(sendPost(postObject, setSubmitting));
                 };
             } else {
+                console.log(values.postText);
                 const postObject = {
                     writtenText: values.postText,
                     photoFileByteArray: [],
@@ -201,27 +192,30 @@ export function HomeScreen() {
                                             onChange={handlePostImageChange}
                                             style={{ display: "none" }}
                                         />
-                                        <label htmlFor="post-image-input">
-                                            <div style={SendingPostButtonsContainer}>
+                                        <div style={SendingPostButtonsContainer}>
+                                            <label htmlFor="post-image-input" style={{height:"30px",  borderRadius: "20px",}}>
                                                 <Button
                                                     component="span"
                                                     variant="contained"
                                                     color="primary"
-                                                    sx={SidebarLogOutButton}
+                                                    sx={{...SidebarLogOutButton, marginTop:0}}
                                                     startIcon={<CloudUploadOutlined/>}
                                                     disabled={!!postImage}
                                                 >image</Button>
+                                            </label>
+                                            <label htmlFor="post-image-input" style={{height:"30px",  borderRadius: "20px",}}>
                                                 <Button
                                                     type="submit"
                                                     variant="contained"
-                                                    sx={SidebarLogOutButton}
+                                                    sx={{...SidebarLogOutButton, marginTop:0, width:"100px"}}
                                                     fullWidth={true}
                                                     disabled={isSubmitting}
                                                 >
                                                     {isSubmitting ? "Posting..." : "Post"}
                                                 </Button>
-                                            </div>
-                                        </label>
+                                            </label>
+
+                                        </div>
                                     </Box>
                                 </div>
                             </div>

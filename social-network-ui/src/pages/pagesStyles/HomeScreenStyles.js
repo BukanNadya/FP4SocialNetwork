@@ -61,6 +61,8 @@ export const SendingPostButtonsContainer = {
     justifyContent: "space-between",
     maxWidth: "400px",
     width: "400px",
+    marginTop:"40px",
+    marginBottom:"20px",
 };
 
 export const textWrapper = {

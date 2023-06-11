@@ -56,7 +56,9 @@ export function EnterEmailModal() {
 
                 <Form>
                     <FormControl sx={StyledFormControl}>
-                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={"email"}
+                        <Field as={InputFieldWithError} sx={{ width: "400px" ,   "@media(max-width: 576px)": {
+                                width: "100%",
+                            }}} name={"email"}
                                id="email"
                                label="Email" disabled={isSubmitting} type="text"/>
                         <Button type="submit"

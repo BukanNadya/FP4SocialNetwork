@@ -57,9 +57,15 @@ export const CommentBox = {
     overflow: "scroll",
     height: "50xp"
 };
-export const CommentTypography = { marginBottom: "10px", marginTop: "10px" };
-export const CommentCircular =
-    { marginLeft: "45%", width: "5px", height: "5px" };
+export const CommentTypography = {
+    marginBottom: "10px",
+    marginTop: "10px"
+};
+export const CommentCircular = {
+    marginLeft: "45%",
+    width: "5px",
+    height: "5px"
+};
 
 export const CommentsContentBox = {
     padding: "5px 0",
@@ -120,7 +126,10 @@ export const CommentCustomButton = {
     fontSize: "12px",
 };
 
-export const EmptyCommentsText = { marginBottom: "10px", marginTop: "10px" };
+export const EmptyCommentsText = {
+    marginBottom: "10px",
+    marginTop: "10px"
+};
 
 export const PostDisplayingEmptyPostsText = {
     marginTop: "20%",
@@ -130,22 +139,34 @@ export const PostDisplayingEmptyPostsText = {
     fontFamily: "'Lato', sans-serif",
 };
 
-export const ProfileImgStyles = { width: "50px", height: "50px", borderRadius: "50px" };
+export const ProfileImgStyles = {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50px"
+};
 
-export const PostTextWrapper = { marginLeft: 16, flex: 1 };
+export const PostTextWrapper = {
+    marginLeft: 16,
+    flex: 1
+};
 
-export const userNameParagraph = { textDecoration: "underline", cursor: "pointer" };
-export const UserPhotoWrapper =
-    {
-        maxWidth: "600px",
-        width: "600px",
-        margin: "10px auto",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center"
-    };
+export const userNameParagraph = {
+    textDecoration: "underline",
+    cursor: "pointer"
+};
+export const UserPhotoWrapper = {
+    maxWidth: "600px",
+    width: "600px",
+    margin: "10px auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+};
 
-export const UserPhoto = { width: "450px", margin: "0 auto" };
+export const UserPhoto = {
+    width: "450px",
+    margin: "0 auto"
+};
 export const userLikeCount = {
     marginLeft: "0px",
     textDecoration: "underline",
@@ -162,7 +183,11 @@ export const PostPaper = {
     overflowX: "hidden",
 };
 
-export const LikesCircular = { marginLeft: "40%", width: "5px", height: "5px" };
+export const LikesCircular = {
+    marginLeft: "40%",
+    width: "5px",
+    height: "5px"
+};
 
 export const LikeBox = {
     display: "flex",
@@ -174,12 +199,15 @@ export const LikeBox = {
     },
 };
 
-export const CardContentPost ={ display: "flex", paddingBottom: 0 }
+export const CardContentPost = {
+    display: "flex",
+    paddingBottom: 0
+};
 
-export const EmptyLikesUserArrParagraph={
+export const EmptyLikesUserArrParagraph = {
     fontSize: "0.9rem",
     fontFamily: "'Lato', sans-serif",
-}
+};
 
 
 

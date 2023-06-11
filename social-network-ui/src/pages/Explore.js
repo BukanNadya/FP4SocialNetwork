@@ -1,17 +1,17 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import {
-    fetchExplorePosts, setPage, setPageZero,
+    fetchExplorePosts,
+    setPageZero, setUserPostsClear,
 } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollContext } from "../components/Layout.js";
-import CircularProgress from "@mui/material/CircularProgress";
 import { PostsWrapper } from "../components/Posts/PostStyles";
 
 export function Explore() {
     const explorePosts = useSelector(state => state.Posts.explorePosts);
     const page = useSelector(state => state.pageCount.page);
-    const { handleParentScroll, loadingPosts } = useContext(ScrollContext);
+    const handleParentScroll = useContext(ScrollContext);
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
@@ -21,7 +21,7 @@ export function Explore() {
 
     useEffect(() => {
         dispatch(setPageZero());
-
+        dispatch(setUserPostsClear([]));
         async function getPosts() {
             try {
                 setIsLoading(true);

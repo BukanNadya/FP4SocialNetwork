@@ -16,8 +16,7 @@ import {
     userNickParagraph,
     userNickLink, customButton, emptyArrParagraph,
 } from "./popularPeopleSidebarStyles";
-import {apiUrl} from "../../../apiConfig";
-
+import { apiUrl } from "../../../apiConfig";
 
 export function PopularPeopleSidebar() {
     const navigate = useNavigate();
@@ -27,23 +26,16 @@ export function PopularPeopleSidebar() {
 
     useEffect(() => {
         const fetchData = async () => {
-            dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople))
+            dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople));
 
         };
         fetchData();
-        console.log(mostPopularPeople)
     }, []);
-
-    useEffect(() => {
-        console.log(mostPopularPeople)
-    }, [mostPopularPeople]);
 
     const toAnotherUserPage = (userIdWhoSendPost) => {
         dispatch(setSearchId(String(userIdWhoSendPost)));
         navigate("/view");
     };
-
-
 
     return (
         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :
