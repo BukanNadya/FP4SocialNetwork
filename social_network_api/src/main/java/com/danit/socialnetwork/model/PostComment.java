@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,6 +35,9 @@ public class PostComment {
   @CreationTimestamp
   private LocalDateTime createdDateTime;
 
+  @NotEmpty
+  @Size(max = 280, message = "280 symbols required")
+  @Pattern(regexp = "^[\\p{L}\\p{N}\\p{P}\\p{Zs}\\r\\n]{0,280}$", message = "text required")
   @Column(name = "comment_text")
   private String commentText;
 

@@ -2,6 +2,7 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.post.PostCommentDtoResponse;
 import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
+import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -17,10 +18,16 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -114,5 +121,15 @@ class PostCommentRestControllerTest {
     Assertions.assertNotEquals(userId1, responseEntity.get(0).getUserId());
     Assertions.assertEquals("Nick", responseEntity.get(0).getUsername());
     Assertions.assertEquals(2, responseEntity.size());
+  }
+
+  @Test
+  void testAddPostComment_InvalidInput_ReturnsBadRequest() {
+    PostCommentDtoSave postCommentDtoSave = new PostCommentDtoSave();
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+    Set<ConstraintViolation<PostCommentDtoSave>> violations = validator.validate(postCommentDtoSave);
+    assertEquals(2, violations.size());
+
   }
 }

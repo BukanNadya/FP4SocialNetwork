@@ -12,28 +12,33 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class RepostRestController {
 
   private final RepostService repostService;
 
   /*Method save a repost*/
-  @PostMapping(path = "/api/reposts")
-  public ResponseEntity<RepostDtoSave> addRepost(@RequestBody RepostDtoSave theRepostDto) {
+  @PostMapping(path = "/reposts")
+  public ResponseEntity<RepostDtoSave> addRepost(@Valid @RequestBody RepostDtoSave theRepostDto) {
     Repost repost = repostService.saveRepost(theRepostDto);
     return new ResponseEntity<>(RepostDtoSave.from(repost), HttpStatus.CREATED);
   }
 
   /*Method returns all reposts done by user*/
-  @GetMapping("/api/reposts")
+  @GetMapping("/reposts")
   public List<RepostDtoResponse> getAllRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                        Integer userId,
                                                        @RequestParam(name = "page", defaultValue = "0")
@@ -45,20 +50,21 @@ public class RepostRestController {
 
   }
 
-  @DeleteMapping("/api/reposts")
-  public ResponseEntity<RepostDtoSave> deleteRepost(@RequestParam(name = "postId") Integer postId,
-                                                    @RequestParam(name = "userId") Integer userId) {
+  @DeleteMapping("/reposts")
+  public ResponseEntity<RepostDtoSave> deleteRepost(@RequestParam(name = "postId")
+                                                    @Positive @NotEmpty Integer postId,
+                                                    @RequestParam(name = "userId")
+                                                    @Positive @NotEmpty Integer userId) {
     Repost repost = repostService.deleteRepost(postId, userId);
     return new ResponseEntity<>(RepostDtoSave.from(repost), HttpStatus.OK);
   }
 
 
-  @GetMapping("/api/reposts/active")
+  @GetMapping("/reposts/active")
   public Boolean isActiveRepost(@RequestParam(name = "postId") Integer postId,
                                 @RequestParam(name = "userId") Integer userId) {
     return repostService.isActiveRepost(postId, userId);
   }
-
 
 
 }

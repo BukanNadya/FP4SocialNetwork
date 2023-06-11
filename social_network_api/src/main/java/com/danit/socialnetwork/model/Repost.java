@@ -25,7 +25,6 @@ public class Repost {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   @Column(name = "repost_id")
   private Integer sharedId;
 

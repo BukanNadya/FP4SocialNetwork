@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,11 +36,12 @@ import java.io.IOException;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserRestController {
   private final UserService userService;
 
   /*The method saves a new user*/
-  @PostMapping(path = "/api/registration")
+  @PostMapping(path = "/registration")
   public ResponseEntity<Map<String, String>> handleRegistrationPost(
       @RequestBody RegistrationRequest request) {
     ResponseEntity<Map<String, String>> responseEntity = userService.save(request);
@@ -46,7 +49,7 @@ public class UserRestController {
   }
 
   /*The method finds a user by email*/
-  @PostMapping(value = "/api/checkEmail")
+  @PostMapping(value = "/checkEmail")
   public ResponseEntity<Map<String, String>> handleCheckEmailPost(
       @RequestBody UserEmailForLoginRequest request) throws IOException {
     ResponseEntity<Map<String, String>> responseEntity = userService.findDbUserByEmail(request);
@@ -54,7 +57,7 @@ public class UserRestController {
   }
 
   /*The method sends an email to the new user with a code to confirm his mail*/
-  @PostMapping(value = "/api/sendLetter")
+  @PostMapping(value = "/sendLetter")
   public ResponseEntity<Map<String, String>> handleSendLetterPost(
       @RequestBody UserEmailRequest request) {
     ResponseEntity<Map<String, String>> responseEntity = userService.sendLetter(request);
@@ -62,7 +65,7 @@ public class UserRestController {
   }
 
   /*The method checks the code entered by the user against the code from the cache*/
-  @PostMapping(value = "/api/activate")
+  @PostMapping(value = "/activate")
   public ResponseEntity<Map<String, String>> handleActivatePost(
       @RequestBody ActivateCodeRequest request) {
     ResponseEntity<Map<String, String>> responseEntity = userService.activateUser(request);
@@ -71,7 +74,7 @@ public class UserRestController {
 
   /*The method finds all users by name or username that matches the string
  entered in the form*/
-  @PostMapping(value = "/api/search")
+  @PostMapping(value = "/search")
   public ResponseEntity<List<SearchDto>> handleSearchPost(@RequestBody SearchRequest request) {
     List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
     log.debug(String.format("filterCachedUsersByName: %s. Find all users by name.",
@@ -80,7 +83,7 @@ public class UserRestController {
   }
 
   /*The method saves changes to the existing user made by the user in the form*/
-  @PutMapping(value = "/api/edition")
+  @PutMapping(value = "/edition")
   public ResponseEntity<Map<String, String>> handleEditionPost(
       @RequestBody EditingDtoRequest request) {
     Map<String, String> response = new HashMap<>();
@@ -88,19 +91,19 @@ public class UserRestController {
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
-  @GetMapping("/api/profile/{userId}")
+  @GetMapping("/profile/{userId}")
   public ResponseEntity<UserDtoResponse> getUserById(@PathVariable("userId") Integer userId) {
     UserDtoResponse tempUser = userService.findByUserId(userId);
     return new ResponseEntity<>(tempUser, HttpStatus.OK);
   }
 
-  @PostMapping("/api/change_dob")
+  @PostMapping("/change_dob")
   public ResponseEntity<Map<String, String>> dbUserDobChange(
       @RequestBody UserDobChangeRequest userDobChangeRequest) {
     return userService.dbUserDobChange(userDobChangeRequest);
   }
 
-  @GetMapping("/api/users/likes")
+  @GetMapping("/users/likes")
   public List<UserDtoForPostLikeResponse> getUsersWhoLikedPostByPostId(@RequestParam(name = "postId",
       defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
     if (postId == 0) {
@@ -113,7 +116,7 @@ public class UserRestController {
   }
 
 
-  @GetMapping("/api/users/popular")
+  @GetMapping("/users/popular")
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
     return userService.getUsersWhoMostPopular(page)
         .stream()

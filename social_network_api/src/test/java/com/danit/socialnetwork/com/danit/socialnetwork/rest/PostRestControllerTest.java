@@ -19,11 +19,17 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -47,9 +53,9 @@ class PostRestControllerTest {
     when(postService.getAllPosts(0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllPostsFromFollowing(0, 0);
 
-    Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
-    Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
-    Assertions.assertEquals(2, result.toArray().length);
+    assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
+    assertEquals(result.get(1).getName(), postDtoResponse2.getName());
+    assertEquals(2, result.toArray().length);
 
   }
 
@@ -78,8 +84,8 @@ class PostRestControllerTest {
 
     when(postService.savePost(any(PostDtoSave.class))).thenReturn(post1);
     ResponseEntity<PostDtoResponse> responseEntity = postRestController.addPost(postDtoSave);
-    Assertions.assertEquals(201, responseEntity.getStatusCodeValue());
-    Assertions.assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
+    assertEquals(201, responseEntity.getStatusCodeValue());
+    assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
 
   }
 
@@ -95,9 +101,9 @@ class PostRestControllerTest {
     when(postService.getAllOwnPosts(1, 0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllOwnPosts(1, 0);
 
-    Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
-    Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
-    Assertions.assertEquals(2, result.toArray().length);
+    assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
+    assertEquals(result.get(1).getName(), postDtoResponse2.getName());
+    assertEquals(2, result.toArray().length);
   }
 
 
@@ -114,23 +120,23 @@ class PostRestControllerTest {
     when(postService.getAllLikedPosts(1, 0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllLikedPosts(1, 0);
 
-    Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
-    Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
-    Assertions.assertEquals(2, result.toArray().length);
+    assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
+    assertEquals(result.get(1).getName(), postDtoResponse2.getName());
+    assertEquals(2, result.toArray().length);
 
   }
 
   @Test
   void getAllPostsAndRepostsByUserId() {
-    PostDtoResponse post1 =  new PostDtoResponse();
-    PostDtoResponse post2 =  new PostDtoResponse();
-    PostDtoResponse post3 =  new PostDtoResponse();
-    PostDtoResponse post4 =  new PostDtoResponse();
+    PostDtoResponse post1 = new PostDtoResponse();
+    PostDtoResponse post2 = new PostDtoResponse();
+    PostDtoResponse post3 = new PostDtoResponse();
+    PostDtoResponse post4 = new PostDtoResponse();
 
     List<PostDtoResponse> repostDtoMixes = Arrays.asList(post1, post2, post3, post4);
-    when (postService.getAllPostsAndRepostsByUserId(1,0)).thenReturn(repostDtoMixes);
-    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1,0);
-    Assertions.assertEquals(4, result.toArray().length);
+    when(postService.getAllPostsAndRepostsByUserId(1, 0)).thenReturn(repostDtoMixes);
+    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1, 0);
+    assertEquals(4, result.toArray().length);
   }
 
   @Test
@@ -145,8 +151,20 @@ class PostRestControllerTest {
     when(postService.getAllPostsWithShowingRepostByUserId(1, 0)).thenReturn(postDtoResponseList);
     List<PostDtoResponse> result = postRestController.getAllPostsWithShowingRepostByUserId(1, 0);
 
-    Assertions.assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
-    Assertions.assertEquals(result.get(1).getName(), postDtoResponse2.getName());
-    Assertions.assertEquals(2, result.toArray().length);
+    assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
+    assertEquals(result.get(1).getName(), postDtoResponse2.getName());
+    assertEquals(2, result.toArray().length);
+  }
+
+  @Test
+  void testAddPost_InvalidInput_ReturnsBadRequest() {
+    PostDtoSave postDtoSave = new PostDtoSave();
+
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+    Set<ConstraintViolation<PostDtoSave>> violations = validator.validate(postDtoSave);
+
+    assertEquals(2, violations.size());
+
   }
 }

@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.rest;
 
+import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
 import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
@@ -15,11 +16,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -121,4 +130,15 @@ class RepostRestControllerTest {
     Assertions.assertNotEquals(true, result2);
 
   }
+
+  @Test
+  void testAddRepost_InvalidInput_ReturnsBadRequest() {
+    RepostDtoSave repostDtoSave = new RepostDtoSave();
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    Validator validator = factory.getValidator();
+    Set<ConstraintViolation<RepostDtoSave>> violations = validator.validate(repostDtoSave);
+    assertEquals(2, violations.size());
+
+  }
+
 }

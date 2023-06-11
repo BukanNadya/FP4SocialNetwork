@@ -69,7 +69,7 @@ public class PostLikeRestControllerTest {
   }
 
   @Test
-  public void testGetCountAllLikesByPostId() {
+  void testGetCountAllLikesByPostId() {
 
     Integer userId1 = 3;
     Integer userId2 = 4;
@@ -103,7 +103,7 @@ public class PostLikeRestControllerTest {
   }
 
   @Test
-  public void testIsExistPostLike() {
+  void testIsExistPostLike() {
 
     Integer postId = 2;
     Integer userId = 3;
@@ -121,7 +121,7 @@ public class PostLikeRestControllerTest {
   }
 
   @Test
-  public void testDeletePostLike() {
+  void testDeletePostLike() {
 
     Integer postId = 2;
     Integer userId = 3;
