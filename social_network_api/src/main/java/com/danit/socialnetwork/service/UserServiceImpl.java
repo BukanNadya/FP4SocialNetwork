@@ -234,7 +234,7 @@ public class UserServiceImpl implements UserService {
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
             .uploadImage(profileBackgroundImage, "production"));
       } else if ((profileBackgroundImage == null && profileBackgroundImageString == null )
-          || profileBackgroundImage.length == 0) {
+          || (profileBackgroundImage != null && profileBackgroundImage.length == 0)) {
         updateUser.setProfileBackgroundImageUrl(null);
       } else if (profileBackgroundImageString != null) {
         updateUser.setProfileBackgroundImageUrl(userFromDb.get().getProfileBackgroundImageUrl());
