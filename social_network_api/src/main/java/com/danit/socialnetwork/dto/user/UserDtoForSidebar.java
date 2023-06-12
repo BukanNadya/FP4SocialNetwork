@@ -1,10 +1,9 @@
 package com.danit.socialnetwork.dto.user;
 
-import com.danit.socialnetwork.model.DbUser;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Base64;
+import java.math.BigInteger;
 
 @Data
 @NoArgsConstructor
@@ -18,14 +17,24 @@ public class UserDtoForSidebar {
 
   private String profileImageLink;
 
+  private Boolean isFollowed;
 
-  public static UserDtoForSidebar from(DbUser dbUser) {
-    UserDtoForSidebar userDtoResponse = new UserDtoForSidebar();
-    userDtoResponse.setName(dbUser.getName());
-    userDtoResponse.setUsername(dbUser.getUsername());
-    userDtoResponse.setUserId(dbUser.getUserId());
-    userDtoResponse.setProfileImageLink(dbUser.getProfileImageUrl());
-    return userDtoResponse;
+  private Integer countFollowers;
+
+
+  public static UserDtoForSidebar from(Object[] result) {
+    UserDtoForSidebar userDtoForSidebar = new UserDtoForSidebar();
+    userDtoForSidebar.setUserId((Integer) result[0]);
+    userDtoForSidebar.setName((String) result[1]);
+    userDtoForSidebar.setUsername((String) result[2]);
+    userDtoForSidebar.setProfileImageLink((String) result[3]);
+    try {
+      userDtoForSidebar.setIsFollowed((Boolean) result[4].equals("true"));
+    } catch (RuntimeException exc) {
+      userDtoForSidebar.setIsFollowed(null);
+    }
+    userDtoForSidebar.setCountFollowers(((BigInteger) result[5]).intValue());
+    return userDtoForSidebar;
   }
 
 }

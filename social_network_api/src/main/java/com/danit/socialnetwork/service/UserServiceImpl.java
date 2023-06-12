@@ -10,6 +10,7 @@ import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
+import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.mappers.SearchMapper;
@@ -271,10 +272,14 @@ public class UserServiceImpl implements UserService {
     return userRepository.getUsersWhoLikedPostByPostId(postId, pagedByPageSizePosts);
   }
 
+
   @Override
-  public List<DbUser> getUsersWhoMostPopular(Integer page) {
+  public List<UserDtoForSidebar> getUsersWhoMostPopularWithFollowers(Integer userId, Integer pageNumber) {
     int pageSize = 10;
-    Pageable pagedByPageSizePosts = PageRequest.of(page, pageSize);
-    return userRepository.findAllWhoMostPopular(pagedByPageSizePosts);
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = userRepository.findAllWhoMostPopularWithFollowers(userId, offset, pageSize);
+    return results.stream()
+        .map(UserDtoForSidebar::from)
+        .toList();
   }
 }

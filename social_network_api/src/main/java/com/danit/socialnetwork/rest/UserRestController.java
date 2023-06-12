@@ -116,12 +116,11 @@ public class UserRestController {
   }
 
 
+
   @GetMapping("/users/popular")
-  public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "page", defaultValue = "0") Integer page) {
-    return userService.getUsersWhoMostPopular(page)
-        .stream()
-        .map(UserDtoForSidebar::from)
-        .toList();
+  public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "userId",
+      defaultValue = "0") Integer userId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    return userService.getUsersWhoMostPopularWithFollowers(userId, page);
   }
 
 

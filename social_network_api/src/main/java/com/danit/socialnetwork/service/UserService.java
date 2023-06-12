@@ -8,6 +8,7 @@ import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.dto.user.EditingDtoRequest;
+import com.danit.socialnetwork.dto.user.UserDtoForSidebar;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,5 @@ public interface UserService {
 
   List<DbUser> getUsersWhoLikedPostByPostId(Integer postId, Integer page);
 
-  List<DbUser> getUsersWhoMostPopular(Integer page);
+  List<UserDtoForSidebar> getUsersWhoMostPopularWithFollowers(Integer userId, Integer page);
 }
