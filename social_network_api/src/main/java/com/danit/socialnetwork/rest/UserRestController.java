@@ -1,7 +1,7 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailForLoginRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;

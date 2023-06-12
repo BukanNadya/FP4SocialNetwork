@@ -15,10 +15,14 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@NonNull
 @NoArgsConstructor
 @Table(name = "message")
 public class Message {
@@ -27,13 +31,15 @@ public class Message {
   @Column(name = "message_id")
   private Integer messageId;
 
+  @NotEmpty
+  @Size(max = 280, message = "280 symbols required")
+  @Pattern(regexp = "^[\\p{L}\\p{N}\\p{P}\\p{Zs}\\r\\n]{0,280}$", message = "text required")
   @Column(name = "message")
   private String messageText;
 
-  @Column(name = "created_at", updatable = false)
-  @NonNull
   @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
+  @Column(name = "created_at", updatable = false)
   private LocalDateTime createdAt;
 
   @Column(name = "message_reade")

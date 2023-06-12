@@ -2,7 +2,7 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.ActivateCodeRequest;
-import com.danit.socialnetwork.dto.RegistrationRequest;
+import com.danit.socialnetwork.dto.user.RegistrationRequest;
 import com.danit.socialnetwork.dto.UserDobChangeRequest;
 import com.danit.socialnetwork.dto.UserEmailRequest;
 import com.danit.socialnetwork.dto.search.SearchDto;
@@ -13,7 +13,6 @@ import com.danit.socialnetwork.mappers.SearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.repository.UserFollowRepository;
 import com.danit.socialnetwork.repository.UserRepository;
-import com.google.common.cache.Cache;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,7 +38,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 

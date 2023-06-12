@@ -12,6 +12,9 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity(name = "inbox")
 @Data
@@ -31,6 +34,9 @@ public class Inbox {
   @JoinColumn(name = "user_id")
   private DbUser userId;     // userId = receiver_id
 
+  @NotEmpty
+  @Size(max = 280, message = "280 symbols required")
+  @Pattern(regexp = "^[\\p{L}\\p{N}\\p{P}\\p{Zs}\\r\\n]{0,280}$", message = "text required")
   @ManyToOne(targetEntity = Message.class, fetch = FetchType.EAGER)
   @JoinColumn(name = "last_message")
   private Message lastMessage;
