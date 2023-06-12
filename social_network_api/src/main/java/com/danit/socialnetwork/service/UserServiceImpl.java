@@ -227,17 +227,13 @@ public class UserServiceImpl implements UserService {
             .uploadImage(profileImage, "production"));
       } else if (profileImage == null && profileImageString == null) {
         updateUser.setProfileImageUrl(null);
-      } else if (profileImageString != null) {
-        updateUser.setProfileImageUrl(userFromDb.get().getProfileImageUrl());
       }
       if (profileBackgroundImage != null && profileBackgroundImage.length != 0) {
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
             .uploadImage(profileBackgroundImage, "production"));
-      } else if ((profileBackgroundImage == null && profileBackgroundImageString == null )
+      } else if ((profileBackgroundImage == null && profileBackgroundImageString == null)
           || (profileBackgroundImage != null && profileBackgroundImage.length == 0)) {
         updateUser.setProfileBackgroundImageUrl(null);
-      } else if (profileBackgroundImageString != null) {
-        updateUser.setProfileBackgroundImageUrl(userFromDb.get().getProfileBackgroundImageUrl());
       }
       userRepository.save(updateUser);
       log.debug(String.format("save user id = %s", userId));
@@ -279,6 +275,6 @@ public class UserServiceImpl implements UserService {
   public List<DbUser> getUsersWhoMostPopular(Integer page) {
     int pageSize = 10;
     Pageable pagedByPageSizePosts = PageRequest.of(page, pageSize);
-    return userRepository.findAllWhoMostPopular(pagedByPageSizePosts) ;
+    return userRepository.findAllWhoMostPopular(pagedByPageSizePosts);
   }
 }
