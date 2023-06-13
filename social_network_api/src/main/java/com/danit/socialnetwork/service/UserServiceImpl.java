@@ -241,7 +241,6 @@ public class UserServiceImpl implements UserService {
       response.put("edition", TRUE);
       return ResponseEntity.ok(response);
     }
-
   }
 
   @Override
