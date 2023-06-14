@@ -1,3 +1,6 @@
+
+
+
 export const Header = {
     position: "sticky",
     maxHeight: "80px",
@@ -75,7 +78,8 @@ export const SidebarTypography = {
     display: "flex",
     alignItems: "center",
     padding: "0 20px 0 10px",
-    textTransform:"none"
+    textTransform:"none",
+
 };
 
 export const SidebarLogOutButton = {
@@ -83,7 +87,8 @@ export const SidebarLogOutButton = {
     fontSize: "15px",
     lineHeight: "23px",
     fontStyle: "normal",
-    height: "45px", background: "#000000",
+    height: "45px",
+    background: "#000000",
     transition: "0.7s", "&:hover": {
         transition: "0.7s",
         backgroundColor: "#ffffff",
@@ -109,7 +114,7 @@ export const SidebarIconBackground = {
     "&:hover": {
         backgroundColor: "#ffffff",
     },
-};
+}
 
 export const UserSearchWrapper = {
     display: "flex",

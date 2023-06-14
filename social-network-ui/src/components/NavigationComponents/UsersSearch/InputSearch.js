@@ -5,13 +5,63 @@ import {useDispatch, useSelector} from "react-redux";
 import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
 import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../apiConfig";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { ElementLi, PaperStyles, Wrapper } from "./popularPeopleSidebarStyles";
+import { useTheme } from "@mui/material/styles";
 
 export const InputSearch = ({ ...props }) => {
-
     const users = useSelector(state => state.usersSearch.users)
     const userId = useSelector(state => state.userData.searchData.userId);
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+          AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+    };
+
+    const xsStyles = {
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+    };
+
+    const smStyles = {
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+    };
+
+    const mdStyles = {
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+    };
+
+    const lgStyles = {
+        AdaptiveUserSearchTextField:{...UserSearchTextField}
+    };
+
+    const xlStyles = {
+        AdaptiveUserSearchTextField:{...UserSearchTextField}
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +85,7 @@ export const InputSearch = ({ ...props }) => {
                 filterSelectedOptions
                 noOptionsText="User not found"
                 renderInput={(params) => (
-                    <TextField{...props} sx={UserSearchTextField} {...params} label="Search in Capitweet"
+                    <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search in Capitweet"
                               onBlur={(ev) => {
                                   ev.preventDefault()
                                   dispatch(DeleteUsersSuccess())

@@ -36,7 +36,13 @@ export const StyledBox = {
 export const StyledTwitSvgIcon = {
     width: "45px",
     height: "45px",
-    marginBottom: "20px"
+    marginBottom: "20px",
+    "@media(max-width: 1199px) ": {
+        width: "30px",
+        height: "30px",
+        marginLeft:"5px",
+        marginBottom: "0px",
+    }
 };
 
 export const StyledCloseSvgIcon = {

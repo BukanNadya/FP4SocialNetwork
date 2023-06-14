@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, { useState, useCallback, useEffect, useContext, useRef  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Box } from "@mui/material";
 import { CloudUploadOutlined } from "@mui/icons-material";
@@ -27,8 +27,11 @@ import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
+import { apiUrl } from "../apiConfig";
 
 import { ScrollContext } from "../components/Layout.js";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function HomeScreen() {
     const userData = useSelector(state => state.userData.userData);
@@ -42,11 +45,87 @@ export function HomeScreen() {
     const [posts, setPosts] = useState([]);
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
+    const socketRef = useRef(null);
+
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
+
+    const xxsStyles = {
+        AdaptiveHomeScreenWrapper:{
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveHomeScreenWrapper:{
+        }
+    };
+
+    const smStyles = {
+        AdaptiveHomeScreenWrapper:{
+        }
+
+    };
+
+    const mdStyles = {
+        AdaptiveHomeScreenWrapper:{
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveHomeScreenWrapper:{}
+    };
+
+    const xlStyles = {
+        AdaptiveHomeScreenWrapper:{}
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
     const handlePostImageChange = useCallback((event) => {
         const file = event.target.files[0];
         setPostImage(file);
     }, []);
+
+    useEffect(() => {
+        // Создаем подключение при загрузке компонента
+        socketRef.current = new WebSocket(`ws://${apiUrl}/api/post`);
+
+        // Закрываем подключение при размонтировании компонента
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.close();
+            }
+        };
+    }, []);
+
+    const handleClick = () => {
+        if (socketRef.current) {
+            // Отправляем данные на сервер
+            socketRef.current.send(JSON.stringify({ userId: userId }));
+        }
+    };
+
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -132,7 +211,7 @@ export function HomeScreen() {
     };
 
     return (
-        <div onScroll={handleScroll}>
+        <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
             <Formik
                 initialValues={{ postText: "" }}
                 validationSchema={
@@ -213,6 +292,7 @@ export function HomeScreen() {
                                                     sx={{...SidebarLogOutButton, marginTop:0, width:"100px"}}
                                                     fullWidth={true}
                                                     disabled={isSubmitting}
+                                                    onClick={handleClick}
                                                 >
                                                     {isSubmitting ? "Posting..." : "Post"}
                                                 </Button>

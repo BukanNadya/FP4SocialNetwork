@@ -43,8 +43,6 @@ export function Comments({
 
     console.log(comments)
 
-    console.log(photoFileByteArray);
-
     return (
         <Formik
             initialValues={{ comment: "" }}
@@ -64,7 +62,7 @@ export function Comments({
                         {isLoadingComments ? <CircularProgress
                             sx={CommentCircular}/> : comments.length > 0 ? (comments.map((comment, index) => (
                             <Box key={index} style={CommentsContentBox}>
-                                {comment.photoFileByteArray ?
+                                {comment.profileImageLink ?
                                     <img src={comment.profileImageLink} style={CommentImg}
                                          alt=""/> :
                                     <Avatar alt={comment.username} src="#"/>}
