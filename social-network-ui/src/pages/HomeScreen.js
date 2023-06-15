@@ -57,31 +57,20 @@ export function HomeScreen() {
         setPostImage(file);
     }, []);
 
-    const socket = new SockJS(`${apiUrl}/websocket`);
-    stompClient = over(socket);
-
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-    };
-
-    socket.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    socket.onmessage = (event) => {
-      console.log("Received message:", event.data);
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
+    const connect =()=>{
+                let Sock = new SockJS(`${apiUrl}/websocket`);
+                stompClient = over(Sock);
+                stompClient.connect({});
+            }
 
     const handleClick = () => {
-        if (socket) {
+        if (stompClient) {
             console.log("sending notification about post")
             stompClient.send("/app/post", {}, JSON.stringify({userId: userId}));
         }
     };
+
+    connect();
 
 
     useEffect(() => {
@@ -166,6 +155,7 @@ export function HomeScreen() {
             setIsFetchingPosts(false);
         }
     };
+
 
     return (
         <div onScroll={handleScroll}>
