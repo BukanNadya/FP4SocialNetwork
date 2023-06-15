@@ -42,6 +42,13 @@ export const setLike = (like) => {
     };
 };
 
+export const setMessages = (messages) => {
+    return {
+        type: "SET_ITEM",
+        payload: messages,
+    };
+};
+
 export const setComments = (comments) => {
     return {
         type: "SET_COMMENTS",

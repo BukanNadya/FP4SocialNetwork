@@ -10,6 +10,7 @@ import { PostReducer } from "./Reducers/PostsReducer";
 import { PageDisplaing } from "./Reducers/PageDisplaing";
 import { likeReducer } from "./Reducers/likeReducer";
 import { CommentsReducer } from "./Reducers/CommentsReducer";
+import { messageReducer } from "./Reducers/messageReducer";
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     isLikedPost: likeReducer,
     forgot: forgotPasswordReducer,
     comments: CommentsReducer,
+    messages: messageReducer,
 });
 
 export default rootReducer;

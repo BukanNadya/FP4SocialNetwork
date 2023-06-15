@@ -11,6 +11,10 @@ export const OutletWrapper = {
     width: "600px",
 };
 
+export const OutletWrapperMessage = {
+    width: "1200px",
+};
+
 export const ContentContainer = {
     display: "flex",
     flexDirection: "row",
@@ -45,9 +49,25 @@ export const ItemWrapper = {
     position: "relative",
     alignItems: "center",
 };
+
+export const ItemWrapperMessage = {
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: "1200px",
+    position: "relative",
+    alignItems: "center",
+};
+
 export const ItemWrapperContainer = {
     position: "relative",
     display: "flex",
     flexDirection: "column",
     width: "600px",
+};
+
+export const ItemWrapperContainerMessage = {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    width: "1200px",
 };
