@@ -73,12 +73,12 @@ public class PostDtoResponse {
     postDtoResponse.setProfileImageLink((String) result[7]);
     postDtoResponse.setLikesCount(((BigInteger) result[8]).intValue()); // Convert BigInteger to Integer
     postDtoResponse.setPostCommentsCount(((BigInteger) result[9]).intValue()); // Convert BigInteger to Integer
+    postDtoResponse.setRepostsCount(((BigInteger) result[10]).intValue());
     try {
-      postDtoResponse.setIsReposted((Boolean) result[10].equals("true"));
+      postDtoResponse.setIsReposted((Boolean) result[11].equals("true"));
     } catch (RuntimeException exc) {
       postDtoResponse.setIsReposted(null);
     }
-    postDtoResponse.setRepostsCount(((BigInteger) result[11]).intValue());
     return postDtoResponse;
   }
 

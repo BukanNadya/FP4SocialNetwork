@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +30,14 @@ public class UserFollowRestController {
   private final UserFollowService userFollowService;
 
   @GetMapping("/following/{userID}")
-  public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowings(@PathVariable("userID") Integer userId) {
+  public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowings(@PathVariable("userID")
+                                                                      @Positive @NotEmpty Integer userId) {
     return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowerId(userId), HttpStatus.OK);
   }
 
   @GetMapping("/followers/{userID}")
-  public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowers(@PathVariable("userID") Integer userId) {
+  public ResponseEntity<List<UserFollowDtoResponse>> getAllFollowers(@PathVariable("userID")
+                                                                     @Positive @NotEmpty Integer userId) {
     return new ResponseEntity<>(userFollowService.getAllUsersByUserFollowingId(userId), HttpStatus.OK);
   }
 

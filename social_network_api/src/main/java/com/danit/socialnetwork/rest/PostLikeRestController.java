@@ -36,7 +36,7 @@ public class PostLikeRestController {
 
   @GetMapping("/likes")
   public Integer getCountAllLikesByPostId(@RequestParam(name = "postId",
-      defaultValue = "0") Integer postId) {
+      defaultValue = "0") @Positive Integer postId) {
     if (postId == 0) {
       return 0;
     }

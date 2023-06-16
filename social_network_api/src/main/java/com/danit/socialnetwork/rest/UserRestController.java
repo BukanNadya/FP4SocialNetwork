@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,10 +117,10 @@ public class UserRestController {
   }
 
 
-
   @GetMapping("/users/popular")
   public List<UserDtoForSidebar> getUsersWhoMostPopular(@RequestParam(name = "userId",
-      defaultValue = "0") Integer userId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+      defaultValue = "0") @Positive Integer userId, @RequestParam(name = "page", defaultValue = "0")
+                                                        @Positive Integer page) {
     return userService.getUsersWhoMostPopularWithFollowers(userId, page);
   }
 

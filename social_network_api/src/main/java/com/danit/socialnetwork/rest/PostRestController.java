@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class PostRestController {
    * if userId is empty returns all posts descending by order based on created datetime*/
   @GetMapping(path = "/posts")
   public List<PostDtoResponse> getAllPostsFromFollowing(@RequestParam(name = "userId",
-      defaultValue = "0") Integer userFollowingId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+      defaultValue = "0") @Positive Integer userFollowingId, @RequestParam(name = "page", defaultValue = "0")
+                                                        @Positive Integer page) {
     if (userFollowingId == 0) {
       return postService.getAllPosts(page);
     }
@@ -42,7 +44,8 @@ public class PostRestController {
   /*Method returns  all posts from users*/
   @GetMapping(path = "/posts/explorer")
   public List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(@RequestParam(name = "userId",
-      defaultValue = "0") Integer userId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+      defaultValue = "0") @Positive Integer userId, @RequestParam(name = "page", defaultValue = "0")
+                                                                    @Positive Integer page) {
     if (userId == 0) {
       return postService.getAllPosts(page);
     }
@@ -59,9 +62,9 @@ public class PostRestController {
 
   /*Method returns all posts done by user*/
   @GetMapping(path = "/posts/{userId}")
-  public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") Integer userId,
+  public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") @Positive Integer userId,
                                               @RequestParam(name = "page", defaultValue = "0")
-                                              Integer page) {
+                                              @Positive Integer page) {
 
     return postService.getAllOwnPosts(userId, page);
   }
@@ -69,9 +72,9 @@ public class PostRestController {
 
   /*Method returns all posts liked by user*/
   @GetMapping(path = "/posts/liked/{userId}")
-  public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") Integer userId,
+  public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") @Positive Integer userId,
                                                 @RequestParam(name = "page", defaultValue = "0")
-                                                Integer page) {
+                                                @Positive Integer page) {
     return postService.getAllLikedPosts(userId, page);
   }
 
@@ -79,9 +82,9 @@ public class PostRestController {
    they were posted (for own posts) and reposted (for reposts) by user*/
   @GetMapping("/posts/reposts")
   public List<PostDtoResponse> getAllPostsAndRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
-                                                             Integer userId,
+                                                             @Positive Integer userId,
                                                              @RequestParam(name = "page", defaultValue = "0")
-                                                             Integer page) {
+                                                             @Positive Integer page) {
     if (userId == 0) {
       return new ArrayList<>();
     }

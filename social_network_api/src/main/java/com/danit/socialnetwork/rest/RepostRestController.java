@@ -40,9 +40,9 @@ public class RepostRestController {
   /*Method returns all reposts done by user*/
   @GetMapping("/reposts")
   public List<RepostDtoResponse> getAllRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
-                                                       Integer userId,
+                                                       @Positive Integer userId,
                                                        @RequestParam(name = "page", defaultValue = "0")
-                                                       Integer page) {
+                                                       @Positive Integer page) {
     if (userId == 0) {
       return new ArrayList<>();
     }
@@ -61,8 +61,8 @@ public class RepostRestController {
 
 
   @GetMapping("/reposts/active")
-  public Boolean isActiveRepost(@RequestParam(name = "postId") Integer postId,
-                                @RequestParam(name = "userId") Integer userId) {
+  public Boolean isActiveRepost(@RequestParam(name = "postId") @Positive @NotEmpty Integer postId,
+                                @RequestParam(name = "userId") @Positive @NotEmpty Integer userId) {
     return repostService.isActiveRepost(postId, userId);
   }
 

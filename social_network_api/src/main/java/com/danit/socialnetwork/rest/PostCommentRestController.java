@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class PostCommentRestController {
 
   @GetMapping("/comments")
   public List<PostCommentDtoResponse> getAllComments(@RequestParam(name = "postId",
-      defaultValue = "0") Integer postId, @RequestParam(name = "page", defaultValue = "0") Integer page) {
+      defaultValue = "0") @Positive Integer postId, @RequestParam(name = "page", defaultValue = "0")
+                                                     @Positive Integer page) {
     if (postId == 0) {
       return new ArrayList<>();
     }
