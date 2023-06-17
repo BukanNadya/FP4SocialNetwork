@@ -167,4 +167,19 @@ class PostRestControllerTest {
     assertEquals(2, violations.size());
 
   }
+
+  @Test
+  void getPostByPostId() {
+    PostDtoResponse post = new PostDtoResponse();
+    Integer postId = 1;
+    Integer userId = 2;
+    post.setPostId(postId);
+
+    when (postService.getPostByPostId(postId,userId)).thenReturn(post);
+
+    PostDtoResponse result = postRestController.getPostByPostId(1,2);
+
+    assertEquals( 1, result.getPostId());
+
+  }
 }

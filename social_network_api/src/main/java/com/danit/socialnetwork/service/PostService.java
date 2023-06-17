@@ -21,4 +21,6 @@ public interface PostService {
   List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer page);
 
   List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer page);
+
+  PostDtoResponse getPostByPostId(Integer postId, Integer userId);
 }

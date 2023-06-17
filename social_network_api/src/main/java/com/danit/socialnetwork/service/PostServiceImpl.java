@@ -3,6 +3,7 @@ package com.danit.socialnetwork.service;
 import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.exception.post.PostNotFoundException;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
@@ -49,6 +50,8 @@ public class PostServiceImpl implements PostService {
     PostDtoResponse postDtoResponse = PostDtoResponse.from(post, userId);
     postDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
+    postDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
+        post.getPostId(), userId)).isPresent());
     postDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
         post.getPostId()));
     return postDtoResponse;
@@ -142,6 +145,17 @@ public class PostServiceImpl implements PostService {
     return results.stream()
         .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
+  }
+
+  @Override
+  public PostDtoResponse getPostByPostId(Integer postId, Integer userId) {
+    Optional<Post> tempPost = postRepository.findById(postId);
+    if (tempPost.isPresent()) {
+      return from(tempPost.get(), userId);
+    } else {
+      throw new PostNotFoundException(String.format("Post with postId %s not found",
+          postId));
+    }
   }
 
 }

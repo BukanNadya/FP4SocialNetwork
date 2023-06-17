@@ -92,4 +92,11 @@ public class PostRestController {
 
   }
 
+  @GetMapping("/post/{postId}")
+  public PostDtoResponse getPostByPostId(@PathVariable("postId") @Positive Integer postId,
+                                         @Positive @RequestParam(name = "userId") Integer userId) {
+
+    return postService.getPostByPostId(postId, userId);
+  }
+
 }

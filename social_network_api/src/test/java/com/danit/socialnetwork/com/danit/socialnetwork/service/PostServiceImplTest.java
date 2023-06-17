@@ -305,4 +305,16 @@ public class PostServiceImplTest {
     Assertions.assertEquals(result.get(1).getUsername(), objects2[5]);
     Assertions.assertEquals(2, result.toArray().length);
   }
+
+  @Test
+  void getPostByPostId() {
+    Integer postId = 2;
+    Post post = new Post();
+    post.setPostId(2);
+
+    when (postRepository.findById(postId)).thenReturn(Optional.of(post));
+    Post result = postRepository.findById(postId).get();
+    Assertions.assertEquals(postId, result.getPostId());
+
+  }
 }
