@@ -20,7 +20,7 @@ export const imgStyles = {
 export const PostWrapper = {
     width: "500px",
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "space-around",
 };
 
@@ -45,25 +45,7 @@ export const WrittenPostWrapper = {
     justifyContent: "start"
 };
 
-export const HomeScreenWrapper = {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "start",
-    alignItems: "start",
-    padding: "0 30px",
-    marginTop: "20px",
-    paddingBottom: "30px",
-    borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-};
 
-export const SendingPostButtonsContainer = {
-    display: "flex",
-    justifyContent: "space-between",
-    maxWidth: "400px",
-    width: "400px",
-    marginTop:"40px",
-    marginBottom:"20px",
-};
 
 export const textWrapper = {
     display: "flex", minWidth: "120px", justifyContent: "space-between"

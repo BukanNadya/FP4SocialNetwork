@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.service.NotificationService;
@@ -14,6 +15,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log4j2
@@ -29,20 +32,30 @@ public class WebSocketController {
   @MessageMapping("/post")
   public NotificationRequest postNotification(
       @Payload NotificationRequest notificationRequest) {
-    String username = userService.findByUserId(notificationRequest.getUserId()).getUsername();
+
+    UserDtoResponse user = userService.findByUserId(notificationRequest.getUserId());
+    Integer userId = user.getUserId();
+    String userName = user.getUsername();
+    String userPhoto = user.getProfileImageLink();
+    LocalDateTime dateTime = LocalDateTime.now();
+    String notificationText = userName + " published a new post";
+
     List<UserFollowDtoResponse> followers = userFollowService
-        .getAllUsersByUserFollowerId(notificationRequest.getUserId());
+        .getAllUsersByUserFollowerId(userId);
 
     for (UserFollowDtoResponse follower : followers) {
       Integer followerId = follower.getUserId();
-      String notificationText = username + " published a new post";
       Notification newNotification = new Notification(
           followerId, notificationRequest.getUserId(),
-          notificationText);
+          userPhoto, notificationText);
       notificationService.saveNotification(newNotification);
+
       notificationRequest.setNotificationText(notificationText);
-      String userId = followerId.toString();
-      messagingTemplate.convertAndSendToUser(userId, "/notifications", notificationRequest);
+      notificationRequest.setUserName(userName);
+      notificationRequest.setUserPhoto(userPhoto);
+      notificationRequest.setDateTime(dateTime);
+      String followerIdString = followerId.toString();
+      messagingTemplate.convertAndSendToUser(followerIdString, "/notifications", notificationRequest);
     }
     return notificationRequest;
   }

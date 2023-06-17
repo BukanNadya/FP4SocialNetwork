@@ -7,9 +7,6 @@ export const ContainerStyled = {
     overflowX:"hidden",
 };
 
-export const OutletWrapper = {
-    width: "600px",
-};
 
 export const OutletWrapperMessage = {
     width: "1200px",
@@ -59,10 +56,7 @@ export const ItemWrapperMessage = {
 };
 
 export const ItemWrapperContainer = {
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    width: "600px",
+
 };
 
 export const ItemWrapperContainerMessage = {

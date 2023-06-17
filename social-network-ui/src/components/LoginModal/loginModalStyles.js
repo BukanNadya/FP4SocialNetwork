@@ -3,20 +3,12 @@ export const StyledModal = {
     justifyContent: "center",
     alignItems: "center",
     outline: "none",
-    "@media(max-width: 576px)": {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        outline: "none",
-        width: "100%",
-        height: "100vh",
-        overflow: "hidden"
-    }
+    overflow:"hidden"
 };
 
 export const StyledBox = {
-    width: 500,
-    height: 600,
+    width:"600px",
+    height:"700px",
     background: "#ffff",
     outline: "none",
     display: "flex",
@@ -24,13 +16,8 @@ export const StyledBox = {
     alignItems: "center",
     flexDirection: "column",
     borderRadius: "10px",
-    overflow: "visible",
     position: "relative",
-    "@media(max-width: 576px)": {
-        width: "100% !important",
-        height: "100% !important",
-        overflow: "hidden"
-    }
+    overflow:"hidden"
 };
 
 export const StyledTwitSvgIcon = {
@@ -38,8 +25,8 @@ export const StyledTwitSvgIcon = {
     height: "45px",
     marginBottom: "20px",
     "@media(max-width: 1199px) ": {
-        width: "30px",
-        height: "30px",
+        width: "40px",
+        height: "40px",
         marginLeft:"5px",
         marginBottom: "0px",
     }

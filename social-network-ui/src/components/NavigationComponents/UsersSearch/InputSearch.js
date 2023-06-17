@@ -25,11 +25,11 @@ export const InputSearch = ({ ...props }) => {
 
 
     const xxsStyles = {
-          AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+          AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",}
     };
 
     const xsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",}
     };
 
     const smStyles = {

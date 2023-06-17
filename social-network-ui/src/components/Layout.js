@@ -32,6 +32,8 @@ import {
   fetchData,
 } from "../store/actions";
 import { decodeToken } from "./Posts/decodeToken";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
 
 export const ScrollContext = React.createContext(() => {});
@@ -60,113 +62,420 @@ export function Layout() {
     const loadingPostsRef = useRef(false);
     const allPostsLoadedRef = useRef(false);
 
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-  useEffect(() => {
-    if (
-      userToken &&
-      (userBirthdateGoogle === "true" || userBirthdateGoogle === "false")
-    ) {
-      navigate("/home");
-    }
-  }, []);
+    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
 
-  const fetchPosts = async (page) => {
-    const decodedToken = decodeToken();
-    if (decodedToken) {
-      const userId = decodedToken.sub;
-      dispatch(setUserId(userId));
-      // dispatch(fetchPostsByUserId(userId, page));
-      await dispatch(fetchData(userId));
-    }
-  };
-
-  useEffect(() => {
-    // setPageZero();
-    // setUserPostsClear([]);
-    dispatch(fetchData(userId));
-    // fetchPosts(page);
-  }, []);
-
-      useEffect(()=>{
-          allPostsLoadedRef.current = false;
-          loadingPostsRef.current = false;
-      }, [location.pathname])
-  
-      useEffect(()=>{
-          console.log(userId, "userIdFromLayout")
-      },[userId])
-  
-      // useEffect(() => {
-      //     dispatch(fetchData(userId));
-      // }, []);
-  
-      const handleParentScroll = useCallback(async (event) => {
-          const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
-          if (scrollHeight - scrollTop <= clientHeight + 20 && !allPostsLoadedRef.current && !loadingPostsRef.current) {
-              loadingPostsRef.current = true;
-              let newPosts;
-              const page2 = page + 1;
-              console.log(page)
-              if (location.pathname === "/explore") {
-                  newPosts = await dispatch(fetchExplorePosts(userId, page2));
-                  console.log("newPostsExplore",newPosts )
-              } else if (location.pathname === "/home") {
-                  console.log('fetching posts by user id in layout scroll callback', page);
-                  console.log(userId)
-                  newPosts = await dispatch(fetchPostsByUserId(userId, page2));
-                  console.log("newPostsHome", newPosts )
-              }
-              if (newPosts && newPosts.length === 0) {
-                  console.log('All posts loaded, stopping further fetches');
-                  allPostsLoadedRef.current = true;
-                  loadingPostsRef.current = false;
-              } else {
-                  dispatch(setPage(page2));
-                  loadingPostsRef.current = false;
-              }
-          }
-      }, [dispatch, location.pathname, page, userId]);
-
-  return (
-    <ScrollContext.Provider value={handleParentScroll}>
-      <ThemeProvider theme={theme}>
-      {userToken ? (
-        <Container maxWidth="false" sx={ContainerStyled}>
-          <div style={ContentContainer} onScroll={handleParentScroll}>
-            <SideBar />
-            {!location.pathname.includes("/messages") &&
-              <>
-              <div style={ItemWrapper}>
-                <div style={ItemWrapperContainer}>
-                  <HeaderInformation />
-                  <div style={OutletContainer}>
-                    <div style={OutletWrapper}>
-                      <Outlet />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {userBirthdateGoogle ? null : <BirthdateForm />}
-              <UsersSearch />
-              </>
-            }
-            {location.pathname.includes("/messages") &&
-                <>
-                  <div style={ItemWrapperMessage}>
-                    <div style={ItemWrapperContainerMessage}>
-                        <HeaderInformation />
-                        <div style={OutletContainer}>
-                        <div style={OutletWrapperMessage}>
-                            <Outlet />
-                        </div>
-                        </div>
-                    </div>
-                  </div>
-                </>}
-          </div>
-        </Container>) : (<RegistrationPage />)
+    const xxsStyles = {
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+        },
+        MaxWidthAdaptive: true,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+            width: "100vw",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100vw",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            width: "100vw",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            paddingBottom: "70px",
         }
-      </ThemeProvider>
-    </ScrollContext.Provider>
-  );
+    };
+
+    const xsStyles = {
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+        },
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+            width: "100vw",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100vw",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            width: "100vw",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            paddingBottom: "70px",
+        }
+    };
+
+    const smStyles = {
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            width: "470px",
+        },
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100vw",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
+    };
+
+    const mdStyles = {
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            width: "600px",
+        },
+        MaxWidthAdaptive: true,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            width: "600px",
+        },
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveOutletWrapper: {},
+        AdaptiveItemWrapperContainer: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            width: "600px",
+        },
+        MaxWidthAdaptive: false,
+        AdaptiveContainerStyled: {
+            padding: "0!important",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            overflowX: "hidden",
+        },
+        AdaptiveContentContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            width: "100%",
+            height: "100vh",
+            position: "sticky",
+            top: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            marginRight: "-40px",
+            "&:::WebkitScrollbar": {
+                display: "none"
+            },
+        },
+        AdaptiveItemWrapper: {
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "700px",
+            position: "relative",
+            alignItems: "center",
+        },
+        AdaptiveOutletContainer:{
+            position: "relative",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            paddingBottom: "70px",
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
+    useEffect(() => {
+        if (userToken && userBirthdateGoogle === "true" || userToken && userBirthdateGoogle === "false") {
+            navigate("/home");
+        }
+    }, []);
+
+    useEffect(()=>{
+        allPostsLoadedRef.current = false;
+        loadingPostsRef.current = false;
+    }, [location.pathname])
+
+    useEffect(()=>{
+        console.log(userId, "userIdFromLayout")
+    },[userId])
+
+    // useEffect(() => {
+    //     dispatch(fetchData(userId));
+    // }, []);
+
+    const handleParentScroll = useCallback(async (event) => {
+        const { scrollTop, clientHeight, scrollHeight } = event.currentTarget;
+        if (scrollHeight - scrollTop <= clientHeight + 20 && !allPostsLoadedRef.current && !loadingPostsRef.current) {
+            loadingPostsRef.current = true;
+            let newPosts;
+            const page2 = page + 1;
+            console.log(page)
+            if (location.pathname === "/explore") {
+                newPosts = await dispatch(fetchExplorePosts(userId, page2));
+                console.log("newPostsExplore",newPosts )
+            } else if (location.pathname === "/home") {
+                console.log('fetching posts by user id in layout scroll callback', page);
+                console.log(userId)
+                newPosts = await dispatch(fetchPostsByUserId(userId, page2));
+                console.log("newPostsHome", newPosts )
+            }
+            if (newPosts && newPosts.length === 0) {
+                console.log('All posts loaded, stopping further fetches');
+                allPostsLoadedRef.current = true;
+                loadingPostsRef.current = false;
+            } else {
+                dispatch(setPage(page2));
+                loadingPostsRef.current = false;
+            }
+        }
+    }, [dispatch, location.pathname, page, userId]);
+
+    return (
+        <ScrollContext.Provider value={handleParentScroll}>
+            <ThemeProvider theme={theme}>
+                {userToken ? (
+                    <Container maxWidth={styles.MaxWidthAdaptive}  sx={styles.AdaptiveContainerStyled}>
+                        <div style={styles.AdaptiveContentContainer} onScroll={handleParentScroll}>
+                            <SideBar />
+                            {!location.pathname.includes("/messages") &&
+                                <>
+                                    <div style={styles.AdaptiveItemWrapper}>
+                                        <div style={styles.AdaptiveItemWrapperContainer}>
+                                            <HeaderInformation />
+                                            <div style={styles.AdaptiveOutletContainer}>
+                                                <div style={styles.AdaptiveOutletWrapper}>
+                                                    <Outlet />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {userBirthdateGoogle ? null : <BirthdateForm />}
+                                    <UsersSearch />
+                                </>
+                            }
+                            {location.pathname.includes("/messages") &&
+                                <>
+                                    <div style={ItemWrapperMessage}>
+                                        <div style={ItemWrapperContainerMessage}>
+                                            <HeaderInformation />
+                                            <div style={OutletContainer}>
+                                                <div style={OutletWrapperMessage}>
+                                                    <Outlet />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>}
+                        </div>
+                    </Container>) : (<RegistrationPage />)
+                }
+            </ThemeProvider>
+        </ScrollContext.Provider>
+    );
 }

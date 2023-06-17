@@ -37,7 +37,7 @@ export function SideBar() {
         SidebarBox: {
             "& > :not(style)": { m: 1 },
             width: "60px",
-            display: "flex",
+            display:"none",
             textAlign: "start",
             alignContent: "start",
             flexDirection: "column",
@@ -55,13 +55,15 @@ export function SideBar() {
             width: "20px",
             marginRight: "0px",
         }
+        ,
+        AdaptiveDivWrapper: {display:"none"}
     };
 
     const xsStyles = {
         SidebarBox: {
             "& > :not(style)": { m: 1 },
             width: "60px",
-            display: "flex",
+            display:"none",
             textAlign: "start",
             alignContent: "start",
             flexDirection: "column",
@@ -79,6 +81,8 @@ export function SideBar() {
             width: "20px",
             marginRight: "0px",
         }
+        ,
+        AdaptiveDivWrapper: {display:"none"}
     };
 
     const smStyles = {
@@ -103,6 +107,12 @@ export function SideBar() {
             width: "20px",
             marginRight: "0px",
         }
+        ,
+        AdaptiveDivWrapper: {height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"}
 
     };
 
@@ -128,6 +138,12 @@ export function SideBar() {
             width: "15px",
             marginRight: "0"
         }
+        ,
+        AdaptiveDivWrapper: {height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"}
     };
 
     const lgStyles = {
@@ -161,6 +177,12 @@ export function SideBar() {
             width: "20px",
             marginRight: "10px",
         }
+        ,
+        AdaptiveDivWrapper: {height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"}
     };
 
     const xlStyles = {
@@ -193,7 +215,12 @@ export function SideBar() {
             height: "20px",
             width: "20px",
             marginRight: "10px",
-        }
+        },
+        AdaptiveDivWrapper: {height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "start",
+        alignContent: "start"}
     };
 
     let styles;
@@ -220,13 +247,7 @@ export function SideBar() {
 
     return (
         <Box position="fixed" sx={styles.SidebarBox}>
-            <div style={{
-                height: "100vh",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "start",
-                alignContent: "start"
-            }}>
+            <div style={styles.AdaptiveDivWrapper}>
                 <div
                     style={{ height: "60%", display: "flex", justifyContent: "space-around", flexDirection: "column" }}>
                     <Link to="/home" variant="contained">

@@ -22,6 +22,7 @@ export const PostsWrapper = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent:"center",
     maxWidth: "100%",
 };
 export const PostCard = {

@@ -31,7 +31,11 @@ public class Notification {
   @NotNull
   Integer followingUserId;
 
-  @Column(name = "notidication")
+  @Column(name = "following_user_photo_link")
+  @NotNull
+  String userPhoto;
+
+  @Column(name = "notification")
   @NotNull
   String notificationText;
 
@@ -39,9 +43,10 @@ public class Notification {
   @Column(name = "created_at")
   Timestamp dateTime;
 
-  public Notification(Integer userId, Integer followingUserId, String notificationText) {
+  public Notification(Integer userId, Integer followingUserId, String userPhoto, String notificationText) {
     this.userId = userId;
     this.followingUserId = followingUserId;
+    this.userPhoto = userPhoto;
     this.notificationText = notificationText;
   }
 }

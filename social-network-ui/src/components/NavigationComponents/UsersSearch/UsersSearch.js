@@ -37,15 +37,15 @@ export function UsersSearch() {
 
 
     const xxsStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none", flexBasis: "100px"},
-        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"10px"},
-        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"10px"}
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none",},
+        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"10px", display:"none"},
+        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"10px", display:"none"}
     };
 
     const xsStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none", flexBasis: "100px"},
-        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"0px"},
-        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"10px"}
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none"},
+        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"0px", display:"none"},
+        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"10px", display:"none"}
 
     };
 
