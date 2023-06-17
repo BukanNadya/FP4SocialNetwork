@@ -4,14 +4,275 @@ import {useDispatch} from "react-redux";
 import {openSignUpModal} from "../../store/actions";
 import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import {apiUrl} from "../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function RightSideMenu ()  {
 
     const dispatch = useDispatch()
 
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        RightSideStyle: {display: "none"},
+        GridItem: { item: "282px" },
+        SideMenuButton: {
+            height: "45px",
+            padding: "0 12px",
+            mb: "20px",
+            mt: "12px", width: "250px", background: "#000000",
+            transition: "0.7s", "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GoogleButton: {
+            fontFamily: "'Lato', sans-serif",
+            fontSize: "15px",
+            lineHeight: "23px",
+            fontStyle: "normal",
+            height: "45px",
+            padding: "0 12px",
+            width: "226px", background: "#000000",
+            transition: "0.7s",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            marginTop: "10px",
+            textTransform:"uppercase",
+            textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", color:"white",
+        }
+    };
+
+    const xsStyles = {
+        RightSideStyle: {display: "none"},
+        GridItem: { item: "282px" },
+        SideMenuButton: {
+            height: "45px",
+            padding: "0 12px",
+            mb: "20px",
+            mt: "12px", width: "250px", background: "#000000",
+            transition: "0.7s", "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GoogleButton: {
+            fontFamily: "'Lato', sans-serif",
+            fontSize: "15px",
+            lineHeight: "23px",
+            fontStyle: "normal",
+            height: "45px",
+            padding: "0 12px",
+            width: "226px", background: "#000000",
+            transition: "0.7s",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            marginTop: "10px",
+            textTransform:"uppercase",
+            textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", color:"white",
+        }
+    };
+
+    const smStyles = {
+        RightSideStyle: {display: "none"},
+        GridItem: { item: "282px" },
+        SideMenuButton: {
+            height: "45px",
+            padding: "0 12px",
+            mb: "20px",
+            mt: "12px", width: "250px", background: "#000000",
+            transition: "0.7s", "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GoogleButton: {
+            fontFamily: "'Lato', sans-serif",
+            fontSize: "15px",
+            lineHeight: "23px",
+            fontStyle: "normal",
+            height: "45px",
+            padding: "0 12px",
+            width: "226px", background: "#000000",
+            transition: "0.7s",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            marginTop: "10px",
+            textTransform:"uppercase",
+            textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", color:"white",
+        }
+    };
+
+    const mdStyles = {
+        RightSideStyle: {position: "relative"},
+        GridItem: { item: "282px" },
+        SideMenuButton: {
+            height: "45px",
+            padding: "0 12px",
+            mb: "20px",
+            mt: "12px", width: "250px", background: "#000000",
+            transition: "0.7s", "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GoogleButton: {
+            fontFamily: "'Lato', sans-serif",
+            fontSize: "15px",
+            lineHeight: "23px",
+            fontStyle: "normal",
+            height: "45px",
+            padding: "0 12px",
+            width: "226px", background: "#000000",
+            transition: "0.7s",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            marginTop: "10px",
+            textTransform:"uppercase",
+            textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", color:"white",
+        }
+    };
+
+    const lgStyles = {
+        RightSideStyle: {position: "relative"},
+        GridItem: { item: "350px" },
+        SideMenuButton: {
+            height: "45px",
+            padding: "0 12px",
+            mb: "20px",
+            mt: "12px", width: "300px", background: "#000000",
+            transition: "0.7s", "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GoogleButton: {
+            fontFamily: "'Lato', sans-serif",
+            fontSize: "15px",
+            lineHeight: "23px",
+            fontStyle: "normal",
+            height: "45px",
+            padding: "0 12px",
+            width: "276px", background: "#000000",
+            transition: "0.7s",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            marginTop: "10px",
+            textTransform:"uppercase",
+            textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", color:"white",
+        }
+    };
+
+    const xlStyles = {
+        RightSideStyle: {position: "relative"},
+        GridItem: { item: "350px" },
+        SideMenuButton: {
+            height: "45px",
+            padding: "0 12px",
+            mb: "20px",
+            mt: "12px", width: "300px", background: "#000000",
+            transition: "0.7s", "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GoogleButton: {
+            fontFamily: "'Lato', sans-serif",
+            fontSize: "15px",
+            lineHeight: "23px",
+            fontStyle: "normal",
+            height: "45px",
+            padding: "0 12px",
+            width: "276px", background: "#000000",
+            transition: "0.7s",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "#ffffff",
+                color: "#000000"
+            },
+            fontWeight: 700,
+            borderRadius: "20px",
+            marginTop: "10px",
+            textTransform:"uppercase",
+            textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", color:"white",
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     return (
-        <div style={{position: "relative"}}>
-        <Box display="grid" gridTemplateColumns="350px" gap={2} sx={{  position: "fixed" }}>
+        <div style={styles.RightSideStyle}>
+        <Box display="grid" gridTemplateColumns={styles.GridItem.item} gap={2} sx={{  position: "fixed" }}>
         <Card sx={{ minWidth: 275, height: '300px', maxWidth: "350px", borderRadius: "16px"}}>
             <CardContent>
                 <Typography variant="h5" component="div" sx={{
@@ -24,15 +285,10 @@ export function RightSideMenu ()  {
                 }}>
                     First time on Capitweet?
                 </Typography>
-                <Typography sx={{fontWeight: "400", lineHeight: "16px", fontSize: "14px", color: "rgb(83, 100, 113)", padding: "0 16px", fontFamily: "'Lato', sans-serif"}}>
+                <Typography sx={{fontWeight: "400", lineHeight: "16px", fontSize: "13px", color: "rgb(83, 100, 113)", padding: "0 16px", fontFamily: "'Lato', sans-serif"}}>
                     Sign up now to personalize your feed!
                 </Typography>
-                <a href={`${apiUrl}/oauth2/authorization/google`}  style={{ ...StyledBlackButton, color:"white", textAlign:"center", textDecoration:"none", alignItems:"center", display:"flex", justifyContent:"center", height: "45px",
-                    width: "300px",
-                    background: "#000000",
-                    marginTop: "10px",
-                    textTransform:"uppercase"
-                }}><SvgIcon
+                <a href={`${apiUrl}/oauth2/authorization/google`}  style={styles.GoogleButton}><SvgIcon
                     sx={{ marginRight: "10px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
                     width="48px" height="48px">
                     <path fill="#FFC107"
@@ -45,20 +301,7 @@ export function RightSideMenu ()  {
                           d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
                 </SvgIcon> Sign in with Google</a>
                 <Button type="submit"
-                        variant="contained" sx={{
-                    height: "45px",
-                    padding: "0 12px",
-                    mb: "20px",
-                    mt: "12px", width: "300px", background: "#000000",
-                    transition: "0.7s", "&:hover": {
-                        transition: "0.7s",
-                        backgroundColor: "#ffffff",
-                        color: "#000000"
-                    },
-                    fontWeight: 700,
-                    borderRadius: "20px",
-                    fontFamily: "'Lato', sans-serif",
-                }} fullWidth={true} onClick={() => {dispatch(openSignUpModal())}}>Create account</Button>
+                        variant="contained" sx={styles.SideMenuButton} fullWidth={true} onClick={() => {dispatch(openSignUpModal())}}>Create account</Button>
                 <Typography sx={{fontWeight: "400", lineHeight: "16px", fontSize: "14px", color: "rgb(83, 100, 113)", padding: "0 12px", mb: "16px", fontFamily: "'Lato', sans-serif"}}>
                      By registering, you agree to the Terms of Service and Privacy Policy as well as the Cookie Policy.
                 </Typography>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
 import {UserSearchTextField} from "../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
@@ -63,6 +63,8 @@ export const InputSearch = ({ ...props }) => {
         styles = xxsStyles;
     }
 
+    const [inputValue, setInputValue] = useState('');
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(`${apiUrl}/api/profile/${userId}`);
@@ -83,12 +85,29 @@ export const InputSearch = ({ ...props }) => {
                 autoComplete
                 includeInputInList
                 filterSelectedOptions
-                noOptionsText="User not found"
+                // noOptionsText="User not found"
+                inputValue={inputValue}
+                onInputChange={(event, value) => {
+                    setInputValue(value);
+                }}
+                noOptionsText={
+                    inputValue === ''
+                        ? "Try searching for people"
+                        : "User not found"
+                }
                 renderInput={(params) => (
                     <TextField{...props} sx={styles.AdaptiveUserSearchTextField} {...params} label="Search in Capitweet"
                               onBlur={(ev) => {
                                   ev.preventDefault()
-                                  dispatch(DeleteUsersSuccess())
+                                  inputValue === ''
+                                      ? dispatch(DeleteUsersSuccess())
+                                      : false
+                              }}
+                              onFocus={(ev) => {
+                                  ev.preventDefault()
+                                  inputValue === ''
+                                      ? dispatch(DeleteUsersSuccess())
+                                      : false
                               }}
                     />
                 )}

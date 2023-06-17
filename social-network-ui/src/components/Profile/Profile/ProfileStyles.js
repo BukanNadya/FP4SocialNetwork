@@ -23,6 +23,22 @@ export const editButtonStyles = {
     borderRadius: "20px",
     fontFamily: "'Lato', sans-serif",
 }
+export const noticesButton = {
+    borderRadius: "50%",
+    border: "1px solid rgb(207, 217, 222)",
+    backgroundColor: "#ffffff",
+    boxShadow: "none",
+    padding: "0",
+    marginRight: "20px",
+    marginBottom: "6px",
+    minWidth: "0",
+    width: "40px",
+    height: "40px",
+    "&:hover": {
+        transition: "0.7s",
+        backgroundColor: "rgba(15, 20, 25, 0.15)",
+    },
+}
 // export const unsubscribeButtonStyles = {
 //     height: "45px",
 //     padding: "0 12px",

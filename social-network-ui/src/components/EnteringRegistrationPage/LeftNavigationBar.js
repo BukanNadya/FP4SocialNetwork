@@ -1,11 +1,181 @@
 import React from 'react';
 import {Box, Fab, Grid, SvgIcon, Typography} from '@mui/material'
 import { Link } from "react-router-dom"
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {SidebarLogOutButton} from "../NavigationComponents/NavigationStyles";
 
 export function LeftNavigationBar () {
 
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        SidebarTypography: { display: "none" },
+        GridItem: { item: 2 },
+        ExploreButton: {
+            borderRadius: "40px",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            padding: "0",
+            width: "60px",
+            height: "60px",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "rgba(15, 20, 25, 0.15)",
+            },
+        },
+        ItemStyles: {
+            display: "none"
+        }
+    };
+
+    const xsStyles = {
+        SidebarTypography: { display: "none" },
+        GridItem: { item: 2 },
+        ExploreButton: {
+            borderRadius: "40px",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            padding: "0",
+            width: "60px",
+            height: "60px",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "rgba(15, 20, 25, 0.15)",
+            },
+        },
+        ItemStyles: {
+            display: "block"
+        }
+    };
+
+    const smStyles = {
+        SidebarTypography: { display: "none" },
+        GridItem: { item: 2 },
+        ExploreButton: {
+            borderRadius: "40px",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            padding: "0",
+            width: "60px",
+            height: "60px",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "rgba(15, 20, 25, 0.15)",
+            },
+        },
+        ItemStyles: {
+            display: "block"
+        }
+
+    };
+
+    const mdStyles = {
+        SidebarTypography: { display: "none" },
+        GridItem: { item: 2 },
+        ExploreButton: {
+            borderRadius: "40px",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            padding: "0",
+            width: "60px",
+            height: "60px",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "rgba(15, 20, 25, 0.15)",
+            },
+        },
+        ItemStyles: {
+            display: "block"
+        }
+    };
+
+    const lgStyles = {
+        SidebarTypography: {
+            flexGrow: 1,
+            marginRight: "5px",
+            fontWeight: "700",
+            fontSize: "20px",
+            lineHeight: "24px",
+            display: "flex",
+            alignItems: "center",
+            textTransform: "none",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GridItem: { item: 2 },
+        ExploreButton: {
+            borderRadius: "40px",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            padding: "0",
+            width: "150px",
+            height: "60px",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "rgba(15, 20, 25, 0.15)",
+            },
+        },
+        ItemStyles: {
+            display: "block"
+        }
+    };
+
+    const xlStyles = {
+        SidebarTypography: {
+            flexGrow: 1,
+            marginRight: "5px",
+            fontWeight: "700",
+            fontSize: "20px",
+            lineHeight: "24px",
+            display: "flex",
+            alignItems: "center",
+            textTransform: "none",
+            fontFamily: "'Lato', sans-serif",
+        },
+        GridItem: { item: 3 },
+        ExploreButton: {
+            borderRadius: "40px",
+            backgroundColor: "#ffffff",
+            boxShadow: "none",
+            padding: "0",
+            width: "150px",
+            height: "60px",
+            "&:hover": {
+                transition: "0.7s",
+                backgroundColor: "rgba(15, 20, 25, 0.15)",
+            },
+        },
+        ItemStyles: {
+            display: "block"
+        }
+
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     return (
-        <Grid item xs={3}>
+        <Grid item xs={styles.GridItem.item} sx={styles.ItemStyles}>
         <Box position="fixed" sx={{
             '& > :not(style)': { m: 1 },
             display: "flex",
@@ -63,18 +233,7 @@ export function LeftNavigationBar () {
                 </Fab>
             </Link>
             <Link to="/explore" variant="contained">
-                <Fab variant="extended" sx={{
-                    borderRadius: "40px",
-                    backgroundColor: "#ffffff",
-                    boxShadow: "none",
-                    padding: "0",
-                    width: "150px",
-                    height: "60px",
-                    "&:hover": {
-                        transition: "0.7s",
-                        backgroundColor: "rgba(15, 20, 25, 0.15)",
-                    },
-                }}>
+                <Fab variant="extended" sx={styles.ExploreButton}>
                     <Box sx={{
                         display: "flex",
                         gap: "20px"
@@ -83,18 +242,7 @@ export function LeftNavigationBar () {
                             <path
                                 d="M10.64 3.157l-.36 3.593h4.99l.38-3.892 2.99.299-.36 3.593h2.97v2.5h-3.22l-.55 5.5h2.77v2.5h-3.02l-.39 3.892-2.98-.299.36-3.593H9.23l-.39 3.892-2.98-.299.36-3.593H2.75v-2.5h3.72l.55-5.5H3.75v-2.5h3.52l.38-3.892 2.99.299zm3.83 11.593l.55-5.5h-4.99l-.55 5.5h4.99z"/>
                         </SvgIcon>
-                        <Typography variant="h6" component="div" sx={{
-                            flexGrow: 1,
-                            marginRight: "5px",
-                            fontWeight: "700",
-                            fontSize: "20px",
-                            lineHeight: "24px",
-                            display: "flex",
-                            alignItems: "center",
-                            textTransform: "none",
-                            fontFamily: "'Lato', sans-serif",
-
-                        }}>
+                        <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                             Explore
                         </Typography>
                     </Box>
