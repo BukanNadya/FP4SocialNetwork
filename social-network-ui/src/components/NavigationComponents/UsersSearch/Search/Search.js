@@ -33,9 +33,9 @@ export function Search () {
                 dispatch(GetUsersSuccess(userSearch));
             }
         }}>
-            <Form>
+            <Form style={{width:"1000px"}}>
 
-                <Field as={InputSearch} sx={{ width: "400px" }}
+                <Field as={InputSearch} sx={{ width: "1000px" }}
                        name={"userName"} id="userName"
                        label="Username" type="text"/>
 

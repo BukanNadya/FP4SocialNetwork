@@ -21,7 +21,7 @@ export const StyledContentBox = {
 
 export const StyledContentTypography = {
     position: "absolute",
-    top: "20px",
+    top: "-50px",
     left: "60px",
     fontWeight: 700,
 };

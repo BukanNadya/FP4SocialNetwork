@@ -286,7 +286,7 @@ export function SideBar() {
                             </Typography>
                         </Fab>
                     </Link>
-                    <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
+                    {!isLg && !isXl  ? <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/search" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
@@ -299,7 +299,7 @@ export function SideBar() {
                                 Search
                             </Typography>
                         </Fab>
-                    </Link>
+                    </Link> : null}
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"

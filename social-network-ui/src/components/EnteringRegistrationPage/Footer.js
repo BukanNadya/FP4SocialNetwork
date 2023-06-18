@@ -170,7 +170,7 @@ export  function Footer () {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "rgb(29, 155, 240)"}}>
+            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "black"}}>
                 <Container sx={styles.ContainerStyle} >
                     <Box display="grid" gridTemplateColumns={styles.GridItem.item} gap={2} sx={{height: "72px", alignItems: "center"}}>
 
@@ -180,7 +180,13 @@ export  function Footer () {
                             <br/>
                             People on Capitweet are the first to know.
                         </Typography>
-                        <div style={{display: "flex", justifyContent: "center"}}>
+                        <div style={{display: "flex", justifyContent: "center", alignItems:"center"}}>
+                            {isXs || isXxs  ? <Typography variant="h6" component="div" sx={{  fontWeight: "700",
+                                fontSize: "20px",
+                                lineHeight: "1.3",
+                                fontFamily: "'Lato', sans-serif",}}>
+                                Welcome to Capitweet!
+                            </Typography> : null}
                             <Button variant="outlined" color="inherit" sx={{
                                 borderRadius: "20px",
                                 fontWeight: "700",

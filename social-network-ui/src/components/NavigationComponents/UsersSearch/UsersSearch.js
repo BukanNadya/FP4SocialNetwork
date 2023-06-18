@@ -57,21 +57,24 @@ export function UsersSearch() {
     };
 
     const mdStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar, display:"none", flexBasis: "100px"},
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar,
+            display:"none",
+            flexBasis: "100px"
+        },
         AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"0px", zIndex: "0.1",},
         AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"100px"}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar},
-        AdaptiveUserSearchWrapper:{...UserSearchWrapper},
-        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper}
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, width:"260px"},
+        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"260px"},
+        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"260px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchAppBar:{...UserSearchAppBar},
-        AdaptiveUserSearchWrapper:{...UserSearchWrapper},
-        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper}
+        AdaptiveUserSearchAppBar:{...UserSearchAppBar, width:"260px"},
+        AdaptiveUserSearchWrapper:{...UserSearchWrapper, width:"260px"},
+        AdaptiveUserSearchContentWrapper: {...UserSearchContentWrapper, width:"260px"}
     };
 
     let styles;

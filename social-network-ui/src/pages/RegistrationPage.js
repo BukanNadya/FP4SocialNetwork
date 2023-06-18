@@ -49,15 +49,19 @@ if(isAllSetModal) id="allSet"
     const xxsStyles = {
         ContainerStyle: {
             minWidth: "100px",
+            padding:"0",
             height:"100vh"
         },
+        AdaptiveSpacing: 0
     };
 
     const xsStyles = {
         ContainerStyle: {
             minWidth: "300px",
+            padding:"0",
             height:"100vh"
         },
+        AdaptiveSpacing: 0
     };
 
     const smStyles = {
@@ -65,6 +69,7 @@ if(isAllSetModal) id="allSet"
             minWidth: "600px",
             height:"100vh"
         },
+        AdaptiveSpacing: 0
 
     };
 
@@ -73,6 +78,7 @@ if(isAllSetModal) id="allSet"
             minWidth: "900px",
             height:"100vh"
         },
+        AdaptiveSpacing: 0
     };
 
     const lgStyles = {
@@ -80,6 +86,7 @@ if(isAllSetModal) id="allSet"
             minWidth: "1200px",
             height:"100vh"
         },
+        AdaptiveSpacing: 12
     };
 
     const xlStyles = {
@@ -87,6 +94,7 @@ if(isAllSetModal) id="allSet"
             minWidth: "1300px",
             height:"100vh"
         },
+        AdaptiveSpacing: 12
 
     };
 
@@ -108,21 +116,15 @@ if(isAllSetModal) id="allSet"
     return (
         <>
         <Container sx={styles.ContainerStyle} >
-            <Grid container spacing={12} sx={{height:"100vh"}}>
-                    <LeftNavigationBar/>
+            <Grid container spacing={styles.AdaptiveSpacing} sx={{height:"100vh"}}>
+                {isXxs || isXs ? null  :   <LeftNavigationBar/>}
                     <Newsfeed/>
             </Grid>
         </Container>
         <Footer/>
-            {isLoginModalOpen &&
-                (<LoginModal/>)
-            }
-            {isSignUpModalOpen &&
-                (<Content/>)
-            }
-            {isForgotPasswordModal &&
-                 (<ForgotPasswordModal id={id}/>)
-            }
+            {isLoginModalOpen && (<LoginModal/>)}
+            {isSignUpModalOpen && (<Content/>)}
+            {isForgotPasswordModal && (<ForgotPasswordModal id={id}/>)}
         </>
     )
 }

@@ -30,8 +30,8 @@ import { SendPostInput } from "../components/Posts/SendPostInput";
 import { CharactersTextWrapper, PostImgWrapper, PostsWrapper, SendPostField } from "../components/Posts/PostStyles";
 import { decodeToken } from "../components/Posts/decodeToken";
 import { apiUrl } from "../apiConfig";
-import CropOriginalIcon from '@mui/icons-material/CropOriginal';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+import CropOriginalIcon from "@mui/icons-material/CropOriginal";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 
 import { ScrollContext } from "../components/Layout.js";
 import { useTheme } from "@mui/material/styles";
@@ -76,12 +76,12 @@ export function HomeScreen() {
         AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
-            width:"65vw",
+            width: "65vw",
             maxWidth: "300px",
             marginTop: "20px",
         },
         AdaptiveHomeScreenWrapper: {
-            overflow:"hidden",
+            overflow: "hidden",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
@@ -99,11 +99,11 @@ export function HomeScreen() {
             bottom: "16px",
             right: "16px",
         },
-        AdaptiveSvgWrapper:{
-            display:"none",
+        AdaptiveSvgWrapper: {
+            display: "none",
         },
-        AdaptivePostImgWrapper:{
-            ...PostImgWrapper, marginTop:"10px"
+        AdaptivePostImgWrapper: {
+            ...PostImgWrapper, marginTop: "10px"
         }
     };
 
@@ -117,7 +117,7 @@ export function HomeScreen() {
             alignItems: "space-around",
         },
         AdaptiveHomeScreenWrapper: {
-            overflow:"hidden",
+            overflow: "hidden",
             display: "flex",
             flexDirection: "column",
             marginTop: "20px",
@@ -132,7 +132,7 @@ export function HomeScreen() {
         AdaptiveSendPostField: {
             fontSize: "1.3rem",
             fontFamily: "'Lato', sans-serif",
-            width:"70vw",
+            width: "70vw",
             marginTop: "20px",
         },
         fab: {
@@ -140,11 +140,11 @@ export function HomeScreen() {
             bottom: "16px",
             right: "16px",
         },
-        AdaptiveSvgWrapper:{
-            display:"none",
+        AdaptiveSvgWrapper: {
+            display: "none",
         },
-        AdaptivePostImgWrapper:{
-            ...PostImgWrapper, marginTop:"10px"
+        AdaptivePostImgWrapper: {
+            ...PostImgWrapper, marginTop: "10px"
         }
     };
 
@@ -276,14 +276,13 @@ export function HomeScreen() {
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveHomeScreenWrapper: {
-            width: "100%",
+            width: "92%",
             display: "flex",
-            alignItems: "flex-start",
             flexDirection: "column",
-            justifyContent: "start",
+            justifyContent: "center",
+            alignItems: "center",
             padding: "0 30px",
             marginTop: "20px",
-            paddingBottom: "30px",
         }
         ,
         AdaptiveSendingPostButtonsContainer: {
@@ -329,13 +328,6 @@ export function HomeScreen() {
     }, []);
 
     useEffect(() => {
-        connect();
-        return () => {
-            disconnect();
-        };
-    }, []);
-
-    const connect = () => {
         const socket = new SockJS(`${apiUrl}/websocket`);
         stompClient = Stomp.over(socket);
 
@@ -344,15 +336,13 @@ export function HomeScreen() {
         }, error => {
             console.error(`Failed to connect to WebSocket server: ${error}`);
         });
-    };
 
-    const disconnect = () => {
-        if (stompClient !== null) {
-            stompClient.disconnect();
-        }
-
-        console.log("Disconnected");
-    };
+        return () => {
+            if (stompClient !== null) {
+                stompClient.disconnect();
+            }
+        };
+    }, []);
 
     const handleClick = () => {
         if (stompClient) {
@@ -370,7 +360,6 @@ export function HomeScreen() {
                     const userId = decodedToken.sub;
                     dispatch(setUserId(userId));
                     dispatch(fetchData(userId));
-                    console.log(userId, "userIdHomeScreen");
                     // it's initial loading, we're always starting from the first (0) page
                     await dispatch(fetchPostsByUserId(userId, 0));
                 }
@@ -420,8 +409,8 @@ export function HomeScreen() {
 
             setPostImage(null);
             setPostText("");
-            if(isXs || isXxs){
-                setOpen(false)
+            if (isXs || isXxs) {
+                setOpen(false);
             }
         }
     };
@@ -450,107 +439,109 @@ export function HomeScreen() {
     return (
         <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
             {isXs || isXxs ? <>
-                    <Modal  open={open} onClose={() => setOpen(false)} sx={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-                        <div style={{backgroundColor:"white", width:"80vw", padding:"15px 15px"}}>
-                        <Formik
-                            initialValues={{ postText: "" }}
-                            validationSchema={
-                                Yup.object({
-                                    postText: Yup.string().max(280, "Must be 280 characters or less"),
-                                })}
-                            onSubmit={(values, { resetForm, setSubmitting }) => {
-                                setSubmitting(true);
-                                handlePostSubmit(values, setSubmitting);
-                                resetForm();
-                            }}
-                        >
-                            {({ values, errors, touched, isSubmitting }) => (
-                                <Form>
-                                    <div style={styles.AdaptiveHomeScreenWrapper}>
-                                        <div style={styles.AdaptivePostWrapper}>
-                                            <div style={styles.AdaptiveSvgWrapper}>
-                                                {userData.image ? <img src={userData.image}
-                                                                       style={imgStyles}
-                                                                       alt=""/> : <CapybaraSvgPhoto/>}
-                                            </div>
-                                            <div style={WrittenPostWrapper}>
-                                                <div
-                                                    style={textWrapper}>
-                                                    <h2 style={NameOfUser}>{userData.name}</h2>
-                                                    <h2 style={{
-                                                        ...NameOfUser,
-                                                        color: "grey",
-                                                        marginLeft: "10px"
-                                                    }}>@ {userData.userName}</h2>
+                    <Modal open={open} onClose={() => setOpen(false)}
+                           sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <div style={{ backgroundColor: "white", width: "80vw", padding: "15px 15px" }}>
+                            <Formik
+                                initialValues={{ postText: "" }}
+                                validationSchema={
+                                    Yup.object({
+                                        postText: Yup.string().max(280, "Must be 280 characters or less"),
+                                    })}
+                                onSubmit={(values, { resetForm, setSubmitting }) => {
+                                    setSubmitting(true);
+                                    handlePostSubmit(values, setSubmitting);
+                                    resetForm();
+                                }}
+                            >
+                                {({ values, errors, touched, isSubmitting }) => (
+                                    <Form>
+                                        <div style={styles.AdaptiveHomeScreenWrapper}>
+                                            <div style={styles.AdaptivePostWrapper}>
+                                                <div style={styles.AdaptiveSvgWrapper}>
+                                                    {userData.image ? <img src={userData.image}
+                                                                           style={imgStyles}
+                                                                           alt=""/> : <CapybaraSvgPhoto/>}
+                                                </div>
+                                                <div style={WrittenPostWrapper}>
+                                                    <div
+                                                        style={textWrapper}>
+                                                        <h2 style={NameOfUser}>{userData.name}</h2>
+                                                        <h2 style={{
+                                                            ...NameOfUser,
+                                                            color: "grey",
+                                                            marginLeft: "10px"
+                                                        }}>@ {userData.userName}</h2>
 
-                                                </div>
-                                                <Field
-                                                    values={postText}
-                                                    component={SendPostInput}
-                                                    name="postText"
-                                                    className={errors.postText && touched.postText ? "error" : ""}
-                                                    style={styles.AdaptiveSendPostField}
-                                                    id="postText"
-                                                    placeholder="What's happening?"
-                                                />
-                                                <div style={CharactersTextWrapper}>
-                                                    {
-                                                        280 - values.postText.length >= 0 ?
-                                                            (280 - values.postText.length + " characters") : ("maximum number of characters 280")
-                                                    }
-                                                </div>
-                                                <Box sx={styles.AdaptivePostImgWrapper}>
-                                                    {postImage && (
-                                                        <img
-                                                            src={URL.createObjectURL(postImage)}
-                                                            alt="Post Image"
-                                                            style={{ maxWidth: "100%", height: "auto" }}
-                                                        />
-                                                    )}
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        id="post-image-input"
-                                                        onChange={handlePostImageChange}
-                                                        style={{ display: "none" }}
-                                                    />
-                                                    <div style={styles.AdaptiveSendingPostButtonsContainer}>
-                                                        <label htmlFor="post-image-input"
-                                                               style={{ height: "30px", borderRadius: "20px", }}>
-                                                            <Button
-                                                                component="span"
-                                                                variant="contained"
-                                                                color="primary"
-                                                                sx={{ ...SidebarLogOutButton, marginTop: 0 }}
-                                                                startIcon={isXxs ? null : <CloudUploadOutlined/>}
-                                                                disabled={!!postImage}
-                                                            > {isXxs ? <CropOriginalIcon/>  : "image"}</Button>
-                                                        </label>
-                                                        <label htmlFor="post-image-input"
-                                                               style={{ height: "30px", borderRadius: "20px", }}>
-                                                            <Button
-                                                                type="submit"
-                                                                variant="contained"
-                                                                sx={{
-                                                                    ...SidebarLogOutButton,
-                                                                    marginTop: 0,
-                                                                    width: "50%"
-                                                                }}
-                                                                fullWidth={true}
-                                                                disabled={isSubmitting}
-                                                                onClick={handleClick}
-                                                            >
-                                                                {isXxs ? < PostAddIcon/> : (isSubmitting ? "Posting..." : "Post")}
-                                                            </Button>
-                                                        </label>
                                                     </div>
-                                                </Box>
+                                                    <Field
+                                                        values={postText}
+                                                        component={SendPostInput}
+                                                        name="postText"
+                                                        className={errors.postText && touched.postText ? "error" : ""}
+                                                        style={styles.AdaptiveSendPostField}
+                                                        id="postText"
+                                                        placeholder="What's happening?"
+                                                    />
+                                                    <div style={CharactersTextWrapper}>
+                                                        {
+                                                            280 - values.postText.length >= 0 ?
+                                                                (280 - values.postText.length + " characters") : ("maximum number of characters 280")
+                                                        }
+                                                    </div>
+                                                    <Box sx={styles.AdaptivePostImgWrapper}>
+                                                        {postImage && (
+                                                            <img
+                                                                src={URL.createObjectURL(postImage)}
+                                                                alt="Post Image"
+                                                                style={{ maxWidth: "100%", height: "auto" }}
+                                                            />
+                                                        )}
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            id="post-image-input"
+                                                            onChange={handlePostImageChange}
+                                                            style={{ display: "none" }}
+                                                        />
+                                                        <div style={styles.AdaptiveSendingPostButtonsContainer}>
+                                                            <label htmlFor="post-image-input"
+                                                                   style={{ height: "30px", borderRadius: "20px", }}>
+                                                                <Button
+                                                                    component="span"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    sx={{ ...SidebarLogOutButton, marginTop: 0 }}
+                                                                    startIcon={isXxs ? null : <CloudUploadOutlined/>}
+                                                                    disabled={!!postImage}
+                                                                > {isXxs ? <CropOriginalIcon/> : "image"}</Button>
+                                                            </label>
+                                                            <label htmlFor="post-image-input"
+                                                                   style={{ height: "30px", borderRadius: "20px", }}>
+                                                                <Button
+                                                                    type="submit"
+                                                                    variant="contained"
+                                                                    sx={{
+                                                                        ...SidebarLogOutButton,
+                                                                        marginTop: 0,
+                                                                        width: "50%"
+                                                                    }}
+                                                                    fullWidth={true}
+                                                                    disabled={isSubmitting}
+                                                                    onClick={handleClick}
+                                                                >
+                                                                    {isXxs ?
+                                                                        < PostAddIcon/> : (isSubmitting ? "Posting..." : "Post")}
+                                                                </Button>
+                                                            </label>
+                                                        </div>
+                                                    </Box>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Form>
-                            )}
-                        </Formik>
+                                    </Form>
+                                )}
+                            </Formik>
                         </div>
                     </Modal>
                     <Fab color="primary" aria-label="add" style={styles.fab} onClick={() => {

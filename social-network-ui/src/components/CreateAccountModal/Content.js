@@ -14,15 +14,25 @@ import { ContentFourthStep } from "./ContentFourthStep";
 import { SET_STEP_MODAL, SET_VALUE_MODAL } from "../../store/types";
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 import { StyledContentModal, StyledContentBox, StyledContentTypography } from "./CreateAccountModalStyles";
-import {closeSignUpModal} from "../../store/actions";
+import { closeLoginModal, closeSignUpModal, openSignUpModal } from "../../store/actions";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { StyledBox } from "../LoginModal/loginModalStyles";
 
 export function Content() {
   const dispatch = useDispatch();
   const stepInModal = useSelector((state) => state.stepModal.stepModal.step);
   const [open, setOpen] = useState(true);
   const [arrowBackDisplay, showArrowBackDisplay] = useState(true);
-  console.log("stepInModal: ", stepInModal);
+  const theme = useTheme();
   const savedStepInModal = localStorage.getItem("stepInModal");
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
   useEffect(() => {
     const savedStepInModal = localStorage.getItem("stepInModal");
@@ -55,10 +65,69 @@ export function Content() {
       case 4:
         return <ContentFourthStep />;
       default:
-        console.log("Step not recognized.");
         return null;
     }
   };
+
+    const xxsStyles = {
+        AdaptiveStyledContentBox:{
+            ...StyledContentBox,
+            width:"100%",
+            height:"100%",
+            overflow:"hidden",
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveStyledContentBox:{
+            ...StyledContentBox,
+            width:"100%",
+            height:"100%",
+            overflow:"hidden",
+        }
+    };
+
+    const smStyles = {
+        AdaptiveStyledContentBox:{
+            ...StyledContentBox,
+            width:"100%",
+            height:"100%",
+            overflow:"hidden",
+        }
+    };
+
+    const mdStyles = {
+        AdaptiveStyledContentBox:{
+            ...StyledContentBox
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveStyledContentBox:{
+            ...StyledContentBox
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveStyledContentBox:{
+            ...StyledContentBox
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
   return (
     <Modal
@@ -67,14 +136,15 @@ export function Content() {
             aria-describedby="modal-modal-description"
             onClose={() => {dispatch(closeSignUpModal())}}
             sx={ StyledContentModal }>
-            <Box sx={StyledContentBox}>
+            <Box sx={styles.AdaptiveStyledContentBox}>
+                <div style={{position:"relative"}}>
               {
                 stepInModal > 1 && (
                   <ArrowBackOutlinedIcon
                       sx={{
                         position: "absolute",
-                        top: "20px",
-                        left: "20px",
+                        top: "-50px",
+                        left: "0px",
                       }}
                       width="30px"
                       height="30px"
@@ -88,8 +158,8 @@ export function Content() {
                 )
               }
                 <SvgIcon sx={{
-                    position: "absolute", top: "20px",
-                    left: "450px", cursor: "pointer"
+                    position: "absolute", top: "-50px",
+                    right: "0px", cursor: "pointer"
                 }} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={()=>{dispatch(closeSignUpModal())}}>
                     <path fillRule="evenodd" clipRule="evenodd"
                           d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
@@ -97,6 +167,7 @@ export function Content() {
                 </SvgIcon>
                 <Typography component="span" sx={ StyledContentTypography }>Step {stepInModal} of 4</Typography>
                 {renderModalContent()}
+                </div>
                 </Box>
         </Modal>
   );
