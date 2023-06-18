@@ -13,4 +13,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 
   List<Notification> findAllByFollowingUserId(Integer userId);
 
+  List<Notification> findAllByFollowerUserIdAndNotificationRead(Integer followerUserId, Boolean notificationRead);
+
+  Notification findNotificationByNotificationId(Integer notificationId);
 }

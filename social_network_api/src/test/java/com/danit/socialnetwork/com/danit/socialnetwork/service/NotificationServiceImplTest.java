@@ -27,8 +27,8 @@ class NotificationServiceImplTest {
   @Test
   void findAllByUserId() {
 
-    Notification notification = new Notification(1,"post",
-        2,3,"Alex",
+    Notification notification = new Notification(1, "post",
+        2, 3, "Alex",
         "photoLink", "test");
     List<Notification> notificationList = new ArrayList<>();
     notificationList.add(notification);
@@ -36,8 +36,22 @@ class NotificationServiceImplTest {
     when(notificationRepository.findAllByFollowerUserId(1)).thenReturn(notificationList);
     Notification maybeNotification = notificationService.findAllByFollowerUserId(1).get(0);
     String notificationText = maybeNotification.getNotificationText();
-    Assertions.assertEquals("test",notificationText);
+    Assertions.assertEquals("test", notificationText);
 
 
+  }
+
+  @Test
+  void findNotificationByNotificationId() {
+    Notification notification = new Notification();
+
+    notification.setNotificationId(10);
+    notification.setNotificationText("test");
+
+    when(notificationRepository.findNotificationByNotificationId(10)).thenReturn(notification);
+
+    Notification not = notificationService.findNotificationByNotificationId(10);
+    String text = not.getNotificationText();
+    Assertions.assertEquals("test", text);
   }
 }

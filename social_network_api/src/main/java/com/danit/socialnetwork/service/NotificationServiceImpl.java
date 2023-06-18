@@ -29,4 +29,17 @@ public class NotificationServiceImpl implements NotificationService {
   public void saveNotification(Notification notification) {
     notificationRepository.save(notification);
   }
+
+  @Override
+  public List<Notification> findAllByFollowerUserIdAndNotificationRead(
+      Integer followerUserId, Boolean notificationRead) {
+    return notificationRepository.findAllByFollowerUserIdAndNotificationRead(
+        followerUserId, notificationRead);
+  }
+
+  @Override
+  public Notification findNotificationByNotificationId(Integer notificationId) {
+    return notificationRepository.findNotificationByNotificationId(notificationId);
+  }
+
 }

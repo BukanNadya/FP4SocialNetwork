@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -26,11 +28,11 @@ public class NotificationRestController {
   @PostMapping(path = "/notifications")
   public ResponseEntity<Object> getAllNotificationsByUserId(@RequestBody NotificationRequest notificationReq) {
     Integer followerUserId = notificationReq.getUserId();
-    List<Notification> allByUserId = notificationService.findAllByFollowerUserId(followerUserId);
+    List<Notification> allNotificationsByUserId = notificationService.findAllByFollowerUserId(followerUserId);
 
     List<NotificationRequest> notificationRequestList = new ArrayList<>();
 
-    for (Notification notification : allByUserId) {
+    for (Notification notification : allNotificationsByUserId) {
       NotificationRequest notificationRequest = new NotificationRequest(
           notification.getDateTime().toLocalDateTime(),
           notification.getFollowerUserId(),
@@ -39,10 +41,25 @@ public class NotificationRestController {
           notification.getFollowingUserName(),
           notification.getFollowingUserPhoto(),
           notification.getNotificationText(),
-          notification.getNotificationRead()
+          true
       );
       notificationRequestList.add(notificationRequest);
+      Notification currentNotification = notificationService
+          .findNotificationByNotificationId(notification.getNotificationId());
+      currentNotification.setNotificationRead(true);
+      notificationService.saveNotification(currentNotification);
     }
     return new ResponseEntity<>(notificationRequestList, HttpStatus.OK);
+  }
+
+  @PostMapping(path = "/unread_notifications")
+  public ResponseEntity<Object> findAllByFollowerUserIdAndNotificationRead(
+      @RequestBody NotificationRequest notificationReq) {
+    Integer follower = notificationReq.getUserId();
+    List<Notification> unreadNotifications = notificationService
+        .findAllByFollowerUserIdAndNotificationRead(follower, false);
+    Map<String, String> num = new HashMap<>();
+    num.put("unreadNotifications", String.valueOf(unreadNotifications.size()));
+    return new ResponseEntity<>(num, HttpStatus.OK);
   }
 }

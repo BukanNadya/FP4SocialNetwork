@@ -12,4 +12,10 @@ public interface NotificationService {
   List<Notification> findAllByFollowingUserId(Integer userId);
 
   void saveNotification(Notification notification);
+
+  List<Notification> findAllByFollowerUserIdAndNotificationRead(
+      Integer followerUserId, Boolean notificationRead);
+
+  Notification findNotificationByNotificationId(Integer notificationId);
+
 }

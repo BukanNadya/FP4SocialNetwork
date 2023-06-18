@@ -79,10 +79,13 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     Map<String, String> response = new HashMap<>();
     if (maybeUser.isPresent()) {
+      Boolean receivedNotificationPost = maybeUser.get().getReceivedNotificationPost();
       response.put("following", "true");
+      response.put("notification", receivedNotificationPost.toString());
       return new ResponseEntity<>(response, HttpStatus.OK);
     }
     response.put("following", "false");
+    response.put("notification", "false");
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -168,6 +171,4 @@ public class UserFollowServiceImpl implements UserFollowService {
     response.put(message, saveUserFollower(newEntry));
     return ResponseEntity.ok(response);
   }
-
-
 }

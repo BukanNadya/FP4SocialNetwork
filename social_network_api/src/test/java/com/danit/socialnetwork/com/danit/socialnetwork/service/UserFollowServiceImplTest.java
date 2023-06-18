@@ -5,12 +5,14 @@ import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.UserFollow;
 import com.danit.socialnetwork.repository.UserFollowRepository;
+import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -29,6 +31,9 @@ class UserFollowServiceImplTest {
 
     @Mock
     UserFollowRepository userFollowRepository;
+
+    @Mock
+    UserRepository userRepository;
 
     @Test
     void getAllUsersByUserFollowerId() {
@@ -114,26 +119,26 @@ class UserFollowServiceImplTest {
     }
 
     @Test
-    void isFollowing() {
+    void Following() {
         DbUser user1 = new DbUser();
         user1.setUserId(1);
 
         DbUser user2 = new DbUser();
         user2.setUserId(2);
 
-        UserFollow userFollow1 = new UserFollow();
-        userFollow1.setUserFollowerId(user1);
-        userFollow1.setUserFollowingId(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
 
-        when(userFollowRepository.findUserFollowByUserFollowerIdAndUserFollowingId(
-                1, 2)).thenReturn(Optional.of(userFollow1));
+        UserFollow userFollow = new UserFollow();
+        userFollow.setUserFollowerId(user1);
+        userFollow.setUserFollowingId(user2);
 
         UserFollowRequest userFollowRequest = new UserFollowRequest();
         userFollowRequest.setUserFollower(1);
         userFollowRequest.setUserFollowing(2);
 
-        ResponseEntity<Map<String, String>> response = userFollowService.isFollowing(userFollowRequest);
-        String status = response.getBody().get("following");
-        Assertions.assertEquals("true", status);
+        ResponseEntity<Map<String, String>> response = userFollowService.follow(userFollowRequest);
+        String status = response.getBody().get("message");
+        Assertions.assertEquals("invalid user id", status);
     }
 }
