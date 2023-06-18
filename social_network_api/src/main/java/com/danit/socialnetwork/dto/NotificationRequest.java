@@ -2,14 +2,29 @@ package com.danit.socialnetwork.dto;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
 public class NotificationRequest {
-  Integer userId;
-  String userName;
-  String notificationText;
-  String userPhoto;
   LocalDateTime dateTime;
+  Integer userId;
+  String eventType;
+  Integer eventId;
+  String userName;
+  String userPhoto;
+  String notificationText;
+  Boolean notificationRead;
+
+  public NotificationRequest(LocalDateTime dateTime, Integer userId, String eventType,
+                             Integer eventId, String userName, String userPhoto,
+                             String notificationText, Boolean notificationRead) {
+    this.dateTime = dateTime;
+    this.userId = userId;
+    this.eventType = eventType;
+    this.eventId = eventId;
+    this.userName = userName;
+    this.userPhoto = userPhoto;
+    this.notificationText = notificationText;
+    this.notificationRead = notificationRead;
+  }
 }

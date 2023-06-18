@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +16,13 @@ public class NotificationServiceImpl implements NotificationService {
   private final NotificationRepository notificationRepository;
 
   @Override
-  public Optional<Notification> findAllByUserId(Integer userId) {
-    return notificationRepository.findAllByUserId(userId);
+  public List<Notification> findAllByFollowerUserId(Integer userId) {
+    return notificationRepository.findAllByFollowerUserId(userId);
+  }
+
+  @Override
+  public List<Notification> findAllByFollowingUserId(Integer userId) {
+    return notificationRepository.findAllByFollowingUserId(userId);
   }
 
   @Override

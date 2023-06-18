@@ -23,4 +23,6 @@ public interface PostService {
   List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer page);
 
   PostDtoResponse getPostByPostId(Integer postId, Integer userId);
+
+  Integer findLatestPostIdByUserId(Integer userId);
 }

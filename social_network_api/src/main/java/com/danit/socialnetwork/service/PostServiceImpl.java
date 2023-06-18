@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -157,6 +156,12 @@ public class PostServiceImpl implements PostService {
           postId));
     }
   }
+
+  @Override
+  public Integer findLatestPostIdByUserId(Integer userId) {
+    return postRepository.findLatestPostByUserId(userId).getPostId();
+  }
+
 
 }
 

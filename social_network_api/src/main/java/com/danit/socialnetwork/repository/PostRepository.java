@@ -90,4 +90,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
       + "OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY;")
   List<Object[]> findAllPostsWithShowingRepostsByUserId(Integer userId, @Param("offset") int offset,
                                                         @Param("pageSize") int pageSize);
+
+
+  @Query(nativeQuery = true, value = "SELECT * "
+      + "FROM posts WHERE user_id = :userId "
+      + "ORDER BY sent_datetime DESC LIMIT 1")
+  Post findLatestPostByUserId(Integer userId);
 }
