@@ -333,6 +333,8 @@ export function HeaderInformation() {
                 return "Subscribe";
             case "/view":
                 return "View";
+            case "/search":
+                return "Search";
             default:
                 return "Home";
         }

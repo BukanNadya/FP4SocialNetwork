@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
-import {UserSearchTextField} from "../NavigationStyles";
+import {UserSearchTextField} from "../../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../store/actions";
+import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../../store/actions";
 import {useNavigate} from "react-router-dom";
-import {apiUrl} from "../../../apiConfig";
+import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ElementLi, PaperStyles, Wrapper } from "./popularPeopleSidebarStyles";
+import { ElementLi, PaperStyles, Wrapper } from "../popularPeopleSidebarStyles";
 import { useTheme } from "@mui/material/styles";
 
 export const InputSearch = ({ ...props }) => {

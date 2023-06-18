@@ -14,6 +14,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {userFollow, userSearchFollow, userSearchUnfollow, userUnfollow} from "../../../store/actions";
 import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscriptionButton";
 import {apiUrl} from "../../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function Profile (props) {
 
@@ -50,9 +52,72 @@ export function Profile (props) {
 
     }, [searchId])
 
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        ContainerStyle: {
+            width: "100vw"
+        },
+    };
+
+    const xsStyles = {
+        ContainerStyle: {
+            width: "100vw"
+        },
+    };
+
+    const smStyles = {
+        ContainerStyle: {
+            width: "470px"
+        },
+
+    };
+
+    const mdStyles = {
+        ContainerStyle: {
+            width: "600px"
+        },
+    };
+
+    const lgStyles = {
+        ContainerStyle: {
+            width: "600px"
+        },
+    };
+
+    const xlStyles = {
+        ContainerStyle: {
+            width: "600px"
+        },
+
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     return (
 
-        <div>
+        <div style={styles.ContainerStyle}>
             <div style={BgImgStyle}>
                 {props.background ?
                     <img src={props.background} alt={props.name} style={PhotoStyle} />

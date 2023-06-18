@@ -11,7 +11,7 @@ import {
 import * as Yup from "yup";
 import { Field, Form, Formik } from "formik";
 
-import { InputSearch } from "./InputSearch";
+import { InputSearch } from "./Search/InputSearch";
 import { GetUsersSuccess } from "../../../store/actions";
 import {useDispatch, useSelector} from "react-redux";
 import { Link } from "react-router-dom";
@@ -22,6 +22,7 @@ import {apiUrl} from "../../../apiConfig";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import {Search} from "./Search/Search";
 
 export function UsersSearch() {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -91,35 +92,7 @@ export function UsersSearch() {
     return (
         <div style={UserSearchWrapper}>
             <AppBar position="sticky" style={styles.AdaptiveUserSearchAppBar}>
-                <Formik initialValues={{
-                    userName: "",
-                }} validationSchema={
-                    Yup.object(
-                        {
-                            userName: Yup.string().required("Username is required")
-                        }
-                    )} validate={async (values) => {
-                    const response = await fetch(`${apiUrl}/api/search`, {
-                        method: "POST",
-                        body: JSON.stringify({
-                            userId: userId,
-                            search: values.userName
-                        }),
-                        headers: { "Content-Type": "application/json" }
-                    });
-                    const userSearch = await response.json();
-                    if (response.status === 302) {
-                        dispatch(GetUsersSuccess(userSearch));
-                    }
-                }}>
-                    <Form>
-
-                        <Field as={InputSearch} sx={{ width: "400px" }}
-                               name={"userName"} id="userName"
-                               label="Username" type="text"/>
-
-                    </Form>
-                </Formik>
+                <Search/>
                 <PopularPeopleSidebar/>
             </AppBar>
             <div style={styles.AdaptiveUserSearchContentWrapper}></div>
