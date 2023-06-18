@@ -33,18 +33,6 @@ public class PostServiceImpl implements PostService {
 
   private final ImageHandlingConf imageHandlingConf;
 
-  private PostDtoResponse from(Post post) {
-    PostDtoResponse postDtoResponse = PostDtoResponse.from(post);
-    postDtoResponse.setLikesCount(postLikeRepository
-        .findCountAllLikesByPostId(post.getPostId()));
-    postDtoResponse.setPostCommentsCount(post.getPostComments().size());
-    postDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
-        post.getPostId(), post.getUserPost().getUserId())).isPresent());
-    postDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
-        post.getPostId()));
-    return postDtoResponse;
-  }
-
   private PostDtoResponse from(Post post, Integer userId) {
     PostDtoResponse postDtoResponse = PostDtoResponse.from(post, userId);
     postDtoResponse.setLikesCount(postLikeRepository
@@ -54,7 +42,6 @@ public class PostServiceImpl implements PostService {
     postDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
         post.getPostId()));
     return postDtoResponse;
-
   }
 
   // Method returns all available posts
@@ -108,7 +95,7 @@ public class PostServiceImpl implements PostService {
     Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);
     return listPost.stream()
-        .map(this::from)
+        .map(post -> from(post, userId))
         .toList();
   }
 
@@ -119,7 +106,7 @@ public class PostServiceImpl implements PostService {
     Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
     List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
     return postList.stream()
-        .map(this::from)
+        .map(post -> from(post, userId))
         .toList();
   }
 

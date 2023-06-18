@@ -27,11 +27,15 @@ public class RepostServiceImpl implements RepostService {
   private final PostLikeRepository postLikeRepository;
 
   private RepostDtoResponse from(Repost repost) {
-    RepostDtoResponse postDtoResponse = RepostDtoResponse.from(repost);
-    postDtoResponse.setLikesCount(postLikeRepository
+    RepostDtoResponse repostDtoResponse = RepostDtoResponse.from(repost);
+    repostDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(repost.getPostId().getPostId()));
-    postDtoResponse.setPostCommentsCount(repost.getPostId().getPostComments().size());
-    return postDtoResponse;
+    repostDtoResponse.setPostCommentsCount(repost.getPostId().getPostComments().size());
+    repostDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
+        repost.getPostId().getPostId(), repost.getUserId().getUserId())).isPresent());
+    repostDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
+        repost.getPostId().getPostId()));
+    return repostDtoResponse;
   }
 
 

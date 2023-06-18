@@ -103,6 +103,7 @@ class RepostServiceImplTest {
     post1.setPostComments(new ArrayList<>() {
     });
     repost1.setPostId(post1);
+    repost1.setUserId(dbUser);
 
     Repost repost2 = new Repost();
     repost1.setUserId(dbUser);
@@ -116,6 +117,7 @@ class RepostServiceImplTest {
     post2.setPostComments(new ArrayList<>() {
     });
     repost2.setPostId(post2);
+    repost2.setUserId(dbUser);
 
     Integer page = 0;
     Pageable pagedByTenPosts =

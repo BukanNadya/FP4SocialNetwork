@@ -17,6 +17,8 @@ public class RepostDtoResponse extends PostDtoResponse {
     tempPostDto.setPostId(repost.getPostId().getPostId());
     tempPostDto.setUsername(repost.getPostId().getUserPost().getUsername());
     tempPostDto.setName(repost.getPostId().getUserPost().getName());
+    tempPostDto.setUserId(repost.getPostId().getUserPost().getUserId());
+    tempPostDto.setProfileImageLink(repost.getPostId().getUserPost().getProfileImageUrl());
     tempPostDto.setWrittenText(repost.getPostId().getWrittenText());
     tempPostDto.setPhotoFileLink(repost.getPostId().getPhotoFile());
     tempPostDto.setSentDateTime(repost.getPostId().getSentDateTime());
