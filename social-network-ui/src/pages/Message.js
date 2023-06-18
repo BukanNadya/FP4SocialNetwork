@@ -5,7 +5,7 @@ import { apiUrl } from "../apiConfig";
 import { InboxMessage } from "../components/Messages/Inbox/InboxMessage";
 import { Button, TextField } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
-import { Search } from "../components/Messages/Inbox/Search";
+import {MessageSearch} from "../components/Messages/Inbox/MessageSearch";
 import { leftBlockInboxAndSearch, inboxContainerStyle,
   textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
   textingContainerWithScroll, textingConatinerScroll } from "./pagesStyles/MessageStyles";
@@ -88,7 +88,7 @@ export function Message() {
   return (
     <div style={leftBlockAndRightBlockContainer}>
       <div style={leftBlockInboxAndSearch}>
-        <Search />
+        <MessageSearch />
         <div style={inboxContainerStyle}>
           <LoadAllMessages />
         </div>

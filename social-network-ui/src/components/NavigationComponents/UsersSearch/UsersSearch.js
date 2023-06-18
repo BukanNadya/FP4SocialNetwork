@@ -1,32 +1,20 @@
 import React from "react";
 
-import { AppBar, Avatar, Paper , Typography, Button} from "@mui/material";
+import { AppBar } from "@mui/material";
 
 import {
     UserSearchAppBar,
     UserSearchContentWrapper,
-    UserSearchTextField,
     UserSearchWrapper
 } from "../NavigationStyles";
-import * as Yup from "yup";
-import { Field, Form, Formik } from "formik";
-
-import { InputSearch } from "./Search/InputSearch";
-import { GetUsersSuccess } from "../../../store/actions";
-import {useDispatch, useSelector} from "react-redux";
-import { Link } from "react-router-dom";
-import { StyledBlackButton } from "../../LoginModal/loginModalStyles";
 import { PopularPeopleSidebar } from "./PopularPeopleSidebar";
-
-import {apiUrl} from "../../../apiConfig";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import {Search} from "./Search/Search";
 
 export function UsersSearch() {
-    const userId = useSelector(state => state.userData.userData.userId);
-    const dispatch = useDispatch();
+
     const theme = useTheme();
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));

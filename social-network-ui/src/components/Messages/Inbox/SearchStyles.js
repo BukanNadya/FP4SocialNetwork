@@ -1,8 +1,6 @@
 export const searchContainerStyle = {
-    display: "flex",
-    alignItems: "center",
-    padding: "10px",
-    marginBottom: "10px",
+    width: "100%",
+    marginBottom: "40px",
 };
   
 export const searchInputContainerStyle = {
@@ -28,4 +26,16 @@ export const searchInputStyle = {
     backgroundColor: "#E6ECF0",
     color: "#14171A",
     fontSize: "14px",
+};
+export const UserSearchTextField = {
+    width: "100%",
+    height: "30px",
+    marginTop: "10px",
+    borderRadius: "10px",
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "40px",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+        borderRadius: "40px",
+    },
 };

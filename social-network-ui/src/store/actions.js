@@ -26,7 +26,12 @@ import {
     SET_PROFILE_LIKE_POSTS,
     SET_PROFILE_REPOSTS,
     SET_USER_FOLLOW,
-    SET_USER_UNFOLLOW, SET_SEARCH_USER_FOLLOW, SET_SEARCH_USER_UNFOLLOW, SET_USER_FOLLOWING,
+    SET_USER_UNFOLLOW,
+    SET_SEARCH_USER_FOLLOW,
+    SET_SEARCH_USER_UNFOLLOW,
+    SET_USER_FOLLOWING,
+    DELETE_MESSAGE_SUCCESS,
+    GET_MESSAGE_SUCCESS,
 } from "./types";
 import { apiUrl } from "../apiConfig";
 
@@ -144,6 +149,13 @@ export const GetUsersSuccess = (data) => ({
 });
 export const DeleteUsersSuccess = () => ({
     type: DELETE_USERS_SUCCESS
+});
+export const GetMessageSuccess = (data) => ({
+    type: GET_MESSAGE_SUCCESS,
+    payload: { message: data }
+});
+export const DeleteMessageSuccess = () => ({
+    type: DELETE_MESSAGE_SUCCESS
 });
 
 export const setUserPostToPostsArr = (post) => ({

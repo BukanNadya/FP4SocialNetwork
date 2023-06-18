@@ -16,6 +16,7 @@ import {UnSubscriptionButton} from "../../Buttons/UnSubscriptionButton/UnSubscri
 import {apiUrl} from "../../../apiConfig";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {fetchNotifications} from "../../../store/Thunks/fetchNotificationsThunk";
 
 export function Profile (props) {
 
@@ -43,6 +44,10 @@ export function Profile (props) {
                 dispatch(userFollow())
             } else if (userIsFollow.following === "false") {
                 dispatch(userUnfollow())
+            } else if (userIsFollow.notification === "true") {
+                setIsNotices(true)
+            } else if (userIsFollow.notification === "false") {
+                setIsNotices(false)
             }
 
         };
@@ -136,8 +141,8 @@ export function Profile (props) {
                             {isNotices
                                 ?
                                 <Button type="submit" variant="contained" sx={noticesButton} fullWidth={true} onClick={() => {
-                                    // console.log("gogi")
                                     setIsNotices(false)
+                                    dispatch(fetchNotifications(searchId, false))
                                 }}>
                                 <SvgIcon viewBox="0 0 24 24" sx={{width: "20px", height: "20px", color: "#000000"}}>
                                     <g>
@@ -147,8 +152,8 @@ export function Profile (props) {
                                 </Button>
                                 :
                                 <Button type="submit" variant="contained" sx={noticesButton} fullWidth={true} onClick={() => {
-                                    // console.log("gogi")
                                     setIsNotices(true)
+                                    dispatch(fetchNotifications(searchId, true))
                                 }}>
                                 <SvgIcon viewBox="0 0 24 24" sx={{width: "20px", height: "20px", color: "#000000"}}>
                                     <g>

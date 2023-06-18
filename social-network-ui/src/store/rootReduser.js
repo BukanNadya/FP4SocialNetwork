@@ -11,6 +11,7 @@ import { PageDisplaing } from "./Reducers/PageDisplaing";
 import { likeReducer } from "./Reducers/likeReducer";
 import { CommentsReducer } from "./Reducers/CommentsReducer";
 import { messageReducer } from "./Reducers/messageReducer";
+import {messageSearchReducer} from "./Reducers/messageSearchReducer";
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     stepModal: stepModalReducer,
     saveUserToken: userTokenSaveReducer,
     usersSearch: usersSearchReducer,
+    messageSearch: messageSearchReducer,
     userData: userDataReducer,
     Posts: PostReducer,
     pageCount: PageDisplaing,

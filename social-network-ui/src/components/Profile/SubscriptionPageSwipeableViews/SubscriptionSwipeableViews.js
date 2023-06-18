@@ -8,6 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSearchId, userFollowing} from "../../../store/actions";
 import {ToggleButton} from "../../Buttons/ToggleButton/ToggleButton";
 import { apiUrl } from "../../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -102,7 +104,71 @@ export function SubscriptionSwipeableViews () {
         navigate("/view");
     };
 
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        ContainerStyle: {
+            width: "100vw"
+        },
+    };
+
+    const xsStyles = {
+        ContainerStyle: {
+            width: "100vw"
+        },
+    };
+
+    const smStyles = {
+        ContainerStyle: {
+            width: "470px"
+        },
+
+    };
+
+    const mdStyles = {
+        ContainerStyle: {
+            width: "600px"
+        },
+    };
+
+    const lgStyles = {
+        ContainerStyle: {
+            width: "600px"
+        },
+    };
+
+    const xlStyles = {
+        ContainerStyle: {
+            width: "600px"
+        },
+
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     return (
+        <div style={styles.ContainerStyle}>
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth">
@@ -112,7 +178,7 @@ export function SubscriptionSwipeableViews () {
             </Box>
             <TabPanel value={value} index={0}>
                 <List>
-                    {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center" }}/> :
+                    {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center", marginTop: "30px" }}/> :
                         followers.map(el =>  (
                         <ListItem key={el.userId} sx={{cursor: "pointer", fontFamily: "'Lato', sans-serif", height: "90px", "&:hover": {
                                 transition: "0.7s",
@@ -129,7 +195,7 @@ export function SubscriptionSwipeableViews () {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <List>
-                {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center" }}/> :
+                {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center", marginTop: "30px" }}/> :
                     followings.map(el =>  (
                     <ListItem key={el.userId} sx={{cursor: "pointer", fontFamily: "'Lato', sans-serif", height: "90px", "&:hover": {
                             transition: "0.7s",
@@ -145,6 +211,7 @@ export function SubscriptionSwipeableViews () {
                 </List>
             </TabPanel>
         </Box>
+        </div>
     );
 }
 

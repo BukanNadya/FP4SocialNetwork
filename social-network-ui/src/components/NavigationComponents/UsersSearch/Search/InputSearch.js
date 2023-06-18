@@ -6,7 +6,6 @@ import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../../store/
 import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ElementLi, PaperStyles, Wrapper } from "../popularPeopleSidebarStyles";
 import { useTheme } from "@mui/material/styles";
 
 export const InputSearch = ({ ...props }) => {
@@ -85,7 +84,6 @@ export const InputSearch = ({ ...props }) => {
                 autoComplete
                 includeInputInList
                 filterSelectedOptions
-                // noOptionsText="User not found"
                 inputValue={inputValue}
                 onInputChange={(event, value) => {
                     setInputValue(value);

@@ -1,31 +1,29 @@
-
-import {userFollow} from "../actions";
 import {apiUrl} from "../../apiConfig";
+import {userUnfollow} from "../actions";
 
-export function fetchUnfollow (searchId) {
+
+export function fetchNotifications (searchId, data) {
     return (dispatch, getState) => {
 
         const state = getState()
         const userId = state.userData.userData.userId
-
         try {
-            fetch(`${apiUrl}/api/unfollow`, {
+            fetch(`${apiUrl}/api/notification`, {
                 method: "POST",
                 body: JSON.stringify({
-                    userUnfollowed: userId,
-                    userUnfollowing: searchId,
+                    userFollower: userId,
+                    userFollowing: searchId,
+                    receiveNotifications: `${data}`
                 }),
                 headers: {"Content-Type": "application/json"}
             })
-            .then(r => {
-                if (!r.ok) {
-                    dispatch(userFollow())
-                }
-            })
+                .then(r => {
+                    if (!r.ok) {
+                        console.log("error")
+                    }
+                })
         } catch (error) {
-            dispatch(userFollow())
             console.error("An error occurred:", error);
         }
-
     }
 }
