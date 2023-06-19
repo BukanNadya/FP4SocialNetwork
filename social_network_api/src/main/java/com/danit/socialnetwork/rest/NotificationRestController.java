@@ -52,6 +52,21 @@ public class NotificationRestController {
     return new ResponseEntity<>(notificationRequestList, HttpStatus.OK);
   }
 
+  @PostMapping(path = "/read_notifications")
+  public void unreadToReadNotifications(@RequestBody NotificationRequest notificationReq) {
+    Integer followerUserId = notificationReq.getUserId();
+
+    List<Notification> allNotificationsByUserId = notificationService
+        .findAllByFollowerUserIdAndNotificationRead(followerUserId, false);
+
+    for (Notification notification : allNotificationsByUserId) {
+      Notification currentNotification = notificationService
+          .findNotificationByNotificationId(notification.getNotificationId());
+      currentNotification.setNotificationRead(true);
+      notificationService.saveNotification(currentNotification);
+    }
+  }
+
   @PostMapping(path = "/unread_notifications")
   public ResponseEntity<Object> findAllByFollowerUserIdAndNotificationRead(
       @RequestBody NotificationRequest notificationReq) {

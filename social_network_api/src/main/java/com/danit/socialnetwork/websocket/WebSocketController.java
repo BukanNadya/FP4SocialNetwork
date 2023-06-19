@@ -9,6 +9,7 @@ import com.danit.socialnetwork.service.NotificationService;
 import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.UserFollowService;
 import com.danit.socialnetwork.service.UserService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,14 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Controller
 @RequiredArgsConstructor
+@Data
 public class WebSocketController {
   private final NotificationService notificationService;
   private final UserFollowService userFollowService;
@@ -30,6 +34,7 @@ public class WebSocketController {
   private final PostService postService;
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
+
 
   @MessageMapping("/post")
   public NotificationRequest postNotification(
@@ -74,6 +79,12 @@ public class WebSocketController {
 
       String followerIdString = followerId.toString();
       messagingTemplate.convertAndSendToUser(followerIdString, "/notifications", notificationRequest);
+
+      int unreadNotificationsNum = notificationService
+          .findAllByFollowerUserIdAndNotificationRead(followerId, false).size();
+      Map<String, Integer> unreadNotifications = new HashMap<>();
+      unreadNotifications.put("unreadNotifications", unreadNotificationsNum);
+      messagingTemplate.convertAndSendToUser(followerIdString, "/unread_notifications", unreadNotifications);
     }
     return notificationRequest;
   }
