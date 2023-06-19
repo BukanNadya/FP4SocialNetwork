@@ -51,7 +51,6 @@ export function HomeScreen() {
     const [posts, setPosts] = useState([]);
     const [isFetchingPosts, setIsFetchingPosts] = useState(false);
     const [allPostsLoaded, setAllPostsLoaded] = useState(false);
-    const socketRef = useRef(null);
     const [open, setOpen] = useState(false);
 
     const theme = useTheme();
@@ -63,7 +62,6 @@ export function HomeScreen() {
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
 
     const xxsStyles = {
         AdaptivePostWrapper: {
@@ -331,12 +329,6 @@ export function HomeScreen() {
         const socket = new SockJS(`${apiUrl}/websocket`);
         stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, () => {
-            console.log("Connected to WebSocket server");
-        }, error => {
-            console.error(`Failed to connect to WebSocket server: ${error}`);
-        });
-
         return () => {
             if (stompClient !== null) {
                 stompClient.disconnect();
@@ -346,7 +338,6 @@ export function HomeScreen() {
 
     const handleClick = () => {
         if (stompClient) {
-            console.log("sending notification about post");
             stompClient.send("/app/post", {}, JSON.stringify({ userId: userId }));
         }
     };
@@ -398,7 +389,6 @@ export function HomeScreen() {
                     await dispatch(sendPost(postObject, setSubmitting));
                 };
             } else {
-                console.log(values.postText);
                 const postObject = {
                     writtenText: values.postText,
                     photoFileByteArray: [],

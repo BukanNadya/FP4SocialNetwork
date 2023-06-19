@@ -1,26 +1,30 @@
 import React, { useEffect, useContext, useState, useCallback } from "react";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { PostWrapper } from "./pagesStyles/HomeScreenStyles";
-
+import { useSelector } from "react-redux";
+import { Post } from "../components/Posts/Post";
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 
 export function PostPage() {
     const [post, setPost] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const userId = useSelector(state => state.userData.userData.userId);
+    const { postId } = useParams();
+    console.log(postId, "postId");
 
     useEffect(() => {
-        setPost([{
-            isReposted: null,
-            likesCount: 2,
-            name: "Bohdan",
-            photoFileByteArray: "",
-            postCommentsCount: 1,
-            postId: 11,
-            profileImageByteArray: null,
-            sentDateTime: "2023-06-06T16:25:37.858773",
-            userId: 8,
-            username: "Bohdan",
-            writtenText: "Testik",
-        }]);
+        async function getData() {
+            try {
+                setIsLoading(true);
+                let postData = await fetch(`http://localhost:8080/api/post/${postId}?userId=${userId}`);
+                let postInform = await postData.json();
+                setPost([postInform]);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        getData();
     }, []);
 
     return (
@@ -29,3 +33,8 @@ export function PostPage() {
         </div>
     );
 }
+
+PostPage.propTypes = {
+    props: PropTypes.object,
+    match: PropTypes.object,
+};

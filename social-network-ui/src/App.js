@@ -25,7 +25,7 @@ const router = createBrowserRouter(
             <Route path="/messages" element={<Message/>}/>
             <Route path="/explore" element={<Explore/>}/>
             <Route path="/notifications" element={<Notifications/>}/>
-            <Route path="/post" element={<PostPage/>}/>
+            <Route path="/post/:postId" element={<PostPage/>} />
             <Route path="/search" element={<SearchPage/>}/>
         </Route>
     )

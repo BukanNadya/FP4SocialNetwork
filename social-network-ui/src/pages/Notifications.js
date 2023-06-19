@@ -3,6 +3,8 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/mater
 import { apiUrl } from "../apiConfig";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,12 +16,138 @@ import {
     setUserPostsClear
 } from "../store/actions";
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
+import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useTransition, animated } from 'react-spring';
 
 let stompClient = null;
 
 export function Notifications() {
+    const navigate = useNavigate();
     const [notifications, setNotifications] = useState([]);
     const userId = useSelector(state => state.userData.userData.userId);
+    const [isLoading, setIsLoading] = useState(false);
+    const theme = useTheme();
+
+    const transitions = useTransition(notifications, {
+        from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
+        enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
+        leave: { opacity: 0, transform: 'translate3d(0,50%,0)' },
+        keys: post => post.postId,
+        config: { duration: 600, delay: 200 },
+    });
+
+    const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+    useEffect(() => {
+        async function getNotification() {
+            try {
+                setIsLoading(true);
+                let notificationInformation = await fetch(`${apiUrl}/api/notifications`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userId: userId,
+                    }),
+                    headers: { "Content-Type": "application/json" }
+                });
+                let notificationData = await notificationInformation.json();
+                setNotifications(notificationData);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        getNotification();
+    }, []);
+
+    useEffect(() => {
+        console.log(notifications);
+    }, [notifications]);
+
+    const xxsStyles = {
+        AdaptiveListStyles: {
+            width: "100vw",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+    };
+
+    const xsStyles = {
+
+        AdaptiveListStyles: {
+            width: "100vw",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+    };
+
+    const smStyles = {
+
+        AdaptiveListStyles: {
+            width: "470px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+    };
+
+    const mdStyles = {
+        AdaptiveListStyles: {
+            width: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveListStyles: {
+            width: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveListStyles: {
+            width: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+        }
+
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
     useEffect(() => {
         const onConnected = () => {
@@ -37,17 +165,13 @@ export function Notifications() {
                 stompClient.disconnect();
             }
         };
+
     }, []);
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         setNotifications(prevNotifications => [payloadData, ...prevNotifications]);
-        console.log(payloadData);
     };
-
-    useEffect(() => {
-        console.log("notifications", notifications);
-    }, [notifications]);
 
     const postDate = (dataTime) => {
         const date = new Date(dataTime);
@@ -63,23 +187,36 @@ export function Notifications() {
     };
 
     return (
-        <List sx={{ width: "600px" }}>
-            {notifications.map((notification) => (
-                <ListItem key={notification.userId} sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}>
-                    <ListItemAvatar>
-                        <Avatar alt={notification.userName} src={notification.userPhoto}/>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={notification.userName}
-                        secondary={`${notification.notificationText} · ${postDate(notification.dateTime)}`}
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                        }}
-                    />
-                </ListItem>
-            ))}
+        <List sx={styles.AdaptiveListStyles}>
+            {  isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> :
+                notifications.length > 0 ?
+                    transitions((style, item) => (
+                        <animated.div  style={{width:"100%"}} key={item.eventId}>
+                            <ListItem
+                                sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+                                onClick={() => {
+                                    navigate(`/post/${item.eventId}`);
+                                }}
+                            >
+                                <ListItemAvatar>
+                                    <Avatar alt={item.userName} src={item.userPhoto} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={item.userName}
+                                    secondary={`${item.notificationText} · ${postDate(item.dateTime)}`}
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        wordWrap: "break-word",
+                                        overflowWrap: "anywhere",
+                                    }}
+                                />
+                            </ListItem>
+                        </animated.div>
+                    )) : <ListItemText
+                        primary={"Here will be your notifications"}
+                    /> }
         </List>
     );
 }

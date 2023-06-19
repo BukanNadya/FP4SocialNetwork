@@ -77,8 +77,6 @@ export const Post = ({
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
-
     const xxsStyles = {
         AdaptiveUserPhoto:{
             width: "100%",

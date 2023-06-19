@@ -3,7 +3,6 @@ import { SAVE_USER_TOKEN } from "../types";
 const localStorageToken = JSON.parse(localStorage.getItem("userToken"));
 const sessionStorageToken = JSON.parse(sessionStorage.getItem("userToken"));
 const parsedUrl = new URL(window.location.href);
-console.log(parsedUrl)
 const tokenUser = parsedUrl.searchParams.get("token");
 if (tokenUser) {
     localStorage.setItem("userToken", JSON.stringify({ token: tokenUser }));
