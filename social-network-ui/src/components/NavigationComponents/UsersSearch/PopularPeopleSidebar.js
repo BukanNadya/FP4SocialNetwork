@@ -21,6 +21,7 @@ import { ToggleButton } from "../../Buttons/ToggleButton/ToggleButton";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from "@mui/material/styles";
 import { SidebarLogOutButton } from "../NavigationStyles";
+import {fetchUserFollowingData} from "../../../store/Thunks/fetchUserFollowingDataThunk";
 
 export function PopularPeopleSidebar() {
     const theme = useTheme();
@@ -110,7 +111,7 @@ export function PopularPeopleSidebar() {
     useEffect(() => {
         const fetchData = async () => {
             dispatch(PopularPeopleFetch(setIsLoading, setMostPopularPeople));
-            userFollowingData()
+            dispatch(fetchUserFollowingData())
         };
         fetchData();
     }, []);
@@ -119,20 +120,6 @@ export function PopularPeopleSidebar() {
         dispatch(setSearchId(String(userIdWhoSendPost)));
         navigate("/view");
     };
-
-    const userFollowingData = async () => {
-        try {
-            // setIsLoading(true);
-            const response = await fetch(`${apiUrl}/api/following/${idUser}`)
-            const followData = await response.json()
-            const followArr = followData.map(el => String(el.userId))
-            dispatch(userFollowing(followArr))
-        } catch (error) {
-            console.error(error);
-        } finally {
-            // setIsLoading(false);
-        }
-    }
 
     return (
         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :

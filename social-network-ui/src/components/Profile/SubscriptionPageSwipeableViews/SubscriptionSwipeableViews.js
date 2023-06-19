@@ -10,6 +10,7 @@ import {ToggleButton} from "../../Buttons/ToggleButton/ToggleButton";
 import { apiUrl } from "../../../apiConfig";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {fetchUserFollowingData} from "../../../store/Thunks/fetchUserFollowingDataThunk";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -74,27 +75,13 @@ export function SubscriptionSwipeableViews () {
                 setIsLoading(false);
             }
         }
-        const userFollowingData = async () => {
-            try {
-                setIsLoading(true);
-                const response = await fetch(`${apiUrl}/api/following/${idUser}`)
-                const followData = await response.json()
-                const followArr = followData.map(el => String(el.userId))
-                dispatch(userFollowing(followArr))
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-
 
         if (state.userId) {
-            userFollowingData()
+            dispatch(fetchUserFollowingData())
             followingsData()
             followersData()
         }
-    }, [value])
+    }, [])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

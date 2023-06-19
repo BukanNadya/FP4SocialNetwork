@@ -10,6 +10,9 @@ import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo} from "./CreateAccountModalStyles";
 import {apiUrl} from "../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {StyledBox, StyledForm, StyleTitle} from "../EditProfile/EditProfileStyles";
 
 export function ContentFirstStep() {
     const dispatch = useDispatch();
@@ -20,6 +23,100 @@ export function ContentFirstStep() {
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [day, setDay] = useState(new Date().getDate());
     const [year, setYear] = useState(new Date().getFullYear());
+
+    const theme = useTheme();
+
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth , width: "100%"},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo, width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"}
+
+    };
+
+    const xsStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth , width: "100%"},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo, width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"}
+
+    };
+
+    const smStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth, width: "100%"},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo, width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"}
+
+    };
+
+    const mdStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton}
+
+    };
+
+    const lgStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton}
+
+    };
+
+    const xlStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton}
+
+    };
+
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
 
     const CustomMonthSelect = ({ field, form, ...props }) => {
         return (
@@ -162,8 +259,8 @@ export function ContentFirstStep() {
                     }}
                 >
                     {(formikProps) => (
-                        <Form onSubmit={formikProps.handleSubmit}>
-                            <FormControl sx={StyledFirstStepFormControl}>
+                        <Form onSubmit={formikProps.handleSubmit} style={styles.Form}>
+                            <FormControl sx={styles.FirstFormStyle}>
                             <InputLabel htmlFor="name" sx={ StyledFirstStepInputLabel }>
                                 <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>name</Typography>
                                 <Typography component="span" sx={StyledFirstStepTypographyCounter}>{nameCounter}/50</Typography>
@@ -183,7 +280,7 @@ export function ContentFirstStep() {
                                     <ErrorText>{formikProps.errors.name}</ErrorText>
                                 )}
                             </FormControl>
-                            <FormControl sx={StyledFirstStepFormControl}>
+                            <FormControl sx={styles.FirstFormStyle}>
                                 <InputLabel htmlFor="email" sx={StyledFirstStepInputLabel }>
                                     <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>email</Typography>
                                     <Typography component="span" sx={ StyledFirstStepTypographyCounter }>{emailCounter}/50</Typography>
@@ -200,11 +297,11 @@ export function ContentFirstStep() {
                                 {formikProps.touched.email && formikProps.errors.email && (
                                     <ErrorText>{formikProps.errors.email}</ErrorText>
                                 )}
-                                <Typography component="span" sx={StyledFirstStepTypographyDateofBirth}>Date of birth</Typography>
-                                <Typography component="span" sx={ StyledFirstStepTypographyDateofBirthInfo }>This will not be shown publicly.
+                                <Typography component="span" sx={styles.TypographyDateofBirth}>Date of birth</Typography>
+                                <Typography component="span" sx={styles.TypographyDateofBirthInfo}>This will not be shown publicly.
                                  Confirm your own age, even if this account is for a
                                 business, a pet or something else.</Typography>
-                                <Box sx={ StyledFirstStepDateofBirthBox }>
+                                <Box sx={styles.BoxFirstStepDateofBirth}>
                                     <FormControl sx={{ width: "200px" }}>
                                         <InputLabel id="demo-simple-select-label">month</InputLabel>
                                         <Field
@@ -261,7 +358,7 @@ export function ContentFirstStep() {
                                             <ErrorText
                                                 sx={{ marginBottom: "10px" }}>{formikProps.errors.year}</ErrorText>
                                         )}
-                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}>Next</Button>
+                                <Button variant="contained" sx={styles.StyledFirstStepButton} type="submit" fullWidth={true}>Next</Button>
                             </FormControl>
                         </Form>
                     )}

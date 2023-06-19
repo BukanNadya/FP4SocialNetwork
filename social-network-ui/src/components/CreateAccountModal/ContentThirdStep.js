@@ -14,12 +14,95 @@ import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo} from "./CreateAccountModalStyles";
 import {apiUrl} from "../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 
 export function ContentThirdStep() {
     const dispatch = useDispatch();
     const [codeCounter, setCodeCounter] = useState(0);
     const [code, setCode] = useState(true);
+
+    const theme = useTheme();
+
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"}
+
+    };
+
+    const xsStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"}
+
+    };
+
+    const smStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"}
+
+    };
+
+    const mdStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton}
+
+    };
+
+    const lgStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton}
+
+    };
+
+    const xlStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton}
+
+    };
+
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
 
     const handlesetCode = (codeValue) => {
@@ -93,10 +176,10 @@ export function ContentThirdStep() {
 
                 >
                     {(formikProps) => (
-                        <Form onSubmit={formikProps.handleSubmit}>
-                            <Box sx={ StyledFirstStepDateofBirthBox }>
+                        <Form onSubmit={formikProps.handleSubmit} style={styles.Form}>
+                            <Box sx={ styles.BoxFirstStepDateofBirt }>
                             
-                            <FormControl sx={ StyledFirstStepFormControl } variant="outlined">
+                            <FormControl sx={ styles.FirstFormStyle } variant="outlined">
                                 <InputLabel htmlFor="code" sx={ StyledFirstStepInputLabel }>
                                     <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>code</Typography>
                                     <Typography component="span" sx={ StyledFirstStepTypographyCounter }>{codeCounter}/6</Typography>
@@ -110,14 +193,14 @@ export function ContentThirdStep() {
                                             setCodeCounter(e.target.value.length);
                                             handlesetCode(e.target.value);
                                     }}
-                                    sx={{ marginBottom: "5px", width: "400px", }}
+                                    sx={{ marginBottom: "5px", width: "100%", }}
                                 />
                                 {formikProps.touched.code && formikProps.errors.code && (
                                     <ErrorText>{formikProps.errors.code}</ErrorText>
                                 )}
                             </FormControl>
                             </Box>
-                            <Box sx={ StyledFirstStepDateofBirthBox }>
+                            <Box sx={ styles.BoxFirstStepDateofBirt }>
                                 <Link
                                     component="button"
                                     variant="body2"
@@ -127,7 +210,7 @@ export function ContentThirdStep() {
                                     >Did not receive a letter?
                                 </Link>
                             </Box>
-                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true} >Next</Button>
+                                <Button variant="contained" sx={ styles.StyledFirstStepButton } type="submit" fullWidth={true} >Next</Button>
                         </Form>
                     )}
                 </Formik>

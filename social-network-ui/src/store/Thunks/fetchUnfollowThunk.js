@@ -1,6 +1,7 @@
 
 import {userFollow} from "../actions";
 import {apiUrl} from "../../apiConfig";
+import {fetchUserFollowingData} from "./fetchUserFollowingDataThunk";
 
 export function fetchUnfollow (searchId) {
     return (dispatch, getState) => {
@@ -20,7 +21,7 @@ export function fetchUnfollow (searchId) {
             .then(r => {
                 if (!r.ok) {
                     dispatch(userFollow())
-                }
+                } else {dispatch(fetchUserFollowingData())}
             })
         } catch (error) {
             dispatch(userFollow())

@@ -45,6 +45,8 @@ export const StyledFirstStepFormControl = {
 
 export const StyledFirstStepInputLabel = {
     display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
     alignItems: "start"
 };
 
@@ -54,7 +56,7 @@ export const StyledFirstStepTypographyPlaceholder = {
 };
 
 export const StyledFirstStepTypographyCounter = {
-    marginLeft: "290px",
+    // marginLeft: "290px",
     backgroundColor: "white",
     padding: "0 5px"
 };

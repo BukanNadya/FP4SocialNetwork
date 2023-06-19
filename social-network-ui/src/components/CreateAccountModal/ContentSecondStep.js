@@ -13,11 +13,112 @@ import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo } from "./CreateAccountModalStyles";
 import {apiUrl} from "../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function ContentSecondStep() {
     const dispatch = useDispatch();
     const valuesState = useSelector((state) => state.stepModal.stepModal.valuesState);
     console.log(valuesState.name);
+
+    const theme = useTheme();
+
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth , width: "100%"},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo, width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"},
+        StyledFirstStepTypography: {...StyledFirstStepTypography, width: "100%"},
+
+    };
+
+    const xsStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth , width: "100%"},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo, width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"},
+        StyledFirstStepTypography: {...StyledFirstStepTypography, width: "100%"},
+
+    };
+
+    const smStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl, width: "100%"},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth, width: "100%"},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo, width: "100%"},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox, width: "100%"},
+        StyledFirstStepButton: {...StyledFirstStepButton, width: "100%"},
+        StyledFirstStepTypography: {...StyledFirstStepTypography, width: "100%"},
+
+    };
+
+    const mdStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton},
+        StyledFirstStepTypography: {...StyledFirstStepTypography},
+
+    };
+
+    const lgStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton},
+        StyledFirstStepTypography: {...StyledFirstStepTypography},
+
+    };
+
+    const xlStyles = {
+
+        FirstFormStyle: {...StyledFirstStepFormControl},
+        Form: {width: "100%"},
+        TypographyDateofBirth: {...StyledFirstStepTypographyDateofBirth},
+        TypographyDateofBirthInfo: {...StyledFirstStepTypographyDateofBirthInfo},
+        BoxFirstStepDateofBirth: {...StyledFirstStepDateofBirthBox},
+        StyledFirstStepButton: {...StyledFirstStepButton},
+        StyledFirstStepTypography: {...StyledFirstStepTypography},
+
+    };
+
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
     const CustomMonthSelect = ({ field, form, ...props }) => {
         return (
             <Field name={props.name}>
@@ -131,9 +232,9 @@ export function ContentSecondStep() {
                     }}
                 >
                     {(formikProps) => (
-                        <Form onSubmit={formikProps.handleSubmit}>
-                            <Typography component="span" sx={ StyledFirstStepTypography }>Please, check your information.</Typography>
-                            <FormControl sx={ StyledFirstStepFormControl }>
+                        <Form onSubmit={formikProps.handleSubmit} style={styles.Form}>
+                            <Typography component="span" sx={ styles.StyledFirstStepTypography }>Please, check your information.</Typography>
+                            <FormControl sx={ styles.FirstFormStyle }>
                             <InputLabel htmlFor="name" sx={ StyledFirstStepInputLabel }>
                                 <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>name</Typography>
                                 <Typography component="span" sx={ StyledFirstStepTypographyCounter }>{valuesState.name.length}/50</Typography>
@@ -147,7 +248,7 @@ export function ContentSecondStep() {
                                 sx={{ marginBottom: "5px" }}
                             />
                             </FormControl>
-                            <FormControl sx={ StyledFirstStepFormControl }>
+                            <FormControl sx={ styles.FirstFormStyle }>
                                 <InputLabel htmlFor="email" sx={ StyledFirstStepInputLabel }>
                                     <Typography component="span" sx={ StyledFirstStepTypographyPlaceholder }>email</Typography>
                                     <Typography component="span" sx={ StyledFirstStepTypographyCounter }>{valuesState.email.length}/50</Typography>
@@ -158,10 +259,10 @@ export function ContentSecondStep() {
                                     inputProps={{ maxLength: 50 }}
                                     value={valuesState.email}
                                     disabled/>
-                                <Typography component="span" sx={ StyledFirstStepTypographyDateofBirth }>Date of birth</Typography>
-                                <Typography component="span" sx={ StyledFirstStepTypographyDateofBirthInfo }>This will not be shown publicly. Confirm your own age, even if this account is for a
+                                <Typography component="span" sx={ styles.TypographyDateofBirth }>Date of birth</Typography>
+                                <Typography component="span" sx={ styles.TypographyDateofBirthInfo }>This will not be shown publicly. Confirm your own age, even if this account is for a
                                 business, a pet or something else.</Typography>
-                                <Box sx={ StyledFirstStepDateofBirthBox }>
+                                <Box sx={ styles.BoxFirstStepDateofBirth }>
                                     <FormControl sx={{ width: "200px" }}>
                                         <InputLabel id="demo-simple-select-label">month</InputLabel>
                                         <Field
@@ -198,7 +299,7 @@ export function ContentSecondStep() {
                                     </FormControl>
     
                                 </Box>
-                                <Button variant="contained" sx={ StyledFirstStepButton } type="submit" fullWidth={true}>Send letter</Button>
+                                <Button variant="contained" sx={ styles.StyledFirstStepButton } type="submit" fullWidth={true}>Send letter</Button>
                             </FormControl>
                         </Form>
                     )}

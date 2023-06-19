@@ -75,6 +75,12 @@ export function Content() {
             width:"100%",
             height:"100%",
             overflow:"hidden",
+        },
+        ContentStyles: {
+            position:"relative",
+            width: "80%",
+            maxWidth: "400px",
+
         }
     };
 
@@ -84,6 +90,12 @@ export function Content() {
             width:"100%",
             height:"100%",
             overflow:"hidden",
+        },
+        ContentStyles: {
+            position:"relative",
+            width: "80%",
+            maxWidth: "400px",
+
         }
     };
 
@@ -93,24 +105,38 @@ export function Content() {
             width:"100%",
             height:"100%",
             overflow:"hidden",
+        },
+        ContentStyles: {
+            position:"relative",
+            maxWidth: "400px",
+            minWidth: "400px"
         }
     };
 
     const mdStyles = {
         AdaptiveStyledContentBox:{
             ...StyledContentBox
+        },
+        ContentStyles: {
+            position:"relative"
         }
     };
 
     const lgStyles = {
         AdaptiveStyledContentBox:{
             ...StyledContentBox
+        },
+        ContentStyles: {
+            position:"relative"
         }
     };
 
     const xlStyles = {
         AdaptiveStyledContentBox:{
             ...StyledContentBox
+        },
+        ContentStyles: {
+            position:"relative"
         }
     };
 
@@ -137,7 +163,7 @@ export function Content() {
             onClose={() => {dispatch(closeSignUpModal())}}
             sx={ StyledContentModal }>
             <Box sx={styles.AdaptiveStyledContentBox}>
-                <div style={{position:"relative"}}>
+                <div style={styles.ContentStyles}>
               {
                 stepInModal > 1 && (
                   <ArrowBackOutlinedIcon

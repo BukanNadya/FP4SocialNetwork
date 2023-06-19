@@ -19,6 +19,14 @@ import {InputProfilePhoto} from "./Input/InputProfilePhoto";
 import PropTypes from "prop-types";
 import * as yup from "yup";
 import {apiUrl} from "../../apiConfig";
+import {useTheme} from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {
+    EnterEmailModalLink,
+    StyledBlackButton,
+    StyledFormControl,
+    StyledWhiteButton
+} from "../LoginModal/loginModalStyles";
 
 export function EditProfile (props) {
 
@@ -32,7 +40,116 @@ export function EditProfile (props) {
         return new Date(year, month, 0).getDate();
     }
 
+    const theme = useTheme();
 
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        BoxStyle: {...StyledBox, width:"100vw", height: "100vh"},
+        FormStyle: {...StyledForm, width: "auto"},
+        Form: {width: "80%"},
+        FieldStyle: {width: "100%", margin: "20px 0" },
+        DateStyle: {
+            width: "80%",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "40px",
+        },
+        TitleStyle: {...StyleTitle, display: "none"},
+    };
+
+    const xsStyles = {
+        BoxStyle: {...StyledBox, width:"100vw", height: "100vh"},
+        FormStyle: {...StyledForm, width: "auto"},
+        Form: {width: "80%"},
+        FieldStyle: {width: "100%", margin: "20px 0" },
+        DateStyle: {
+            width: "80%",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "40px",
+        },
+        TitleStyle: {...StyleTitle},
+    };
+
+    const smStyles = {
+        BoxStyle: {...StyledBox},
+        FormStyle: {...StyledForm},
+        Form: {width: "100%"},
+        FieldStyle: {width: "550px", margin: "20px 0" },
+        DateStyle: {
+            width: "400px",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "40px",
+        },
+        TitleStyle: {...StyleTitle},
+    };
+
+    const mdStyles = {
+        BoxStyle: {...StyledBox},
+        FormStyle: {...StyledForm},
+        Form: {width: "100%"},
+        FieldStyle: {width: "550px", margin: "20px 0" },
+        DateStyle: {
+            width: "400px",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "40px",
+        },
+        TitleStyle: {...StyleTitle},
+    };
+
+    const lgStyles = {
+        BoxStyle: {...StyledBox},
+        FormStyle: {...StyledForm},
+        Form: {width: "100%"},
+        FieldStyle: {width: "550px", margin: "20px 0" },
+        DateStyle: {
+            width: "400px",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "40px",
+        },
+        TitleStyle: {...StyleTitle},
+    };
+
+    const xlStyles = {
+        BoxStyle: {...StyledBox},
+        FormStyle: {...StyledForm},
+        Form: {width: "100%"},
+        FieldStyle: {width: "550px", margin: "20px 0" },
+        DateStyle: {
+            width: "400px",
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: "40px",
+        },
+        TitleStyle: {...StyleTitle},
+    };
+
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
 
     return (
@@ -42,7 +159,7 @@ export function EditProfile (props) {
             aria-describedby="modal-modal-description"
             onClose={() => {dispatch(closeEditModal())}}
             sx={StyledModal}>
-            <Box sx={StyledBox}>
+            <Box sx={styles.BoxStyle}>
                 <Formik initialValues={{
                     name: props.name,
                     address: props.address || "",
@@ -113,8 +230,8 @@ export function EditProfile (props) {
                     }
                 }}>
                     {(formikProps) => (
-                    <Form>
-                        <FormControl sx={StyledForm} >
+                    <Form style={styles.Form}>
+                        <FormControl sx={styles.FormStyle} >
                             <div style={StyleHead}>
                                 <div style={{ display: "flex", gap: "50px",}}>
                                     <SvgIcon sx={StyledCloseSvgIcon} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -123,23 +240,17 @@ export function EditProfile (props) {
                                               d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
                                               fill="#000000"/>
                                     </SvgIcon>
-                                    <Typography sx={StyleTitle}>Edit profile</Typography>
+                                    <Typography sx={styles.TitleStyle}>Edit profile</Typography>
                                 </div>
                                 <Button type="submit"
                                         variant="contained" sx={StyleButton} fullWidth={true} disabled={isSubmitting}>Saved</Button>
                             </div>
                             <Field as={InputPhoto} name={"bgPhoto"} id="bgPhoto" label="bgPhoto" onImageUpload={setBgPhoto} background={props.background}/>
                             <Field as={InputProfilePhoto} name={"photo"} id="photo" label="photo" onImageUpload={setPhoto} image={props.image}/>
-                            <Field as={InputName} sx={{ width: "550px", margin: "20px 0" }} name={"name"} id="name" label="Name" type="text" />
-                            <Field as={InputName} sx={{ width: "550px", margin: "20px 0" }} name={"address"} id="address" label="Location" type="text" />
+                            <Field as={InputName} sx={styles.FieldStyle} name={"name"} id="name" label="Name" type="text" />
+                            <Field as={InputName} sx={styles.FieldStyle} name={"address"} id="address" label="Location" type="text" />
                             {/*<Field as={InputName} sx={{ width: "550px", margin: "20px 0" }} name={"himself"} id="himself" label="himself" type="text" />*/}
-                            <Box sx={{
-                                width: "400px",
-                                display: "flex",
-                                justifyContent: "space-around",
-                                marginTop: "40px",
-
-                            }}>
+                            <Box sx={styles.DateStyle}>
                                 <FormControl sx={{ width: "300px" }}>
                                     <InputLabel id="month-label">Month</InputLabel>
                                     <Field

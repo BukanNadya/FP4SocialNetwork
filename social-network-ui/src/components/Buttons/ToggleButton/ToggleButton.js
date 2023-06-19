@@ -15,44 +15,13 @@ export function ToggleButton ({width, height, searchId}) {
     const userIsFollow = useSelector(state => state.userData.userFollowing.following);
 
     useEffect(() => {
-        // const fetchIsFollow = async () => {
-        //     try {
-        //         setIsLoading(true)
-        //         const response = await fetch(`${apiUrl}/api/isfollowing`, {
-        //             method: "POST",
-        //             body: JSON.stringify({
-        //                 userFollower: userId,
-        //                 userFollowing: searchId,
-        //             }),
-        //             headers: {"Content-Type": "application/json"}
-        //         });
-        //         const userIsFollow = await response.json();
-        //         if (userIsFollow.following === "true") {
-        //             setIsFollow(true)
-        //         } else if (userIsFollow.following === "false") {
-        //             setIsFollow(false)
-        //         }
-        //     } catch (error) {
-        //         console.error("An error occurred:", error);
-        //     } finally {
-        //         setIsLoading(false)
-        //     }
-        //
-        // };
-        // if (searchId) {
-        //     fetchIsFollow();
-        // }
-
-
         const fetchIsFollow = async () => {
             try {
                 setIsLoading(true)
                 const users = userIsFollow.filter(el => searchId === el)
                 if (users.length > 0) {
-                            console.log("true")
                             setIsFollow(true)
                         } else {
-                            console.log("false")
                             setIsFollow(false)
                         }
 
@@ -66,7 +35,7 @@ export function ToggleButton ({width, height, searchId}) {
         if (searchId) {
             fetchIsFollow();
         }
-    }, [])
+    }, [userIsFollow])
 
     return (
         <>

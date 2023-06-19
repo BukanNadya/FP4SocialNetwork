@@ -23,10 +23,11 @@ export function Profile (props) {
     const searchId = useSelector(state => state.userData.searchData.userId);
     const userId = useSelector(state => state.userData.userData.userId);
     const isFollow = useSelector(state => state.userData.followData.userFollow)
+    const isGogi = useSelector(state => state.userData.userFollowing.following)
     const [isNotices, setIsNotices] = useState(true)
     const dispatch = useDispatch()
 
-
+    console.log(isGogi)
 
     useEffect(() => {
         const fetchIsFollow = async () => {
@@ -40,14 +41,17 @@ export function Profile (props) {
                         headers: { "Content-Type": "application/json" }
             });
             const userIsFollow = await response.json();
+            console.log(userIsFollow.notification)
+            console.log(isNotices)
             if (userIsFollow.following === "true") {
                 dispatch(userFollow())
+                if (userIsFollow.notification === "true") {
+                    setIsNotices(true)
+                } else if (userIsFollow.notification === "false") {
+                    setIsNotices(false)
+                }
             } else if (userIsFollow.following === "false") {
                 dispatch(userUnfollow())
-            } else if (userIsFollow.notification === "true") {
-                setIsNotices(true)
-            } else if (userIsFollow.notification === "false") {
-                setIsNotices(false)
             }
 
         };

@@ -1,5 +1,4 @@
 import {apiUrl} from "../../apiConfig";
-import {userUnfollow} from "../actions";
 
 
 export function fetchNotifications (searchId, data) {
