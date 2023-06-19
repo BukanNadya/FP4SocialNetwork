@@ -10,6 +10,7 @@ import com.danit.socialnetwork.repository.InboxRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +24,13 @@ public class InboxServiceImpl implements InboxService {
   private final InboxRepository inboxRepository;
   private final UserRepository userRepository;
   private final InboxMapperImpl mapper;
+  private final SimpMessagingTemplate messagingTemplate;
+
+  private void sendNewMessageToRecipientInbox(InboxDtoResponse newMessage) {
+    messagingTemplate.convertAndSend("/inbox/" + newMessage.getUserId(), newMessage);
+    log.info(String.format("Send new message to the recipient inbox: %s, %s, %s",
+        newMessage.getMessage(), newMessage.getUsername(), newMessage.getCreatedAt()));
+  }
 
   /*The method finds inbox by message sender and receiver and returns it*/
   @Override
@@ -43,6 +51,7 @@ public class InboxServiceImpl implements InboxService {
       Inbox inboxR = inboxRepository.save(inboxNewReceiver);
       inboxesSenderAndReceiver.add(inboxS);
       inboxesSenderAndReceiver.add(inboxR);
+      sendNewMessageToRecipientInbox(mapper.inboxToInboxDtoResponse(inboxR));
     } else {
       Optional<Inbox> inboxFromDbRo = inboxRepository.findByInboxUidAndUserId(receiverId, senderId);
       if (inboxFromDbRo.isPresent()) {
@@ -54,6 +63,7 @@ public class InboxServiceImpl implements InboxService {
         Inbox inboxR = inboxRepository.save(inboxFromDbR);
         inboxesSenderAndReceiver.add(inboxS);
         inboxesSenderAndReceiver.add(inboxR);
+        sendNewMessageToRecipientInbox(mapper.inboxToInboxDtoResponse(inboxR));
       }
     }
     return inboxesSenderAndReceiver;

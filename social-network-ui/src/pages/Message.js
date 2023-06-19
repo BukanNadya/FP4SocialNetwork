@@ -10,10 +10,13 @@ import { leftBlockInboxAndSearch, inboxContainerStyle,
   textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
   textingContainerWithScroll, textingConatinerScroll } from "./pagesStyles/MessageStyles";
 import { setMessages } from "../store/actions";
+import SockJS from "sockjs-client";
+import {over} from 'stompjs';
 
 export function Message() {
   const dispatch = useDispatch();
   const messages = useSelector(state => state.messages.message);
+  var stompClient = null;
   const [selectedMessage, setSelectedMessage] = useState(null);
   
   const [inputValue, setInputValue] = useState('');
@@ -37,6 +40,30 @@ export function Message() {
     const fetchMessages = async () => {
       const response1 = await fetch(`${apiUrl}/api/inbox/66`);
       const userData = await response1.json();
+
+      const connect =()=>{
+        let Sock = new SockJS(`${apiUrl}/websocket`);
+        stompClient = over(Sock);
+        stompClient.connect({},onConnected, onError);
+      }
+
+      const onConnected = () => {
+        stompClient.subscribe('/user/inbox/66', onPrivateMessage);
+      }
+
+      const onError = (err) => {
+        console.log(err);
+      }
+
+      const onPrivateMessage = (payload)=>{
+        console.log(payload);
+        var payloadData = JSON.parse(payload.body);
+        let list =[];
+        list.push(payloadData);
+        privateChats.set(payloadData.notificationText,list);
+        setPrivateChats(new Map(privateChats));
+      }
+      connect();
 
       if (userData[0]) {
         const formattedMessages = userData.map((item) => {

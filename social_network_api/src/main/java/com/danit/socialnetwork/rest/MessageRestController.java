@@ -12,13 +12,17 @@ import com.danit.socialnetwork.service.MessageService;
 import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.List;
 
@@ -40,16 +44,17 @@ public class MessageRestController {
   /*The method finds inbox by message sender and receiver */
   @GetMapping(path = "/api/inbox/{inboxUid}")
   public ResponseEntity<List<InboxDtoResponse>> getInbox(@PathVariable("inboxUid") Integer inboxUid) {
-    List<InboxDtoResponse> inboxes =  inboxService.getInboxesByInboxUid(inboxUid);
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
     return new ResponseEntity<>(inboxes, HttpStatus.FOUND);
   }
 
   /*The method finds all messages between the sender and the receiver*/
   @PostMapping(path = "/api/getMessages")
-  public ResponseEntity<List<MessageDtoResponse>> getMessage(
-      @RequestBody InboxParticipantsDtoRequest request) {
-    List<MessageDtoResponse> messages =  messageService
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request);
+  public ResponseEntity<Page<MessageDtoResponse>> getMessage(
+      @RequestBody InboxParticipantsDtoRequest request,
+      @RequestParam(name = "page", defaultValue = "0") Integer page) {
+    Page<MessageDtoResponse> messages = messageService
+        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
     return new ResponseEntity<>(messages, HttpStatus.FOUND);
   }
 

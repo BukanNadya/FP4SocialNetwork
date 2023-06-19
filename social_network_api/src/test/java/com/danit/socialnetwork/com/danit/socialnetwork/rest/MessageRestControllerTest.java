@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -100,16 +102,15 @@ class MessageRestControllerTest {
     InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
     request.setInboxUid(1);
     request.setUserId(2);
-    List<MessageDtoResponse> testMessageDto = new ArrayList<>();
-
-    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUid(request)).thenReturn(testMessageDto);
+    Integer page = 0;
 
     mockMvc.perform(post("/api/getMessages")
+
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());
 
-    verify(messageService).findByInboxUidAndUserIdOrUserIdAndInboxUid(request);
+    verify(messageService).findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
   }
 
   @Test

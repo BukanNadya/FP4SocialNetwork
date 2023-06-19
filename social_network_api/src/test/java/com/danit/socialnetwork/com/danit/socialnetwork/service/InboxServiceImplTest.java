@@ -12,15 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class InboxServiceImplTest {
@@ -32,6 +33,8 @@ class InboxServiceImplTest {
   UserRepository userRepository;
   @Mock
   InboxMapperImpl mapper;
+  @Mock
+  SimpMessagingTemplate messagingTemplate;
 
   @Test
   void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenExists() {
@@ -86,9 +89,17 @@ class InboxServiceImplTest {
     testInboxes.add(testInboxSender);
     testInboxes.add(testInboxReceiver);
 
+    InboxDtoResponse responseTest = new InboxDtoResponse();
+    responseTest.setInboxUid(1);
+    responseTest.setUserId(2);
+    responseTest.setMessage("Hello World!");
+
     when(inboxRepository.findByInboxUidAndUserId(testUser1, testUser2))
         .thenReturn(Optional.empty());
     when(inboxRepository.save(any(Inbox.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    doReturn(responseTest)
+        .when(mapper)
+        .inboxToInboxDtoResponse(Mockito.any(Inbox.class));
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
@@ -109,6 +120,8 @@ class InboxServiceImplTest {
     testUser2.setUserId(2);
     Message testMessage = new Message();
     testMessage.setMessageText("Hello World!");
+    testMessage.setInboxUid(testUser1);
+    testMessage.setUserId(testUser2);
     Inbox testInboxSender = new Inbox();
     testInboxSender.setInboxUid(testUser1);
     testInboxSender.setLastMessage(testMessage);
@@ -121,12 +134,20 @@ class InboxServiceImplTest {
     testInboxes.add(testInboxSender);
     testInboxes.add(testInboxReceiver);
 
+    InboxDtoResponse responseTest = new InboxDtoResponse();
+    responseTest.setInboxUid(1);
+    responseTest.setUserId(2);
+    responseTest.setMessage("Hello World!");
+
     when(inboxRepository.findByInboxUidAndUserId(testUser1, testUser2))
         .thenReturn(Optional.of(testInboxSender));
     when(inboxRepository.findByInboxUidAndUserId(testUser2, testUser1))
         .thenReturn(Optional.of(testInboxReceiver));
     when(inboxRepository.save(testInboxSender)).thenReturn(testInboxSender);
     when(inboxRepository.save(testInboxReceiver)).thenReturn(testInboxReceiver);
+    doReturn(responseTest)
+        .when(mapper)
+        .inboxToInboxDtoResponse(Mockito.any(Inbox.class));
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
