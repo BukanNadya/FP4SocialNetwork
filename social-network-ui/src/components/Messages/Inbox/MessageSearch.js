@@ -49,7 +49,7 @@ export function MessageSearch() {
 
                 <Field as={InputMessageSearch} sx={{ width: "400px" }}
                        name={"userName"} id="userName"
-                       label="Username" type="text"/>
+                       label="Username" type="search"/>
 
             </Form>
         </Formik>

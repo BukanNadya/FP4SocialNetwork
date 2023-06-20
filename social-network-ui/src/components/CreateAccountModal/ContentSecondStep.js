@@ -204,7 +204,7 @@ export function ContentSecondStep() {
                         year: valuesState.year
                     }}
                     onSubmit={async (values, { setErrors }) => {
-                        const url = `${apiUrl}/sendLetter`;
+                        const url = `${apiUrl}/api/sendLetter`;
                         const requestBody = {
                             name: valuesState.name,
                             email: valuesState.email,

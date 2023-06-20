@@ -167,7 +167,7 @@ export function ContentFourthStep() {
                     valuesState.password = values.password;
                     valuesState.username = values.username;
                     dispatch({ type: step4, payload: { valuesState: valuesState } });
-                    const url = `${apiUrl}/registration`;
+                    const url = `${apiUrl}/api/registration`;
                     const requestBody = {
                         username: valuesState.username,
                         password: valuesState.password,

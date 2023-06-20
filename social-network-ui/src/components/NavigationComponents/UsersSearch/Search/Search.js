@@ -37,7 +37,7 @@ export function Search () {
 
                 <Field as={InputSearch} sx={{ width: "1000px" }}
                        name={"userName"} id="userName"
-                       label="Username" type="text"/>
+                       label="Username" type="search"/>
 
             </Form>
         </Formik>

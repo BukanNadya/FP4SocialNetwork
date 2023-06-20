@@ -138,7 +138,7 @@ export function ContentThirdStep() {
                             .max(6, "Must be 6 digits")
                     })}
                     onSubmit={async (values, { setErrors }) => {
-                        const url = `${apiUrl}/activate`;
+                        const url = `${apiUrl}/api/activate`;
                         const requestBody = {
                             code: code,
                         };

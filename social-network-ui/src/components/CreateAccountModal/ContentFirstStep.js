@@ -244,7 +244,7 @@ export function ContentFirstStep() {
                     })}
                     onSubmit={async(values, { setErrors, setSubmitting }) => {
 
-                            const response = await fetch(`${apiUrl}/checkEmail`, {
+                            const response = await fetch(`${apiUrl}/api/checkEmail`, {
                                 method: "POST",
                                 body: JSON.stringify({email: values.email}),
                                 headers: { "Content-Type": "application/json" }
