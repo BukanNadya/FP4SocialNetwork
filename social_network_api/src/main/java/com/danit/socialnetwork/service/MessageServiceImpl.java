@@ -14,7 +14,6 @@ import com.danit.socialnetwork.repository.MessageRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -84,16 +83,18 @@ public class MessageServiceImpl implements MessageService {
 
   /*The method finds all messages between the sender and the receiver and returns them*/
   @Override
-  public Page<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(
+  public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(
       InboxParticipantsDtoRequest request, Integer page) {
     int pageSize = 16;
-    Pageable pageable = PageRequest.of(page, pageSize);
+    int offset = page * pageSize;
     DbUser inboxUid = userRepository.findById(request.getInboxUid()).get();
     DbUser userId = userRepository.findById(request.getUserId()).get();
-    Page<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
-        inboxUid, userId, inboxUid, userId, pageable);
-    return messagePage.map(messageMapper::messageToMessageDtoResponse);
+    List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
+        inboxUid, userId, inboxUid, userId, offset, pageSize);
+    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
+
+
 
   /*The method finds all incoming and outgoing messages of the user and returns them*/
   @Override

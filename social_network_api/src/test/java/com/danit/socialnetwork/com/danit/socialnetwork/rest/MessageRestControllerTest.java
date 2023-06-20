@@ -102,10 +102,11 @@ class MessageRestControllerTest {
     InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
     request.setInboxUid(1);
     request.setUserId(2);
+    List<MessageDtoResponse> testMessageDto = new ArrayList<>();
     Integer page = 0;
+    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page)).thenReturn(testMessageDto);
 
     mockMvc.perform(post("/api/getMessages")
-
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());

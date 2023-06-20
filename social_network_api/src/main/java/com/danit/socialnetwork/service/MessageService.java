@@ -7,7 +7,6 @@ import com.danit.socialnetwork.dto.message.search.MessageSearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Message;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public interface MessageService {
 
   MessageDtoResponse saveMessage(MessageDtoRequest request);
 
-  Page<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request, Integer page);
+  List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request, Integer page);
 
   List<Message> findMessageByInboxUidOrUserId(DbUser inboxUid, DbUser userId);
 

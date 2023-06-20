@@ -48,20 +48,23 @@ export function Message() {
       }
 
       const onConnected = () => {
-        stompClient.subscribe('/user/inbox/66', onPrivateMessage);
+        stompClient.subscribe('/user/inbox/66', newMessage);
       }
 
       const onError = (err) => {
         console.log(err);
       }
 
-      const onPrivateMessage = (payload)=>{
+      const newMessage = (payload)=>{
         console.log(payload);
         var payloadData = JSON.parse(payload.body);
         let list =[];
         list.push(payloadData);
-        privateChats.set(payloadData.notificationText,list);
-        setPrivateChats(new Map(privateChats));
+        inboxMessages.set(payloadData.inboxUid,list);
+        inboxMessages.set(payloadData.userId,list);
+        inboxMessages.set(payloadData.body,list);
+        inboxMessages.set(payloadData.day,list);
+        setInboxMessages(new Map(inboxMessages));
       }
       connect();
 
