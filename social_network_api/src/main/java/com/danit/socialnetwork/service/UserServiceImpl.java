@@ -282,4 +282,9 @@ public class UserServiceImpl implements UserService {
         .map(UserDtoForSidebar::from)
         .toList();
   }
+
+  @Override
+  public DbUser findDbUserByUserId(Integer userId) {
+    return userRepository.findDbUserByUserId(userId);
+  }
 }

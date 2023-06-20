@@ -25,4 +25,6 @@ public interface PostService {
   PostDtoResponse getPostByPostId(Integer postId, Integer userId);
 
   Integer findLatestPostIdByUserId(Integer userId);
+
+  Post findPostByPostId(Integer postId);
 }

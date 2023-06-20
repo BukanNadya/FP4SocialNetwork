@@ -96,4 +96,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
       + "FROM posts WHERE user_id = :userId "
       + "ORDER BY sent_datetime DESC LIMIT 1")
   Post findLatestPostByUserId(Integer userId);
+
+  Post findPostByPostId(Integer postId);
 }

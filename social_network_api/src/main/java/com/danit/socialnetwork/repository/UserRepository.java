@@ -38,5 +38,5 @@ public interface UserRepository extends JpaRepository<DbUser, Integer> {
       + " OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY;")
   List<Object[]> findAllWhoMostPopularWithFollowers(Integer userId, Integer offset, Integer pageSize);
 
-
+  DbUser findDbUserByUserId(Integer userId);
 }

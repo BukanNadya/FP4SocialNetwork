@@ -149,6 +149,11 @@ public class PostServiceImpl implements PostService {
     return postRepository.findLatestPostByUserId(userId).getPostId();
   }
 
+  @Override
+  public Post findPostByPostId(Integer postId) {
+    return postRepository.findPostByPostId(postId);
+  }
+
 
 }
 

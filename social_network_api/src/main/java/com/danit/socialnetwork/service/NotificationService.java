@@ -11,7 +11,7 @@ public interface NotificationService {
 
   List<Notification> findAllByFollowingUserId(Integer userId);
 
-  void saveNotification(Notification notification);
+  Notification saveNotification(Notification notification);
 
   List<Notification> findAllByFollowerUserIdAndNotificationRead(
       Integer followerUserId, Boolean notificationRead);

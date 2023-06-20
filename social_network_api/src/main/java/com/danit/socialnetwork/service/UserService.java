@@ -46,4 +46,6 @@ public interface UserService {
   List<DbUser> getUsersWhoLikedPostByPostId(Integer postId, Integer page);
 
   List<UserDtoForSidebar> getUsersWhoMostPopularWithFollowers(Integer userId, Integer page);
+
+  DbUser findDbUserByUserId(Integer userId);
 }
