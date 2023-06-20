@@ -41,7 +41,7 @@ export const setPage = (pageNumber) => ({
 });
 
 export const setPageForMessage = (pageNumber) => ({
-    type: 'SET_PAGE_FOR_MESSAGING',
+    type: "SET_PAGE_FOR_MESSAGING",
     payload: pageNumber,
 });
 
@@ -51,7 +51,6 @@ export const setLike = (like) => {
         payload: like,
     };
 };
-
 
 export const setComments = (comments) => {
     return {
@@ -173,12 +172,12 @@ export const setMessages = (texts) => ({
 });
 
 export const getMoreTexts = (texts) => ({
-    type: 'GET_MORE_TEXTS',
+    type: "GET_MORE_TEXTS",
     payload: texts,
 });
 
 export const maxPages = (pages) => ({
-    type: 'SET_MAX_AMOUT_OF_PAGES_FOR_MESSAGING',
+    type: "SET_MAX_AMOUT_OF_PAGES_FOR_MESSAGING",
     payload: pages,
 });
 
@@ -250,7 +249,6 @@ export const getComments = (setIsLoadingComments, isCommentOpen, setIsCommentOpe
     };
 };
 
-
 export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
     return async (dispatch) => {
         try {
@@ -278,9 +276,10 @@ export const activeLikesFetch = (postId, userId, setLike) => {
     };
 };
 
-export const sendRepostFetch = (postId, userId, isReposted) => {
+export const sendRepostFetch = (postId, userId, isReposted, setRepostCountView, repostCountView, sendEventToWebsocket) => {
     return async (dispatch) => {
-        if(isReposted){
+        if (isReposted) {
+            setRepostCountView(repostCountView + 1);
             try {
                 await fetch(`${apiUrl}/api/reposts`, {
                     method: "POST",
@@ -292,10 +291,13 @@ export const sendRepostFetch = (postId, userId, isReposted) => {
                         "Content-Type": "application/json"
                     },
                 });
+                sendEventToWebsocket(userId, postId);
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
-        }else if(!isReposted){
+
+        } else if (!isReposted) {
+            setRepostCountView(repostCountView - 1);
             try {
                 await fetch(`${apiUrl}/api/reposts?postId=${postId}&userId=${userId}`, {
                     method: "DELETE",
@@ -356,8 +358,6 @@ export const fetchData = (userId) => {
         }
     };
 };
-
-
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
@@ -432,10 +432,19 @@ export const changeDob = (userId, values) => {
 };
 
 export const fetchPostsByUserId = (userId, page) => {
-    console.log(userId, "userIdFromActionFEtchByPosts")
+    console.log(userId, "userIdFromActionFEtchByPosts");
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
+        let postIds = data.map(post => post.postId);
+        console.log(postIds);
+        await fetch("http://localhost:8080/api/post/view", {
+            method: "PUT",
+            body: JSON.stringify(
+                postIds
+            ),
+            headers: { "Content-Type": "application/json" }
+        });
         dispatch(setPosts(data));
         return data;
     };
@@ -445,6 +454,15 @@ export const fetchPostsByPage = (page) => {
     return async (dispatch) => {
         const response = await fetch(`${apiUrl}/api/posts?page=${page}`);
         let posts = await response.json();
+        let postIds = posts.map(post => post.postId);
+        console.log(postIds);
+        await fetch("http://localhost:8080/api/post/view", {
+            method: "PUT",
+            body: JSON.stringify(
+                postIds
+            ),
+            headers: { "Content-Type": "application/json" }
+        });
         dispatch(addRegistrationPosts(posts));
     };
 };
@@ -453,7 +471,7 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
     console.log(inboxUid, userId, page);
     return async (dispatch) => {
         try {
-            async function getData(){
+            async function getData() {
                 const response = await fetch(`${apiUrl}/api/getMessages?page=${page}`, {
                     method: "POST",
                     body: JSON.stringify({
@@ -463,14 +481,15 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     }),
                     headers: { "Content-Type": "application/json" }
                 });
-               const  response2 = await response.json()
+                const response2 = await response.json();
                 console.log(response2);
                 if (response2) {
-                    dispatch(maxPages(3))
+                    dispatch(maxPages(3));
                     dispatch(setMessages(response2));
                     return response2;
                 }
             }
+
             return getData();
 
         } catch (error) {
@@ -587,4 +606,4 @@ export const userSearchUnfollow = () => ({
 export const userFollowing = (data) => ({
     type: SET_USER_FOLLOWING,
     payload: { following: data }
-})
+});

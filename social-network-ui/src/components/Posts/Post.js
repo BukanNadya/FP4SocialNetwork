@@ -8,6 +8,7 @@ import { useSpring, animated } from "react-spring";
 import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button , Tooltip} from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 import {
     PostCard,
@@ -39,6 +40,8 @@ import { UsersLikes } from "./UsersLikes";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+
+
 export const Post = ({
                          userName,
                          name,
@@ -50,7 +53,9 @@ export const Post = ({
                          postComments,
                          userIdWhoSendPost,
                          profileImage,
-                         reposted
+                         reposted,
+                         repostsCount,
+                         sendEventToWebsocket
                      }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
@@ -67,6 +72,7 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
+    const[repostCountView, setRepostCountView] = useState(repostsCount)
 
     const theme = useTheme();
 
@@ -307,7 +313,7 @@ export const Post = ({
         if (userId) {
             const newIsReposted = !isReposted;
             setIsReposted(newIsReposted);
-            dispatch(sendRepostFetch(postId, userId, newIsReposted));
+            dispatch(sendRepostFetch(postId, userId, newIsReposted, setRepostCountView, repostCountView,  sendEventToWebsocket));
         } else {
             dispatch(openLoginModal());
         }
@@ -387,12 +393,17 @@ export const Post = ({
                 <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
                 <IconButton onClick={sendRepost}>
                     <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
+                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{repostCountView}</Typography>
                 </IconButton>
+                </Tooltip>
+                <Tooltip title={"Views"}>
+                    <IconButton>
+                        <BarChartIcon></BarChartIcon>
+                    </IconButton>
                 </Tooltip>
                 <Tooltip title={like ? "Undo like" : "Like"}>
                 <IconButton onClick={addLikeHandle}>
                     {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
-
                 </IconButton>
                 </Tooltip>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
@@ -407,6 +418,8 @@ export const Post = ({
 };
 
 Post.propTypes = {
+    sendEventToWebsocket:PropTypes.func,
+    repostsCount:PropTypes.number,
     reposted: PropTypes.bool,
     profileImage: PropTypes.string,
     postId: PropTypes.number,

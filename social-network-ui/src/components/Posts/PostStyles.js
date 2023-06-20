@@ -175,8 +175,8 @@ export const userLikeCount = {
 };
 
 export const PostPaper = {
-    width: "200px",
-    marginLeft: "10px",
+    width: "12vw",
+    marginLeft: "70px",
     maxHeight: "70px",
     position: "absolute",
     left: "170px",

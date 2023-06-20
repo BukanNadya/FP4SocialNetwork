@@ -1,9 +1,13 @@
-import React from "react";
+import React,{ useEffect }  from "react";
 import { Post } from "./Post";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { PostDisplayingEmptyPostsText } from "./PostStyles";
 import { useTransition, animated } from 'react-spring';
+import SockJS from "sockjs-client";
+import { apiUrl } from "../../apiConfig";
+
+let stompClient = null;
 
 export const PostsDisplaying = ({ userPosts, isLoading }) => {
     const transitions = useTransition(userPosts, {
@@ -13,6 +17,27 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         keys: post => post.postId,
         config: { duration: 600, delay: 200 },
     });
+
+    useEffect(() => {
+        const socket = new SockJS(`${apiUrl}/websocket`);
+        stompClient = Stomp.over(socket);
+
+        return () => {
+            if (stompClient !== null) {
+                stompClient.disconnect();
+            }
+        };
+    }, []);
+
+
+
+
+    const handleClick = (userId, postId) => {
+        if (stompClient) {
+            stompClient.send("/app/repost", {}, JSON.stringify({ userId: userId, postId: postId }));
+        }
+    };
+
 
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>;
@@ -35,6 +60,8 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
                             postLikes={item.likesCount}
                             userIdWhoSendPost={item.userId}
                             reposted={item.isReposted}
+                            repostsCount={item.repostsCount}
+                            sendEventToWebsocket={handleClick}
                         />
                     </animated.div>
                 ))}

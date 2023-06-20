@@ -20,7 +20,7 @@ import { SidebarLogOutButton } from "../components/NavigationComponents/Navigati
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useTransition, animated } from 'react-spring';
+import { useTransition, animated } from "react-spring";
 
 let stompClient = null;
 
@@ -32,9 +32,9 @@ export function Notifications() {
     const theme = useTheme();
 
     const transitions = useTransition(notifications, {
-        from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
-        enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
-        leave: { opacity: 0, transform: 'translate3d(0,50%,0)' },
+        from: { opacity: 0, transform: "translate3d(0,50%,0)" },
+        enter: { opacity: 1, transform: "translate3d(0%,0%,0)" },
+        leave: { opacity: 0, transform: "translate3d(0,50%,0)" },
         config: { duration: 600, delay: 200 },
     });
 
@@ -166,9 +166,17 @@ export function Notifications() {
 
     }, []);
 
-    const onPrivateMessage = (payload) => {
+    const onPrivateMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
+        console.log(payloadData)
         setNotifications(prevNotifications => [payloadData, ...prevNotifications]);
+        await fetch(`${apiUrl}/api/read_notifications`, {
+            method: "POST",
+            body: JSON.stringify({
+                userId: userId,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
     };
 
     const postDate = (dataTime) => {
@@ -186,10 +194,10 @@ export function Notifications() {
 
     return (
         <List sx={styles.AdaptiveListStyles}>
-            {  isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> :
+            {isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> :
                 notifications.length > 0 ?
                     transitions((style, item) => (
-                        <animated.div  style={{...style, width:"100%"}} key={item.eventId}>
+                        <animated.div style={{ ...style, width: "100%" }} key={item.eventId}>
                             <ListItem
                                 sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                                 onClick={() => {
@@ -197,7 +205,7 @@ export function Notifications() {
                                 }}
                             >
                                 <ListItemAvatar>
-                                    <Avatar alt={item.userName} src={item.userPhoto} />
+                                    <Avatar alt={item.userName} src={item.userPhoto}/>
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={item.userName}
@@ -214,7 +222,7 @@ export function Notifications() {
                         </animated.div>
                     )) : <ListItemText
                         primary={"Here will be your notifications"}
-                    /> }
+                    />}
         </List>
     );
 }
