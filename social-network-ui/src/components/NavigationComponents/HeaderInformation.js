@@ -23,7 +23,7 @@ import {
 } from "./NavigationStyles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
-import Badge from '@mui/material/Badge';
+import Badge from "@mui/material/Badge";
 
 import { Header, HeaderInformationParagraph } from "./NavigationStyles";
 import { useTheme } from "@mui/material/styles";
@@ -495,7 +495,7 @@ export function HeaderInformation() {
     }
 
     return (
-        <AppBar position="fixed" color="primary" sx={Header}>
+        location.pathname === "/messages" ? null : <AppBar position="fixed" color="primary" sx={Header}>
             <Toolbar sx={{ height: "70px" }}>
                 {isXs || isXxs ?
                     (["left"].map((anchor) => (
