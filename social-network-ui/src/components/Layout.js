@@ -450,8 +450,8 @@ export function Layout() {
                                     <div style={ItemWrapperMessage}>
                                         <div style={ItemWrapperContainerMessage}>
                                             <HeaderInformation />
-                                            <div style={OutletContainer}>
-                                                <div style={OutletWrapperMessage}>
+                                            <div style={{...OutletContainer, paddingBottom:"0"}}>
+                                                <div style={{...OutletWrapperMessage, paddingBottom:"0"}}>
                                                     <Outlet />
                                                 </div>
                                             </div>

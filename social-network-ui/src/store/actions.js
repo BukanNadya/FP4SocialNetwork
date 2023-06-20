@@ -249,6 +249,7 @@ export const getComments = (setIsLoadingComments, isCommentOpen, setIsCommentOpe
     };
 };
 
+
 export const fetchLikes = (setLikesIsLoading, setUsersWhoLike, postId) => {
     return async (dispatch) => {
         try {
@@ -358,6 +359,8 @@ export const fetchData = (userId) => {
         }
     };
 };
+
+
 
 export const checkPasswordFetch = (values, userDataState, setErrors) => {
     return async (dispatch) => {
@@ -484,7 +487,7 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                 const response2 = await response.json();
                 console.log(response2);
                 if (response2) {
-                    dispatch(maxPages(3));
+                    dispatch(maxPages(10));
                     dispatch(setMessages(response2));
                     return response2;
                 }

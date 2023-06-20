@@ -1,8 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
 import { apiUrl } from "../../../apiConfig";
+import { Avatar } from "@mui/material";
+import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 
 const messageContainerStyle = {
+    width: "95%",
     boxSizing: "border-box",
     display: "flex",
     padding: "10px",
@@ -26,18 +29,20 @@ const messageContainerStyle = {
   };
   
   const senderStyle = {
-    fontWeight: "bold",
     marginBottom: "5px",
+      fontFamily: "'Lato', sans-serif",
   };
   
   const messageStyle = {
     fontSize: "14px",
+      fontFamily: "'Lato', sans-serif",
   };
 
   const dateStyle = {
     marginLeft: "auto",
     fontSize: "12px",
     color: "#657786",
+      fontFamily: "'Lato', sans-serif",
   };
 
 
@@ -45,15 +50,29 @@ const messageContainerStyle = {
 
 
 export const InboxMessage = ({image, senderName, sender, receiver, message, date, handleClick }) => {
+    const postDate = () => {
+        const date2 = new Date(date);
+        const diffDays = differenceInDays(new Date(), date2);
+
+        if (diffDays < 1) {
+            return formatDistanceToNow(date2, { addSuffix: true });
+        } else if (diffDays < 365) {
+            return format(date2, "MMM d");
+        } else {
+            return format(date2, "MMM d, yyyy");
+        }
+    };
+
   return (
     <div style={messageContainerStyle} onClick={handleClick}>
      {/* <div style={messageContainerStyle}> */}
-      <img src={image} alt="Avatar" style={avatarStyle} />
+        {image?
+      <img src={image} alt="Avatar" style={avatarStyle} /> : <Avatar alt={senderName} src="#" style={avatarStyle}/>}
       <div style={contentStyle}>
         <div style={senderStyle}>{senderName}</div>
         <div style={messageStyle}>{message}</div>
       </div>
-      <div style={dateStyle}>{date}</div>
+      <div style={dateStyle}>{postDate()}</div>
     </div>
   );
 }

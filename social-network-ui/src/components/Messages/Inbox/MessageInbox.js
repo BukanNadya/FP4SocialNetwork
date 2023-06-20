@@ -24,7 +24,7 @@ export function MessageInbox({inboxMessages, handleSelectMessage }){
 
 
     return(
-        <div>
+        <div style={{height:"100vh", marginLeft:"20px"}}>
             {inboxMessages.length > 0 ? (
                 inboxMessages.map((item)=>(
                     <InboxMessage
@@ -45,10 +45,11 @@ export function MessageInbox({inboxMessages, handleSelectMessage }){
                     />
                 ))
             ) : (
-                <>
-                    <div>Немає повідомлень</div>
-                    <Button variant="contained">Написати повідомлення</Button>
-                </>
+                <div style={{display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column", height:"70vh"}}>
+                    <div style={{  fontSize: "1.1rem",
+                        fontFamily: "'Lato', sans-serif",}}>Немає повідомлень, почніть переписку</div>
+                    <Button variant="contained" sx={{marginTop:"20px"}}>Написати повідомлення</Button>
+                </div>
             )}
         </div>
     )

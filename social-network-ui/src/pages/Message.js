@@ -35,13 +35,11 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
 
     const fetchMessages = async () => {
-        const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
+        const response1 = await fetch(`${apiUrl}/api/inbox/66`);
         const userData = await response1.json();
+        console.log(userData)
         setInboxMessages(userData)
-        console.log(userData);
     };
-
-
 
     useEffect(() => {
         console.log(selectedMessage,"selectedMessage");
@@ -74,7 +72,10 @@ export function Message() {
 
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setInboxMessages(prevNotifications => [payloadData, ...prevNotifications]);
+        setInboxMessages(prevNotifications => {
+            const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
+            return [payloadData, ...filteredNotifications];
+        });
     };
 
     useEffect(() => {
@@ -111,17 +112,17 @@ export function Message() {
 
     return (
         <div style={leftBlockAndRightBlockContainer}>
-            <div style={leftBlockInboxAndSearch}>
+            <div style={{...leftBlockInboxAndSearch,  borderRight: "1px solid rgba(0, 0, 0, 0.1)"}}>
                 <MessageSearch/>
-                <div style={inboxContainerStyle}>
-                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}></MessageInbox>
-                    {/*<LoadAllMessages userId={userId} handleSelectMessage={handleSelectMessage}/>*/}
+                <div style={{...inboxContainerStyle}}>
+                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
                 </div>
             </div>
-            <div style={textingContainerWithInputStyle}>
+            <div style={{...textingContainerWithInputStyle, borderRight: "1px solid rgba(0, 0, 0, 0.1)", height:"100vh", maxHeight:"100vh" }}>
                 {selectedMessage === null ? (
-                    <div style={textingConatinerScrollFromTop} ref={textingContainerRef}>
-                        <div>No texting</div>
+                    <div style={{...textingConatinerScrollFromTop, display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}} ref={textingContainerRef}>
+                        <div style={{fontSize: "1.1rem",
+                            fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
                     </div>
                 ) : (
                     <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
