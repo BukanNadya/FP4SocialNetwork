@@ -171,6 +171,7 @@ public class PostServiceImpl implements PostService {
   public Integer incrementViewCount(Integer postId) {
     accumulatedViewCounts.putIfAbsent(postId, 0);
     int viewCount = accumulatedViewCounts.get(postId) + 1;
+    accumulatedViewCounts.put(postId, viewCount);
     if (viewCount % 10 == 0) {
       performBatchUpdate(postId);
     }
@@ -178,7 +179,7 @@ public class PostServiceImpl implements PostService {
   }
 
   // Method to perform update view count for a post by postId
-  public Integer performBatchUpdate(Integer postId) {
+  private Integer performBatchUpdate(Integer postId) {
     Integer viewCount = accumulatedViewCounts.get(postId);
     Post post = postRepository.findById(postId).orElse(null);
     if (post != null) {
@@ -191,7 +192,7 @@ public class PostServiceImpl implements PostService {
 
   /*Method to add view counts to all posts scheduled by time*/
   @Scheduled(fixedRate = 10000)
-  public void performBatchUpdateByTime() {
+  private void performBatchUpdateByTime() {
     for (Map.Entry<Integer, Integer> entry : accumulatedViewCounts.entrySet()) {
       Integer postId = entry.getKey();
       Integer viewCount = entry.getValue();
@@ -208,7 +209,6 @@ public class PostServiceImpl implements PostService {
   public Post findPostByPostId(Integer postId) {
     return postRepository.findPostByPostId(postId);
   }
-
 
 }
 
