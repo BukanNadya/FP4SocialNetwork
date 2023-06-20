@@ -15,9 +15,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -32,6 +38,9 @@ public class PostServiceImpl implements PostService {
   private final RepostRepository repostRepository;
 
   private final ImageHandlingConf imageHandlingConf;
+
+  // Map to store accumulated view counts
+  private Map<Integer, Integer> accumulatedViewCounts = new HashMap<>();
 
   private PostDtoResponse from(Post post, Integer userId) {
     PostDtoResponse postDtoResponse = PostDtoResponse.from(post, userId);
@@ -147,6 +156,52 @@ public class PostServiceImpl implements PostService {
   @Override
   public Integer findLatestPostIdByUserId(Integer userId) {
     return postRepository.findLatestPostByUserId(userId).getPostId();
+  }
+
+  /*Method to add views for received an array of postIds*/
+  @Override
+  public HttpStatus addViews(Integer[] postIdArray) {
+    Arrays.stream(postIdArray).forEach(this::incrementViewCount);
+    return HttpStatus.OK;
+  }
+
+
+  /*Method to increment the view count for a post by postId and
+   call method performBatchUpdate with defined threshold * */
+  public Integer incrementViewCount(Integer postId) {
+    accumulatedViewCounts.putIfAbsent(postId, 0);
+    int viewCount = accumulatedViewCounts.get(postId) + 1;
+    if (viewCount % 10 == 0) {
+      performBatchUpdate(postId);
+    }
+    return viewCount;
+  }
+
+  // Method to perform update view count for a post by postId
+  public Integer performBatchUpdate(Integer postId) {
+    Integer viewCount = accumulatedViewCounts.get(postId);
+    Post post = postRepository.findById(postId).orElse(null);
+    if (post != null) {
+      post.setViewCount(post.getViewCount() + viewCount);
+      postRepository.save(post);
+    }
+    accumulatedViewCounts.remove(postId);
+    return post.getViewCount();
+  }
+
+  /*Method to add view counts to all posts scheduled by time*/
+  @Scheduled(fixedRate = 10000)
+  public void performBatchUpdateByTime() {
+    for (Map.Entry<Integer, Integer> entry : accumulatedViewCounts.entrySet()) {
+      Integer postId = entry.getKey();
+      Integer viewCount = entry.getValue();
+      Post post = postRepository.findById(postId).orElse(null);
+      if (post != null) {
+        post.setViewCount(post.getViewCount() + viewCount);
+        postRepository.save(post);
+      }
+    }
+    accumulatedViewCounts.clear();
   }
 
   @Override

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,8 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,9 +35,7 @@ public class Post {
   @Column(name = "p_id")
   private Integer postId;
 
-  @NotEmpty
   @Size(max = 280, message = "280 symbols required")
-  @Pattern(regexp = "^[\\p{L}\\p{N}\\p{P}\\p{Zs}\\r\\n]{0,280}$", message = "text required")
   @Column(name = "written_text")
   private String writtenText;
 
@@ -53,6 +48,8 @@ public class Post {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
 
+  @Column(name = "view_count")
+  private Integer viewCount;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostComment> postComments;

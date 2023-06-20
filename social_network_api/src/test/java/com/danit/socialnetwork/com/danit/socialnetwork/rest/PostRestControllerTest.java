@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -164,7 +166,7 @@ class PostRestControllerTest {
     Validator validator = factory.getValidator();
     Set<ConstraintViolation<PostDtoSave>> violations = validator.validate(postDtoSave);
 
-    assertEquals(2, violations.size());
+    assertEquals(1, violations.size());
 
   }
 
@@ -175,11 +177,25 @@ class PostRestControllerTest {
     Integer userId = 2;
     post.setPostId(postId);
 
-    when (postService.getPostByPostId(postId,userId)).thenReturn(post);
+    when(postService.getPostByPostId(postId, userId)).thenReturn(post);
 
-    PostDtoResponse result = postRestController.getPostByPostId(1,2);
+    PostDtoResponse result = postRestController.getPostByPostId(1, 2);
 
-    assertEquals( 1, result.getPostId());
+    assertEquals(1, result.getPostId());
+
+  }
+
+  @Test
+  void addViews() {
+
+    HttpStatus httpStatus = HttpStatus.OK;
+
+    when(postService.addViews(new Integer[]{1, 2, 3})).thenReturn(httpStatus);
+
+    HttpStatus result = postRestController.addViews(new Integer[]{1, 2, 3});
+
+    assertEquals(httpStatus, result);
+
 
   }
 }

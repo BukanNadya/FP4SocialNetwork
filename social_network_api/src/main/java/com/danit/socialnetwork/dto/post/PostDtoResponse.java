@@ -28,6 +28,8 @@ public class PostDtoResponse {
   private Integer repostsCount;
   private Boolean isReposted;
 
+  private Integer viewCount;
+
   public PostDtoResponse(Integer postId, String username, String name, String writtenText, String photoFileLink) {
     this.postId = postId;
     this.username = username;
@@ -47,6 +49,7 @@ public class PostDtoResponse {
     tempPostDto.setProfileImageLink(post.getUserPost().getProfileImageUrl());
     tempPostDto.setPhotoFileLink(post.getPhotoFile());
     tempPostDto.setSentDateTime(post.getSentDateTime());
+    tempPostDto.setViewCount(post.getViewCount());
     return tempPostDto;
   }
 
@@ -68,14 +71,15 @@ public class PostDtoResponse {
     postDtoResponse.setSentDateTime(sentDateTime);
     postDtoResponse.setWrittenText((String) result[3]);
     postDtoResponse.setUserId((Integer) result[4]);
-    postDtoResponse.setUsername((String) result[5]);
-    postDtoResponse.setName((String) result[6]);
-    postDtoResponse.setProfileImageLink((String) result[7]);
-    postDtoResponse.setLikesCount(((BigInteger) result[8]).intValue()); // Convert BigInteger to Integer
-    postDtoResponse.setPostCommentsCount(((BigInteger) result[9]).intValue()); // Convert BigInteger to Integer
-    postDtoResponse.setRepostsCount(((BigInteger) result[10]).intValue());
+    postDtoResponse.setViewCount((Integer) result[5]);
+    postDtoResponse.setUsername((String) result[6]);
+    postDtoResponse.setName((String) result[7]);
+    postDtoResponse.setProfileImageLink((String) result[8]);
+    postDtoResponse.setLikesCount(((BigInteger) result[9]).intValue()); // Convert BigInteger to Integer
+    postDtoResponse.setPostCommentsCount(((BigInteger) result[10]).intValue()); // Convert BigInteger to Integer
+    postDtoResponse.setRepostsCount(((BigInteger) result[11]).intValue());
     try {
-      postDtoResponse.setIsReposted((Boolean) result[11].equals("true"));
+      postDtoResponse.setIsReposted((Boolean) result[12].equals("true"));
     } catch (RuntimeException exc) {
       postDtoResponse.setIsReposted(null);
     }

@@ -26,9 +26,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +52,8 @@ public class PostServiceImplTest {
   @Mock
   ImageHandlingConf imageHandlingConf;
 
+  private Map<Integer, Integer> accumulatedViewCounts = new HashMap<>();
+
   @Test
   public void testGetAllPostsFromToFollow() {
 
@@ -58,11 +63,11 @@ public class PostServiceImplTest {
     user.setName("Johny1");
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
-        2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        2, 3, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
         new BigInteger(String.valueOf(1)), false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
-        3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
     int pageSize = 12;
@@ -70,15 +75,14 @@ public class PostServiceImplTest {
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
-
     when(postRepository.findAllPostsFromToFollowOneRequest(user.getUserId(), offset, pageSize)).thenReturn(testList);
 
     List<PostDtoResponse> result = postService.getAllPostsFromToFollowWithNativeQuery(
         user.getUserId(), 0);
     Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
     Assertions.assertEquals(result.get(1).getWrittenText(), objects2[3]);
-    Assertions.assertEquals(result.get(0).getUsername(), objects1[5]);
-    Assertions.assertEquals(result.get(1).getUsername(), objects2[5]);
+    Assertions.assertEquals(result.get(0).getUsername(), objects1[6]);
+    Assertions.assertEquals(result.get(1).getUsername(), objects2[6]);
     Assertions.assertEquals(2, result.toArray().length);
 
   }
@@ -87,11 +91,11 @@ public class PostServiceImplTest {
   public void testGetAllPosts() {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
-        2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        2, 3, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
         new BigInteger(String.valueOf(1)), false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
-        3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
     int pageSize = 12;
@@ -102,7 +106,7 @@ public class PostServiceImplTest {
     when(postRepository.findAll(offset, pageSize)).thenReturn(testList);
     List<PostDtoResponse> result = postService.getAllPosts(0);
     Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
-    Assertions.assertEquals(result.get(1).getName(), objects2[6]);
+    Assertions.assertEquals(result.get(1).getName(), objects2[7]);
     Assertions.assertEquals(2, result.toArray().length);
 
   }
@@ -110,7 +114,7 @@ public class PostServiceImplTest {
   @Test
   public void testSavePost() {
 
-    byte [] photoFileByteArray = new byte[]{49, 48, 58, 50, 52, 58, 50, 54};
+    byte[] photoFileByteArray = new byte[]{49, 48, 58, 50, 52, 58, 50, 54};
 
     PostDtoSave postDtoSave = new PostDtoSave();
     postDtoSave.setUserId(2);
@@ -174,7 +178,7 @@ public class PostServiceImplTest {
     Repost repost = new Repost();
 
     when(postRepository.findAllByUserId(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
-    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
+    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(), userId))
         .thenReturn(Optional.of(repost));
     List<PostDtoResponse> result = postService.getAllOwnPosts(userId, 0);
 
@@ -222,7 +226,7 @@ public class PostServiceImplTest {
     Repost repost = new Repost();
 
     when(postRepository.findAllByUserIdLiked(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
-    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(),userId))
+    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(), userId))
         .thenReturn(Optional.of(repost));
     List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
 
@@ -283,11 +287,11 @@ public class PostServiceImplTest {
   void getAllPostsWithShowingRepostByUserId() {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
-        2, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        2, 3, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
         new BigInteger(String.valueOf(1)), false};
 
     Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
-        3, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
 
@@ -301,8 +305,8 @@ public class PostServiceImplTest {
 
     Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
     Assertions.assertEquals(result.get(1).getWrittenText(), objects2[3]);
-    Assertions.assertEquals(result.get(0).getUsername(), objects1[5]);
-    Assertions.assertEquals(result.get(1).getUsername(), objects2[5]);
+    Assertions.assertEquals(result.get(0).getUsername(), objects1[6]);
+    Assertions.assertEquals(result.get(1).getUsername(), objects2[6]);
     Assertions.assertEquals(2, result.toArray().length);
   }
 
@@ -312,9 +316,17 @@ public class PostServiceImplTest {
     Post post = new Post();
     post.setPostId(2);
 
-    when (postRepository.findById(postId)).thenReturn(Optional.of(post));
+    when(postRepository.findById(postId)).thenReturn(Optional.of(post));
     Post result = postRepository.findById(postId).get();
     Assertions.assertEquals(postId, result.getPostId());
 
   }
+
+
+  @Test
+  void incrementViewCount() {
+    Integer postId = 1;
+    assertEquals(postId, postService.incrementViewCount(postId));
+  }
+
 }

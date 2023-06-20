@@ -19,7 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
   List<Post> findAllPostsFromToFollow(Integer userId, Pageable pageable);
 
   @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME, "
-      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, "
+      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, POSTS.VIEW_COUNT, "
       + "USERS.USERNAME, USERS.NAME, USERS.PROFILE_IMAGE_URL, "
       + "(SELECT COUNT(*) FROM POST_LIKES WHERE POST_LIKES.POST_ID = POSTS.P_ID) AS likesCount, "
       + "(SELECT COUNT(*) FROM POST_COMMENTS WHERE POST_COMMENTS.POST_ID = POSTS.P_ID) AS commentsCount, "
@@ -40,7 +40,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 
   @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME, "
-      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, "
+      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, POSTS.VIEW_COUNT, "
       + "USERS.USERNAME, USERS.NAME, USERS.PROFILE_IMAGE_URL, "
       + "(SELECT COUNT(*) FROM POST_LIKES WHERE POST_LIKES.POST_ID = POSTS.P_ID) AS likesCount, "
       + "(SELECT COUNT(*) FROM POST_COMMENTS WHERE POST_COMMENTS.POST_ID = POSTS.P_ID) AS commentsCount, "
@@ -74,7 +74,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 
   @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME, "
-      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, "
+      + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, POSTS.VIEW_COUNT, "
       + "USERS.USERNAME, USERS.NAME, USERS.PROFILE_IMAGE_URL, "
       + "(SELECT COUNT(*) FROM POST_LIKES WHERE POST_LIKES.POST_ID = POSTS.P_ID) AS likesCount, "
       + "(SELECT COUNT(*) FROM POST_COMMENTS WHERE POST_COMMENTS.POST_ID = POSTS.P_ID) AS commentsCount, "
