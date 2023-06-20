@@ -94,8 +94,6 @@ public class MessageServiceImpl implements MessageService {
     return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
 
-
-
   /*The method finds all incoming and outgoing messages of the user and returns them*/
   @Override
   public List<Message> findMessageByInboxUidOrUserId(DbUser inboxUid, DbUser userId) {

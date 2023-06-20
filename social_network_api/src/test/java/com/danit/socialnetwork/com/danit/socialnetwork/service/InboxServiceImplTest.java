@@ -97,9 +97,6 @@ class InboxServiceImplTest {
     when(inboxRepository.findByInboxUidAndUserId(testUser1, testUser2))
         .thenReturn(Optional.empty());
     when(inboxRepository.save(any(Inbox.class))).thenAnswer(invocation -> invocation.getArgument(0));
-    doReturn(responseTest)
-        .when(mapper)
-        .inboxToInboxDtoResponse(Mockito.any(Inbox.class));
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
@@ -145,9 +142,6 @@ class InboxServiceImplTest {
         .thenReturn(Optional.of(testInboxReceiver));
     when(inboxRepository.save(testInboxSender)).thenReturn(testInboxSender);
     when(inboxRepository.save(testInboxReceiver)).thenReturn(testInboxReceiver);
-    doReturn(responseTest)
-        .when(mapper)
-        .inboxToInboxDtoResponse(Mockito.any(Inbox.class));
 
     List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
 
@@ -219,6 +213,47 @@ class InboxServiceImplTest {
     Assert.assertEquals(Integer.valueOf(3), testFindInbox.get(1).getUserId());
     Assert.assertEquals(Integer.valueOf(4), testFindInbox.get(2).getUserId());
     Assert.assertEquals(Integer.valueOf(5), testFindInbox.get(3).getUserId());
+  }
+
+  @Test
+  void saveNewInbox() {
+
+    DbUser testUser1 = new DbUser();
+    testUser1.setUserId(1);
+    DbUser testUser2 = new DbUser();
+    testUser2.setUserId(2);
+    Message testMessage = new Message();
+    testMessage.setMessageText(null);
+    Inbox testInboxSender = new Inbox();
+    testInboxSender.setInboxUid(testUser1);
+    testInboxSender.setLastMessage(testMessage);
+    testInboxSender.setUserId(testUser2);
+    Inbox testInboxReceiver = new Inbox();
+    testInboxSender.setInboxUid(testUser2);
+    testInboxSender.setLastMessage(testMessage);
+    testInboxSender.setUserId(testUser1);
+    List<Inbox> testInboxes = new ArrayList<>();
+    testInboxes.add(testInboxSender);
+    testInboxes.add(testInboxReceiver);
+
+    InboxDtoResponse responseTest = new InboxDtoResponse();
+    responseTest.setInboxUid(1);
+    responseTest.setUserId(2);
+    responseTest.setMessage(null);
+
+    when(inboxRepository.findByInboxUidAndUserId(testUser1, testUser2))
+        .thenReturn(Optional.empty());
+    when(inboxRepository.save(any(Inbox.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+    List<Inbox> testSaveInboxes = inboxServiceImpl.saveInbox(testUser1, testUser2, testMessage);
+
+    Assert.assertEquals(2, testSaveInboxes.size());
+    Assert.assertEquals(null, testSaveInboxes.get(0).getLastMessage().getMessageText());
+    Assert.assertEquals(null, testSaveInboxes.get(1).getLastMessage().getMessageText());
+    Assert.assertEquals(Optional.of(1), Optional.of(testSaveInboxes.get(0).getInboxUid().getUserId()));
+    Assert.assertEquals(Optional.of(2),  Optional.of(testSaveInboxes.get(1).getInboxUid().getUserId()));
+    Assert.assertEquals(Optional.of(2), Optional.of(testSaveInboxes.get(0).getUserId().getUserId()));
+    Assert.assertEquals(Optional.of(1),  Optional.of(testSaveInboxes.get(1).getUserId().getUserId()));
   }
 
 }

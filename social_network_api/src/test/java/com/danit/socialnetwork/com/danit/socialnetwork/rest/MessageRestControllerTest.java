@@ -136,4 +136,30 @@ class MessageRestControllerTest {
         .andExpect(status().isFound());
   }
 
+  @Test
+  void addInbox() throws Exception {
+    DbUser testUser1 = new DbUser();
+    testUser1.setUserId(1);
+    DbUser testUser2 = new DbUser();
+    testUser2.setUserId(2);
+
+    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
+    request.setInboxUid(1);
+    request.setUserId(2);
+
+    List<InboxDtoResponse> testInboxDtoList = new ArrayList<>();
+    InboxDtoResponse testInboxDto = new InboxDtoResponse();
+    testInboxDto.setInboxUid(1);
+    testInboxDto.setUserId(2);
+    testInboxDtoList.add(testInboxDto);
+    when(inboxService.saveNewInbox(any(InboxParticipantsDtoRequest.class))).thenReturn(testInboxDtoList);
+
+    mockMvc.perform(post("/api/addInbox")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(request)))
+        .andExpect(status().isCreated());
+
+    verify(inboxService).saveNewInbox(request);
+  }
+
 }

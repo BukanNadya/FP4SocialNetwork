@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
@@ -16,4 +17,5 @@ public interface InboxService {
 
   List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid);
 
+  List<InboxDtoResponse> saveNewInbox(InboxParticipantsDtoRequest request);
 }

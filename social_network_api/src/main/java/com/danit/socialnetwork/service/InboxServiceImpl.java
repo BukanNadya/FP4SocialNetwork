@@ -1,14 +1,17 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.InboxRepository;
+import com.danit.socialnetwork.repository.MessageRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -23,14 +26,10 @@ import java.util.Optional;
 public class InboxServiceImpl implements InboxService {
   private final InboxRepository inboxRepository;
   private final UserRepository userRepository;
+  private final MessageRepository messageRepository;
   private final InboxMapperImpl mapper;
   private final SimpMessagingTemplate messagingTemplate;
-
-  private void sendNewMessageToRecipientInbox(InboxDtoResponse newMessage) {
-    messagingTemplate.convertAndSend("/inbox/" + newMessage.getUserId(), newMessage);
-    log.info(String.format("Send new message to the recipient inbox: %s, %s, %s",
-        newMessage.getMessage(), newMessage.getUsername(), newMessage.getCreatedAt()));
-  }
+  private static final String USER_NOT_FOUND = "User with userId %d not found";
 
   /*The method finds inbox by message sender and receiver and returns it*/
   @Override
@@ -51,7 +50,6 @@ public class InboxServiceImpl implements InboxService {
       Inbox inboxR = inboxRepository.save(inboxNewReceiver);
       inboxesSenderAndReceiver.add(inboxS);
       inboxesSenderAndReceiver.add(inboxR);
-      sendNewMessageToRecipientInbox(mapper.inboxToInboxDtoResponse(inboxR));
     } else {
       Optional<Inbox> inboxFromDbRo = inboxRepository.findByInboxUidAndUserId(receiverId, senderId);
       if (inboxFromDbRo.isPresent()) {
@@ -63,7 +61,6 @@ public class InboxServiceImpl implements InboxService {
         Inbox inboxR = inboxRepository.save(inboxFromDbR);
         inboxesSenderAndReceiver.add(inboxS);
         inboxesSenderAndReceiver.add(inboxR);
-        sendNewMessageToRecipientInbox(mapper.inboxToInboxDtoResponse(inboxR));
       }
     }
     return inboxesSenderAndReceiver;
@@ -84,4 +81,30 @@ public class InboxServiceImpl implements InboxService {
     return inboxesDto;
   }
 
+  /*The method saves a new inbox, finds the inbox by sender and returns it*/
+  @SneakyThrows
+  @Override
+  public List<InboxDtoResponse> saveNewInbox(InboxParticipantsDtoRequest request) {
+    Integer senderId = request.getInboxUid();
+    Integer receiverId = request.getUserId();
+    Optional<DbUser> userSender = userRepository.findById(senderId);
+    DbUser userS = null;
+    if (userSender.isPresent()) {
+      userS = userSender.get();
+    } else {
+      throw new UserNotFoundException(String.format(USER_NOT_FOUND, senderId));
+    }
+    Optional<DbUser> userReceiver = userRepository.findById(receiverId);
+    DbUser userR = null;
+    if (userReceiver.isPresent()) {
+      userR = userReceiver.get();
+    } else {
+      throw new UserNotFoundException(String.format(USER_NOT_FOUND, receiverId));
+    }
+    Message message = new Message();
+    messageRepository.save(message);
+    saveInbox(userS, userR, message);
+    Thread.sleep(500);
+    return getInboxesByInboxUid(senderId);
+  }
 }

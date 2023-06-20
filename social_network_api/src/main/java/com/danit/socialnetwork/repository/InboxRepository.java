@@ -15,7 +15,7 @@ public interface InboxRepository extends JpaRepository<Inbox, Integer> {
 
   Optional<Inbox> findByInboxUidAndUserId(DbUser inboxUid, DbUser userId);
 
-  @Query("SELECT i FROM inbox i JOIN FETCH i.userId u WHERE i.inboxUid = :inboxUid ORDER BY i.lastMessage.createdAt DESC")
+  @Query("SELECT i FROM inbox i JOIN FETCH i.userId u WHERE i.inboxUid = :inboxUid ORDER BY i.lastMessage.messageId DESC")
   List<Inbox> getInboxesByInboxUid(@Param("inboxUid") DbUser inboxUid);
 
 }
