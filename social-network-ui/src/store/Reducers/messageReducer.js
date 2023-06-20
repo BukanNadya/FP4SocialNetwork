@@ -1,13 +1,19 @@
 const initialState = {
-    message: [],
+    messages: [],
 };
 
 export const messageReducer = (state = initialState, action) => {
     switch (action.type) {
-        case "SET_ITEM":
+        case "SET_MESSAGES":
+            console.log(action.payload);
             return {
                 ...state,
-                message: action.payload,
+                messages: [...state.messages, ...action.payload],
+            };
+        case "CLEAR_MESSAGES":
+            return {
+                ...state,
+                messages: [],
             };
         default:
             return state;

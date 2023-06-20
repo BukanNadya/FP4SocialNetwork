@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { BlueMessageContainer, TimestampStyled,
   TimestampContainer, BlueMessageTextWrap,
-  BlueMessageTextStyled } from "./MessagesStyles";
+  BlueMessageTextStyled } from "./MessagesStyle";
 
 export const GenerateBlueMessage = ({text, timestampText}) => {
     return (

@@ -7,7 +7,6 @@ export const ContainerStyled = {
     overflowX:"hidden",
 };
 
-
 export const OutletWrapperMessage = {
     width: "1200px",
 };

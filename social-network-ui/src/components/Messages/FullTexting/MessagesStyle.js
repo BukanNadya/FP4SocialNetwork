@@ -53,3 +53,24 @@ export const TimestampStyled = {
     fontSize: "12px",
 }
 
+export const textingContainerScrollFromTop = {
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "scroll",
+    maxHeight: "calc(100vh - 160px)",
+    height: "calc(100vh - 160px)",
+    padding: "20px 20px 0 20px",
+    boxSizing: "border-box",
+  };
+
+export const textingContainerScrollFromBottom = {
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "scroll",
+    maxHeight: "calc(100vh - 160px)",
+    height: "calc(100vh - 160px)",
+    padding: "20px 20px 0 20px",
+    boxSizing: "border-box",
+    flexDirection: "column-reverse", // Доданий стиль для прокрутки знизу вгору
+  };
+

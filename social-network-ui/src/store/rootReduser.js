@@ -12,6 +12,7 @@ import { likeReducer } from "./Reducers/likeReducer";
 import { CommentsReducer } from "./Reducers/CommentsReducer";
 import { messageReducer } from "./Reducers/messageReducer";
 import {messageSearchReducer} from "./Reducers/messageSearchReducer";
+import { PageForMessaging } from "./Reducers/PageForMessaging";
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     forgot: forgotPasswordReducer,
     comments: CommentsReducer,
     messages: messageReducer,
+    pageCountMessage: PageForMessaging,
 });
 
 export default rootReducer;

@@ -44,11 +44,11 @@ const messageContainerStyle = {
 
 
 
-export const InboxMessage = ({senderName, sender, receiver, message, date, handleClick }) => {
+export const InboxMessage = ({image, senderName, sender, receiver, message, date, handleClick }) => {
   return (
     <div style={messageContainerStyle} onClick={handleClick}>
      {/* <div style={messageContainerStyle}> */}
-      <img src="avatar.jpg" alt="Avatar" style={avatarStyle} />
+      <img src={image} alt="Avatar" style={avatarStyle} />
       <div style={contentStyle}>
         <div style={senderStyle}>{senderName}</div>
         <div style={messageStyle}>{message}</div>
@@ -64,6 +64,7 @@ InboxMessage.propTypes = {
   receiver: PropTypes.number.isRequired,
   message: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
 }
 

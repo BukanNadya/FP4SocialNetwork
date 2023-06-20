@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { WhiteMessageContainer, TimestampStyled,
   TimestampContainer, WhiteMessageTextWrap,
-  WhiteMessageTextStyled } from "./MessagesStyles";
+  WhiteMessageTextStyled } from "./MessagesStyle";
 
 export const GenerateWhiteMessage = ({text, timestampText}) => {
     return (
