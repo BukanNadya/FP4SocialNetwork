@@ -15,6 +15,8 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { SvgIconCapybara } from "./SvgIconCapybara";
 import { CloseSvgIcon } from "./CloseSvgIcon";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function BirthdateForm() {
     const userId = useSelector(state => state.userData.userData.userId);
@@ -28,6 +30,93 @@ export function BirthdateForm() {
     function closeBirthdateForm() {
         dispatch(setUserBirthday(true));
     }
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
+        AdaptiveStyledBox: {
+            ...StyledBox,
+            width:"100%"
+        },
+        AdaptiveBirthDateForm:{
+            ...BirthDateForm, width:"300px"
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
+        AdaptiveStyledBox: {
+            ...StyledBox,
+            width:"100%"
+        },
+        AdaptiveBirthDateForm:{
+            ...BirthDateForm, width:"400px"
+        }
+    };
+
+    const smStyles = {
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveBirthDateForm:{
+            ...BirthDateForm, width:"500px"
+        }
+
+    };
+
+    const mdStyles = {
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveBirthDateForm:{
+            ...BirthDateForm, width:"500px"
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px"  },
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveBirthDateForm:{
+            ...BirthDateForm
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveBirthDateForm:{
+            ...BirthDateForm
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
 
     return (
         <Modal
@@ -35,7 +124,7 @@ export function BirthdateForm() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             sx={StyledModal}>
-            <Box sx={StyledBox}>
+            <Box sx={styles.AdaptiveStyledBox}>
                 <CloseSvgIcon closeFunction={closeBirthdateForm}/>
                 <SvgIconCapybara/>
                 <Formik
@@ -71,7 +160,7 @@ export function BirthdateForm() {
                     }}
                 >
                     {(formikProps) => (
-                        <Form onSubmit={formikProps.handleSubmit} style={BirthDateForm}>
+                        <Form onSubmit={formikProps.handleSubmit} style={styles.AdaptiveBirthDateForm}>
                             <Typography component="span" sx={BirthDateParagraph}>Please, enter your
                                 birthdate.</Typography>
                             <Box sx={BirthDateBox}>
@@ -133,7 +222,7 @@ export function BirthdateForm() {
                                 </FormControl>
                             </Box>
                             <Button type="submit"
-                                    variant="contained" sx={StyledBlackButton} fullWidth={true}>Submit</Button>
+                                    variant="contained" sx={styles.AdaptiveStyledBlackButton} fullWidth={true}>Submit</Button>
                         </Form>
                     )}
                 </Formik>

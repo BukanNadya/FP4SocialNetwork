@@ -13,6 +13,8 @@ import * as Yup from "yup";
 import Logo from "../common/icon/Logo";
 import CloseIcon from '../common/icon/CloseIcon';
 import {apiUrl} from "../../apiConfig";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const Choose = ({ id }) => {
     const { setOpenChoose, setOpenAllSet, setOpenForgot } = useModal()
@@ -31,8 +33,111 @@ export const Choose = ({ id }) => {
             setOpenChoose(false),
             setOpenForgot(false)
         }
+
+
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+
+    const xxsStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+            width:"100%"
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
+        AdaptiveFormControl:{...StyledFormControl,  width:"200px"}
+        ,
+        AdaptiveInput:{
+            ...StyledInput, width:"200px"
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+            width:"100%"
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
+        AdaptiveFormControl:{...StyledFormControl,  width:"300px"}
+        ,
+        AdaptiveInput:{
+            ...StyledInput, width:"300px"
+        }
+
+    };
+
+    const smStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+            width:"100%"
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
+        AdaptiveFormControl:{...StyledFormControl,  width:"400px"}
+        ,
+        AdaptiveInput:{
+            ...StyledInput, width:"400px"
+        }
+
+    };
+
+    const mdStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveFormControl:{...StyledFormControl}
+        ,
+        AdaptiveInput:{
+            ...StyledInput
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px"  },
+        AdaptiveFormControl:{...StyledFormControl}
+        ,
+        AdaptiveInput:{
+            ...StyledInput
+        }
+    };
+
+    const xlStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveFormControl:{...StyledFormControl},
+        AdaptiveInput:{
+            ...StyledInput
+        }
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
       return (
-        <Box sx={StyledBox}>
+        <Box sx={styles.AdaptiveStyledBox}>
         <CloseIcon onClick={onclose} />
         <Logo />
         <Typography sx={StyledHeaderModalText} variant="h6" component="h2">
@@ -80,16 +185,16 @@ export const Choose = ({ id }) => {
             }
             }>
             <Form>
-                <FormControl sx={StyledFormControl}>
-                    <Field as={InputFieldWithError} sx={StyledInput} name={name}
+                <FormControl sx={styles.AdaptiveFormControl}>
+                    <Field as={InputFieldWithError} sx={styles.AdaptiveInput} name={name}
                         id={name}
                         label={placeholder} disabled={isSubmitting} type={inputType} />
-                    <Field as={InputFieldWithError} sx={StyledInput} name={secondName}
+                    <Field as={InputFieldWithError} sx={styles.AdaptiveInput} name={secondName}
                         id={secondName}
                         label={secondPlaceholder} disabled={isSubmitting} type={inputType} />
                     <Button type={typeButton}
                         variant="contained" disabled={isSubmitting}
-                        sx={{ ...StyledBlackButton, marginTop: "20px" }}
+                        sx={styles.AdaptiveStyledBlackButton}
                         fullWidth={true}>{buttonText}</Button>
                 </FormControl>
             </Form>

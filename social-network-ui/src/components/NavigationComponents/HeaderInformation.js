@@ -359,9 +359,6 @@ export function HeaderInformation() {
     };
 
     const getRouteName = (path) => {
-        if (path.startsWith("/post/")) {
-            return "Post";
-        }
         switch (path) {
             case "/home":
                 return "Home";
@@ -469,34 +466,31 @@ export function HeaderInformation() {
         ];
 
         return components.map((component, index) => {
-            if (component.to === "/notifications" && component.badgeContent > 0) {
-                return (
-                    <Link to={component.to} key={index} variant="contained" style={{ textDecoration: "none", }}>
-                        <Fab variant="extended" onClick={component.onClick}
-                             sx={{ ...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: "20px" }}>
+            const handleClick = () => {
+                if (component.onClick) {
+                    component.onClick();
+                }
+                closeDrawer();
+            };
+
+            return (
+                <Link to={component.to} key={index} style={{ textDecoration: "none", }}>
+                    <Fab variant="extended"
+                         onClick={handleClick}
+                         sx={{ ...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: "20px" }}>
+                        {component.to === "/notifications" && component.badgeContent > 0 ? (
                             <Badge badgeContent={component.badgeContent} color={"primary"}>
                                 {component.svgIcon}
                             </Badge>
-                            <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
-                                {component.text}
-                            </Typography>
-                        </Fab>
-                    </Link>
-                );
-            } else {
-                return (
-                    <Link to={component.to} key={index} variant="contained" style={{ textDecoration: "none", }}>
-                        <Fab variant="extended"
-                             sx={{ ...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: "20px" }}
-                             onClick={component.onClick ? component.onClick : closeDrawer}>
-                            {component.svgIcon}
-                            <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
-                                {component.text}
-                            </Typography>
-                        </Fab>
-                    </Link>
-                );
-            }
+                        ) : (
+                            component.svgIcon
+                        )}
+                        <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
+                            {component.text}
+                        </Typography>
+                    </Fab>
+                </Link>
+            );
         });
     }
 
@@ -509,7 +503,7 @@ export function HeaderInformation() {
                             <Button sx={{ padding: 0 }} onClick={toggleDrawer(anchor, true)}><MenuIcon/></Button>
                             <SwipeableDrawer
                                 anchor={anchor}
-                                swipeAreaWidth={"0px"}
+                                swipeAreaWidth={0}
                                 open={state[anchor]}
                                 onClose={toggleDrawer(anchor, false)}
                                 onOpen={toggleDrawer(anchor, true)}

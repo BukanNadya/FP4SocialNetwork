@@ -18,6 +18,8 @@ import { ToggleButton } from "../components/Buttons/ToggleButton/ToggleButton";
 import { apiUrl } from "../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useTransition, animated } from 'react-spring';
 
 export function SearchPage() {
     const theme = useTheme();
@@ -27,13 +29,21 @@ export function SearchPage() {
     const idUser = useSelector(state => state.userData.userData.userId);
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
 
+    const transitions = useTransition(mostPopularPeople, {
+        from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
+        enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
+        leave: { opacity: 0, transform: 'translate3d(0,50%,0)' },
+        keys: item => item.userId,
+        config: { duration: 600, delay: 200 },
+    });
+
     const toAnotherUserPage = (userIdWhoSendPost) => {
         dispatch(setSearchId(String(userIdWhoSendPost)));
         navigate("/view");
     };
     const userFollowingData = async () => {
         try {
-            // setIsLoading(true);
+            setIsLoading(true);
             const response = await fetch(`${apiUrl}/api/following/${idUser}`);
             const followData = await response.json();
             const followArr = followData.map(el => String(el.userId));
@@ -41,7 +51,7 @@ export function SearchPage() {
         } catch (error) {
             console.error(error);
         } finally {
-            // setIsLoading(false);
+            setIsLoading(false);
         }
     };
     useEffect(() => {
@@ -212,16 +222,23 @@ export function SearchPage() {
         styles = xxsStyles;
     }
     return (
-        <div>
+        <div style={{
+            display:"flex",
+            flexDirection:"column",
+            alignItems:"center",
+            justifyContent:"center",
+            width:"100%"
+        }}>
             <div style={{ width: "580px", paddingRight: "40px" }}>
                 <Search/>
             </div>
-            <div style={{ marginTop: "30px" }}>
+            {isLoading ? <CircularProgress sx={{ marginTop: "20%",  }}/>  : <div style={{ marginTop: "30px", width:"100%" }}>
                 {mostPopularPeople.length > 0 ?
                     <ul style={styles.AdaptiveElementUl}>
-                        {mostPopularPeople.map((user, index) => (
-                            <li key={user.userId} style={{
+                        {transitions((style, user) => (
+                            <animated.li key={user.userId} style={{
                                 ...styles.ElementLiAdaptiveStyles,
+                                ...style,
                             }}>
                                 {user.profileImageLink ?
                                     <img src={user.profileImageLink}
@@ -254,11 +271,11 @@ export function SearchPage() {
                                     },
                                 }}>You</Button> : <ToggleButton href="#" width={styles.FollowButtonWidth} height="30px"
                                                                 searchId={`${user.userId}`}/>}
-                            </li>
+                            </animated.li>
                         ))}
                     </ul> : <Typography sx={emptyArrParagraph}>we have no ideas to show</Typography>
                 }
-            </div>
+            </div>}
         </div>
     );
 }

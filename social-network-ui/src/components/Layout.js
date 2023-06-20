@@ -77,7 +77,7 @@ export function Layout() {
             flexDirection: "column",
             width: "100%",
         },
-        MaxWidthAdaptive: true,
+        MaxWidthAdaptive: "true",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -127,7 +127,7 @@ export function Layout() {
             flexDirection: "column",
             width: "100%",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -177,7 +177,7 @@ export function Layout() {
             flexDirection: "column",
             width: "470px",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -228,7 +228,7 @@ export function Layout() {
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive: true,
+        MaxWidthAdaptive: "true",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -279,7 +279,7 @@ export function Layout() {
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",
@@ -330,7 +330,7 @@ export function Layout() {
             flexDirection: "column",
             width: "600px",
         },
-        MaxWidthAdaptive: false,
+        MaxWidthAdaptive: "false",
         AdaptiveContainerStyled: {
             padding: "0!important",
             display: "flex",

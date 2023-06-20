@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "show-report": "playwright show-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "proxy": "http://localhost:3000",
   "devDependencies": {
     "@playwright/test": "^1.35.1"
   }

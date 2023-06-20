@@ -371,7 +371,7 @@ export function HomeScreen() {
     const handlePostSubmit = async (values, setSubmitting) => {
         if (values.postText.trim() !== "" || postImage) {
             setSubmitting(true);
-
+    console.log(values)
             let photoFileByteArray = [];
             if (postImage) {
                 const reader = new FileReader();

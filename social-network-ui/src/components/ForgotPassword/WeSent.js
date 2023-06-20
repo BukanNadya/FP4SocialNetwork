@@ -14,6 +14,9 @@ import CloseIcon from '../common/icon/CloseIcon';
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import {apiUrl} from "../../apiConfig";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { StyledWhiteButton } from "../LoginModal/loginModalStyles";
 
 export const WeSent = ({ id }) => {
     const email = useSelector(state => state.forgot.forgotPasswordEmail)
@@ -33,8 +36,93 @@ export const WeSent = ({ id }) => {
         setOpenForgot(false)
     }
 
+    const theme = useTheme();
+
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+    const xxsStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox,
+            width:"100%"
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" , width: "70%" },
+        AdaptiveStyledWhiteButton:{ ...StyledWhiteButton, marginTop: "20px", width: "70%" },
+        styledField: { width: "100%" }
+    };
+
+    const xsStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox
+            ,
+            width:"100%"
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px", width: "70%"  },
+        AdaptiveStyledWhiteButton:{ ...StyledWhiteButton, marginTop: "20px", width: "70%" },
+        styledField: { width: "100%" }
+    };
+
+    const smStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox
+            ,
+            width:"100%"
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px", width: "70%"  },
+        AdaptiveStyledWhiteButton:{ ...StyledWhiteButton, marginTop: "20px", width: "70%" },
+        styledField: { width: "400px" }
+    };
+
+    const mdStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox
+            ,
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveStyledWhiteButton:{ ...StyledWhiteButton, marginTop: "20px", width: "70%" },
+        styledField: { width: "400px" }
+    };
+
+    const lgStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveStyledWhiteButton:{ ...StyledWhiteButton, marginTop: "20px" },
+        styledField: { width: "400px" }
+    };
+
+    const xlStyles = {
+        AdaptiveStyledBox: {
+            ...StyledBox
+        },
+        AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
+        AdaptiveStyledWhiteButton:{ ...StyledWhiteButton, marginTop: "20px" },
+        styledField: { width: "400px" }
+
+    };
+
+    let styles;
+    if (isXl) {
+        styles = xlStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
+    }
+
     return (
-        <Box sx={StyledBox}>
+        <Box sx={styles.AdaptiveStyledBox}>
         <CloseIcon onClick={onclose} />
         <Logo />
         <Typography sx={StyledHeaderModalText} variant="h6" component="h2">
@@ -77,12 +165,12 @@ export const WeSent = ({ id }) => {
             }}>
                 <Form>
                     <FormControl sx={StyledFormControl}>
-                        <Field as={InputFieldWithError} sx={{ width: "400px" }} name={name}
+                        <Field as={InputFieldWithError} sx={styles.styledField} name={name}
                             id={name}
                             label={placeholder} disabled={isSubmitting} type={inputType} />
                         <Button type={typeButton}
                             variant="contained" disabled={isSubmitting}
-                            sx={{ ...StyledBlackButton, marginTop: "20px" }}
+                            sx={styles.AdaptiveStyledBlackButton}
                             fullWidth={true}>{buttonText}</Button>
                     </FormControl>
                 </Form>

@@ -35,7 +35,6 @@ export function Notifications() {
         from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
         enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
         leave: { opacity: 0, transform: 'translate3d(0,50%,0)' },
-        keys: post => post.postId,
         config: { duration: 600, delay: 200 },
     });
 
@@ -58,7 +57,7 @@ export function Notifications() {
                     headers: { "Content-Type": "application/json" }
                 });
                 let notificationData = await notificationInformation.json();
-                setNotifications(notificationData);
+                setNotifications(notificationData.reverse());
             } finally {
                 setIsLoading(false);
             }
@@ -82,7 +81,6 @@ export function Notifications() {
     };
 
     const xsStyles = {
-
         AdaptiveListStyles: {
             width: "100vw",
             display: "flex",
@@ -191,7 +189,7 @@ export function Notifications() {
             {  isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> :
                 notifications.length > 0 ?
                     transitions((style, item) => (
-                        <animated.div  style={{width:"100%"}} key={item.eventId}>
+                        <animated.div  style={{...style, width:"100%"}} key={item.eventId}>
                             <ListItem
                                 sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                                 onClick={() => {
