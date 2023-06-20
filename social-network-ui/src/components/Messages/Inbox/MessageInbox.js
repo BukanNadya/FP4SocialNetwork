@@ -55,6 +55,6 @@ export function MessageInbox({inboxMessages, handleSelectMessage }){
 }
 
 MessageInbox.propTypes = {
-    inboxMessages: PropTypes.array,
+    inboxMessages: PropTypes.any,
     handleSelectMessage:PropTypes.func
 };

@@ -153,18 +153,8 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={(event) => {
                                             event.preventDefault();
-                                            const fetchPostTexting = async () => {
-                                                const response = await fetch(`${apiUrl}/api/addMessage`, {
-                                                    method: "POST",
-                                                    body: JSON.stringify({
-                                                        inboxUid: selectedMessage.userId,
-                                                        userId: selectedMessage.inboxUid,
-                                                        writtenMessage: inputValue,
-                                                    }),
-                                                    headers: { "Content-Type": "application/json" }
-                                                });
-                                            };
-                                            fetchPostTexting();
+                                            stompClient.send("/app/addMessage", {}, JSON.stringify({ userId: userId, inboxUid: selectedMessage.inboxUid, writtenMessage: inputValue }));
+                                            console.log(userId, selectedMessage.inboxUid, inputValue)
                                             setInputValue("");
                                         }}
                                     />
