@@ -13,6 +13,7 @@ import {
     List,
     SwipeableDrawer, SvgIcon, Fab
 } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
     SidebarBox,
     SidebarFab,
@@ -28,15 +29,17 @@ import Badge from "@mui/material/Badge";
 import { Header, HeaderInformationParagraph } from "./NavigationStyles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { setUserToken } from "../../store/actions";
+import { setClickedInboxFalse, setUserToken } from "../../store/actions";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { useEffect } from "react";
 import SockJS from "sockjs-client";
 import { apiUrl } from "../../apiConfig";
 import { over } from "stompjs";
+import { ArrowBack } from "@mui/icons-material";
 
 export function HeaderInformation() {
     const [notificationCount, setNotificationCount] = useState(0);
+    const clicked = useSelector((state) => state.inboxOrTexting.click);
     const location = useLocation();
     const dispatch = useDispatch();
     const { pathname } = location;
@@ -558,7 +561,12 @@ export function HeaderInformation() {
                         </React.Fragment>
                     ))) : (null)}
                 <Typography variant="h5" component="div" sx={HeaderInformationParagraph}>
-                    {getRouteName(pathname)}
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between",}}>{location.pathname === "/messages" && clicked && !isXl && !isMd ? (
+                        <ArrowBack sx={{...SvgIconStyles, marginRight: "15px"}} onClick={() => {dispatch(setClickedInboxFalse())}}/>
+                        ) : (
+                            null
+                        )}
+                    {getRouteName(pathname)}</div>
                 </Typography>
             </Toolbar>
         </AppBar>

@@ -14,8 +14,11 @@ import {
 import {InboxMessage} from "./InboxMessage";
 import { Post } from "../../Posts/Post";
 import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTransition, animated } from 'react-spring';
 import { setMessages, setPageForMessage, setPageZeroForMessaging, fetchTextsByPage } from "../../../store/actions";
+import { setClickedInboxTrue } from "../../../store/actions";
 
 
 export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessage }){
@@ -29,13 +32,20 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
 
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
+    const theme = useTheme();
 
+    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
+    const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+    const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
 
     return(
         <div style={{height:"100vh", marginLeft:"20px"}}>
             {inboxMessages.length > 0 ? (
-                <div style={{height:"100vh", marginLeft:"20px"}}>
+                <div style={{height:"100vh"}}>
                     {transitions((style, item) => (
                         <animated.div style={style} key={item.createdAt}>
                             <InboxMessage
@@ -53,6 +63,9 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
                                         dispatch(setPageZeroForMessaging());
                                         console.log(item.inboxUid);
                                         dispatch(fetchTextsByPage(item.userId, userId, 0));
+                                    }
+                                    if (!isXl && !isLg && !isMd ){
+                                        dispatch(setClickedInboxTrue());
                                     }
                                 }}
                             />

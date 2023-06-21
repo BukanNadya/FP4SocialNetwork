@@ -13,6 +13,7 @@ import { CommentsReducer } from "./Reducers/CommentsReducer";
 import { messageReducer } from "./Reducers/messageReducer";
 import {messageSearchReducer} from "./Reducers/messageSearchReducer";
 import { PageForMessaging } from "./Reducers/PageForMessaging";
+import { inboxClickReducer } from "./Reducers/inboxClickReducer";
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     comments: CommentsReducer,
     messages: messageReducer,
     pageCountMessage: PageForMessaging,
+    inboxOrTexting: inboxClickReducer,
 });
 
 export default rootReducer;

@@ -578,6 +578,18 @@ export const addMessageFromWebsocket=(message)=>{
     }
 }
 
+export const setClickedInboxTrue = () => {
+    return {
+        type: 'SET_CLICK_INBOX_TRUE',
+    }
+}
+
+export const setClickedInboxFalse = () => {
+    return {
+        type: 'SET_CLICK_INBOX_FALSE',
+    }
+}
+
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
     payload: posts

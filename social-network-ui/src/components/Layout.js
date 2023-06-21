@@ -115,7 +115,6 @@ export function Layout() {
             position: "relative",
             width: "100%",
             display: "flex",
-            paddingBottom: "70px",
         }
     };
 
@@ -165,7 +164,6 @@ export function Layout() {
             position: "relative",
             width: "100%",
             display: "flex",
-            paddingBottom: "70px",
         }
     };
 
@@ -216,7 +214,6 @@ export function Layout() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "70px",
         }
     };
 
@@ -267,7 +264,6 @@ export function Layout() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "70px",
         }
     };
 
@@ -318,7 +314,6 @@ export function Layout() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "70px",
         },
         AdaptiveItemWrapperMessage: {
             ...ItemWrapperMessage,
@@ -380,7 +375,6 @@ export function Layout() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "70px",
         },
         AdaptiveItemWrapperMessage: {
             ...ItemWrapperMessage,
@@ -443,7 +437,6 @@ export function Layout() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingBottom: "70px",
         },
         AdaptiveItemWrapperMessage: {
             ...ItemWrapperMessage,

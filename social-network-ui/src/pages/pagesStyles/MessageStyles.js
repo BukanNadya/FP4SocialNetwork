@@ -1,4 +1,5 @@
   export const leftBlockAndRightBlockContainer = {
+    borderTop: "1px solid rgba(0, 0, 0, 0.1)",
     display: "flex",
     width: "900px"
   };
@@ -23,7 +24,6 @@
     display: "flex",
     flexDirection: "column",
     boxSizing: "border-box",
-    borderTop: "1px solid rgba(0, 0, 0, 0.1)",
     maxHeight: "calc(100vh - 120px)",
     height: "calc(100vh - 120px)",
     width: "50%",

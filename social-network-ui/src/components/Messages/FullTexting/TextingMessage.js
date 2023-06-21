@@ -27,7 +27,7 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
     };
     const formattedDate = date.toLocaleDateString('en-US', options);
 
-    if (parseInt(item.inboxUid) === parseInt(userId)) {
+    if (parseInt(item.userId) === parseInt(userId)) {
       let timestamp = item.createdAt;
       let parts = timestamp.split("T");
       let key = parts[1]+ "_" + index;;
