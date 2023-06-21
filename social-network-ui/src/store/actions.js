@@ -569,6 +569,13 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
     }
 };
 
+export const addMessageFromWebsocket=(message)=>{
+    return {
+        type: "ADD_ONE_MESSAGE_FROM_WEBSOCKET",
+        payload: message,
+    }
+}
+
 export const setProfilePosts = (posts) => ({
     type: SET_PROFILE_POSTS,
     payload: posts

@@ -8,7 +8,14 @@ import PropTypes from "prop-types";
 export function TextingMessage({ sender, receiver, selectedMessage }) {
   const userId = useSelector((state) => state.userData.userData.userId);
 
-  const formattedMessages = selectedMessage.map((item) => {
+  const sortedMessages = selectedMessage.sort((a, b) => {
+    return new Date(a.createdAt) - new Date(b.createdAt);
+  });
+
+
+  console.log(selectedMessage)
+
+  const formattedMessages = sortedMessages.map((item, index) => {
     const dateString = item.createdAt;
     const date = new Date(dateString);
     const options = {
@@ -21,17 +28,24 @@ export function TextingMessage({ sender, receiver, selectedMessage }) {
     const formattedDate = date.toLocaleDateString('en-US', options);
 
     if (parseInt(item.userId) === parseInt(userId)) {
+      let timestamp = item.createdAt;
+      let parts = timestamp.split("T");
+      let key = parts[1]+ "_" + index;;
       return (
         <GenerateBlueMessage
-          key={Math.floor(Math.random() * 10000)}
+          key={key}
           text={item.message}
           timestampText={formattedDate}
         />
       );
     } else {
+      let timestamp = item.createdAt;
+      let parts = timestamp.split("T");
+      let key = parts[1]+ "_" + index;;
       return (
+
         <GenerateWhiteMessage
-          key={Math.floor(Math.random() * 100)}
+            key={key}
           text={item.message}
           timestampText={formattedDate}
         />

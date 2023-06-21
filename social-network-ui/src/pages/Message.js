@@ -14,10 +14,11 @@ import {
     textingConatinerScrollFromTop
 } from "./pagesStyles/MessageStyles";
 import PropTypes from "prop-types";
-import { fetchTextsByPage } from "../store/actions";
+import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import CircularProgress from "@mui/material/CircularProgress";
 
 let stompClient = null;
 
@@ -33,18 +34,24 @@ export function Message() {
     const [inputValue, setInputValue] = useState("");
     const textingContainerRef = useRef(null);
     const [inboxMessages, setInboxMessages] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchMessages = async () => {
-        const response1 = await fetch(`${apiUrl}/api/inbox/66`);
-        const userData = await response1.json();
-        console.log(userData)
-        setInboxMessages(userData)
+        try{
+            setIsLoading(true)
+            const response1 = await fetch(`${apiUrl}/api/inbox/${userId}`);
+            const userData = await response1.json();
+            console.log(userData);
+            setInboxMessages(userData);
+        }finally {
+            setIsLoading(false)
+        }
+
     };
 
     useEffect(() => {
-        console.log(selectedMessage,"selectedMessage");
+        console.log(selectedMessage, "selectedMessage");
     }, [selectedMessage]);
-
 
     useEffect(() => {
         fetchMessages();
@@ -74,6 +81,8 @@ export function Message() {
         let payloadData = JSON.parse(payload.body);
         setInboxMessages(prevNotifications => {
             const filteredNotifications = prevNotifications.filter(notification => notification.inboxId !== payloadData.inboxId);
+            console.log(payloadData)
+            dispatch(addMessageFromWebsocket(payloadData));
             return [payloadData, ...filteredNotifications];
         });
     };
@@ -112,17 +121,31 @@ export function Message() {
 
     return (
         <div style={leftBlockAndRightBlockContainer}>
-            <div style={{...leftBlockInboxAndSearch,  borderRight: "1px solid rgba(0, 0, 0, 0.1)"}}>
+            <div style={{ ...leftBlockInboxAndSearch, borderRight: "1px solid rgba(0, 0, 0, 0.1)" }}>
                 <MessageSearch/>
-                <div style={{...inboxContainerStyle}}>
-                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+                <div style={{ ...inboxContainerStyle }}>
+                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"45%" }}/>  : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage} selectedMessage={selectedMessage}/>}
                 </div>
             </div>
-            <div style={{...textingContainerWithInputStyle, borderRight: "1px solid rgba(0, 0, 0, 0.1)", height:"100vh", maxHeight:"100vh" }}>
+            <div style={{
+                ...textingContainerWithInputStyle,
+                borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+                height: "100vh",
+                maxHeight: "100vh"
+            }}>
                 {selectedMessage === null ? (
-                    <div style={{...textingConatinerScrollFromTop, display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}} ref={textingContainerRef}>
-                        <div style={{fontSize: "1.1rem",
-                            fontFamily: "'Lato', sans-serif"}}>Почніть переписку</div>
+                    <div style={{
+                        ...textingConatinerScrollFromTop,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh"
+                    }} ref={textingContainerRef}>
+                        <div style={{
+                            fontSize: "1.1rem",
+                            fontFamily: "'Lato', sans-serif"
+                        }}>Почніть переписку
+                        </div>
                     </div>
                 ) : (
                     <div onScroll={handleScroll} style={textingConatinerScrollFromBottom} ref={textingContainerRef}>
@@ -152,10 +175,23 @@ export function Message() {
                                 endAdornment: (
                                     <SendIcon
                                         style={{ cursor: "pointer", }}
-                                        onClick={(event) => {
+                                        onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({ userId: userId, inboxUid: selectedMessage.inboxUid, writtenMessage: inputValue }));
-                                            console.log(userId, selectedMessage.inboxUid, inputValue)
+                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                                userId: selectedMessage.userId,
+                                                inboxUid: selectedMessage.inboxUid,
+                                                writtenMessage: inputValue,
+                                            }));
+                                            await fetch(`${apiUrl}/api/addMessage`, {
+                                                method: "POST",
+                                                body: JSON.stringify({
+                                                    inboxUid: selectedMessage.inboxUid,
+                                                    userId: selectedMessage.userId,
+                                                    writtenMessage: inputValue
+                                                }),
+                                                headers: { "Content-Type": "application/json" },
+                                            });
+                                            console.log(selectedMessage.userId, selectedMessage.inboxUid, inputValue);
                                             setInputValue("");
                                         }}
                                     />
