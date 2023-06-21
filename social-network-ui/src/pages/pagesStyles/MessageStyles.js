@@ -1,4 +1,4 @@
-export const leftBlockAndRightBlockContainer = {
+  export const leftBlockAndRightBlockContainer = {
     display: "flex",
   };
   
@@ -6,8 +6,9 @@ export const leftBlockAndRightBlockContainer = {
     display: "flex",
     flexDirection: "column",
     boxSizing: "border-box",
-    width: "520px",
+    width: "50%",
     height:"100vh",
+    borderRight: "1px solid rgba(0, 0, 0, 0.1)",
   };
   
   export const inboxContainerStyle = {

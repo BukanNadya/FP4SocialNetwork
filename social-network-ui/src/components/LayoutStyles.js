@@ -8,7 +8,7 @@ export const ContainerStyled = {
 };
 
 export const OutletWrapperMessage = {
-    width: "1200px",
+    width: "100%",
 };
 
 export const ContentContainer = {
@@ -35,7 +35,6 @@ export const OutletContainer = {
     width: "100%",
     display: "flex",
     justifyContent: "center",
-    paddingBottom: "70px",
 };
 
 export const ItemWrapper = {
@@ -49,18 +48,13 @@ export const ItemWrapper = {
 export const ItemWrapperMessage = {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "1200px",
+    maxWidth: "100%",
     position: "relative",
     alignItems: "center",
-};
-
-export const ItemWrapperContainer = {
-
 };
 
 export const ItemWrapperContainerMessage = {
     position: "relative",
     display: "flex",
     flexDirection: "column",
-    width: "1200px",
 };
