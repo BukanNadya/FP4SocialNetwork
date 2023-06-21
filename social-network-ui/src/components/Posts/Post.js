@@ -5,10 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 
-import { Card, CardContent, Avatar, Typography, CardActions, IconButton, Paper, Box, Button , Tooltip} from "@mui/material";
+import {
+    Card,
+    CardContent,
+    Avatar,
+    Typography,
+    CardActions,
+    IconButton,
+    Paper,
+    Box,
+    Button,
+    Tooltip
+} from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
-import BarChartIcon from '@mui/icons-material/BarChart';
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 import {
     PostCard,
@@ -40,8 +51,6 @@ import { UsersLikes } from "./UsersLikes";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-
-
 export const Post = ({
                          userName,
                          name,
@@ -55,7 +64,9 @@ export const Post = ({
                          profileImage,
                          reposted,
                          repostsCount,
-                         sendEventToWebsocket
+                         sendEventToWebsocket,
+                         viewCount,
+                         handleLikesClick
                      }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
@@ -72,7 +83,7 @@ export const Post = ({
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
-    const[repostCountView, setRepostCountView] = useState(repostsCount)
+    const [repostCountView, setRepostCountView] = useState(repostsCount);
 
     const theme = useTheme();
 
@@ -84,10 +95,11 @@ export const Post = ({
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
     const xxsStyles = {
-        AdaptiveUserPhoto:{
+        AdaptiveUserPhoto: {
             width: "100%",
         },
-        AdaptivePostCard:{    width: "100vw",
+        AdaptivePostCard: {
+            width: "100vw",
             maxWidth: "100vw",
             borderRadius: 0,
             mb: 1,
@@ -97,26 +109,27 @@ export const Post = ({
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
             overflowAnchor: "none"
         },
-        AdaptiveUserPhotoWrapper:{
+        AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
             margin: "10px auto",
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
         },
-        AdaptiveText:{
-            display:"none",
+        AdaptiveText: {
+            display: "none",
         },
-        AdaptiveSmallText:{
-            ...PostText, padding:"0 20px", marginTop:"10px"
+        AdaptiveSmallText: {
+            ...PostText, padding: "0 20px", marginTop: "10px"
         }
     };
 
     const xsStyles = {
-        AdaptiveUserPhoto:{
+        AdaptiveUserPhoto: {
             width: "100%",
         },
-        AdaptivePostCard:{    width: "100vw",
+        AdaptivePostCard: {
+            width: "100vw",
             maxWidth: "100vw",
             borderRadius: 0,
             mb: 1,
@@ -126,27 +139,28 @@ export const Post = ({
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
             overflowAnchor: "none"
         },
-        AdaptiveUserPhotoWrapper:{
+        AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
             margin: "10px auto",
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
         },
-        AdaptiveText:{
-            display:"none",
+        AdaptiveText: {
+            display: "none",
         },
-        AdaptiveSmallText:{
-            ...PostText, padding:"0 20px",  marginTop:"10px"
+        AdaptiveSmallText: {
+            ...PostText, padding: "0 20px", marginTop: "10px"
         }
     };
 
     const smStyles = {
-        AdaptiveUserPhoto:{
+        AdaptiveUserPhoto: {
             width: "430px",
-            marginRight:"130px",
+            marginRight: "130px",
         },
-        AdaptivePostCard:{    width: "470px",
+        AdaptivePostCard: {
+            width: "470px",
             maxWidth: "100%",
             borderRadius: 0,
             mb: 1,
@@ -156,7 +170,7 @@ export const Post = ({
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
             overflowAnchor: "none"
         },
-        AdaptiveUserPhotoWrapper:{
+        AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
             width: "600px",
             margin: "10px auto",
@@ -164,20 +178,21 @@ export const Post = ({
             justifyContent: "center",
             alignItems: "center"
         },
-        AdaptiveText:{
+        AdaptiveText: {
             ...PostText
         },
-        AdaptiveSmallText:{
-            display:"none"
+        AdaptiveSmallText: {
+            display: "none"
         }
     };
 
     const mdStyles = {
-        AdaptiveUserPhoto:{
+        AdaptiveUserPhoto: {
             width: "450px",
             margin: "0 auto"
         },
-        AdaptivePostCard:{    width: "600px",
+        AdaptivePostCard: {
+            width: "600px",
             maxWidth: "100%",
             borderRadius: 0,
             mb: 1,
@@ -187,7 +202,7 @@ export const Post = ({
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
             overflowAnchor: "none"
         },
-        AdaptiveUserPhotoWrapper:{
+        AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
             width: "600px",
             margin: "10px auto",
@@ -195,20 +210,21 @@ export const Post = ({
             justifyContent: "center",
             alignItems: "center"
         },
-        AdaptiveText:{
+        AdaptiveText: {
             ...PostText
         },
-        AdaptiveSmallText:{
-            display:"none"
+        AdaptiveSmallText: {
+            display: "none"
         }
     };
 
     const lgStyles = {
-        AdaptiveUserPhoto:{
+        AdaptiveUserPhoto: {
             width: "450px",
             margin: "0 auto"
         },
-        AdaptivePostCard:{    width: "600px",
+        AdaptivePostCard: {
+            width: "600px",
             maxWidth: "100%",
             borderRadius: 0,
             mb: 1,
@@ -218,7 +234,7 @@ export const Post = ({
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
             overflowAnchor: "none"
         },
-        AdaptiveUserPhotoWrapper:{
+        AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
             width: "600px",
             margin: "10px auto",
@@ -226,20 +242,21 @@ export const Post = ({
             justifyContent: "center",
             alignItems: "center"
         },
-        AdaptiveText:{
+        AdaptiveText: {
             ...PostText
         },
-        AdaptiveSmallText:{
-            display:"none"
+        AdaptiveSmallText: {
+            display: "none"
         }
     };
 
     const xlStyles = {
-        AdaptiveUserPhoto:{
+        AdaptiveUserPhoto: {
             width: "450px",
             margin: "0 auto"
         },
-        AdaptivePostCard:{    width: "600px",
+        AdaptivePostCard: {
+            width: "600px",
             maxWidth: "100%",
             borderRadius: 0,
             mb: 1,
@@ -249,7 +266,7 @@ export const Post = ({
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)", position: "relative",
             overflowAnchor: "none"
         },
-        AdaptiveUserPhotoWrapper:{
+        AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
             width: "600px",
             margin: "10px auto",
@@ -257,11 +274,11 @@ export const Post = ({
             justifyContent: "center",
             alignItems: "center"
         },
-        AdaptiveText:{
-              ...PostText
+        AdaptiveText: {
+            ...PostText
         },
-        AdaptiveSmallText:{
-            display:"none",
+        AdaptiveSmallText: {
+            display: "none",
         }
     };
 
@@ -313,7 +330,7 @@ export const Post = ({
         if (userId) {
             const newIsReposted = !isReposted;
             setIsReposted(newIsReposted);
-            dispatch(sendRepostFetch(postId, userId, newIsReposted, setRepostCountView, repostCountView,  sendEventToWebsocket));
+            dispatch(sendRepostFetch(postId, userId, newIsReposted, setRepostCountView, repostCountView, sendEventToWebsocket));
         } else {
             dispatch(openLoginModal());
         }
@@ -334,10 +351,11 @@ export const Post = ({
                 setLikeCount(likeCount + 1);
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
                 await dispatch(addLikeFetch(postId, userId));
+                handleLikesClick(postId, userId)
             } else {
-                if(likeCount===0){
+                if (likeCount === 0) {
                     setLikeCount(likeCount);
-                }else{
+                } else {
                     setLikeCount(likeCount - 1);
                 }
                 setLikeArr(likeArr.filter(item => item.userId !== userId));
@@ -373,7 +391,7 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
-                    <Typography variant="body1" component="div" mt={1} sx={ styles.AdaptiveText}>{text}</Typography>
+                    <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
                 </div>
             </CardContent>
             <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveSmallText}>{text}</Typography>
@@ -385,26 +403,27 @@ export const Post = ({
             }
             <CardActions sx={{ padding: "20px 20px" }}>
                 <Tooltip title={"See comments"}>
-                <IconButton onClick={handleCommentToggle}>
-                    <ChatBubbleOutline fontSize="small"/>
-                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
-                </IconButton>
+                    <IconButton onClick={handleCommentToggle}>
+                        <ChatBubbleOutline fontSize="small"/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>
+                    </IconButton>
                 </Tooltip>
                 <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
-                <IconButton onClick={sendRepost}>
-                    <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
-                    <Typography variant="body2" sx={{ marginLeft: "5px" }}>{repostCountView}</Typography>
-                </IconButton>
+                    <IconButton onClick={sendRepost}>
+                        <Repeat fontSize="small" htmlColor={isReposted ? "rgb(0, 186, 124)" : "inherit"}/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{repostCountView}</Typography>
+                    </IconButton>
                 </Tooltip>
                 <Tooltip title={"Views"}>
                     <IconButton>
-                        <BarChartIcon></BarChartIcon>
+                        <BarChartIcon/>
+                        <Typography variant="body2" sx={{ marginLeft: "5px" }}>{viewCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={like ? "Undo like" : "Like"}>
-                <IconButton onClick={addLikeHandle}>
-                    {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
-                </IconButton>
+                    <IconButton onClick={addLikeHandle}>
+                        {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
+                    </IconButton>
                 </Tooltip>
                 <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
                 <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}
@@ -418,8 +437,10 @@ export const Post = ({
 };
 
 Post.propTypes = {
-    sendEventToWebsocket:PropTypes.func,
-    repostsCount:PropTypes.number,
+    handleLikesClick:PropTypes.any,
+    viewCount:PropTypes.any,
+    sendEventToWebsocket: PropTypes.func,
+    repostsCount: PropTypes.number,
     reposted: PropTypes.bool,
     profileImage: PropTypes.string,
     postId: PropTypes.number,

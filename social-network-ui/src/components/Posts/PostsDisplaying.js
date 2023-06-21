@@ -29,12 +29,22 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         };
     }, []);
 
+console.log(userPosts)
 
 
-
-    const handleClick = (userId, postId) => {
+    const handleClick = (postId, userId) => {
         if (stompClient) {
-            stompClient.send("/app/repost", {}, JSON.stringify({ userId: userId, postId: postId }));
+            stompClient.send("/app/repost", {}, JSON.stringify({ postId: postId, userId: userId }));
+        }
+    };
+
+    const handleLikesClick = (postId, userId) => {
+        let numUserId = parseInt(userId);
+        let numPostId = Number(postId)
+        console.log(numPostId)
+        if (stompClient) {
+            console.log("hi")
+            stompClient.send("/app/post_like", {}, JSON.stringify({ userId: numUserId, postId: numPostId}));
         }
     };
 
@@ -62,6 +72,8 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
                             reposted={item.isReposted}
                             repostsCount={item.repostsCount}
                             sendEventToWebsocket={handleClick}
+                            viewCount={item.viewCount}
+                            handleLikesClick={handleLikesClick}
                         />
                     </animated.div>
                 ))}

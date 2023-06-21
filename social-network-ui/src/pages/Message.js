@@ -18,9 +18,10 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import CircularProgress from "@mui/material/CircularProgress";
+
 
 let stompClient = null;
 
@@ -302,18 +303,17 @@ export function Message() {
     }, []);
 
     useEffect(() => {
-        const connect = () => {
-            let Sock = new SockJS(`${apiUrl}/websocket`);
-            stompClient = over(Sock);
-            stompClient.connect({}, onConnected, onError);
-        };
         const onConnected = () => {
-            stompClient.subscribe(`/user/66/inbox`, newMessage);
+            stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
             console.log(err);
         };
-        connect();
+
+        let Sock = new SockJS(`${apiUrl}/websocket`);
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+
         return () => {
             if (stompClient) {
                 stompClient.disconnect();
@@ -388,11 +388,12 @@ export function Message() {
                     </div>
                 )}
 
-                <div style={styles.AdaptiveTextingContainerWithScroll}>
+                <div style={{...styles.AdaptiveTextingContainerWithScroll, width:"440px"}}>
                     {selectedMessage && (
                         <TextField
                             id="outlined-basic"
                             type="search"
+                            sx={{width:"100px"}}
                             variant="outlined"
                             placeholder="Input message"
                             size="small"
@@ -412,6 +413,7 @@ export function Message() {
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,
                                             }));
+                                            console.log(selectedMessage.userId,selectedMessage.inboxUid,inputValue)
                                             await fetch(`${apiUrl}/api/addMessage`, {
                                                 method: "POST",
                                                 body: JSON.stringify({

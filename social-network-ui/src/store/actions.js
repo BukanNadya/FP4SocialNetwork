@@ -481,7 +481,7 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     method: "POST",
                     body: JSON.stringify({
                         inboxUid: inboxUid,
-                        userId: 66,
+                        userId: userId,
                         // page: page,
                     }),
                     headers: { "Content-Type": "application/json" }
@@ -571,7 +571,7 @@ export const sendPost = (postObject, setSubmitting) => async (dispatch) => {
     }
 };
 
-export const addMessageFromWebsocket = (message)=> {
+export const addMessageFromWebsocket=(message)=>{
     return {
         type: "ADD_ONE_MESSAGE_FROM_WEBSOCKET",
         payload: message,
