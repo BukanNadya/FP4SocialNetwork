@@ -36,9 +36,7 @@ public class PostServiceImpl implements PostService {
   private final PostRepository postRepository;
   private final UserRepository userRepository;
   private final PostLikeRepository postLikeRepository;
-
   private final RepostRepository repostRepository;
-
   private final ImageHandlingConf imageHandlingConf;
 
   // Map to store accumulated view counts
@@ -177,7 +175,7 @@ public class PostServiceImpl implements PostService {
     accumulatedViewCounts.putIfAbsent(postId, 0);
     int viewCount = accumulatedViewCounts.get(postId) + 1;
     accumulatedViewCounts.put(postId, viewCount);
-    if (viewCount % 10 == 0) {
+    if (viewCount % 20 == 0) {
       performBatchUpdate(postId);
     }
     return viewCount;
@@ -196,7 +194,7 @@ public class PostServiceImpl implements PostService {
   }
 
   /*Method to add view counts to all posts scheduled by time*/
-  @Scheduled(fixedRate = 10000)
+  @Scheduled(fixedRate = 300000)
   private void performBatchUpdateByTime() {
     List<Post> updatedPosts = new ArrayList<>();
     for (Map.Entry<Integer, Integer> entry : accumulatedViewCounts.entrySet()) {
