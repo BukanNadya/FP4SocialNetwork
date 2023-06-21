@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface InboxMapper {
+  @Mapping(target = "inboxId", expression = "java(MapperUtils.getInboxId(inbox))")
   @Mapping(target = "profileImageUrl", expression = "java(MapperUtils.getProfileImageUrl(inbox))")
   @Mapping(target = "inboxUid", expression = "java(MapperUtils.getInboxUid(inbox))")
   @Mapping(target = "userId", expression = "java(MapperUtils.getUserId(inbox))")

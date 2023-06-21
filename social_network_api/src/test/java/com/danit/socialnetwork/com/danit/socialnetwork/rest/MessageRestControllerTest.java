@@ -89,7 +89,7 @@ class MessageRestControllerTest {
 
     when(inboxService.getInboxesByInboxUid(inboxUidTest)).thenReturn(testInboxDto);
 
-    mockMvc.perform(get("/api/inbox/1")
+    mockMvc.perform(get("/api/1/inbox")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(inboxUidTest)))
         .andExpect(status().isFound());

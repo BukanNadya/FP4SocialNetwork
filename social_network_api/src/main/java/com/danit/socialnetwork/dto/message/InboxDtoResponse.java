@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class InboxDtoResponse {
+  private Integer inboxId;
   private Integer userId;
   private Integer inboxUid;
   private String username;
@@ -16,8 +17,9 @@ public class InboxDtoResponse {
   private String message;
   private LocalDateTime createdAt;
 
-  public InboxDtoResponse(Integer userId, Integer inboxUid, String username, String name,
-                          String profileImageUrl, String message, LocalDateTime createdAt) {
+  public InboxDtoResponse(Integer inboxId, Integer userId, Integer inboxUid, String username,
+                          String name, String profileImageUrl, String message, LocalDateTime createdAt) {
+    this.inboxId = inboxId;
     this.userId = userId;
     this.inboxUid = inboxUid;
     this.username = username;

@@ -113,4 +113,8 @@ public class MapperUtils {
     return message.getCreatedAt();
   }
 
+  public static Integer getInboxId(Inbox inbox) {
+    return inbox.getInboxId();
+  }
+
 }

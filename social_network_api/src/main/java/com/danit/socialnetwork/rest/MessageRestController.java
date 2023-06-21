@@ -36,12 +36,13 @@ public class MessageRestController {
   /*Method save a new message*/
   @PostMapping(path = "/api/addMessage")
   public ResponseEntity<MessageDtoResponse> addMessage(@RequestBody MessageDtoRequest request) {
+    log.info("@PostMapping(path = /api/addMessage)");
     MessageDtoResponse dbMessage = messageService.saveMessage(request);
     return new ResponseEntity<>(dbMessage, HttpStatus.CREATED);
   }
 
   /*The method finds inbox by message sender and receiver */
-  @GetMapping(path = "/api/inbox/{inboxUid}")
+  @GetMapping(path = "/api/{inboxUid}/inbox")
   public ResponseEntity<List<InboxDtoResponse>> getInbox(@PathVariable("inboxUid") Integer inboxUid) {
     List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
     return new ResponseEntity<>(inboxes, HttpStatus.FOUND);

@@ -14,8 +14,6 @@ import com.danit.socialnetwork.repository.MessageRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -37,12 +35,6 @@ public class MessageServiceImpl implements MessageService {
   private final SimpMessagingTemplate messagingTemplate;
   private static final String MESSAGE_CACHE = "MessageCache";
   private static final String USER_NOT_FOUND = "User with userId %d not found";
-
-  private void sendNewMessageToRecipientGetMessages(MessageDtoResponse newMessage) {
-    messagingTemplate.convertAndSend("/user/getMessages/" + newMessage.getUserId(), newMessage);
-    log.info(String.format("Send new message to the recipient inbox participants: %s, %s",
-        newMessage.getMessage(), newMessage.getCreatedAt()));
-  }
 
   /*Method save a new message and returns it*/
   @Override
@@ -77,7 +69,6 @@ public class MessageServiceImpl implements MessageService {
 
     inboxService.saveInbox(userS, userR, savedMessage);
 
-    sendNewMessageToRecipientGetMessages(messageMapper.messageToMessageDtoResponse(savedMessage));
     return messageMapper.messageToMessageDtoResponse(savedMessage);
   }
 

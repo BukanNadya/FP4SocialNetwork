@@ -2,12 +2,16 @@ package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
+import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.NotificationService;
 import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.UserFollowService;
@@ -35,6 +39,8 @@ public class WebSocketController {
   private final UserFollowService userFollowService;
   private final UserService userService;
   private final PostService postService;
+  private final InboxService inboxService;
+  private final InboxMapperImpl mapper;
 
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
@@ -196,5 +202,30 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(authUserIdString, "/unread_notifications", unreadNotifications);
 
     return notificationRequest;
+  }
+
+  @MessageMapping("/addMessage")
+  public InboxDtoResponse postAddMessage(
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
+    log.info("@MessageMapping(/addMessage)");
+
+    Thread.sleep(500);
+    Integer inboxUid = messageDtoRequest.getInboxUid();
+    Integer userId = messageDtoRequest.getUserId();
+    log.info("inboxUid" + inboxUid);
+    log.info("userId" + userId);
+
+    List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
+    List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
+
+    InboxDtoResponse inboxSender = inboxesSender.get(inboxesSender.size() - 1);
+    InboxDtoResponse inboxReceiver = inboxesReceiver.get(inboxesReceiver.size() - 1);
+
+    String inboxUidString = inboxUid.toString();
+    String userIdString = userId.toString();
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
+    return inboxSender;
+
   }
 }

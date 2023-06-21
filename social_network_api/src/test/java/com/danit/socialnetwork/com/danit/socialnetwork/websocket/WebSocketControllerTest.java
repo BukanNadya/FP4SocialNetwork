@@ -4,13 +4,11 @@ import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
+import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.service.NotificationService;
-import com.danit.socialnetwork.service.PostService;
-import com.danit.socialnetwork.service.UserFollowService;
-import com.danit.socialnetwork.service.UserService;
+import com.danit.socialnetwork.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -36,6 +34,10 @@ class WebSocketControllerTest {
   @Mock
   private PostService postService;
   @Mock
+  private InboxService inboxService;
+  @Mock
+  private InboxMapperImpl mapper;
+  @Mock
   private SimpMessagingTemplate messagingTemplate;
 
   private WebSocketController webSocketController;
@@ -47,7 +49,9 @@ class WebSocketControllerTest {
         notificationService,
         userFollowService,
         userService,
-        postService
+        postService,
+        inboxService,
+        mapper
     );
     webSocketController.setMessagingTemplate(messagingTemplate);
   }
