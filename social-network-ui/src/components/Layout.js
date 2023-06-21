@@ -46,7 +46,6 @@ const theme = createTheme({
             sm: 600, // tablets
             md: 900, // small laptop
             lg: 1200, // desktop
-            l: 1390, // small desktop
             xl: 1536 // large screens
         }
     }
@@ -67,8 +66,7 @@ export function Layout() {
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
-    const isLg = useMediaQuery(theme.breakpoints.between("lg", "l"));
-    const isL = useMediaQuery(theme.breakpoints.between("lg", "xl"));
+    const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
     const xxsStyles = {
@@ -329,9 +327,7 @@ export function Layout() {
             ...ItemWrapperContainerMessage,
             width: "900px",
         },
-        AdaptiveOutletContainer: {
-            ...OutletContainer,
-        },
+
         AdaptiveOutletWrapperMessage: {
             ...OutletWrapperMessage,
         }
@@ -393,9 +389,7 @@ export function Layout() {
             ...ItemWrapperContainerMessage,
             width: "900px",
         },
-        AdaptiveOutletContainer: {
-            ...OutletContainer,
-        },
+
         AdaptiveOutletWrapperMessage: {
             ...OutletWrapperMessage,
         }
@@ -458,9 +452,7 @@ export function Layout() {
             ...ItemWrapperContainerMessage,
             width: "1200px",
         },
-        AdaptiveOutletContainer: {
-            ...OutletContainer,
-        },
+
         AdaptiveOutletWrapperMessage: {
             ...OutletWrapperMessage,
         }
@@ -469,9 +461,7 @@ export function Layout() {
     let styles;
     if (isXl) {
         styles = xlStyles;
-    } else if (isL) {
-        styles = lStyles;
-    } else if (isLg) {
+    }  else if (isLg) {
         styles = lgStyles;
     } else if (isMd) {
         styles = mdStyles;

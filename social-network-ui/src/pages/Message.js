@@ -47,205 +47,121 @@ export function Message() {
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
-    const isL = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
 
-    // const xxsStyles = {
-    //     AdaptivePostWrapper: {
-    //         width: "50vw",
-    //         minWidth: "200px",
-    //         display: "flex",
-    //         justifyContent: "space-around",
-    //         alignItems: "space-around",
-    //     },
-    //     AdaptiveSendPostField: {
-    //         fontSize: "1.3rem",
-    //         fontFamily: "'Lato', sans-serif",
-    //         width: "65vw",
-    //         maxWidth: "300px",
-    //         marginTop: "20px",
-    //     },
-    //     AdaptiveHomeScreenWrapper: {
-    //         overflow: "hidden",
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         justifyContent: "start",
-    //         marginTop: "20px",
-    //     },
-    //     AdaptiveSendingPostButtonsContainer: {
-    //         display: "flex",
-    //         justifyContent: "space-between",
-    //         width: "50vw",
-    //         marginTop: "40px",
-    //         marginBottom: "20px",
-    //     },
-    //     fab: {
-    //         position: "fixed",
-    //         bottom: "16px",
-    //         right: "16px",
-    //     },
-    //     AdaptiveSvgWrapper: {
-    //         display: "none",
-    //     },
-    //     AdaptivePostImgWrapper: {
-    //         ...PostImgWrapper, marginTop: "10px"
-    //     }
-    // };
-
-    // const xsStyles = {
-    //     AdaptivePostWrapper: {
-    //         width: "50vw",
-    //         paddingBottom: "40px",
-    //         minWidth: "200px",
-    //         display: "flex",
-    //         justifyContent: "space-around",
-    //         alignItems: "space-around",
-    //     },
-    //     AdaptiveHomeScreenWrapper: {
-    //         overflow: "hidden",
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         marginTop: "20px",
-    //     },
-    //     AdaptiveSendingPostButtonsContainer: {
-    //         display: "flex",
-    //         justifyContent: "space-between",
-    //         width: "70vw",
-    //         marginTop: "40px",
-    //         marginBottom: "20px",
-    //     },
-    //     AdaptiveSendPostField: {
-    //         fontSize: "1.3rem",
-    //         fontFamily: "'Lato', sans-serif",
-    //         width: "70vw",
-    //         marginTop: "20px",
-    //     },
-    //     fab: {
-    //         position: "fixed",
-    //         bottom: "16px",
-    //         right: "16px",
-    //     },
-    //     AdaptiveSvgWrapper: {
-    //         display: "none",
-    //     },
-    //     AdaptivePostImgWrapper: {
-    //         ...PostImgWrapper, marginTop: "10px"
-    //     }
-    // };
-
-    // const smStyles = {
-    //     AdaptivePostWrapper: {
-    //         width: "470px",
-    //         paddingBottom: "40px",
-    //         display: "flex",
-    //         justifyContent: "space-around",
-    //         alignItems: "space-around",
-    //         borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-    //     },
-    //     AdaptiveHomeScreenWrapper: {
-    //         width: "470px",
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         justifyContent: "start",
-    //         marginTop: "20px",
-    //     },
-    //     AdaptiveSendingPostButtonsContainer: {
-    //         display: "flex",
-    //         justifyContent: "space-between",
-    //         maxWidth: "400px",
-    //         width: "350px",
-    //         marginTop: "40px",
-    //         marginBottom: "20px",
-    //     },
-    //     AdaptiveSendPostField: {
-    //         fontSize: "1.3rem",
-    //         fontFamily: "'Lato', sans-serif",
-    //         width: "350px",
-    //         maxWidth: "600px",
-    //         marginTop: "20px",
-    //     },
-    //     fab: {
-    //         position: "fixed",
-    //         bottom: "16px",
-    //         right: "16px",
-    //     },
-
-    // };
-
-    // const mdStyles = {
-    //     AdaptivePostWrapper: {
-    //         width: "600px",
-    //         paddingBottom: "40px",
-    //         display: "flex",
-    //         justifyContent: "space-around",
-    //         alignItems: "space-around",
-    //         borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-    //     },
-    //     AdaptiveHomeScreenWrapper: {
-    //         width: "600px",
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         justifyContent: "center",
-    //         marginTop: "20px",
-    //     },
-    //     AdaptiveSendingPostButtonsContainer: {
-    //         display: "flex",
-    //         justifyContent: "space-between",
-    //         maxWidth: "400px",
-    //         width: "400px",
-    //         marginTop: "40px",
-    //         marginBottom: "20px",
-    //     },
-    //     AdaptiveSendPostField: {
-    //         fontSize: "1.3rem",
-    //         fontFamily: "'Lato', sans-serif",
-    //         width: "450px",
-    //         maxWidth: "600px",
-    //         marginTop: "20px",
-    //     },
-    //     fab: {
-    //         position: "fixed",
-    //         bottom: "16px",
-    //         right: "16px",
-    //     },
-    // };
-
-    // const lgStyles = {
-    //     AdaptiveLeftBlockAndRightBlockContainer: {
-    //         ...leftBlockAndRightBlockContainer,
-    //     },
-    //     AdaptiveLeftBlockInboxAndSearch: {
-    //         ...leftBlockInboxAndSearch,
-    //         borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-    //     },
-    //     AdaptiveInboxContainerStyle: {
-    //         ...inboxContainerStyle,
-    //     },
-    //     AdaptiveTextingContainerWithInputStyle: {
-    //         ...textingContainerWithInputStyle,
-    //         borderRight: "1px solid rgba(0, 0, 0, 0.1)",
-    //         height:"100vh",
-    //         maxHeight:"100vh",
-    //     },
-    //     AdaptiveTextingConatinerScrollFromTop: {
-    //         ...textingConatinerScrollFromTop,
-    //         display:"flex",
-    //         justifyContent:"center",
-    //         alignItems:"center",
-    //         height:"100vh",
-    //     },
-    //     AdaptiveTextingContainerScrollFromBottom: {
-    //         ...textingConatinerScrollFromBottom
-    //     },
-    //     AdaptiveTextingContainerWithScroll: {
-    //         ...textingContainerWithScroll
-    //     }
-    // };
-
-    const lStyles = {
+    const xxsStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
+            width: "100vw",
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            width: "100%"
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+            display: "none"
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "100vw"
+        }
+    };
+
+    const xsStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "100vw",
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            width: "100%",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+            display: "none"
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "100vw",
+        }
+    };
+
+    const smStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            maxWidth: "500px"
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            width: "100%"
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+            display: "none"
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll
+        }
+
+    };
+
+    const mdStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "800px"
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -271,13 +187,49 @@ export function Message() {
             ...textingConatinerScrollFromBottom
         },
         AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll
+            ...textingContainerWithScroll,
+            width: "800px"
+        }
+    };
+
+    const lgStyles = {
+        AdaptiveLeftBlockAndRightBlockContainer: {
+            ...leftBlockAndRightBlockContainer,
+            width: "900px"
+        },
+        AdaptiveLeftBlockInboxAndSearch: {
+            ...leftBlockInboxAndSearch,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+        },
+        AdaptiveInboxContainerStyle: {
+            ...inboxContainerStyle,
+        },
+        AdaptiveTextingContainerWithInputStyle: {
+            ...textingContainerWithInputStyle,
+            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            height:"100vh",
+            maxHeight:"100vh",
+        },
+        AdaptiveTextingConatinerScrollFromTop: {
+            ...textingConatinerScrollFromTop,
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            height:"100vh",
+        },
+        AdaptiveTextingContainerScrollFromBottom: {
+            ...textingConatinerScrollFromBottom
+        },
+        AdaptiveTextingContainerWithScroll: {
+            ...textingContainerWithScroll,
+            width: "900px"
         }
     };
 
     const xlStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
+            width: "900px"
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -303,28 +255,25 @@ export function Message() {
             ...textingConatinerScrollFromBottom
         },
         AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll
+            ...textingContainerWithScroll,
+            width: "900px"
         }
     };
 
     let styles;
     if (isXl) {
         styles = xlStyles;
-    } else if (isL) {
-        styles = lStyles;
+    } else if (isLg) {
+        styles = lgStyles;
+    } else if (isMd) {
+        styles = mdStyles;
+    } else if (isSm) {
+        styles = smStyles;
+    } else if (isXs) {
+        styles = xsStyles;
+    } else {
+        styles = xxsStyles;
     }
-    // else if (isLg) {
-    //     styles = lgStyles;
-    // }
-    // else if (isMd) {
-    //     styles = mdStyles;
-    // } else if (isSm) {
-    //     styles = smStyles;
-    // } else if (isXs) {
-    //     styles = xsStyles;
-    // } else {
-    //     styles = xxsStyles;
-    // }
 
 
 

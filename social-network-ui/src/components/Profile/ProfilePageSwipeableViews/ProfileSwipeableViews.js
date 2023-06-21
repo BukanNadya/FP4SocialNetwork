@@ -2,7 +2,6 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import {TabStyles} from "./ProfileSwipeableViewsStyles";
 import {PostsWrapper} from "../../Posts/PostStyles";
@@ -57,7 +56,6 @@ export function ProfileSwipeableViews (props) {
         const fetchUserPosts = async () => {
             try {
                 setIsLoading(true)
-                // const response = await fetch(`http://localhost:8080/posts/${props.userId}?page=0`);
                 const response = await fetch(`${apiUrl}/api/posts/reposts?userId=${props.userId}&page=0`);
                 const userPosts = await response.json();
                 dispatch(setProfilePosts(userPosts))

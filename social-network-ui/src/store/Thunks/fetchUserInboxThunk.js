@@ -11,8 +11,8 @@ export function fetchUserInbox (searchId) {
             fetch(`${apiUrl}/api/addInbox`, {
                 method: "POST",
                 body: JSON.stringify({
-                    inboxUid: searchId,
-                    userId: userId,
+                    inboxUid: `${searchId}`,
+                    userId: `${userId}`,
                 }),
                 headers: {"Content-Type": "application/json"}
             })

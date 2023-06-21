@@ -1,5 +1,6 @@
   export const leftBlockAndRightBlockContainer = {
     display: "flex",
+    width: "900px"
   };
   
   export const leftBlockInboxAndSearch = {

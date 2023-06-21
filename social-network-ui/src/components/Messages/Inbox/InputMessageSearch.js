@@ -25,27 +25,27 @@ export const InputMessageSearch = ({ ...props }) => {
 
 
     const xxsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
     };
 
     const xsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
     };
 
     const smStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px",  marginLeft:"5px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField,}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"500px", marginLeft:"10px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField,}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"500px", marginLeft:"10px"}
+        AdaptiveUserSearchTextField:{...UserSearchTextField}
     };
 
     let styles;
