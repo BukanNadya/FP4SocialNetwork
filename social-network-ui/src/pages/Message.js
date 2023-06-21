@@ -18,9 +18,10 @@ import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 let stompClient = null;
@@ -304,6 +305,7 @@ export function Message() {
 
     useEffect(() => {
         const onConnected = () => {
+            console.log(userId)
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
@@ -366,9 +368,10 @@ export function Message() {
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                <HeaderInformation/>
                 <MessageSearch/>
                 <div style={styles.AdaptiveInboxContainerStyle}>
-                    <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>
+                    { isLoading ? <CircularProgress sx={{ marginTop: "20%", marginLeft:"40%" }}/> : <MessageInbox inboxMessages={inboxMessages} handleSelectMessage={handleSelectMessage}/>}
                 </div>
             </div>
             <div style={styles.AdaptiveTextingContainerWithInputStyle}>
@@ -393,7 +396,6 @@ export function Message() {
                         <TextField
                             id="outlined-basic"
                             type="search"
-                            sx={{width:"100px"}}
                             variant="outlined"
                             placeholder="Input message"
                             size="small"
@@ -408,7 +410,7 @@ export function Message() {
                                         style={{ cursor: "pointer", }}
                                         onClick={async (event) => {
                                             event.preventDefault();
-                                            stompClient.send("/app/addMessage", {}, JSON.stringify({
+                                            stompClient.send("/api/addMessage", {}, JSON.stringify({
                                                 userId: selectedMessage.userId,
                                                 inboxUid: selectedMessage.inboxUid,
                                                 writtenMessage: inputValue,

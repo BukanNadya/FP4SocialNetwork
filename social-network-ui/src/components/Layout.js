@@ -534,7 +534,6 @@ export function Layout() {
                                 <>
                                     <div style={styles.AdaptiveItemWrapperMessage}>
                                         <div style={styles.AdaptiveItemWrapperContainerMessage}>
-                                            <HeaderInformation />
                                             <div style={styles.AdaptiveOutletContainer}>
                                                 <div style={styles.AdaptiveOutletWrapperMessage}>
                                                     <Outlet />

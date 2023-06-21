@@ -78,12 +78,12 @@ export const InboxMessage = ({image, senderName, sender, receiver, message, date
 }
 
 InboxMessage.propTypes = {
-  senderName: PropTypes.string.isRequired,
-  sender: PropTypes.number.isRequired,
-  receiver: PropTypes.number.isRequired,
-  message: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  handleClick: PropTypes.func.isRequired,
+  senderName: PropTypes.string,
+  sender: PropTypes.number,
+  receiver: PropTypes.number,
+  message: PropTypes.string,
+  date: PropTypes.string,
+  image: PropTypes.string,
+  handleClick: PropTypes.func,
 }
 

@@ -495,7 +495,7 @@ export function HeaderInformation() {
     }
 
     return (
-        location.pathname === "/messages" ? null : <AppBar position="fixed" color="primary" sx={Header}>
+        <AppBar position="fixed" color="primary" sx={Header}>
             <Toolbar sx={{ height: "70px" }}>
                 {isXs || isXxs ?
                     (["left"].map((anchor) => (
