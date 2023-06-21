@@ -101,35 +101,38 @@ public class PostServiceImpl implements PostService {
 
   /*Method returns all posts done by user*/
   @Override
-  public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page) {
-    int pageSize = 10;
-    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
-    List<Post> listPost = postRepository.findAllByUserId(userId, pagedByTenPosts);
-    return listPost.stream()
-        .map(post -> from(post, userId))
+  public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer pageNumber) {
+    int pageSize = 12;
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = postRepository.findAllByUserIdOneQuery(
+        userId, offset, pageSize);
+    return results.stream()
+        .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
 
   /*Method returns all posts liked by user*/
   @Override
-  public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page) {
-    int pageSize = 10;
-    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
-    List<Post> postList = postRepository.findAllByUserIdLiked(userId, pagedByTenPosts);
-    return postList.stream()
-        .map(post -> from(post, userId))
+  public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer pageNumber) {
+    int pageSize = 12;
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = postRepository.findAllByUserIdLikedOneQuery(
+        userId, offset, pageSize);
+    return results.stream()
+        .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
 
   /*Method returns all posts and reposts in descending order by time when
    they were posted (for own posts) and reposted (for reposts) by user*/
   @Override
-  public List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer page) {
-    int pageSize = 10;
-    Pageable pagedByTenPosts = PageRequest.of(page, pageSize);
-    List<Post> postList = postRepository.findAllPostsAndRepostsByUserIdAsPost(userId, pagedByTenPosts);
-    return postList.stream()
-        .map(post -> from(post, userId))
+  public List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer pageNumber) {
+    int pageSize = 12;
+    int offset = pageNumber * pageSize;
+    List<Object[]> results = postRepository.findAllPostsAndRepostsByUserIdAsPostOneQuery(
+        userId, offset, pageSize);
+    return results.stream()
+        .map(PostDtoResponse::mapToPostDtoResponse)
         .toList();
   }
 

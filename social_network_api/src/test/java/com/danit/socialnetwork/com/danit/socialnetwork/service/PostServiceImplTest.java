@@ -142,149 +142,53 @@ public class PostServiceImplTest {
   @Test
   void getAllOwnPosts() {
 
-    Integer userId = 1;
+    Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
+        2, 3, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        new BigInteger(String.valueOf(1)), false};
 
-    DbUser user = new DbUser();
-    user.setUserId(userId);
-    user.setUsername("John1");
-    user.setName("Johny1");
+    Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
+        3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        new BigInteger(String.valueOf(4)), false};
 
-    Post post1 = new Post();
-    post1.setPostId(1);
-    post1.setUserPost(user);
-    post1.setWrittenText("Hello world1");
-    post1.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime = LocalDateTime.now();
-    post1.setSentDateTime(dateTime);
+    int pageSize = 12;
+    int offset = 0 * pageSize;
 
-    post1.setPostComments(new ArrayList<PostComment>() {
-    });
+    List<Object[]> testList = Arrays.asList(objects1, objects2);
 
-    Post post2 = new Post();
-    post2.setPostId(2);
-    post2.setUserPost(user);
-    post2.setWrittenText("Hello world2");
-    post2.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime2 = LocalDateTime.now();
-    post2.setSentDateTime(dateTime2);
+    when(postRepository.findAllByUserIdOneQuery(1, offset, pageSize)).thenReturn(testList);
+    List<PostDtoResponse> result = postService.getAllOwnPosts(1, 0);
 
-    post2.setPostComments(new ArrayList<PostComment>() {
-    });
-
-    List<Post> postList = Arrays.asList(post1, post2);
-    Pageable pagedByTenPosts =
-        PageRequest.of(0, 10);
-
-    Repost repost = new Repost();
-
-    when(postRepository.findAllByUserId(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
-    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(), userId))
-        .thenReturn(Optional.of(repost));
-    List<PostDtoResponse> result = postService.getAllOwnPosts(userId, 0);
-
-    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
-    Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
+    Assertions.assertEquals(objects1[3], result.get(0).getWrittenText());
+    Assertions.assertEquals(objects2[7], result.get(1).getName());
     Assertions.assertEquals(2, result.toArray().length);
 
   }
 
   @Test
   void getAllLikedPosts() {
-    Integer userId = 1;
+    Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
+        2, 3, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
+        new BigInteger(String.valueOf(1)), false};
 
-    DbUser user = new DbUser();
-    user.setUserId(userId);
-    user.setUsername("John1");
-    user.setName("Johny1");
+    Object[] objects2 = new Object[]{2, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world2",
+        3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
+        new BigInteger(String.valueOf(4)), false};
 
-    Post post1 = new Post();
-    post1.setPostId(1);
-    post1.setUserPost(user);
-    post1.setWrittenText("Hello world1");
-    post1.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime = LocalDateTime.now();
-    post1.setSentDateTime(dateTime);
+    int pageSize = 12;
+    int offset = 0 * pageSize;
 
-    post1.setPostComments(new ArrayList<PostComment>() {
-    });
+    List<Object[]> testList = Arrays.asList(objects1, objects2);
 
-    Post post2 = new Post();
-    post2.setPostId(2);
-    post2.setUserPost(user);
-    post2.setWrittenText("Hello world2");
-    post2.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime2 = LocalDateTime.now();
-    post2.setSentDateTime(dateTime2);
-
-    post2.setPostComments(new ArrayList<PostComment>() {
-    });
-
-    List<Post> postList = Arrays.asList(post1, post2);
-    Pageable pagedByTenPosts =
-        PageRequest.of(0, 10);
-
-    Repost repost = new Repost();
-
-    when(postRepository.findAllByUserIdLiked(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
-    when(repostRepository.findRepostByPostIdAndUserId(post1.getPostId(), userId))
-        .thenReturn(Optional.of(repost));
-    List<PostDtoResponse> result = postService.getAllLikedPosts(userId, 0);
-
-    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
-    Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
+    when(postRepository.findAllByUserIdLikedOneQuery(1, offset, pageSize)).thenReturn(testList);
+    List<PostDtoResponse> result = postService.getAllLikedPosts(1, 0);
+    Assertions.assertEquals(objects1[3], result.get(0).getWrittenText());
+    Assertions.assertEquals(objects2[7], result.get(1).getName());
     Assertions.assertEquals(2, result.toArray().length);
 
   }
 
   @Test
   void getAllPostsAndRepostsByUserId() {
-
-    Integer userId = 1;
-
-    DbUser user = new DbUser();
-    user.setUserId(userId);
-    user.setUsername("John1");
-    user.setName("Johny1");
-
-    Post post1 = new Post();
-    post1.setPostId(1);
-    post1.setUserPost(user);
-    post1.setWrittenText("Hello world1");
-    post1.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime = LocalDateTime.now();
-    post1.setSentDateTime(dateTime);
-
-    post1.setPostComments(new ArrayList<PostComment>() {
-    });
-
-    Post post2 = new Post();
-    post2.setPostId(2);
-    post2.setUserPost(user);
-    post2.setWrittenText("Hello world2");
-    post2.setPhotoFile("MTA6MjQ6MjY=");
-    LocalDateTime dateTime2 = LocalDateTime.now();
-    post2.setSentDateTime(dateTime2);
-
-    post2.setPostComments(new ArrayList<PostComment>() {
-    });
-
-    List<Post> postList = Arrays.asList(post1, post2);
-    Pageable pagedByTenPosts =
-        PageRequest.of(0, 10);
-
-    when(postRepository.findAllPostsAndRepostsByUserIdAsPost(user.getUserId(), pagedByTenPosts)).thenReturn(postList);
-
-    List<PostDtoResponse> result = postService.getAllPostsAndRepostsByUserId(userId, 0);
-
-    Assertions.assertEquals(result.get(0).getWrittenText(), post1.getWrittenText());
-    Assertions.assertEquals(result.get(1).getName(), post2.getUserPost().getName());
-    Assertions.assertEquals(2, result.toArray().length);
-
-
-  }
-
-  @Test
-  void getAllPostsWithShowingRepostByUserId() {
 
     Object[] objects1 = new Object[]{1, "MTA6MjQ6MjY=", new Timestamp(System.currentTimeMillis()), "Hello world1",
         2, 3, "John1", "Johny1", "photoLink1", new BigInteger(String.valueOf(1)), new BigInteger(String.valueOf(1)),
@@ -294,20 +198,22 @@ public class PostServiceImplTest {
         3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
-
-    List<Object[]> testList = Arrays.asList(objects1, objects2);
-
     int pageSize = 12;
     int offset = 0 * pageSize;
 
-    when(postRepository.findAllPostsWithShowingRepostsByUserId(1, offset, pageSize)).thenReturn(testList);
-    List<PostDtoResponse> result = postService.getAllPostsWithShowingRepostByUserId(1, 0);
+    List<Object[]> testList = Arrays.asList(objects1, objects2);
 
-    Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
-    Assertions.assertEquals(result.get(1).getWrittenText(), objects2[3]);
-    Assertions.assertEquals(result.get(0).getUsername(), objects1[6]);
-    Assertions.assertEquals(result.get(1).getUsername(), objects2[6]);
+    when(postRepository.findAllPostsAndRepostsByUserIdAsPostOneQuery(1, offset, pageSize)).thenReturn(testList);
+
+    List<PostDtoResponse> result = postService.getAllPostsAndRepostsByUserId(1, 0);
+
+    Assertions.assertEquals(objects2[7], result.get(1).getName());
     Assertions.assertEquals(2, result.toArray().length);
+    Assertions.assertEquals(objects1[3], result.get(0).getWrittenText());
+    Assertions.assertEquals(objects2[3], result.get(1).getWrittenText());
+    Assertions.assertEquals(objects1[6], result.get(0).getUsername());
+    Assertions.assertEquals(objects2[6], result.get(1).getUsername());
+
   }
 
   @Test
