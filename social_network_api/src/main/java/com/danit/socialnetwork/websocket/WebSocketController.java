@@ -39,59 +39,6 @@ public class WebSocketController {
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
 
-  @MessageMapping("/repost")
-  public NotificationRequest postNotification(
-      @Payload RepostDtoSave repostDtoSave)  {
-    Integer repostUserId = repostDtoSave.getUserId();
-    Integer postId = repostDtoSave.getPostId();
-
-    Post postByPostId = postService.findPostByPostId(postId);
-
-    Integer authUserId = postByPostId.getUserPost().getUserId();
-
-    DbUser repostUser = userService.findDbUserByUserId(repostUserId);
-
-    String notificationType = NotificationType.POST.get();
-
-    NotificationRequest notificationRequest = new NotificationRequest();
-
-    LocalDateTime dateTime = LocalDateTime.now();
-    notificationRequest.setDateTime(dateTime);
-
-    notificationRequest.setUserId(authUserId);
-
-    notificationRequest.setEventType(notificationType);
-    notificationRequest.setEventId(postId);
-
-    String repostUserUsername = repostUser.getUsername();
-    notificationRequest.setUserName(repostUserUsername);
-
-    String repostUserPhoto = repostUser.getProfileImageUrl();
-    notificationRequest.setUserPhoto(repostUserPhoto);
-
-    String notificationText = repostUserUsername + " reposted your post";
-    notificationRequest.setNotificationText(notificationText);
-
-    notificationRequest.setNotificationRead(false);
-
-    Notification newNotification = new Notification(
-        authUserId, notificationType, postId, repostUserId,
-        repostUserUsername, repostUserPhoto, notificationText);
-
-    notificationService.saveNotification(newNotification);
-
-    String authUserIdString = authUserId.toString();
-    messagingTemplate.convertAndSendToUser(authUserIdString, "/notifications", notificationRequest);
-
-    int unreadNotificationsNum = notificationService
-        .findAllByFollowerUserIdAndNotificationRead(authUserId, false).size();
-    Map<String, Integer> unreadNotifications = new HashMap<>();
-    unreadNotifications.put("unreadNotifications", unreadNotificationsNum);
-    messagingTemplate.convertAndSendToUser(authUserIdString, "/unread_notifications", unreadNotifications);
-
-    return notificationRequest;
-  }
-
   @MessageMapping("/post")
   public NotificationRequest postNotification(
       @Payload NotificationRequest notificationRequest) throws InterruptedException {
@@ -142,6 +89,112 @@ public class WebSocketController {
       unreadNotifications.put("unreadNotifications", unreadNotificationsNum);
       messagingTemplate.convertAndSendToUser(followerIdString, "/unread_notifications", unreadNotifications);
     }
+    return notificationRequest;
+  }
+
+  @MessageMapping("/repost")
+  public NotificationRequest postNotification(
+      @Payload RepostDtoSave repostDtoSave) {
+    Integer repostUserId = repostDtoSave.getUserId();
+    Integer postId = repostDtoSave.getPostId();
+
+    Post postByPostId = postService.findPostByPostId(postId);
+
+    Integer authUserId = postByPostId.getUserPost().getUserId();
+
+    DbUser repostUser = userService.findDbUserByUserId(repostUserId);
+
+    String notificationType = NotificationType.POST.get();
+
+    NotificationRequest notificationRequest = new NotificationRequest();
+
+    LocalDateTime dateTime = LocalDateTime.now();
+    notificationRequest.setDateTime(dateTime);
+
+    notificationRequest.setUserId(authUserId);
+
+    notificationRequest.setEventType(notificationType);
+    notificationRequest.setEventId(postId);
+
+    String repostUserUsername = repostUser.getUsername();
+    notificationRequest.setUserName(repostUserUsername);
+
+    String repostUserPhoto = repostUser.getProfileImageUrl();
+    notificationRequest.setUserPhoto(repostUserPhoto);
+
+    String notificationText = repostUserUsername + " reposted your post";
+    notificationRequest.setNotificationText(notificationText);
+
+    notificationRequest.setNotificationRead(false);
+
+    Notification newNotification = new Notification(
+        authUserId, notificationType, postId, repostUserId,
+        repostUserUsername, repostUserPhoto, notificationText);
+
+    notificationService.saveNotification(newNotification);
+
+    String authUserIdString = authUserId.toString();
+    messagingTemplate.convertAndSendToUser(authUserIdString, "/notifications", notificationRequest);
+
+    int unreadNotificationsNum = notificationService
+        .findAllByFollowerUserIdAndNotificationRead(authUserId, false).size();
+    Map<String, Integer> unreadNotifications = new HashMap<>();
+    unreadNotifications.put("unreadNotifications", unreadNotificationsNum);
+    messagingTemplate.convertAndSendToUser(authUserIdString, "/unread_notifications", unreadNotifications);
+
+    return notificationRequest;
+  }
+
+  @MessageMapping("/post_like")
+  public NotificationRequest postLikeNotification(
+      @Payload RepostDtoSave repostDtoSave) {
+    Integer likerUser = repostDtoSave.getUserId();
+    Integer postId = repostDtoSave.getPostId();
+
+    Post postByPostId = postService.findPostByPostId(postId);
+
+    Integer authUserId = postByPostId.getUserPost().getUserId();
+
+    DbUser likerDbUser = userService.findDbUserByUserId(likerUser);
+
+    String notificationType = NotificationType.POST.get();
+
+    NotificationRequest notificationRequest = new NotificationRequest();
+
+    LocalDateTime dateTime = LocalDateTime.now();
+    notificationRequest.setDateTime(dateTime);
+
+    notificationRequest.setUserId(authUserId);
+
+    notificationRequest.setEventType(notificationType);
+    notificationRequest.setEventId(postId);
+
+    String likerUserUsername = likerDbUser.getUsername();
+    notificationRequest.setUserName(likerUserUsername);
+
+    String likerUserPhoto = likerDbUser.getProfileImageUrl();
+    notificationRequest.setUserPhoto(likerUserPhoto);
+
+    String notificationText = likerUserUsername + " likes your post";
+    notificationRequest.setNotificationText(notificationText);
+
+    notificationRequest.setNotificationRead(false);
+
+    Notification newNotification = new Notification(
+        authUserId, notificationType, postId, likerUser,
+        likerUserUsername, likerUserPhoto, notificationText);
+
+    notificationService.saveNotification(newNotification);
+
+    String authUserIdString = authUserId.toString();
+    messagingTemplate.convertAndSendToUser(authUserIdString, "/notifications", notificationRequest);
+
+    int unreadNotificationsNum = notificationService
+        .findAllByFollowerUserIdAndNotificationRead(authUserId, false).size();
+    Map<String, Integer> unreadNotifications = new HashMap<>();
+    unreadNotifications.put("unreadNotifications", unreadNotificationsNum);
+    messagingTemplate.convertAndSendToUser(authUserIdString, "/unread_notifications", unreadNotifications);
+
     return notificationRequest;
   }
 }

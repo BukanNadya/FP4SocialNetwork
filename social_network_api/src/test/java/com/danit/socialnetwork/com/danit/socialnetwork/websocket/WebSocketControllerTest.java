@@ -54,7 +54,6 @@ class WebSocketControllerTest {
 
   @Test
   void testPostNotificationForRepost() throws InterruptedException {
-    // Create test data
     RepostDtoSave repostDtoSave = new RepostDtoSave();
     repostDtoSave.setUserId(1);
     repostDtoSave.setPostId(1);
@@ -109,10 +108,8 @@ class WebSocketControllerTest {
     unreadNotifications.put("unreadNotifications", unreadNotificationsNum);
     messagingTemplate.convertAndSendToUser(authUserIdString, "/unread_notifications", unreadNotifications);
 
-    // Call the method under test
     webSocketController.postNotification(repostDtoSave);
 
-    // Verify method calls and sent messages
     verify(postService, times(1)).findPostByPostId(repostDtoSave.getPostId());
     verify(userService, times(1)).findDbUserByUserId(repostDtoSave.getUserId());
     verify(notificationService, times(1)).saveNotification(newNotification);
@@ -121,7 +118,6 @@ class WebSocketControllerTest {
 
   @Test
   void testPostNotificationForPost() throws InterruptedException {
-    // Create test data
     NotificationRequest notificationRequest = new NotificationRequest();
     notificationRequest.setUserId(1);
 
@@ -141,15 +137,36 @@ class WebSocketControllerTest {
     followers.add(follower);
     when(userFollowService.getAllUsersByUserFollowerId(user.getUserId())).thenReturn(followers);
 
-    // Call the method under test
     webSocketController.postNotification(notificationRequest);
 
-    // Verify method calls and sent messages
     verify(userService, times(1)).findByUserId(notificationRequest.getUserId());
     verify(postService, times(1)).findLatestPostIdByUserId(user.getUserId());
     verify(notificationService, times(followers.size())).saveNotification(any(Notification.class));
     verify(messagingTemplate, times(followers.size())).convertAndSendToUser(anyString(), eq("/notifications"), eq(notificationRequest));
     verify(messagingTemplate, times(followers.size())).convertAndSendToUser(anyString(), eq("/unread_notifications"), anyMap());
+  }
+
+  @Test
+  void testPostLikeNotification() {
+    RepostDtoSave repostDtoSave = new RepostDtoSave();
+    repostDtoSave.setUserId(1);
+    repostDtoSave.setPostId(1);
+
+    Post post = new Post();
+    DbUser user = new DbUser();
+    user.setUserId(1);
+    post.setUserPost(user);
+
+    when(postService.findPostByPostId(anyInt())).thenReturn(post);
+    when(userService.findDbUserByUserId(anyInt())).thenReturn(new DbUser());
+    when(notificationService.findAllByFollowerUserIdAndNotificationRead(anyInt(), anyBoolean())).thenReturn(new ArrayList<>());
+
+    NotificationRequest result = webSocketController.postLikeNotification(repostDtoSave);
+
+    verify(postService).findPostByPostId(anyInt());
+    verify(userService).findDbUserByUserId(anyInt());
+    verify(notificationService).saveNotification(any(Notification.class));
+    verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
 }
 

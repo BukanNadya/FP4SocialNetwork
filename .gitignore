@@ -37,3 +37,4 @@ data/
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/social-network-ui/package-lock.json
