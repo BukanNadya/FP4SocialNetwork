@@ -96,7 +96,11 @@ public class MapperUtils {
   }
 
   public static Integer getMessageId(Inbox inbox) {
-    return inbox.getLastMessage().getMessageId();
+    Message message = inbox.getLastMessage();
+    if (message == null) {
+      return null;
+    }
+    return message.getMessageId();
   }
 
   public static Integer getMessageId(Message message) {

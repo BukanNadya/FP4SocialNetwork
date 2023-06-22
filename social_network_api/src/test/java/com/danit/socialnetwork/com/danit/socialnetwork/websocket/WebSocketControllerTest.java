@@ -1,13 +1,12 @@
 package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
-import com.danit.socialnetwork.model.DbUser;
-import com.danit.socialnetwork.model.Notification;
-import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.model.*;
 import com.danit.socialnetwork.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 
