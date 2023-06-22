@@ -473,7 +473,6 @@ export const fetchPostsByPage = (page) => {
 };
 
 export const fetchTextsByPage = (inboxUid, userId, page) => {
-    console.log(inboxUid, userId, page);
     return async (dispatch) => {
         try {
             async function getData() {

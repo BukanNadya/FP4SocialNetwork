@@ -8,10 +8,13 @@ export const GenerateBlueMessage = ({text, timestampText}) => {
     return (
       <div style={BlueMessageContainer}>
         <div style={BlueMessageTextWrap}>
-          <div style={BlueMessageTextStyled}>{text}</div>
+          <div style={{...BlueMessageTextStyled,  fontFamily: "'Lato', sans-serif",
+              fontSize: "15px",
+              lineHeight: "23px",}}>{text}</div>
         </div>
         <div style={TimestampContainer}>
-          <div style={TimestampStyled}>{timestampText}</div>
+          <div style={{...TimestampStyled, fontFamily: "'Lato', sans-serif",
+              fontSize: "10px"}}>{timestampText}</div>
         </div>
       </div>
     );
