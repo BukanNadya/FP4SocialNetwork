@@ -4,6 +4,7 @@ import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -224,6 +225,9 @@ public class WebSocketController {
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
+
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxSender);
+    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxReceiver);
     return inboxSender;
   }
 }

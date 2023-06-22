@@ -62,13 +62,14 @@ class MessageServiceImplTest {
     Message testMessage = new Message();
     testMessage.setInboxUid(testUser1);
     testMessage.setUserId(testUser2);
+    testMessage.setMessageId(1);
     testMessage.setMessageText("Hello world!");
     MessageDtoRequest request = new MessageDtoRequest();
     request.setInboxUid(1);
     request.setUserId(2);
     request.setWrittenMessage("Hello world!");
     MessageDtoResponse testMessageDto = new MessageDtoResponse(
-        1, 2, "Hello world!", null);
+        1, 2, 1, "Hello world!", null);
 
     Inbox testInbox1 = new Inbox(testUser1, testUser2, testMessage);
     Inbox testInbox2 = new Inbox(testUser2, testUser1, testMessage);

@@ -14,17 +14,20 @@ public class InboxDtoResponse {
   private String username;
   private String name;
   private String profileImageUrl;
+  private Integer messageId;
   private String message;
   private LocalDateTime createdAt;
 
   public InboxDtoResponse(Integer inboxId, Integer userId, Integer inboxUid, String username,
-                          String name, String profileImageUrl, String message, LocalDateTime createdAt) {
+                          String name, String profileImageUrl, Integer messageId,
+                          String message, LocalDateTime createdAt) {
     this.inboxId = inboxId;
     this.userId = userId;
     this.inboxUid = inboxUid;
     this.username = username;
     this.name = name;
     this.profileImageUrl = profileImageUrl;
+    this.messageId = messageId;
     this.message = message;
     this.createdAt = createdAt;
   }
