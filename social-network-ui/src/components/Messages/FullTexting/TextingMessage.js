@@ -8,14 +8,10 @@ import PropTypes from "prop-types";
 export function TextingMessage({ sender, receiver, selectedMessage2 }) {
   const userId = useSelector((state) => state.userData.userData.userId);
 
-  const sortedMessages = useMemo(() => {
-    return [...selectedMessage2].sort((a, b) => {
-      return new Date(a.createdAt) - new Date(b.createdAt);
-    });
-  }, [selectedMessage2]);
+  const sortedMessages = [...selectedMessage2].sort((a, b) => {
+    return new Date(a.createdAt) - new Date(b.createdAt);
+  });
 
-
-  console.log(selectedMessage2)
 
   const formattedMessages = sortedMessages.map((item, index) => {
     const dateString = item.createdAt;
@@ -31,7 +27,6 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
 
     if (parseInt(item.inboxUid) === parseInt(userId)) {
       let timestamp = item.createdAt;
-      console.log(timestamp)
       let parts = timestamp.split("T");
       let key = parts[1]+ "_" + index;;
       return (
@@ -46,7 +41,6 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
       let parts = timestamp.split("T");
       let key = parts[1]+ "_" + index;;
       return (
-
         <GenerateWhiteMessage
             key={key}
           text={item.message}
@@ -57,11 +51,12 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
   });
 
   return (
-    <div>
+    <div >
       {formattedMessages.length > 0 ? (
         formattedMessages
       ) : (
-        <div>No texting</div>
+        <div style={{ fontSize: "1.8rem",
+          fontFamily: "'Lato', sans-serif", textAlign:"center"}}>Start a chat right now!</div>
       )}
     </div>
   );

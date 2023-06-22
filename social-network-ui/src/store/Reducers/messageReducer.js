@@ -14,7 +14,8 @@ export const messageReducer = (state = initialState, action) => {
             };
         case "ADD_ONE_MESSAGE_FROM_WEBSOCKET":
             return {
-                messages: [action.payload, ...state.messages],
+                ...state,
+                messages: [{...action.payload}, ...state.messages],
             };
         case "CLEAR_MESSAGES":
             return {
