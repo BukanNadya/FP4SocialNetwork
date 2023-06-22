@@ -36,7 +36,6 @@ public class MessageRestController {
   /*Method save a new message*/
   @PostMapping(path = "/api/addMessage")
   public ResponseEntity<MessageDtoResponse> addMessage(@RequestBody MessageDtoRequest request) {
-    log.info("@PostMapping(path = /api/addMessage)");
     MessageDtoResponse dbMessage = messageService.saveMessage(request);
     return new ResponseEntity<>(dbMessage, HttpStatus.CREATED);
   }

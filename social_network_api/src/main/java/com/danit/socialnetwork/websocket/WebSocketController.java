@@ -206,10 +206,8 @@ public class WebSocketController {
 
   @MessageMapping("/addMessage")
   public InboxDtoResponse postAddMessage(
-      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
-    log.info("@MessageMapping(/addMessage)");
+      @Payload MessageDtoRequest messageDtoRequest) {
 
-    Thread.sleep(500);
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     log.info("inboxUid" + inboxUid);
@@ -218,14 +216,14 @@ public class WebSocketController {
     List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
     List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
 
-    InboxDtoResponse inboxSender = inboxesSender.get(inboxesSender.size() - 1);
-    InboxDtoResponse inboxReceiver = inboxesReceiver.get(inboxesReceiver.size() - 1);
-
+    InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
+    InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+    log.info("inboxSender " + inboxSender.getUsername());
+    log.info("inboxReceiver " + inboxReceiver.getUsername());
     String inboxUidString = inboxUid.toString();
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
     return inboxSender;
-
   }
 }

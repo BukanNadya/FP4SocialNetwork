@@ -11,7 +11,6 @@ import com.danit.socialnetwork.repository.InboxRepository;
 import com.danit.socialnetwork.repository.MessageRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -82,7 +81,6 @@ public class InboxServiceImpl implements InboxService {
   }
 
   /*The method saves a new inbox, finds the inbox by sender and returns it*/
-  @SneakyThrows
   @Override
   public List<InboxDtoResponse> saveNewInbox(InboxParticipantsDtoRequest request) {
     Integer senderId = request.getInboxUid();
@@ -104,7 +102,6 @@ public class InboxServiceImpl implements InboxService {
     Message message = new Message();
     messageRepository.save(message);
     saveInbox(userS, userR, message);
-    Thread.sleep(500);
     return getInboxesByInboxUid(senderId);
   }
 }
