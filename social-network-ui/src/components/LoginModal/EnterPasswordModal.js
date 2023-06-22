@@ -13,9 +13,10 @@ import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../../context/ModalContext";
 
 import {
-    checkPasswordFetch,
+    checkPasswordFetch, closeLoginModal,
     setRememberMeAction,
     setUserPassword
 } from "../../store/actions";
@@ -38,6 +39,7 @@ export function EnterPasswordModal() {
     const dispatch = useDispatch();
     const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const navigate = useNavigate();
+    const { openForgot, setOpenForgot } = useModal();
 
     const theme = useTheme();
 
@@ -154,6 +156,11 @@ export function EnterPasswordModal() {
         styles = xxsStyles;
     }
 
+    const handleForgot = () => {
+        setOpenForgot(!openForgot);
+        dispatch(closeLoginModal());
+    };
+
     return (
         <>
             <Typography sx={StyledHeaderModalText}>Enter your password</Typography>
@@ -210,7 +217,7 @@ export function EnterPasswordModal() {
                         <Button type="submit"
                                 variant="contained" sx={styles.AdaptiveStyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log
                             in</Button>
-                        <Button variant="contained" sx={styles.AdaptiveStyledWhiteButton} fullWidth={true}>Forgot password?</Button>
+                        <Button variant="contained" sx={styles.AdaptiveStyledWhiteButton} fullWidth={true} onClick={handleForgot}>Forgot password?</Button>
                     </FormControl>
                 </Form>
             </Formik>

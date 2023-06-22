@@ -553,16 +553,16 @@ export function Message() {
                                         <SendIcon
                                             style={{ cursor: "pointer", }}
                                             onClick={async (event) => {
-                                                event.preventDefault();
                                                 await fetch(`${apiUrl}/api/addMessage`, {
                                                     method: "POST",
                                                     body: JSON.stringify({
                                                         inboxUid: selectedMessage.inboxUid,
                                                         userId: selectedMessage.userId,
-                                                        writtenMessage: inputValue
+                                                        writtenMessage: inputValue,
                                                     }),
                                                     headers: { "Content-Type": "application/json" },
                                                 });
+                                                event.preventDefault();
                                                 stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                     userId: selectedMessage.userId,
                                                     inboxUid: selectedMessage.inboxUid,

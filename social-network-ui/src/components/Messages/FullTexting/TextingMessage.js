@@ -31,6 +31,7 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
 
     if (parseInt(item.inboxUid) === parseInt(userId)) {
       let timestamp = item.createdAt;
+      console.log(timestamp)
       let parts = timestamp.split("T");
       let key = parts[1]+ "_" + index;;
       return (
