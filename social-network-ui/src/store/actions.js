@@ -31,7 +31,7 @@ import {
     SET_SEARCH_USER_UNFOLLOW,
     SET_USER_FOLLOWING,
     DELETE_MESSAGE_SUCCESS,
-    GET_MESSAGE_SUCCESS,
+    GET_MESSAGE_SUCCESS, SET_INBOX, CLEAR_INBOX,
 } from "./types";
 import { apiUrl } from "../apiConfig";
 
@@ -629,4 +629,8 @@ export const userSearchUnfollow = () => ({
 export const userFollowing = (data) => ({
     type: SET_USER_FOLLOWING,
     payload: { following: data }
+});
+export const setInbox = (data) => ({
+    type: SET_INBOX,
+    payload: data
 });
