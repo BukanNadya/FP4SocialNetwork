@@ -27,4 +27,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
   @Query("SELECT m FROM Message m JOIN FETCH m.userId u WHERE m.inboxUid = :inboxUid OR m.userId = :userId")
   List<Message> findMessageByInboxUidOrUserId(@Param("inboxUid") DbUser inboxUid, @Param("userId") DbUser userId);
 
+  List<Message> findAllByInboxUidAndUserIdAndMessageReadeEquals(DbUser inboxUid, DbUser userId, Boolean messageReade);
+
+  List<Message> findAllByInboxUidAndMessageReadeEquals(DbUser inboxUid, Boolean messageReade);
 }

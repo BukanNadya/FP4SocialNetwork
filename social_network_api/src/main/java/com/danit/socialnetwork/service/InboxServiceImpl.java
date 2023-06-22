@@ -107,4 +107,6 @@ public class InboxServiceImpl implements InboxService {
             .getUserId().equals(senderId)).toList().get(0);
     return mapper.inboxToInboxDtoResponse(inboxSender);
   }
+
+
 }

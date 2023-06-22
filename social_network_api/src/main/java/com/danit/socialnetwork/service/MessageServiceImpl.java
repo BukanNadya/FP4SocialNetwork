@@ -119,4 +119,16 @@ public class MessageServiceImpl implements MessageService {
     }
   }
 
+  /*The method counts the number of unread messages by user and returns it*/
+  @Override
+  public Integer numberUnreadMessagesByUser(DbUser inboxUid, DbUser userId) {
+    return messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(inboxUid, userId, false).size();
+  }
+
+  /*The method counts the number of unread messages returns it*/
+  @Override
+  public Integer numberUnreadMessages(DbUser inboxUid) {
+    return messageRepository.findAllByInboxUidAndMessageReadeEquals(inboxUid,false).size();
+  }
+
 }
