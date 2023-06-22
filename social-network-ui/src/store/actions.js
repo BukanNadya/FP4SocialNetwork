@@ -461,7 +461,7 @@ export const fetchPostsByPage = (page) => {
         let posts = await response.json();
         let postIds = posts.map(post => post.postId);
         console.log(postIds);
-        await fetch("http://localhost:8080/api/post/view", {
+        await fetch(`${apiUrl}/api/post/view`, {
             method: "PUT",
             body: JSON.stringify(
                 postIds
