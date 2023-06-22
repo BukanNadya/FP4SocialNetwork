@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {
     AppBar,
@@ -21,18 +21,13 @@ import { setMessages, setPageForMessage, setPageZeroForMessaging, fetchTextsByPa
 import { setClickedInboxTrue } from "../../../store/actions";
 
 
-export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessage }){
-    const transitions = useTransition(inboxMessages, {
-        from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
-        enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
-        leave: { opacity: 0, transform: 'translate3d(0,50%,0)' },
-        keys: item => item.createdAt, // Предполагается, что timestamp уникален. Если нет, используйте другое уникальное свойство.
-        config: { duration: 600, delay: 200 },
-    });
+export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage }){
 
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
     const theme = useTheme();
+
+
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -45,9 +40,8 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
     return(
         <div style={{height:"100vh", marginLeft:"20px"}}>
             {inboxMessages.length > 0 ? (
-                <div style={{height:"100vh"}}>
-                    {transitions((style, item) => (
-                        <animated.div style={style} key={item.createdAt}>
+                inboxMessages.map((item)=>(
+                <div key={item.inboxId} style={{height:"100vh"}}>
                             <InboxMessage
                                 image={item.profileImageUrl}
                                 senderName={item.name}
@@ -57,11 +51,9 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
                                 date={item.createdAt}
                                 handleClick={(event) => {
                                     event.preventDefault()
-                                    console.log(item.inboxUid)
                                     if (selectedMessage !== item) {
-                                        handleSelectMessage(item);
+                                        setSelectedMessage(item)
                                         dispatch(setPageZeroForMessaging());
-                                        console.log(item.inboxUid);
                                         dispatch(fetchTextsByPage(item.userId, userId, 0));
                                     }
                                     if (!isXl && !isLg && !isMd ){
@@ -69,9 +61,8 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
                                     }
                                 }}
                             />
-                        </animated.div>
-                    ))}
                 </div>
+                ))
             ) : (
                 <div style={{display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column", height:"70vh"}}>
                     <div style={{  fontSize: "1.1rem",
@@ -84,6 +75,7 @@ export function MessageInbox({inboxMessages, handleSelectMessage, selectedMessag
 }
 
 MessageInbox.propTypes = {
+    setSelectedMessage:PropTypes.any,
     selectedMessage:PropTypes.any,
     inboxMessages: PropTypes.any,
     handleSelectMessage:PropTypes.func

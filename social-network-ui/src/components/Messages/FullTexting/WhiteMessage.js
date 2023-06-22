@@ -8,10 +8,13 @@ export const GenerateWhiteMessage = ({text, timestampText}) => {
     return (
       <div style={WhiteMessageContainer}>
         <div style={WhiteMessageTextWrap}>
-          <div style={WhiteMessageTextStyled}>{text}</div>
+          <div style={{...WhiteMessageTextStyled,  fontFamily: "'Lato', sans-serif",
+              fontSize: "15px",
+              lineHeight: "23px",}}>{text}</div>
         </div>
         <div style={TimestampContainer}>
-          <div style={TimestampStyled}>{timestampText}</div>
+          <div style={{...TimestampStyled,  fontFamily: "'Lato', sans-serif",
+              fontSize: "10px"}}>{timestampText}</div>
         </div>
       </div>
     );
