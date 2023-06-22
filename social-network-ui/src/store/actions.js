@@ -614,6 +614,14 @@ export const setPageZeroForMessaging = () => {
     };
 };
 
+export const clearMessages = () => {
+    return {
+        type: "CLEAR_MESSAGES"
+    };
+};
+
+
+
 export const userFollow = () => ({
     type: SET_USER_FOLLOW
 });

@@ -401,7 +401,6 @@ export function Message() {
     }, [inbox]);
 
     useEffect(() => {
-
         const onConnected = () => {
             console.log(userId);
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
@@ -424,15 +423,14 @@ export function Message() {
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         console.log(payloadData, "PayloadData");
-        const messageData = {
-            inboxUid: payloadData.inboxUid,
-            userId: payloadData.userId,
-            messageId: payloadData.messageId,
-            message: payloadData.message,
-            createdAt: payloadData.createdAt
-        };
+        let messageData = {
+                inboxUid:payloadData.inboxUid,
+                userId:payloadData.userId,
+                messageId: payloadData.messageId,
+                message: payloadData.message,
+                createdAt: payloadData.createdAt
+            };
         console.log(messageData)
-        dispatch(addMessageFromWebsocket(messageData))
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
@@ -442,7 +440,12 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
+        dispatch(addMessageFromWebsocket(messageData))
     };
+
+    useEffect(()=>{
+       console.log(messages)
+    },[messages])
 
     useEffect(() => {
         if (textingContainerRef.current) {
