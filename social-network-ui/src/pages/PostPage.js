@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Post } from "../components/Posts/Post";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-
+import { apiUrl } from "../apiConfig";
 export function PostPage() {
     const [post, setPost] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +17,7 @@ export function PostPage() {
         async function getData() {
             try {
                 setIsLoading(true);
-                let postData = await fetch(`http://localhost:8080/api/post/${postId}?userId=${userId}`);
+                let postData = await fetch(`${apiUrl}/api/post/${postId}?userId=${userId}`);
                 let postInform = await postData.json();
                 setPost([postInform]);
             } finally {
