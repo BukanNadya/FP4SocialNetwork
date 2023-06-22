@@ -1,5 +1,7 @@
+import {SET_INBOX} from "../types";
 const initialState = {
     messages: [],
+    inbox: [],
 };
 
 export const messageReducer = (state = initialState, action) => {
@@ -18,6 +20,11 @@ export const messageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 messages: [],
+            };
+        case SET_INBOX:
+            return {
+                ...state,
+                inbox: [action.payload],
             };
         default:
             return state;

@@ -31,6 +31,7 @@ let stompClient = null;
 export function Message() {
     const dispatch = useDispatch();
     const messages = useSelector((state) => state.messages.messages);
+    const inbox = useSelector((state) => state.messages.inbox);
     const page = useSelector(state => state.pageCountMessage.page);
     const maxAmountOfPages = useSelector(state => state.pageCountMessage.maxAmountOfPages);
     const userId = useSelector((state) => state.userData.userData.userId);
@@ -397,7 +398,7 @@ export function Message() {
 
     useEffect(() => {
         fetchMessages();
-    }, []);
+    }, [inbox]);
 
     useEffect(() => {
 

@@ -1,4 +1,5 @@
 import {apiUrl} from "../../apiConfig";
+import {setInbox} from "../actions";
 
 
 
@@ -16,6 +17,8 @@ export function fetchUserInbox (searchId) {
                 }),
                 headers: {"Content-Type": "application/json"}
             })
+                .then(r => r.json())
+                .then(data => dispatch(setInbox(data)))
 
         } catch (error) {
             console.error("An error occurred:", error);
