@@ -71,8 +71,8 @@ class MessageServiceImplTest {
     MessageDtoResponse testMessageDto = new MessageDtoResponse(
         1, 2, 1, "Hello world!", null);
 
-    Inbox testInbox1 = new Inbox(testUser1, testUser2, testMessage);
-    Inbox testInbox2 = new Inbox(testUser2, testUser1, testMessage);
+    Inbox testInbox1 = new Inbox(testUser1, testUser2, testMessage, null);
+    Inbox testInbox2 = new Inbox(testUser2, testUser1, testMessage, null);
     List<Inbox> inboxes = new ArrayList<>();
     inboxes.add(testInbox1);
     inboxes.add(testInbox2);

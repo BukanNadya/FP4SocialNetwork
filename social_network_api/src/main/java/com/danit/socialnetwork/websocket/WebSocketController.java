@@ -207,7 +207,8 @@ public class WebSocketController {
 
   @MessageMapping("/addMessage")
   public InboxDtoResponse postAddMessage(
-      @Payload MessageDtoRequest messageDtoRequest) {
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
+    Thread.sleep(1000);
 
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
@@ -217,8 +218,8 @@ public class WebSocketController {
     List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
     List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
 
-    InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
-    InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+    InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(1);
+    InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(1);
     log.info("inboxSender " + inboxSender.getUsername());
     log.info("inboxReceiver " + inboxReceiver.getUsername());
     String inboxUidString = inboxUid.toString();

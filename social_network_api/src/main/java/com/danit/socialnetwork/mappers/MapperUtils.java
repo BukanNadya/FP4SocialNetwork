@@ -107,4 +107,12 @@ public class MapperUtils {
     return message.getMessageId();
   }
 
+  public static Integer getUnread(Inbox inbox) {
+    Integer unread = inbox.getUnread();
+    if (unread == null) {
+      return null;
+    }
+    return unread;
+  }
+
 }
