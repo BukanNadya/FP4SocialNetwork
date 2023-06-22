@@ -72,7 +72,8 @@ export const InboxMessage = ({image, senderName, sender, receiver, message, date
         <div style={senderStyle}>{senderName}</div>
         <div style={messageStyle}>{message}</div>
       </div>
-      <div style={dateStyle}>{postDate()}</div>
+      
+      {message? <div style={dateStyle}>{postDate()}</div> : null}
     </div>
   );
 }

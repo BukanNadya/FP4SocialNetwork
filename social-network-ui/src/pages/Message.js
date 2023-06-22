@@ -443,7 +443,14 @@ export function Message() {
 
     useEffect(() => {
         console.log(clicked);
-    }, [clicked]);
+        if (isXl && clicked) {
+            dispatch(setClickedInboxFalse());
+        } else if (isLg && clicked) {
+            dispatch(setClickedInboxFalse());
+        } else if (isMd && clicked) {
+            dispatch(setClickedInboxFalse());
+        }
+    }, [isXl, isLg, isMd, clicked]);
 
     function handleSelectMessage(message) {
         setSelectedMessage(message);
@@ -502,14 +509,14 @@ export function Message() {
                                 <div style={{fontFamily: "'Lato', sans-serif", color: "gray",}}>@{selectedMessage.username}</div>
                             </div>
                         </div>
-                    <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
-                        <TextingMessage
-                            sender={selectedMessage.inboxUid}
-                            receiver={selectedMessage.userId}
-                            selectedMessage={messages}
-                            key={Math.floor(Math.random() * 1000)}
-                        />
-                    </div>
+                        <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom} ref={textingContainerRef}>
+                            <TextingMessage
+                                sender={selectedMessage.inboxUid}
+                                receiver={selectedMessage.userId}
+                                selectedMessage={messages}
+                                key={Math.floor(Math.random() * 1000)}
+                            />
+                        </div>
                     </>
                 )}
 
