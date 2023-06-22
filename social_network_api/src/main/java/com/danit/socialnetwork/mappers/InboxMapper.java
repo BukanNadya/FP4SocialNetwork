@@ -16,6 +16,5 @@ public interface InboxMapper {
   @Mapping(target = "message", expression = "java(MapperUtils.getMessage(inbox))")
   @Mapping(target = "messageId", expression = "java(MapperUtils.getMessageId(inbox))")
   @Mapping(target = "createdAt", expression = "java(MapperUtils.getCreatedAt(inbox))")
-  @Mapping(target = "unread", expression = "java(MapperUtils.getUnread(inbox))")
   InboxDtoResponse inboxToInboxDtoResponse(Inbox inbox);
 }

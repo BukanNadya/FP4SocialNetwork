@@ -43,9 +43,9 @@ public class InboxServiceImpl implements InboxService {
 
     Optional<Inbox> inboxSender = inboxRepository.findByInboxUidAndUserId(senderId, receiverId);
     if (inboxSender.isEmpty()) {
-      Inbox inboxNewSender = new Inbox(senderId, receiverId, message, null);
+      Inbox inboxNewSender = new Inbox(senderId, receiverId, message);
       Inbox inboxS = inboxRepository.save(inboxNewSender);
-      Inbox inboxNewReceiver = new Inbox(receiverId, senderId, message, null);
+      Inbox inboxNewReceiver = new Inbox(receiverId, senderId, message);
       Inbox inboxR = inboxRepository.save(inboxNewReceiver);
       inboxesSenderAndReceiver.add(inboxS);
       inboxesSenderAndReceiver.add(inboxR);

@@ -35,13 +35,9 @@ public class Inbox {
   @JoinColumn(name = "last_message")
   private Message lastMessage;
 
-  @Column(name = "unread")
-  private Integer unread;
-
-  public Inbox(DbUser inboxUid, DbUser userId, Message lastMessage, Integer unread) {
+  public Inbox(DbUser inboxUid, DbUser userId, Message lastMessage) {
     this.inboxUid = inboxUid;
     this.userId = userId;
     this.lastMessage = lastMessage;
-    this.unread = unread;
   }
 }
