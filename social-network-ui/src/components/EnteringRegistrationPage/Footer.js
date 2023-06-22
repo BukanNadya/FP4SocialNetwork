@@ -170,7 +170,7 @@ export  function Footer () {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "black"}}>
+            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "rgb(29, 155, 240)"}}>
                 <Container sx={styles.ContainerStyle} >
                     <Box display="grid" gridTemplateColumns={styles.GridItem.item} gap={2} sx={{height: "72px", alignItems: "center"}}>
 
