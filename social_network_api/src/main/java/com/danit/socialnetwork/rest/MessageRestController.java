@@ -71,9 +71,9 @@ public class MessageRestController {
 
   /*Method save a new inbox*/
   @PostMapping(path = "/api/addInbox")
-  public ResponseEntity<List<InboxDtoResponse>> addInbox(@RequestBody InboxParticipantsDtoRequest request) {
+  public ResponseEntity<InboxDtoResponse> addInbox(@RequestBody InboxParticipantsDtoRequest request) {
 
-    List<InboxDtoResponse> dbInbox = inboxService.saveNewInbox(request);
+    InboxDtoResponse dbInbox = inboxService.saveNewInbox(request);
     return new ResponseEntity<>(dbInbox, HttpStatus.CREATED);
   }
 

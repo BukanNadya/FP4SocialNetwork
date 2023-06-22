@@ -147,12 +147,10 @@ class MessageRestControllerTest {
     request.setInboxUid(1);
     request.setUserId(2);
 
-    List<InboxDtoResponse> testInboxDtoList = new ArrayList<>();
     InboxDtoResponse testInboxDto = new InboxDtoResponse();
     testInboxDto.setInboxUid(1);
     testInboxDto.setUserId(2);
-    testInboxDtoList.add(testInboxDto);
-    when(inboxService.saveNewInbox(any(InboxParticipantsDtoRequest.class))).thenReturn(testInboxDtoList);
+    when(inboxService.saveNewInbox(any(InboxParticipantsDtoRequest.class))).thenReturn(testInboxDto);
 
     mockMvc.perform(post("/api/addInbox")
             .contentType(MediaType.APPLICATION_JSON)

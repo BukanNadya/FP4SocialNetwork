@@ -82,7 +82,7 @@ public class InboxServiceImpl implements InboxService {
 
   /*The method saves a new inbox, finds the inbox by sender and returns it*/
   @Override
-  public List<InboxDtoResponse> saveNewInbox(InboxParticipantsDtoRequest request) {
+  public InboxDtoResponse saveNewInbox(InboxParticipantsDtoRequest request) {
     Integer senderId = request.getInboxUid();
     Integer receiverId = request.getUserId();
     Optional<DbUser> userSender = userRepository.findById(senderId);
@@ -101,7 +101,10 @@ public class InboxServiceImpl implements InboxService {
     }
     Message message = new Message();
     messageRepository.save(message);
-    saveInbox(userS, userR, message);
-    return getInboxesByInboxUid(senderId);
+    List<Inbox> inboxesNew = saveInbox(userS, userR, message);
+    Inbox inboxSender = inboxesNew.stream()
+        .filter(inbox -> inbox.getInboxUid()
+            .getUserId().equals(senderId)).toList().get(0);
+    return mapper.inboxToInboxDtoResponse(inboxSender);
   }
 }
