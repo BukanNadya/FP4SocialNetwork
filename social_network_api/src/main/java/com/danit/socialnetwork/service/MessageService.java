@@ -20,8 +20,7 @@ public interface MessageService {
 
   List<MessageSearchDto> filterCachedMessageByString(SearchRequest request);
 
+  Integer numberUnreadMessagesByUser(Integer inboxUid, Integer userId);
 
-  Integer numberUnreadMessagesByUser(DbUser inboxUid, DbUser userId);
-
-  Integer numberUnreadMessages(DbUser inboxUid);
+  Integer numberUnreadMessages(Integer inboxUid);
 }

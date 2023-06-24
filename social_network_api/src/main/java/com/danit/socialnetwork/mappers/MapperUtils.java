@@ -3,17 +3,12 @@ package com.danit.socialnetwork.mappers;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
-import com.danit.socialnetwork.service.MessageService;
-import com.danit.socialnetwork.service.MessageServiceImpl;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class MapperUtils {
-
-  private static MessageService messageService;
 
   public static String getProfileImageUrl(DbUser dbUser) {
     return dbUser.getProfileImageUrl();
@@ -109,14 +104,6 @@ public class MapperUtils {
 
   public static Integer getMessageId(Message message) {
     return message.getMessageId();
-  }
-
-  public static Integer getUnread(Inbox inbox) {
-    return messageService.numberUnreadMessages(inbox.getInboxUid());
-  }
-
-  public static Integer getUnreadByUser(Inbox inbox) {
-    return messageService.numberUnreadMessagesByUser(inbox.getInboxUid(), inbox.getUserId());
   }
 
 }

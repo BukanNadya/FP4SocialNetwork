@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class InboxDtoResponse {
-  private MessageService messageService;
   private Integer inboxId;
   private Integer userId;
   private Integer inboxUid;
@@ -20,13 +19,11 @@ public class InboxDtoResponse {
   private Integer messageId;
   private String message;
   private LocalDateTime createdAt;
-  private Integer unread;
   private Integer unreadByUser;
 
-  public InboxDtoResponse(MessageService messageService, Integer inboxId, Integer userId, Integer inboxUid,
+  public InboxDtoResponse(Integer inboxId, Integer userId, Integer inboxUid,
                           String username, String name, String profileImageUrl, Integer messageId,
-                          String message, LocalDateTime createdAt, Integer unread, Integer unreadByUser) {
-    this.messageService = messageService;
+                          String message, LocalDateTime createdAt, Integer unreadByUser) {
     this.inboxId = inboxId;
     this.userId = userId;
     this.inboxUid = inboxUid;
@@ -36,7 +33,6 @@ public class InboxDtoResponse {
     this.messageId = messageId;
     this.message = message;
     this.createdAt = createdAt;
-    this.unread = unread;
     this.unreadByUser = unreadByUser;
   }
 }

@@ -30,7 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.danit.socialnetwork.config.GuavaCache;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -38,8 +37,6 @@ import java.util.*;
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;

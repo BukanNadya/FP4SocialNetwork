@@ -6,6 +6,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.InboxRepository;
+import com.danit.socialnetwork.repository.MessageRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,9 @@ class InboxServiceImplTest {
   @Mock
   InboxRepository inboxRepository;
   @Mock
-  UserRepository userRepository;
+  MessageRepository messageRepository;
+  @Mock
+  UserServiceImpl userService;
   @Mock
   InboxMapperImpl mapper;
   @Mock
@@ -200,7 +203,7 @@ class InboxServiceImplTest {
 
     Integer inboxUidTest = 1;
     when(inboxRepository.getInboxesByInboxUid(testUser1)).thenReturn(testInbox);
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
     when(mapper.inboxToInboxDtoResponse(testInbox1)).thenReturn(testInboxDtoResponse1);
     when(mapper.inboxToInboxDtoResponse(testInbox2)).thenReturn(testInboxDtoResponse2);
     when(mapper.inboxToInboxDtoResponse(testInbox3)).thenReturn(testInboxDtoResponse3);

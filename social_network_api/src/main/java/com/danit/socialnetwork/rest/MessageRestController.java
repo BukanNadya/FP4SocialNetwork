@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -75,6 +77,15 @@ public class MessageRestController {
 
     InboxDtoResponse dbInbox = inboxService.saveNewInbox(request);
     return new ResponseEntity<>(dbInbox, HttpStatus.CREATED);
+  }
+
+  @GetMapping(path = "/api/{inboxUid}/unread")
+  public ResponseEntity<Map<String, Integer>> numUnreadMessages(
+      @PathVariable("inboxUid") Integer inboxUid) {
+    Integer numUnreadMessages = messageService.numberUnreadMessages(inboxUid);
+    Map<String, Integer> response = new HashMap<>();
+    response.put("unread", numUnreadMessages);
+    return ResponseEntity.ok(response);
   }
 
 }

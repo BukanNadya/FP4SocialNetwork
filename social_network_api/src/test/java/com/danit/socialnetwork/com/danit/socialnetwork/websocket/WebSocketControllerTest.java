@@ -1,7 +1,6 @@
 package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
-import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -32,6 +31,8 @@ class WebSocketControllerTest {
   @Mock
   private InboxService inboxService;
   @Mock
+  private MessageService messageService;
+  @Mock
   private InboxMapperImpl mapper;
   @Mock
   private SimpMessagingTemplate messagingTemplate;
@@ -47,6 +48,7 @@ class WebSocketControllerTest {
         userService,
         postService,
         inboxService,
+        messageService,
         mapper
     );
     webSocketController.setMessagingTemplate(messagingTemplate);
@@ -169,5 +171,6 @@ class WebSocketControllerTest {
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
 }
+
 
 

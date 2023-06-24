@@ -58,4 +58,8 @@ public class Message {
     this.inboxUid = inboxUid;
     this.userId = userId;
   }
+
+  public void setMessageReade(Boolean messageReade) {
+    this.messageReade = messageReade;
+  }
 }

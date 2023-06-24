@@ -26,6 +26,7 @@ public class InboxServiceImpl implements InboxService {
   private final InboxRepository inboxRepository;
   private final UserRepository userRepository;
   private final MessageRepository messageRepository;
+  private final UserServiceImpl userService;
   private final InboxMapperImpl mapper;
   private final SimpMessagingTemplate messagingTemplate;
   private static final String USER_NOT_FOUND = "User with userId %d not found";
@@ -68,16 +69,15 @@ public class InboxServiceImpl implements InboxService {
   /*The method finds the inbox by sender and returns it*/
   @Override
   public List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid) {
-    List<InboxDtoResponse> inboxesDto;
-    Optional<DbUser> oInboxUid = userRepository.findById(inboxUid);
-    if (oInboxUid.isEmpty()) {
-      throw new UserNotFoundException(String.format("User with userId %s not found", inboxUid));
-    } else {
-      List<Inbox> inboxes = inboxRepository.getInboxesByInboxUid(oInboxUid.get());
-      inboxesDto = inboxes.stream()
-          .map(mapper::inboxToInboxDtoResponse).toList();
-    }
-    return inboxesDto;
+    DbUser userS = userService.findDbUserByUserId(inboxUid);
+    return inboxRepository.getInboxesByInboxUid(userS).stream()
+        .map(inbox -> {
+          InboxDtoResponse inboxDto = mapper.inboxToInboxDtoResponse(inbox);
+          DbUser userR = userService.findDbUserByUserId(inboxDto.getUserId());
+          inboxDto.setUnreadByUser(messageRepository
+              .findAllByInboxUidAndUserIdAndMessageReadeEquals(userR, userS, false).size());
+          return inboxDto;
+        }).toList();
   }
 
   /*The method saves a new inbox, finds the inbox by sender and returns it*/

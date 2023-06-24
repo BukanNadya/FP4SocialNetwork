@@ -43,7 +43,7 @@ class MessageServiceImplTest {
   @Mock
   InboxServiceImpl inboxService;
   @Mock
-  UserRepository userRepository;
+  UserService userService;
   @Mock
   MessageMapperImpl messageMapper;
   @Mock
@@ -77,8 +77,9 @@ class MessageServiceImplTest {
     inboxes.add(testInbox1);
     inboxes.add(testInbox2);
 
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
-    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
+
+    when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
     when(inboxService.saveInbox(any(DbUser.class), any(DbUser.class), any(Message.class)))
         .thenReturn(inboxes);
     when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
@@ -146,8 +147,8 @@ class MessageServiceImplTest {
     int pageSize = 16;
     int offset = page * pageSize;
 
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
-    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
+    when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
     when(messageRepository
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(
             testUser1, testUser2, testUser1, testUser2, offset, pageSize))
@@ -237,8 +238,8 @@ class MessageServiceImplTest {
     testMessageSearchDto3.setUsername("RRR");
     testMessageSearchDto3.setMessage("Roma");
 
-    when(userRepository.findById(2)).thenReturn(Optional.of(testUser2));
-    when(userRepository.findById(1)).thenReturn(Optional.of(testUser1));
+    when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
+    when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage1)).thenReturn(testMessageSearchDto1);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage3)).thenReturn(testMessageSearchDto2);
     when(messageSearchMapper.messageToMessageSearchDto(testMessage5)).thenReturn(testMessageSearchDto3);
