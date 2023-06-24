@@ -3,13 +3,12 @@ package com.danit.socialnetwork.mappers;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@RequiredArgsConstructor
 public class MapperUtils {
-
-  private MapperUtils() {
-  }
 
   public static String getProfileImageUrl(DbUser dbUser) {
     return dbUser.getProfileImageUrl();
