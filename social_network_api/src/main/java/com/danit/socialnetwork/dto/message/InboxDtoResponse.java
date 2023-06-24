@@ -1,9 +1,7 @@
 package com.danit.socialnetwork.dto.message;
 
-import com.danit.socialnetwork.service.MessageService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
