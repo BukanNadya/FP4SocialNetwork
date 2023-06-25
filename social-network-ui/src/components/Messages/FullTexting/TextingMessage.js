@@ -12,6 +12,7 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
     return new Date(a.createdAt) - new Date(b.createdAt);
   });
 
+  console.log(selectedMessage2, "selectedMessage2")
 
   const formattedMessages = sortedMessages.map((item, index) => {
     const dateString = item.createdAt;

@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 
 import { Box, Button, Fab, SvgIcon, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -404,7 +405,7 @@ export function SideBar() {
                             </Typography>
                         </Fab>
                     </Link>
-                    <Link to="/profile" variant="contained" style={{ textDecoration: "none", marginBottom: "30px" }}>
+                    <Link to="/profile" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/profile" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
@@ -416,6 +417,14 @@ export function SideBar() {
                             </SvgIcon>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Profile
+                            </Typography>
+                        </Fab>
+                    </Link>
+                    <Link to="/settings" variant="contained" style={{ textDecoration: "none", marginBottom: "30px"  }}>
+                        <Fab variant="extended" sx={pathname === "/settings" ? SidebarFabActive : SidebarFab}>
+                           <ManageAccountsOutlinedIcon sx={SvgIconStyles}/>
+                            <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
+                                Settings
                             </Typography>
                         </Fab>
                     </Link>

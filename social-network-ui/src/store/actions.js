@@ -181,6 +181,45 @@ export const maxPages = (pages) => ({
     payload: pages,
 });
 
+export const deleteExplorePost = (posts) => ({
+    type: "SET_EXPLORE_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteHomeScreenPost = (posts) => ({
+    type: "SET_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteRegistrationPagePostScreenPost = (posts) => ({
+    type: "SET_REGISTRATION_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteProfilePost = (posts) => ({
+    type: "SET_PROFILE_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteProfileLikePosts = (posts) => ({
+    type: "SET_PROFILE_LIKE_POSTS_DELETE",
+    payload: posts,
+});
+
+export const deleteProfileRepostsPosts = (posts) => ({
+    type: "SET_PROFILE_REPOSTS_DELETE",
+    payload: posts,
+});
+
+
+
+
+
+
+
+
+
+
 export const checkEmail = (email) => ({
     type: CHECK_EMAIL,
     payload: email

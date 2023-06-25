@@ -38,6 +38,8 @@ console.log(userPosts)
         }
     };
 
+console.log(userPosts)
+
     const handleLikesClick = (postId, userId) => {
         let numUserId = parseInt(userId);
         let numPostId = Number(postId)

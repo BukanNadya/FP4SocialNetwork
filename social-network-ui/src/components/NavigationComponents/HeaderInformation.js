@@ -36,6 +36,7 @@ import SockJS from "sockjs-client";
 import { apiUrl } from "../../apiConfig";
 import { over } from "stompjs";
 import { ArrowBack } from "@mui/icons-material";
+import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 export function HeaderInformation() {
     const [notificationCount, setNotificationCount] = useState(0);
@@ -379,8 +380,12 @@ export function HeaderInformation() {
                 return "View";
             case "/search":
                 return "Search";
+            case "/settings":
+                return "Settings"
             case "/post/:postId":
                 return "Post";
+            case "/likes/:postId":
+                return "Likes";
             default:
                 return "Home";
         }
@@ -465,7 +470,12 @@ export function HeaderInformation() {
                     </g>
                 </SvgIcon>,
                 text: "Profile"
-            }
+            },
+            {
+                to: "/settings",
+                svgIcon:  <ManageAccountsOutlinedIcon sx={SvgIconStyles}/>,
+                text: "Settings"
+            },
         ];
 
         return components.map((component, index) => {

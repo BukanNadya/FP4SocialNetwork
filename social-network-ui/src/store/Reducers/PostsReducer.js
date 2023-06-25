@@ -35,6 +35,36 @@ export function PostReducer(state = initialState, action) {
                 ...state,
                 explorePosts: [...state.explorePosts, ...action.payload],
             };
+        case "SET_EXPLORE_POSTS_DELETE":
+            return {
+                ...state,
+                explorePosts: action.payload,
+            };
+        case "SET_POSTS_DELETE":
+            return {
+                ...state,
+                posts: action.payload,
+            };
+        case "SET_REGISTRATION_POSTS_DELETE":
+            return {
+                ...state,
+                registrationPagePosts: action.payload,
+            };
+        case "SET_PROFILE_POSTS_DELETE":
+            return {
+                ...state,
+                profilePosts: action.payload,
+            };
+        case "SET_PROFILE_LIKE_POSTS_DELETE":
+            return {
+                ...state,
+                profileLikePosts: action.payload,
+            };
+        case "SET_PROFILE_REPOSTS_DELETE":
+            return {
+                ...state,
+                profileReposts: action.payload,
+            };
         case ADD_REGISTRATION_POSTS:
             return {
                 ...state,

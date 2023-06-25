@@ -15,11 +15,12 @@ import {
     Paper,
     Box,
     Button,
-    Tooltip
+    Tooltip, Menu, MenuItem, Dialog, DialogContent, DialogContentText, DialogActions
 } from "@mui/material";
 import { FavoriteBorder, ChatBubbleOutline, Repeat, Favorite } from "@mui/icons-material";
 import { Comments } from "./Comments.js";
 import BarChartIcon from "@mui/icons-material/BarChart";
+
 
 import {
     PostCard,
@@ -38,18 +39,27 @@ import {
     EmptyLikesUserArrParagraph
 } from "./PostStyles";
 import {
-    activeLikesFetch, addLikeFetch, deleteLikeFetch,
+    activeLikesFetch,
+    addLikeFetch,
+    deleteExplorePost,
+    deleteHomeScreenPost,
+    deleteLikeFetch, deleteProfileLikePosts, deleteProfilePost,
+    deleteRegistrationPagePostScreenPost,
     fetchLikes,
     getComments,
     openLoginModal,
-    sendRepost, sendRepostFetch,
+    sendRepost,
+    sendRepostFetch,
     setSearchId,
+    deleteProfileRepostsPosts
 } from "../../store/actions";
 import CircularProgress from "@mui/material/CircularProgress";
 import { apiUrl } from "../../apiConfig";
 import { UsersLikes } from "./UsersLikes";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import * as Yup from "yup";
 
 export const Post = ({
                          userName,
@@ -70,7 +80,6 @@ export const Post = ({
                      }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [postCommentCount, setPostCommentCount] = useState(postComments);
@@ -84,6 +93,16 @@ export const Post = ({
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
     const [repostCountView, setRepostCountView] = useState(repostsCount);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [openWindow, setOpenWindow] = useState(false);
+    const open = Boolean(anchorEl);
+    const explorePosts = useSelector(state => state.Posts.explorePosts);
+    const userPosts = useSelector(state => state.Posts.posts);
+    const registrationPageUsersPosts = useSelector(state => state.Posts.registrationPagePosts);
+    const profilePosts = useSelector(state => state.Posts.profilePosts)
+    const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
+    const profileReposts = useSelector(state => state.Posts.profileReposts)
+    const navigate = useNavigate();
 
     const theme = useTheme();
 
@@ -299,15 +318,28 @@ export const Post = ({
 
     const ShowUsersWhoLike = async () => {
         if (userId) {
-            setShowLike(!showLike);
+
         } else {
             dispatch(openLoginModal());
         }
     };
 
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const validationSchema = Yup.object().shape({
+        comment: Yup.string()
+            .required("Please enter a comment").max(250, "Comment must be no longer than 250 characters")
+    });
+
+
     useEffect(() => {
         if (showLike) {
-            dispatch(fetchLikes(setLikesIsLoading, setUsersWhoLike, postId));
+
         }
     }, [showLike, dispatch, postId]);
 
@@ -336,6 +368,28 @@ export const Post = ({
         }
     };
 
+    const deletePost = async () => {
+        if(location.pathname === "/explore"){
+            let filteredExplorePosts = explorePosts.filter((post) => {
+                return post.postId !== postId;
+            });
+            dispatch(deleteExplorePost(filteredExplorePosts))
+        }else if(location.pathname === "/profile"){
+            let filteredProfilePosts = profilePosts.filter((post) => {
+                return post.postId !== postId;
+            });
+            dispatch(deleteProfilePost(filteredProfilePosts))
+            let filteredProfileLikePosts= profileLikePosts.filter((post) => {
+                return post.postId !== postId;
+            });
+            dispatch(deleteProfileLikePosts(filteredProfileLikePosts))
+            let filteredProfileReposts = profileReposts.filter((post) => {
+                return post.postId !== postId;
+            });
+            dispatch(deleteProfileRepostsPosts(filteredProfileReposts))
+        }
+    };
+
     const handleCommentToggle = async () => {
         if (userId) {
             dispatch(getComments(setIsLoadingComments, isCommentOpen, setIsCommentOpen, postId));
@@ -351,7 +405,7 @@ export const Post = ({
                 setLikeCount(likeCount + 1);
                 setLikeArr([...likeArr, { postId: postId, userId: userId }]);
                 await dispatch(addLikeFetch(postId, userId));
-                handleLikesClick(postId, userId)
+                handleLikesClick(postId, userId);
             } else {
                 if (likeCount === 0) {
                     setLikeCount(likeCount);
@@ -387,7 +441,7 @@ export const Post = ({
                     <Avatar alt={userName} src="#"/>}
                 <div style={PostTextWrapper}>
                     <Typography variant="subtitle1" component="div"
-                                sx={userNameParagraph}
+                                sx={{...userNameParagraph, maxWidth:"300px"}}
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
@@ -401,6 +455,53 @@ export const Post = ({
                          style={styles.AdaptiveUserPhoto} alt=""/>
                 </div>) : null
             }
+
+            {userIdWhoSendPost == userId ? <div style={{ position: "absolute", right: "30px",top:"20px", }}>
+                <MoreVertOutlinedIcon
+                    aria-controls="fade-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                />
+                <Menu
+                    id="fade-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={() => {
+                        setOpenWindow(true);
+                        handleClose();
+                    }}>Delete post</MenuItem>
+                </Menu>
+            </div> : null
+            }
+            <div>
+                <Dialog
+                    open={openWindow}
+                    keepMounted
+                    onClose={() => setOpenWindow(false)}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Do you want to delete this post?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            deletePost();
+                            setOpenWindow(false);
+                        }} color="primary">
+                            Yes
+                        </Button>
+                        <Button onClick={() => setOpenWindow(false)} color="primary">
+                            No
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
             <CardActions sx={{ padding: "20px 20px" }}>
                 <Tooltip title={"See comments"}>
                     <IconButton onClick={handleCommentToggle}>
@@ -425,20 +526,23 @@ export const Post = ({
                         {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
                     </IconButton>
                 </Tooltip>
-                <Typography onClick={ShowUsersWhoLike} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
-                <UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}
-                            toAnotherUserPage={toAnotherUserPage}/>
+                <Typography onClick={()=>{
+                    navigate(`/likes/${postId}`)
+                }} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
+                {/*<UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}*/}
+                {/*            toAnotherUserPage={toAnotherUserPage}/>*/}
             </CardActions>
             {isCommentOpen &&
-                <Comments comments={comments} isLoadingComments={isLoadingComments} postCommentCount={postCommentCount}
-                          setPostCommentCount={setPostCommentCount} postId={postId} userId={userId}/>}
+                <Comments comments={comments} isLoadingComments={isLoadingComments}
+                          setPostCommentCount={setPostCommentCount} postCommentCount={postCommentCount} postId={postId}
+                          userIdWhoSendPost={userIdWhoSendPost}/>}
         </Card>
     );
 };
 
 Post.propTypes = {
-    handleLikesClick:PropTypes.any,
-    viewCount:PropTypes.any,
+    handleLikesClick: PropTypes.any,
+    viewCount: PropTypes.any,
     sendEventToWebsocket: PropTypes.func,
     repostsCount: PropTypes.number,
     reposted: PropTypes.bool,
