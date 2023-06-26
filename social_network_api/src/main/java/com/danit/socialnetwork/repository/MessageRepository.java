@@ -29,5 +29,5 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 
   List<Message> findAllByInboxUidAndUserIdAndMessageReadeEquals(DbUser inboxUid, DbUser userId, Boolean messageReade);
 
-  List<Message> findAllByInboxUidAndMessageReadeEquals(DbUser inboxUid, Boolean messageReade);
+  List<Message> findAllByUserIdAndMessageReadeEquals(DbUser inboxUid, Boolean messageReade);
 }

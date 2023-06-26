@@ -124,7 +124,7 @@ public class MessageServiceImpl implements MessageService {
   @Override
   public Integer numberUnreadMessages(Integer inboxUid) {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
-    return messageRepository.findAllByInboxUidAndMessageReadeEquals(userS, false).size();
+    return messageRepository.findAllByUserIdAndMessageReadeEquals(userS, false).size();
   }
 
 }
