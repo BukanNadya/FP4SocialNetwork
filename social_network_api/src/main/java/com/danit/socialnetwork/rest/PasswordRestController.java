@@ -95,11 +95,17 @@ package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.ChangePasswordRequest;
 import com.danit.socialnetwork.dto.CodeCheckRequest;
+import com.danit.socialnetwork.dto.JwtRequest;
 import com.danit.socialnetwork.dto.NewPasswordRequest;
+import com.danit.socialnetwork.dto.PasswordChangeRequest;
+import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.PasswordChangerService;
+import com.danit.socialnetwork.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -110,21 +116,50 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PasswordRestController {
   private final PasswordChangerService passwordChangerService;
 
+  private final PasswordEncoder enc;
+
+  private final JwtAuthenticationRestController jwtAuthenticationRestController;
+  private final UserService userService;
+
   @PostMapping("/api/changepassword")
-  public ResponseEntity<?> changePass(@RequestBody ChangePasswordRequest changePasswordRequest) {
+  public ResponseEntity<Object> changePass(@RequestBody ChangePasswordRequest changePasswordRequest) {
     ResponseEntity<?> responseEntity = passwordChangerService.changePassword(changePasswordRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @PostMapping("/api/codecheck")
-  public ResponseEntity<?> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
+  public ResponseEntity<Object> codeCheck(@RequestBody CodeCheckRequest codeCheckRequest) {
     ResponseEntity<?> responseEntity = passwordChangerService.codeCheck(codeCheckRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
   }
 
   @PostMapping("/api/newpassword")
-  public ResponseEntity<?> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
+  public ResponseEntity<Object> authenticateUser(@RequestBody NewPasswordRequest newPasswordRequest) {
     ResponseEntity<?> responseEntity = passwordChangerService.authenticateUser(newPasswordRequest);
     return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getStatusCode());
+  }
+
+  @PostMapping("/api/change_password")
+  public ResponseEntity<Object> changeUserPassword(
+      @RequestBody PasswordChangeRequest passwordChangeRequest) throws Exception {
+
+    DbUser user = userService.findDbUserByUserId(passwordChangeRequest.getUserId());
+    if (user == null) {
+      return new ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.NOT_FOUND);
+    }
+
+    String userEmail = user.getEmail();
+    JwtRequest authRequest = new JwtRequest();
+    authRequest.setEmail(userEmail);
+    authRequest.setPassword(passwordChangeRequest.getCurrentPassword());
+    authRequest.setRememberMe("true");
+    ResponseEntity<?> authenticationToken = jwtAuthenticationRestController.createAuthenticationToken(authRequest);
+
+    if (authenticationToken.getStatusCodeValue() == 200) {
+      user.setPassword(enc.encode(passwordChangeRequest.getNewPassword()));
+      userService.saveUser(user);
+      return new ResponseEntity<>("Password changed", HttpStatus.OK);
+    }
+    return new ResponseEntity<>("INVALID_CREDENTIALS", HttpStatus.NOT_FOUND);
   }
 }

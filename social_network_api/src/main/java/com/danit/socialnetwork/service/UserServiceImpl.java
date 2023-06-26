@@ -287,4 +287,9 @@ public class UserServiceImpl implements UserService {
   public DbUser findDbUserByUserId(Integer userId) {
     return userRepository.findDbUserByUserId(userId);
   }
+
+  @Override
+  public void saveUser(DbUser user) {
+    userRepository.save(user);
+  }
 }

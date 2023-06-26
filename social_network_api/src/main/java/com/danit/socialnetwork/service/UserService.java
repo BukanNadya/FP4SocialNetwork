@@ -48,4 +48,6 @@ public interface UserService {
   List<UserDtoForSidebar> getUsersWhoMostPopularWithFollowers(Integer userId, Integer page);
 
   DbUser findDbUserByUserId(Integer userId);
+
+  void saveUser(DbUser user);
 }
