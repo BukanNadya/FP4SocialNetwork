@@ -246,7 +246,7 @@ public class WebSocketController {
     request.setInboxUid(inboxUid);
     request.setUserId(userId);
     MessageDtoResponse message = messageService
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, 0).get(0);
+        .findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(request, 0).get(0);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", message);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", message);
     return inboxSender;
