@@ -1,6 +1,10 @@
 package com.danit.socialnetwork.websocket;
 
 import com.danit.socialnetwork.dto.NotificationRequest;
+import com.danit.socialnetwork.dto.message.InboxDtoResponse;
+import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -170,6 +174,55 @@ class WebSocketControllerTest {
     verify(notificationService).saveNotification(any(Notification.class));
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
+
+  @Test
+  void testPostAddMessage() {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
+    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
+    request.setInboxUid(1);
+    request.setUserId(2);
+
+    List<InboxDtoResponse> inboxesSender = new ArrayList<>();
+    List<InboxDtoResponse> inboxesReceiver = new ArrayList<>();
+    InboxDtoResponse inboxSender = new InboxDtoResponse();
+    inboxSender.setInboxUid(1);
+    inboxSender.setUserId(2);
+    inboxSender.setMessage("Test");
+    InboxDtoResponse inboxReceiver = new InboxDtoResponse();
+    inboxReceiver.setInboxUid(2);
+    inboxReceiver.setUserId(1);
+    inboxReceiver.setMessage("Test");
+    inboxesSender.add(inboxSender);
+    inboxesSender.add(inboxReceiver);
+    inboxesReceiver.add(inboxSender);
+    inboxesReceiver.add(inboxReceiver);
+
+    List<MessageDtoResponse> messageList = new ArrayList<>();
+    MessageDtoResponse messageTest = new MessageDtoResponse();
+    messageTest.setInboxUid(1);
+    messageTest.setUserId(2);
+    messageTest.setMessage("Test");
+    messageList.add(messageTest);
+    System.out.println(messageTest);
+
+    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxesSender);
+    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesReceiver);
+    when(messageService.numberUnreadMessages(1)).thenReturn(5);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(any(InboxParticipantsDtoRequest.class), eq(0))).thenReturn(messageList);
+
+    webSocketController.postAddMessage(messageDtoRequest);
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inboxSender);
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxReceiver);
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(MessageDtoResponse.class));
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(MessageDtoResponse.class));
+  }
+
 }
 
 

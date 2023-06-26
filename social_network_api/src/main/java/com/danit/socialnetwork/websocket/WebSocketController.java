@@ -214,16 +214,16 @@ public class WebSocketController {
 
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
-    log.info("inboxUid" + inboxUid);
-    log.info("userId" + userId);
+    log.info("inboxUid {}",inboxUid);
+    log.info("userId {}",userId);
 
     List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
     List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
 
     InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
     InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
-    log.info("inboxSender " + inboxSender.getUsername());
-    log.info("inboxReceiver " + inboxReceiver.getUsername());
+    log.info("inboxSender {}",inboxSender.getUsername());
+    log.info("inboxReceiver {}",inboxReceiver.getUsername());
 
     int unreadMessagesNum = messageService
         .numberUnreadMessages(inboxUid);
