@@ -3,9 +3,7 @@ package com.danit.socialnetwork.websocket;
 import com.danit.socialnetwork.dto.NotificationType;
 import com.danit.socialnetwork.dto.NotificationRequest;
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
-import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
-import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
@@ -13,12 +11,12 @@ import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.service.PostService;
 import com.danit.socialnetwork.service.UserService;
-import com.danit.socialnetwork.service.UserFollowService;
 import com.danit.socialnetwork.service.NotificationService;
 import com.danit.socialnetwork.service.MessageService;
 import com.danit.socialnetwork.service.InboxService;
-import com.danit.socialnetwork.service.PostService;
+import com.danit.socialnetwork.service.UserFollowService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -217,14 +215,6 @@ public class WebSocketController {
     log.info("inboxUid {}",inboxUid);
     log.info("userId {}",userId);
 
-    List<InboxDtoResponse> inboxesSender = inboxService.getInboxesByInboxUid(inboxUid);
-    List<InboxDtoResponse> inboxesReceiver = inboxService.getInboxesByInboxUid(userId);
-
-    InboxDtoResponse inboxSender = inboxesSender.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
-    InboxDtoResponse inboxReceiver = inboxesReceiver.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
-    log.info("inboxSender {}",inboxSender.getUsername());
-    log.info("inboxReceiver {}",inboxReceiver.getUsername());
-
     int unreadMessagesNum = messageService
         .numberUnreadMessages(inboxUid);
     Map<String, Integer> unreadMessages = new HashMap<>();
@@ -233,22 +223,25 @@ public class WebSocketController {
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
 
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
+    InboxDtoResponse inbox = inboxes.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
+
     int unreadMessagesByUserNumSender = messageService
         .numberUnreadMessagesByUser(userId, inboxUid);
     Map<String, Integer> unreadMessagesByUser = new HashMap<>();
     unreadMessagesByUser.put("unread", unreadMessagesByUserNumSender);
-    inboxSender.setUnreadByUser(unreadMessagesByUserNumSender);
+    inbox.setUnreadByUser(unreadMessagesByUserNumSender);
 
     String inboxUidString = inboxUid.toString();
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxSender);
-    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxReceiver);
-    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
-    request.setInboxUid(inboxUid);
-    request.setUserId(userId);
-    MessageDtoResponse message = messageService
-        .findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(request, 0).get(0);
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", message);
-    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", message);
-    return inboxSender;
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inbox);
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inbox);
+
+    DbUser userR = userService.findDbUserByUserId(userId);
+    inbox.setName(userR.getName());
+    inbox.setUsername(userR.getUsername());
+    inbox.setProfileImageUrl(userR.getProfileImageUrl());
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inbox);
+    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inbox);
+    return inbox;
   }
 }

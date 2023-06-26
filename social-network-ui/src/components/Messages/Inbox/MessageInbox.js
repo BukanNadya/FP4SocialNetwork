@@ -58,7 +58,7 @@ export function MessageInbox({inboxMessages, selectedMessage, setSelectedMessage
                                 handleClick={(event) => {
                                     event.preventDefault()
                                     if (selectedMessage !== item) {
-                                        // dispatch(clearMessages())
+                                        dispatch(clearMessages())
                                         setSelectedMessage(item)
                                         dispatch(setPageZeroForMessaging());
                                         dispatch(fetchTextsByPage(item.userId, userId, 0));

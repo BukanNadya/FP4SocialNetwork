@@ -64,22 +64,10 @@ public class MessageServiceImpl implements MessageService {
     DbUser userId = userService.findDbUserByUserId(request.getUserId());
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
         inboxUid, userId, inboxUid, userId, offset, pageSize);
-    messagePage.stream().filter(message -> message.getUserId().equals(inboxUid)).forEach(message -> {
-      message.setMessageReade(true);
-      messageRepository.save(message);
+    messagePage.stream().filter(m -> m.getUserId().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
+      m.setMessageReade(true);
+      messageRepository.save(m);
     });
-    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
-  }
-
-  @Override
-  public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(
-      InboxParticipantsDtoRequest request, Integer page) {
-    int pageSize = 16;
-    int offset = page * pageSize;
-    DbUser inboxUid = userService.findDbUserByUserId(request.getInboxUid());
-    DbUser userId = userService.findDbUserByUserId(request.getUserId());
-    List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
-        inboxUid, userId, inboxUid, userId, offset, pageSize);
     return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
 

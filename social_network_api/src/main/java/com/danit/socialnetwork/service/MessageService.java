@@ -16,9 +16,6 @@ public interface MessageService {
 
   List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request, Integer page);
 
-  List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUidForWebsocket(
-      InboxParticipantsDtoRequest request, Integer page);
-
   List<Message> findMessageByInboxUidOrUserId(DbUser inboxUid, DbUser userId);
 
   List<MessageSearchDto> filterCachedMessageByString(SearchRequest request);
