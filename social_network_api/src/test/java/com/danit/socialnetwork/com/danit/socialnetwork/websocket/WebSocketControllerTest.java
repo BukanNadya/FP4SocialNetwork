@@ -177,44 +177,35 @@ class WebSocketControllerTest {
 
   @Test
   void testPostAddMessage() {
-    UserDtoResponse userS = new UserDtoResponse();
-    userS.setUserId(1);
-    userS.setUsername("TestUser");
-    userS.setName("TestUser");
-    userS.setProfileImageLink("TestUserProfileImageLink");
     MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
     messageDtoRequest.setWrittenMessage("Test");
-    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
-    request.setInboxUid(1);
-    request.setUserId(2);
 
-    List<InboxDtoResponse> inboxes = new ArrayList<>();
-    InboxDtoResponse inbox = new InboxDtoResponse();
-    inbox.setInboxUid(1);
-    inbox.setUserId(2);
-    inbox.setMessage("Test");
-    inboxes.add(inbox);
+    List<InboxDtoResponse> inboxesS = new ArrayList<>();
+    InboxDtoResponse inboxS = new InboxDtoResponse();
+    inboxS.setInboxUid(1);
+    inboxS.setUserId(2);
+    inboxS.setMessage("Test");
+    inboxesS.add(inboxS);
 
-    List<MessageDtoResponse> messageList = new ArrayList<>();
-    MessageDtoResponse messageTest = new MessageDtoResponse();
-    messageTest.setInboxUid(1);
-    messageTest.setUserId(2);
-    messageTest.setMessage("Test");
-    messageList.add(messageTest);
-    System.out.println(messageTest);
+    List<InboxDtoResponse> inboxesR = new ArrayList<>();
+    InboxDtoResponse inboxR = new InboxDtoResponse();
+    inboxR.setInboxUid(2);
+    inboxR.setUserId(1);
+    inboxR.setMessage("Test");
+    inboxesR.add(inboxR);
 
-    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxes);
-    when(userService.findByUserId(1)).thenReturn(userS);
+    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxesS);
+    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
     when(messageService.numberUnreadMessages(1)).thenReturn(5);
     when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
 
     webSocketController.postAddMessage(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
-    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inbox);
-    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inbox);
+    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inboxS);
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(InboxDtoResponse.class));
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
   }

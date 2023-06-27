@@ -223,25 +223,32 @@ public class WebSocketController {
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/unread", unreadMessages);
 
-    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
-    InboxDtoResponse inbox = inboxes.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
+    List<InboxDtoResponse> inboxesS = inboxService.getInboxesByInboxUid(inboxUid);
+    InboxDtoResponse inboxS = inboxesS.stream().filter(i -> i.getUserId().equals(userId)).toList().get(0);
 
-    int unreadMessagesByUserNumSender = messageService
+    int unreadMessagesByUserNumSenderS = messageService
         .numberUnreadMessagesByUser(userId, inboxUid);
-    Map<String, Integer> unreadMessagesByUser = new HashMap<>();
-    unreadMessagesByUser.put("unread", unreadMessagesByUserNumSender);
-    inbox.setUnreadByUser(unreadMessagesByUserNumSender);
+    Map<String, Integer> unreadMessagesByUserS = new HashMap<>();
+    unreadMessagesByUserS.put("unread", unreadMessagesByUserNumSenderS);
+    inboxS.setUnreadByUser(unreadMessagesByUserNumSenderS);
 
     String inboxUidString = inboxUid.toString();
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inbox);
-    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inbox);
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    UserDtoResponse userS = userService.findByUserId(inboxUid);
-    inbox.setName(userS.getName());
-    inbox.setUsername(userS.getUsername());
-    inbox.setProfileImageUrl(userS.getProfileImageLink());
-    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inbox);
-    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inbox);
-    return inbox;
+    List<InboxDtoResponse> inboxesR = inboxService.getInboxesByInboxUid(userId);
+    InboxDtoResponse inboxR = inboxesR.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
+
+    int unreadMessagesByUserNumSenderR = messageService
+        .numberUnreadMessagesByUser(userId, inboxUid);
+    Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
+    unreadMessagesByUserR.put("unread", unreadMessagesByUserNumSenderR);
+    inboxS.setUnreadByUser(unreadMessagesByUserNumSenderR);
+
+    inboxR.setInboxUid(userId);
+    inboxR.setUserId(inboxUid);
+    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
+    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
+    return inboxS;
   }
 }
