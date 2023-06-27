@@ -175,6 +175,50 @@ class WebSocketControllerTest {
     verify(messagingTemplate).convertAndSendToUser(anyString(), anyString(), anyMap());
   }
 
+  @Test
+  void testPostAddMessage() {
+    UserDtoResponse userS = new UserDtoResponse();
+    userS.setUserId(1);
+    userS.setUsername("TestUser");
+    userS.setName("TestUser");
+    userS.setProfileImageLink("TestUserProfileImageLink");
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
+    InboxParticipantsDtoRequest request = new InboxParticipantsDtoRequest();
+    request.setInboxUid(1);
+    request.setUserId(2);
+
+    List<InboxDtoResponse> inboxes = new ArrayList<>();
+    InboxDtoResponse inbox = new InboxDtoResponse();
+    inbox.setInboxUid(1);
+    inbox.setUserId(2);
+    inbox.setMessage("Test");
+    inboxes.add(inbox);
+
+    List<MessageDtoResponse> messageList = new ArrayList<>();
+    MessageDtoResponse messageTest = new MessageDtoResponse();
+    messageTest.setInboxUid(1);
+    messageTest.setUserId(2);
+    messageTest.setMessage("Test");
+    messageList.add(messageTest);
+    System.out.println(messageTest);
+
+    when(inboxService.getInboxesByInboxUid(1)).thenReturn(inboxes);
+    when(userService.findByUserId(1)).thenReturn(userS);
+    when(messageService.numberUnreadMessages(1)).thenReturn(5);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+
+    webSocketController.postAddMessage(messageDtoRequest);
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
+    verify(messagingTemplate, times(1)).convertAndSendToUser("1", "/inbox", inbox);
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inbox);
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("1"), eq("/getMessages"), any(InboxDtoResponse.class));
+    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
+  }
+
 }
 
 

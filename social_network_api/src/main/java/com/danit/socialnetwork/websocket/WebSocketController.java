@@ -236,10 +236,10 @@ public class WebSocketController {
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inbox);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inbox);
 
-    DbUser userR = userService.findDbUserByUserId(userId);
-    inbox.setName(userR.getName());
-    inbox.setUsername(userR.getUsername());
-    inbox.setProfileImageUrl(userR.getProfileImageUrl());
+    UserDtoResponse userS = userService.findByUserId(inboxUid);
+    inbox.setName(userS.getName());
+    inbox.setUsername(userS.getUsername());
+    inbox.setProfileImageUrl(userS.getProfileImageLink());
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inbox);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inbox);
     return inbox;
