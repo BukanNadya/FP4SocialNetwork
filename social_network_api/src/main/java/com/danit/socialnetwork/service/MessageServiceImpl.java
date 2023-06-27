@@ -64,7 +64,7 @@ public class MessageServiceImpl implements MessageService {
     DbUser userId = userService.findDbUserByUserId(request.getUserId());
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
         inboxUid, userId, inboxUid, userId, offset, pageSize);
-    messagePage.stream().filter(m -> m.getUserId().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
+    messagePage.stream().filter(m -> m.getInboxUid().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
       m.setMessageReade(true);
       messageRepository.save(m);
     });

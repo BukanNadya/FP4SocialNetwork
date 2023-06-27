@@ -240,13 +240,13 @@ public class WebSocketController {
     InboxDtoResponse inboxR = inboxesR.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
 
     int unreadMessagesByUserNumSenderR = messageService
-        .numberUnreadMessagesByUser(userId, inboxUid);
+        .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
-    unreadMessagesByUserR.put("unread", unreadMessagesByUserNumSenderR);
+    unreadMessagesByUserR.put("unreadByUser", unreadMessagesByUserNumSenderR);
     inboxS.setUnreadByUser(unreadMessagesByUserNumSenderR);
 
-    inboxR.setInboxUid(userId);
-    inboxR.setUserId(inboxUid);
+    inboxR.setInboxUid(inboxUid);
+    inboxR.setUserId(userId);
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
     return inboxS;
