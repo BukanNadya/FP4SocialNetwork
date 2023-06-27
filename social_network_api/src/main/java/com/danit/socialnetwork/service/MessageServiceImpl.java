@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.danit.socialnetwork.config.GuavaCache.messageCache;
@@ -81,11 +82,13 @@ public class MessageServiceImpl implements MessageService {
    and filters messages from cache by requested string. And returns them*/
   @Override
   public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
+    String messageSearch = request.getSearch();
+    if (messageSearch.equals("")) {
+      return new ArrayList<>();
+    }
     List<MessageSearchDto> search;
     Integer userId = Integer.valueOf(request.getUserId());
     DbUser userFromDb = userService.findDbUserByUserId(userId);
-    String messageSearch = request.getSearch();
-
     if (messageCache.getIfPresent(MESSAGE_CACHE) == null) {
       List<Message> cacheMessage = messageRepository.findMessageByInboxUidOrUserId(userFromDb, userFromDb);
       log.debug(String.format("cacheMessage.size = %d", cacheMessage.size()));

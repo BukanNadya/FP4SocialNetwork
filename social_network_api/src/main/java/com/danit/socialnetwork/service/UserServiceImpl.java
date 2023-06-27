@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.ArrayList;
+
 
 import static com.danit.socialnetwork.config.GuavaCache.activateCodeCache;
 import static com.danit.socialnetwork.config.GuavaCache.userCache;
@@ -146,8 +148,11 @@ public class UserServiceImpl implements UserService {
    entered in the form and returns them*/
   @Override
   public List<SearchDto> filterCachedUsersByName(SearchRequest request) {
-    Integer userId = Integer.valueOf(request.getUserId());
     String userSearch = request.getSearch();
+    if (userSearch.equals("")) {
+      return new ArrayList<>();
+    }
+    Integer userId = Integer.valueOf(request.getUserId());
     if (userCache.getIfPresent("UserCache") == null) {
       List<DbUser> cacheUsers = userRepository.findAll();
       userCache.put("UserCache", cacheUsers);
