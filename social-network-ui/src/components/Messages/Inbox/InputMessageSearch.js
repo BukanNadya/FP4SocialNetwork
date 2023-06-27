@@ -37,15 +37,15 @@ export const InputMessageSearch = ({ ...props }) => {
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField,}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"350px", marginLeft:"25px"}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField,}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"420px", marginLeft:"15px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField}
+        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"420px", marginLeft:"15px"}
     };
 
     let styles;

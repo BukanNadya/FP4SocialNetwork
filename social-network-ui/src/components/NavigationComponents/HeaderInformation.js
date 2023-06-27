@@ -508,7 +508,7 @@ export function HeaderInformation() {
     }
 
     return (
-        <AppBar position="fixed" color="primary" sx={Header}>
+        <AppBar position="fixed" color="primary" sx={Header} data-testid={"header_information_for_home_page"}>
             <Toolbar sx={{ height: "70px" }}>
                 {isXs || isXxs ?
                     (["left"].map((anchor) => (

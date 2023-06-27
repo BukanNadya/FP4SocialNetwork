@@ -3,20 +3,10 @@ import { List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/mater
 import { apiUrl } from "../apiConfig";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import {  useSelector } from "react-redux";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-    fetchData,
-    fetchPostsByUserId,
-    sendPost,
-    setPageZero,
-    setUserId,
-    setUserPostsClear
-} from "../store/actions";
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
-import { SidebarLogOutButton } from "../components/NavigationComponents/NavigationStyles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";

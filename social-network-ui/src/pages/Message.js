@@ -44,10 +44,6 @@ export function Message() {
     const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
 
-    useEffect(() => {
-        console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
-    }, [selectedMessage]);
-
     const theme = useTheme();
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
@@ -389,7 +385,6 @@ export function Message() {
             setIsLoading(true);
             const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
-            console.log(userData);
             setInboxMessages(userData);
         } finally {
             setIsLoading(false);
@@ -402,7 +397,6 @@ export function Message() {
 
     useEffect(() => {
         const onConnected = () => {
-            console.log(userId);
             stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
         };
         const onError = (err) => {
@@ -422,14 +416,13 @@ export function Message() {
 
     const newMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        console.log(payloadData, "PayloadData");
         let messageData = {
-                inboxUid:payloadData.inboxUid,
-                userId:payloadData.userId,
-                messageId: payloadData.messageId,
-                message: payloadData.message,
-                createdAt: payloadData.createdAt
-            };
+            inboxUid: payloadData.inboxUid,
+            userId: payloadData.userId,
+            messageId: payloadData.messageId,
+            message: payloadData.message,
+            createdAt: payloadData.createdAt
+        };
         console.log(messageData)
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
@@ -440,12 +433,8 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
-        dispatch(addMessageFromWebsocket(messageData))
+        dispatch(addMessageFromWebsocket(messageData));
     };
-
-    useEffect(()=>{
-       console.log(messages)
-    },[messages])
 
     useEffect(() => {
         if (textingContainerRef.current) {
@@ -454,7 +443,6 @@ export function Message() {
     }, [selectedMessage]);
 
     useEffect(() => {
-        console.log(clicked);
         if (isXl && clicked) {
             dispatch(setClickedInboxFalse());
         } else if (isLg && clicked) {
@@ -539,7 +527,7 @@ export function Message() {
                             </div>
                         </>
                     )}
-                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%" }}>
+                    <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%", marginBottom: "20px" }}>
                         {selectedMessage && (
                             <TextField
                                 id="outlined-basic"

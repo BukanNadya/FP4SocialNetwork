@@ -4,12 +4,12 @@ import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 import { Box, Button, Fab, SvgIcon, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Badge from '@mui/material/Badge';
+import Badge from "@mui/material/Badge";
 
 import {
     SidebarBox,
@@ -24,6 +24,7 @@ import { setUserToken } from "../../store/actions";
 import { apiUrl } from "../../apiConfig";
 import PropTypes from "prop-types";
 import { Post } from "../Posts/Post";
+
 let stompClient = null;
 
 export function SideBar() {
@@ -32,7 +33,8 @@ export function SideBar() {
     const { pathname } = location;
     const theme = useTheme();
     const userId = useSelector(state => state.userData.userData.userId);
-    const[notificationCount, setNotificationCount]=useState(0)
+    const [notificationCount, setNotificationCount] = useState(0);
+    const [messageCount, setMessageCount] = useState(0);
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -41,33 +43,38 @@ export function SideBar() {
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-
-    useEffect(()=>{
-        async function getNotification (){
-            let notificationInformation = await fetch(`${apiUrl}/api/unread_notifications`,{
+    useEffect(() => {
+        async function getNotification() {
+            let notificationInformation = await fetch(`${apiUrl}/api/unread_notifications`, {
                 method: "POST",
                 body: JSON.stringify({
                     userId: userId,
                 }),
                 headers: { "Content-Type": "application/json" }
-            })
-            let notificationData = await notificationInformation.json()
-            console.log(notificationData,"notificationData")
-            setNotificationCount(notificationData.unreadNotifications)
+            });
+            let notificationData = await notificationInformation.json();
+            setNotificationCount(notificationData.unreadNotifications);
+
+            let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
+            let messageData = await messageInformation.json();
+            setMessageCount(messageData.unread)
+            console.log(messageData)
         }
-        getNotification()
-    }, [])
+        if(userId){
+            getNotification();
+        }
+    }, [userId]);
 
     useEffect(() => {
-        if(location.pathname === "/notifications"){
-            setNotificationCount(0)
+        if (location.pathname === "/notifications") {
+            setNotificationCount(0);
         }
 
         let stompClient;
 
         const onConnected = () => {
             if (stompClient.connected) {
-                stompClient.subscribe("/user/"+ userId +"/unread_notifications", onPrivateMessage);
+                stompClient.subscribe("/user/" + userId + "/unread_notifications", onPrivateMessage);
             }
         };
 
@@ -94,12 +101,11 @@ export function SideBar() {
         console.log(payloadData, "unreadNotificationsFromSidebar");
     };
 
-
     const xxsStyles = {
         SidebarBox: {
             "& > :not(style)": { m: 1 },
             width: "60px",
-            display:"none",
+            display: "none",
             textAlign: "start",
             alignContent: "start",
             flexDirection: "column",
@@ -111,21 +117,30 @@ export function SideBar() {
             top: 0,
         },
         SidebarTypography: { display: "none" },
-        LogoutButton: { ...SidebarLogOutButton, padding:"0", minWidth: "20px", width:"40px", borderRadius:"100px", marginLeft:"4px",height:"40px", marginTop: 0},
-        ExitSvgIcon:{
+        LogoutButton: {
+            ...SidebarLogOutButton,
+            padding: "0",
+            minWidth: "20px",
+            width: "40px",
+            borderRadius: "100px",
+            marginLeft: "4px",
+            height: "40px",
+            marginTop: 0
+        },
+        ExitSvgIcon: {
             height: "20px",
             width: "20px",
             marginRight: "0px",
         }
         ,
-        AdaptiveDivWrapper: {display:"none"}
+        AdaptiveDivWrapper: { display: "none" }
     };
 
     const xsStyles = {
         SidebarBox: {
             "& > :not(style)": { m: 1 },
             width: "60px",
-            display:"none",
+            display: "none",
             textAlign: "start",
             alignContent: "start",
             flexDirection: "column",
@@ -137,14 +152,23 @@ export function SideBar() {
             top: 0,
         },
         SidebarTypography: { display: "none" },
-        LogoutButton: { ...SidebarLogOutButton, padding:"0", minWidth: "20px", width:"40px", borderRadius:"100px", marginLeft:"4px",height:"40px", marginTop: 0},
-        ExitSvgIcon:{
+        LogoutButton: {
+            ...SidebarLogOutButton,
+            padding: "0",
+            minWidth: "20px",
+            width: "40px",
+            borderRadius: "100px",
+            marginLeft: "4px",
+            height: "40px",
+            marginTop: 0
+        },
+        ExitSvgIcon: {
             height: "20px",
             width: "20px",
             marginRight: "0px",
         }
         ,
-        AdaptiveDivWrapper: {display:"none"}
+        AdaptiveDivWrapper: { display: "none" }
     };
 
     const smStyles = {
@@ -163,18 +187,29 @@ export function SideBar() {
             top: 0,
         },
         SidebarTypography: { display: "none" },
-        LogoutButton: { ...SidebarLogOutButton, padding:"0", minWidth: "20px", width:"40px", borderRadius:"100px", marginLeft:"4px",height:"40px", marginTop: 0},
-        ExitSvgIcon:{
+        LogoutButton: {
+            ...SidebarLogOutButton,
+            padding: "0",
+            minWidth: "20px",
+            width: "40px",
+            borderRadius: "100px",
+            marginLeft: "4px",
+            height: "40px",
+            marginTop: 0
+        },
+        ExitSvgIcon: {
             height: "20px",
             width: "20px",
             marginRight: "0px",
         }
         ,
-        AdaptiveDivWrapper: {height: "100vh",
+        AdaptiveDivWrapper: {
+            height: "100vh",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            alignContent: "start"}
+            alignContent: "start"
+        }
 
     };
 
@@ -194,18 +229,29 @@ export function SideBar() {
             top: 0,
         },
         SidebarTypography: { display: "none" },
-        LogoutButton: { ...SidebarLogOutButton, padding:"0", minWidth: "20px", width:"40px", borderRadius:"100px", marginLeft:"4px",height:"40px", marginTop: 0},
-        ExitSvgIcon:{
+        LogoutButton: {
+            ...SidebarLogOutButton,
+            padding: "0",
+            minWidth: "20px",
+            width: "40px",
+            borderRadius: "100px",
+            marginLeft: "4px",
+            height: "40px",
+            marginTop: 0
+        },
+        ExitSvgIcon: {
             height: "15px",
             width: "15px",
             marginRight: "0"
         }
         ,
-        AdaptiveDivWrapper: {height: "100vh",
+        AdaptiveDivWrapper: {
+            height: "100vh",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            alignContent: "start"}
+            alignContent: "start"
+        }
     };
 
     const lgStyles = {
@@ -233,18 +279,20 @@ export function SideBar() {
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
-        LogoutButton: {...SidebarLogOutButton},
-        ExitSvgIcon:{
+        LogoutButton: { ...SidebarLogOutButton },
+        ExitSvgIcon: {
             height: "20px",
             width: "20px",
             marginRight: "10px",
         }
         ,
-        AdaptiveDivWrapper: {height: "100vh",
+        AdaptiveDivWrapper: {
+            height: "100vh",
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            alignContent: "start"}
+            alignContent: "start"
+        }
     };
 
     const xlStyles = {
@@ -272,17 +320,19 @@ export function SideBar() {
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
-        LogoutButton: {...SidebarLogOutButton},
+        LogoutButton: { ...SidebarLogOutButton },
         ExitSvgIcon: {
             height: "20px",
             width: "20px",
             marginRight: "10px",
         },
-        AdaptiveDivWrapper: {height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "start",
-        alignContent: "start"}
+        AdaptiveDivWrapper: {
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignContent: "start"
+        }
     };
 
     let styles;
@@ -308,7 +358,7 @@ export function SideBar() {
     };
 
     return (
-        <Box position="fixed" sx={styles.SidebarBox}>
+        <Box data-testid={"sidebar_for_home_page"} position="fixed" sx={styles.SidebarBox}>
             <div style={styles.AdaptiveDivWrapper}>
                 <div
                     style={{ height: "60%", display: "flex", justifyContent: "space-around", flexDirection: "column" }}>
@@ -348,13 +398,14 @@ export function SideBar() {
                             </Typography>
                         </Fab>
                     </Link>
-                    {!isLg && !isXl  ? <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
+                    {!isLg && !isXl ? <Link to="/search" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/search" ? SidebarFabActive : SidebarFab}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
                                 <g>
-                                    <path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"/>
+                                    <path
+                                        d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"/>
                                 </g>
                             </SvgIcon>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
@@ -363,7 +414,10 @@ export function SideBar() {
                         </Fab>
                     </Link> : null}
                     <Link to="/notifications" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab} onClick={()=>{setNotificationCount(0)}}>
+                        <Fab variant="extended" sx={pathname === "/notifications" ? SidebarFabActive : SidebarFab}
+                             onClick={() => {
+                                 setNotificationCount(0);
+                             }}>
                             {notificationCount > 0 ? (
                                 <Badge badgeContent={notificationCount} color={"primary"}>
                                     <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
@@ -392,6 +446,7 @@ export function SideBar() {
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/messages" ? SidebarFabActive : SidebarFab}>
+                            <Badge badgeContent={location.pathname === "/messages" ? 0 : messageCount} color={"primary"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -400,6 +455,7 @@ export function SideBar() {
                                         d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"/>
                                 </g>
                             </SvgIcon>
+                            </Badge>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Messages
                             </Typography>
@@ -420,9 +476,9 @@ export function SideBar() {
                             </Typography>
                         </Fab>
                     </Link>
-                    <Link to="/settings" variant="contained" style={{ textDecoration: "none", marginBottom: "30px"  }}>
+                    <Link to="/settings" variant="contained" style={{ textDecoration: "none", marginBottom: "30px" }}>
                         <Fab variant="extended" sx={pathname === "/settings" ? SidebarFabActive : SidebarFab}>
-                           <ManageAccountsOutlinedIcon sx={SvgIconStyles}/>
+                            <ManageAccountsOutlinedIcon sx={SvgIconStyles}/>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Settings
                             </Typography>

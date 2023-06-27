@@ -1,22 +1,19 @@
-import { test, expect } from '@playwright/test';
+import { describe, test, expect } from '../base';
 
-test.describe('404 Not Found Page', () => {
-    test('should display "404 page not found" when visiting a non-existent page', async ({ browser }) => {
-        // Create a new context with JavaScript enabled
-        const context = await browser.newContext({
-            javaScriptEnabled: true
-        });
-
-        // Open a new page within the context
-        const page = await context.newPage();
-
-        // Visit a non-existent page
-        await page.goto('http://localhost:3000/home');
-
-        // Check that the 404 page is displayed
-        await expect(await page.getByText("View")).toBeVisible({ timeout: 15_000 });
-
-        // Close the page after the test
-        await page.close();
+describe('404 Not Found Page', () => {
+    test('should display the feed and login UI at any page for non-logged in user', async ({ commonActions, notFoundPage }) => {
+        await notFoundPage.openNonExistingPage();
+        await commonActions.verifyLoggedOutUi();
+    });
+    test('should display "404 page not found" when visiting a non-existent page for logged in user', async ({ commonActions, notFoundPage }) => {
+        await commonActions.login();
+        await notFoundPage.openNonExistingPage();
+        await notFoundPage.verify404Label();
     });
 });
+
+// describe('Home Page', () => {
+//     test('Login - should log in successfully', async ({ commonAction, homePage }) => {
+//         await commonAction.login();
+//     });
+// });

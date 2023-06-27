@@ -215,7 +215,7 @@ export function EnterPasswordModal() {
                             />
                         </FormControl>
                         <Button type="submit"
-                                variant="contained" sx={styles.AdaptiveStyledBlackButton} disabled={isSubmitting} fullWidth={true}>Log
+                                variant="contained" sx={styles.AdaptiveStyledBlackButton}  data-testid="log_in_button_modal" disabled={isSubmitting} fullWidth={true}>Log
                             in</Button>
                         <Button variant="contained" sx={styles.AdaptiveStyledWhiteButton} fullWidth={true} onClick={handleForgot}>Forgot password?</Button>
                     </FormControl>

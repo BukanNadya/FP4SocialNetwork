@@ -481,7 +481,6 @@ export const fetchPostsByUserId = (userId, page) => {
         const response = await fetch(`${apiUrl}/api/posts?userId=${userId}&page=${page}`);
         const data = await response.json();
         let postIds = data.map(post => post.postId);
-        console.log(postIds);
         await fetch(`${apiUrl}/api/post/view`, {
             method: "PUT",
             body: JSON.stringify(
@@ -525,7 +524,6 @@ export const fetchTextsByPage = (inboxUid, userId, page) => {
                     headers: { "Content-Type": "application/json" }
                 });
                 const response2 = await response.json();
-                console.log(response2);
                 if (response2) {
                     dispatch(maxPages(10));
                     dispatch(setMessages(response2));

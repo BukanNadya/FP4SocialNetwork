@@ -1,9 +1,9 @@
-import React,{ useEffect }  from "react";
+import React, { useEffect } from "react";
 import { Post } from "./Post";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 import { PostDisplayingEmptyPostsText } from "./PostStyles";
-import { useTransition, animated } from 'react-spring';
+import { useTransition, animated } from "react-spring";
 import SockJS from "sockjs-client";
 import { apiUrl } from "../../apiConfig";
 
@@ -11,9 +11,9 @@ let stompClient = null;
 
 export const PostsDisplaying = ({ userPosts, isLoading }) => {
     const transitions = useTransition(userPosts, {
-        from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
-        enter: { opacity: 1, transform: 'translate3d(0%,0%,0)' },
-        leave: { opacity: 0, transform: 'translate3d(0,50%,0)' },
+        from: { opacity: 0, transform: "translate3d(0,50%,0)" },
+        enter: { opacity: 1, transform: "translate3d(0%,0%,0)" },
+        leave: { opacity: 0, transform: "translate3d(0,50%,0)" },
         keys: post => post.postId,
         config: { duration: 600, delay: 200 },
     });
@@ -29,27 +29,21 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         };
     }, []);
 
-console.log(userPosts)
-
-
     const handleClick = (postId, userId) => {
         if (stompClient) {
             stompClient.send("/app/repost", {}, JSON.stringify({ postId: postId, userId: userId }));
         }
     };
 
-console.log(userPosts)
-
     const handleLikesClick = (postId, userId) => {
         let numUserId = parseInt(userId);
-        let numPostId = Number(postId)
-        console.log(numPostId)
+        let numPostId = Number(postId);
+        console.log(numPostId);
         if (stompClient) {
-            console.log("hi")
-            stompClient.send("/app/post_like", {}, JSON.stringify({ userId: numUserId, postId: numPostId}));
+            console.log("hi");
+            stompClient.send("/app/post_like", {}, JSON.stringify({ userId: numUserId, postId: numPostId }));
         }
     };
-
 
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>;
@@ -80,7 +74,8 @@ console.log(userPosts)
                     </animated.div>
                 ))}
             </>
-        )}
+        );
+    }
 };
 
 PostsDisplaying.propTypes = {
