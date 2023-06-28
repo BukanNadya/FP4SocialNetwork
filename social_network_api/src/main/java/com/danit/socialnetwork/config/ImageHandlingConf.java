@@ -2,6 +2,8 @@ package com.danit.socialnetwork.config;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.danit.socialnetwork.exception.imege.FolderCreationException;
+import com.danit.socialnetwork.exception.imege.FolderDeletionException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +52,30 @@ public class ImageHandlingConf {
       }
     } else {
       return null;
+    }
+  }
+
+  public void createFolder(String folderName) {
+    try {
+      getImageHandlingConf(cloudName, apiKey, apiSecret)
+          .api().createFolder(folderName, null);
+    } catch (IOException e) {
+      log.info(String.format("The folder with the name: %s was not created", folderName));
+    } catch (Exception e) {
+      throw new FolderCreationException("Failed to create folder: " + folderName);
+    }
+  }
+
+  public void deleteFolder(String folderName, String oldImageUrl) {
+    if (oldImageUrl != null) {
+      try {
+        getImageHandlingConf(cloudName, apiKey, apiSecret)
+            .api().deleteResourcesByPrefix(folderName, null);
+      } catch (IOException e) {
+        log.info(String.format("The folder with the name: %s was not deleted", folderName));
+      } catch (Exception e) {
+        throw new FolderDeletionException("Failed to delete folder: " + folderName);
+      }
     }
   }
 
