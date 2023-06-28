@@ -260,21 +260,29 @@ class UserServiceImplTest {
     testSearchDto.add(testSearchDto1);
     testSearchDto.add(testSearchDto2);
 
-    String nameSearch = "nad";
-    String userId = "3";
-    SearchRequest search = new SearchRequest();
-    search.setSearch(nameSearch);
-    search.setUserId(userId);
+    String nameSearch1 = "nad";
+    String userId1 = "3";
+    SearchRequest search1 = new SearchRequest();
+    search1.setSearch(nameSearch1);
+    search1.setUserId(userId1);
+    String nameSearch2 = "";
+    String userId2 = "1";
+    SearchRequest search2 = new SearchRequest();
+    search2.setSearch(nameSearch2);
+    search2.setUserId(userId2);
+
 
     when(searchMapper.dbUserToSearchDto(testDbUser1)).thenReturn(testSearchDto1);
     when(searchMapper.dbUserToSearchDto(testDbUser2)).thenReturn(testSearchDto2);
 
-    List<SearchDto> resultSearchDto = userServiceImp.filterCachedUsersByName(search);
+    List<SearchDto> resultSearchDto1 = userServiceImp.filterCachedUsersByName(search1);
+    List<SearchDto> resultSearchDto2 = userServiceImp.filterCachedUsersByName(search2);
 
-    Assert.assertTrue(resultSearchDto.size() <= 5);
-    Assert.assertEquals(2, resultSearchDto.size());
-    Assert.assertTrue(resultSearchDto.get(0).getName().toUpperCase().contains("nad".toUpperCase())
-        || resultSearchDto.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
+    Assert.assertTrue(resultSearchDto1.size() <= 5);
+    Assert.assertEquals(0,resultSearchDto2.size());
+    Assert.assertEquals(2, resultSearchDto1.size());
+    Assert.assertTrue(resultSearchDto1.get(0).getName().toUpperCase().contains("nad".toUpperCase())
+        || resultSearchDto1.get(0).getUsername().toUpperCase().contains("nad".toUpperCase()));
   }
 
 

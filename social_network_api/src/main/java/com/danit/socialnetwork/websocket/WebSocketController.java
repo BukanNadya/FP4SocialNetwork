@@ -229,7 +229,7 @@ public class WebSocketController {
     int unreadMessagesByUserNumSenderS = messageService
         .numberUnreadMessagesByUser(userId, inboxUid);
     Map<String, Integer> unreadMessagesByUserS = new HashMap<>();
-    unreadMessagesByUserS.put("unread", unreadMessagesByUserNumSenderS);
+    unreadMessagesByUserS.put("unreadByUser", unreadMessagesByUserNumSenderS);
     inboxS.setUnreadByUser(unreadMessagesByUserNumSenderS);
 
     String inboxUidString = inboxUid.toString();

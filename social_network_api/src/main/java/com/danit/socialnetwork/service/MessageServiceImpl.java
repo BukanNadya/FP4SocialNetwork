@@ -61,15 +61,29 @@ public class MessageServiceImpl implements MessageService {
       InboxParticipantsDtoRequest request, Integer page) {
     int pageSize = 16;
     int offset = page * pageSize;
-    DbUser inboxUid = userService.findDbUserByUserId(request.getInboxUid());
-    DbUser userId = userService.findDbUserByUserId(request.getUserId());
+    DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
+    DbUser userR = userService.findDbUserByUserId(request.getUserId());
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
-        inboxUid, userId, inboxUid, userId, offset, pageSize);
+        userS, userR, userS, userR, offset, pageSize);
+    convertMessages(messagePage, userS);
+    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
+  }
+
+  /*The method finds all incoming unread messages and converts them to read messages*/
+  @Override
+  public void unreadToReadMessages(MessageDtoRequest request) {
+    DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
+    DbUser userR = userService.findDbUserByUserId(request.getUserId());
+    List<Message> messagePage = messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false);
+    convertMessages(messagePage, userS);
+  }
+
+  /*Method converts unread messages to read messages*/
+  public void convertMessages(List<Message> messagePage, DbUser inboxUid) {
     messagePage.stream().filter(m -> m.getInboxUid().equals(inboxUid) && m.getMessageReade().equals(false)).forEach(m -> {
       m.setMessageReade(true);
       messageRepository.save(m);
     });
-    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
   }
 
   /*The method finds all incoming and outgoing messages of the user and returns them*/
@@ -117,5 +131,4 @@ public class MessageServiceImpl implements MessageService {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
     return messageRepository.findAllByUserIdAndMessageReadeEquals(userS, false).size();
   }
-
 }
