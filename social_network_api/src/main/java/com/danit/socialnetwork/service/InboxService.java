@@ -17,5 +17,5 @@ public interface InboxService {
 
   List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid);
 
-  InboxDtoResponse saveNewInbox(InboxParticipantsDtoRequest request);
+  InboxDtoResponse addInbox(InboxParticipantsDtoRequest request);
 }

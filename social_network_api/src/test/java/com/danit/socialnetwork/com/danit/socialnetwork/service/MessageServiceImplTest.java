@@ -149,6 +149,8 @@ class MessageServiceImplTest {
 
     when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
     when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
+    when(messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(
+        testUser1, testUser2, false)).thenReturn(testMessages);
     when(messageRepository
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(
             testUser1, testUser2, testUser1, testUser2, offset, pageSize))

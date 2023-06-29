@@ -60,11 +60,6 @@ public class MessageRestController {
     return new ResponseEntity<>(messages, HttpStatus.FOUND);
   }
 
-  @PostMapping(path = "/readMessages")
-  public void unreadToReadMessages(@RequestBody MessageDtoRequest request) {
-    messageService.unreadToReadMessages(request);
-  }
-
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string*/
   @PostMapping(path = "/messageSearch")
@@ -80,8 +75,7 @@ public class MessageRestController {
   /*Method save a new inbox*/
   @PostMapping(path = "/addInbox")
   public ResponseEntity<InboxDtoResponse> addInbox(@RequestBody InboxParticipantsDtoRequest request) {
-
-    InboxDtoResponse dbInbox = inboxService.saveNewInbox(request);
+    InboxDtoResponse dbInbox = inboxService.addInbox(request);
     return new ResponseEntity<>(dbInbox, HttpStatus.CREATED);
   }
 

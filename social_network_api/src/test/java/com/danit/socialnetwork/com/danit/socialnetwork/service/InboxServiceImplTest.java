@@ -219,7 +219,7 @@ class InboxServiceImplTest {
   }
 
   @Test
-  void saveNewInbox() {
+  void addInbox() {
 
     DbUser testUser1 = new DbUser();
     testUser1.setUserId(1);
