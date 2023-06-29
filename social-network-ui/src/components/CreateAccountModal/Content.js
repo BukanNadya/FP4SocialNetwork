@@ -75,6 +75,7 @@ export function Content() {
             width:"100%",
             height:"100%",
             overflow:"hidden",
+            borderRadius: "0"
         },
         ContentStyles: {
             position:"relative",
@@ -90,6 +91,7 @@ export function Content() {
             width:"100%",
             height:"100%",
             overflow:"hidden",
+            borderRadius: "0"
         },
         ContentStyles: {
             position:"relative",
@@ -105,6 +107,7 @@ export function Content() {
             width:"100%",
             height:"100%",
             overflow:"hidden",
+            borderRadius: "0"
         },
         ContentStyles: {
             position:"relative",

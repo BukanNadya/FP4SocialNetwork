@@ -190,7 +190,7 @@ export  function Footer () {
                             <Button variant="outlined" color="inherit" sx={{
                                 borderRadius: "20px",
                                 fontWeight: "700",
-                                margin: "10px",
+                                margin: "0 10px",
                                 textTransform: "inherit",
                                 fontFamily: "'Lato', sans-serif",
                                 "&:hover": {
@@ -205,7 +205,7 @@ export  function Footer () {
                                 color: "#000000",
                                 borderRadius: "20px",
                                 fontWeight: "700",
-                                margin: "10px",
+                                margin: "0 10px",
                                 textTransform: "inherit",
                                 fontFamily: "'Lato', sans-serif",
                                 "&:hover": {

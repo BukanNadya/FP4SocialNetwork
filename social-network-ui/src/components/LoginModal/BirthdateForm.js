@@ -44,7 +44,7 @@ export function BirthdateForm() {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
         AdaptiveStyledBox: {
             ...StyledBox,
-            width:"100%"
+            width:"100%",  borderRadius: "0"
         },
         AdaptiveBirthDateForm:{
             ...BirthDateForm, width:"300px"
@@ -55,7 +55,7 @@ export function BirthdateForm() {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
         AdaptiveStyledBox: {
             ...StyledBox,
-            width:"100%"
+            width:"100%",  borderRadius: "0"
         },
         AdaptiveBirthDateForm:{
             ...BirthDateForm, width:"400px"

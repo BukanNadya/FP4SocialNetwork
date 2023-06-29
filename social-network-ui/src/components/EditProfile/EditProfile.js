@@ -52,7 +52,7 @@ export function EditProfile (props) {
 
 
     const xxsStyles = {
-        BoxStyle: {...StyledBox, width:"100vw", height: "100vh"},
+        BoxStyle: {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
         FormStyle: {...StyledForm, width: "auto"},
         Form: {width: "80%"},
         FieldStyle: {width: "100%", margin: "20px 0" },
@@ -66,7 +66,7 @@ export function EditProfile (props) {
     };
 
     const xsStyles = {
-        BoxStyle: {...StyledBox, width:"100vw", height: "100vh"},
+        BoxStyle: {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
         FormStyle: {...StyledForm, width: "auto"},
         Form: {width: "80%"},
         FieldStyle: {width: "100%", margin: "20px 0" },
@@ -80,7 +80,7 @@ export function EditProfile (props) {
     };
 
     const smStyles = {
-        BoxStyle: {...StyledBox},
+        BoxStyle: {...StyledBox, height: "600px"},
         FormStyle: {...StyledForm},
         Form: {width: "100%"},
         FieldStyle: {width: "550px", margin: "20px 0" },
@@ -94,7 +94,7 @@ export function EditProfile (props) {
     };
 
     const mdStyles = {
-        BoxStyle: {...StyledBox},
+        BoxStyle: {...StyledBox, height: "600px"},
         FormStyle: {...StyledForm},
         Form: {width: "100%"},
         FieldStyle: {width: "550px", margin: "20px 0" },
@@ -108,7 +108,7 @@ export function EditProfile (props) {
     };
 
     const lgStyles = {
-        BoxStyle: {...StyledBox},
+        BoxStyle: {...StyledBox, height: "600px"},
         FormStyle: {...StyledForm},
         Form: {width: "100%"},
         FieldStyle: {width: "550px", margin: "20px 0" },
