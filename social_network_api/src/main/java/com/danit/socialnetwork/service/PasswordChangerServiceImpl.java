@@ -1,6 +1,5 @@
 package com.danit.socialnetwork.service;
 
-import com.danit.socialnetwork.controller.PasswordChanger;
 import com.danit.socialnetwork.dto.ChangePasswordRequest;
 import com.danit.socialnetwork.dto.CodeCheckRequest;
 import com.danit.socialnetwork.dto.NewPasswordRequest;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Log4j2
 @Service
@@ -26,10 +26,25 @@ import java.util.Optional;
 public class PasswordChangerServiceImpl implements PasswordChangerService {
   private final PasswordChangeRequestsRepo passwordChangeRequestsRepo;
   private final UserRepository userRepo;
-  private final PasswordChanger passChanger = new PasswordChanger();
+  private final MailSenderImpl mailSender;
+
 
   String email = "email";
   String message = "message";
+
+  public String changeRequest(String userEmail) {
+
+    String secretCode = UUID.randomUUID().toString().substring(0, 8);
+
+    String textMessage = "If you really want to change your current "
+        + "password for logging into your Capitweet account, "
+        + "enter this code to create "
+        + "a new password: \n\n" + secretCode;
+
+
+    mailSender.send(userEmail, "Change Capitweet password", textMessage);
+    return secretCode;
+  }
 
   @Override
   public String saveRequest(@RequestBody CodeCheckRequest codeCheckRequest) {
@@ -46,7 +61,7 @@ public class PasswordChangerServiceImpl implements PasswordChangerService {
     Optional<DbUser> maybeUser = userRepo.findDbUserByEmail(userEmail);
     Map<String, String> response = new HashMap<>();
     if (maybeUser.isPresent()) {
-      String secretCode = passChanger.change(userEmail);
+      String secretCode = changeRequest(userEmail);
       CodeCheckRequest codeCheckRequest = new CodeCheckRequest();
       codeCheckRequest.setEmail(userEmail);
       codeCheckRequest.setCode(secretCode);

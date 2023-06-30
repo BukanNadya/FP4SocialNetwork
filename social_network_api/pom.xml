@@ -22,6 +22,13 @@
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -295,6 +302,14 @@
             </plugin>
 
         </plugins>
+        <resources>
+            <resource>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>.env</include>
+                </includes>
+            </resource>
+        </resources>
         <testSourceDirectory>src/test/java/com/danit/socialnetwork</testSourceDirectory>
     </build>
 </project>

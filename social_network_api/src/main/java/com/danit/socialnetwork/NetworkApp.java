@@ -1,6 +1,7 @@
 package com.danit.socialnetwork;
 
 import com.danit.socialnetwork.config.ImageHandlingConf;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableScheduling
 public class NetworkApp {
   public static void main(String[] args) {
+    Dotenv dotenv = Dotenv.configure().load();
+    dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
     SpringApplication.run(NetworkApp.class, args);
   }
 
