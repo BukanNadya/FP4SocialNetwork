@@ -302,14 +302,6 @@
             </plugin>
 
         </plugins>
-        <resources>
-            <resource>
-                <directory>${basedir}</directory>
-                <includes>
-                    <include>.env</include>
-                </includes>
-            </resource>
-        </resources>
         <testSourceDirectory>src/test/java/com/danit/socialnetwork</testSourceDirectory>
     </build>
 </project>

@@ -27,8 +27,6 @@ package-lock.json
 .env.test.local
 .env.production.local
 .env
-/social_network_api/.env
-
 
 npm-debug.log*
 yarn-debug.log*
@@ -41,3 +39,4 @@ data/
 /playwright-report/
 /playwright/.cache/
 /social-network-ui/package-lock.json
+/social_network_api/src/main/resources/.env
