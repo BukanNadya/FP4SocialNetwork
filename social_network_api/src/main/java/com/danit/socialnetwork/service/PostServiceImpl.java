@@ -3,10 +3,17 @@ package com.danit.socialnetwork.service;
 import com.danit.socialnetwork.config.ImageHandlingConf;
 import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.exception.post.PostCommentNotFoundException;
+import com.danit.socialnetwork.exception.post.PostLikeNotFoundException;
 import com.danit.socialnetwork.exception.post.PostNotFoundException;
+import com.danit.socialnetwork.exception.post.RepostNotFoundException;
 import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
+import com.danit.socialnetwork.model.PostComment;
+import com.danit.socialnetwork.model.PostLike;
+import com.danit.socialnetwork.model.Repost;
+import com.danit.socialnetwork.repository.PostCommentRepository;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -21,6 +28,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Cacheable;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +42,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class PostServiceImpl implements PostService {
+  private final PostCommentRepository postCommentRepository;
 
   private final PostRepository postRepository;
   private final UserRepository userRepository;
@@ -214,6 +225,43 @@ public class PostServiceImpl implements PostService {
   @Override
   public Post findPostByPostId(Integer postId) {
     return postRepository.findPostByPostId(postId);
+  }
+
+  @Override
+  public Post deletePost(Integer postId) {
+
+    List<Repost> repostList = repostRepository.findAllByPostId(postId);
+    for (Repost repost :
+        repostList) {
+      if (repost == null) {
+        throw new RepostNotFoundException(String.format("PostLike with postId %s not found",
+            postId));
+      }
+      repostRepository.delete(repost);
+    }
+
+    List<PostLike> likeList = postLikeRepository.findAllByPostId(postId);
+    for (PostLike postLike :
+        likeList) {
+      if (postLike == null) {
+        throw new PostLikeNotFoundException(String.format("PostLike with postId %s not found",
+            postId));
+      }
+      postLikeRepository.delete(postLike);
+    }
+
+    List<PostComment> postCommentList = postCommentRepository.findAllCommentsByPostId(postId);
+    for (PostComment postComment :
+        postCommentList) {
+      if (postComment == null) {
+        throw new PostCommentNotFoundException(String.format("PostComment with postId %s not found",
+            postId));
+      }
+      postCommentRepository.delete(postComment);
+    }
+    Post post = postRepository.findById(postId).orElse(null);
+    postRepository.deleteById(postId);
+    return post;
   }
 
 }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,13 +32,12 @@ public class PostLike {
   @CreationTimestamp
   private LocalDateTime createdDateTime;
 
-  @ManyToOne(targetEntity = DbUser.class)
+  @ManyToOne(targetEntity = DbUser.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private DbUser userPostLike;
+  private DbUser userId;
 
-  @ManyToOne(targetEntity = Post.class)
+  @ManyToOne(targetEntity = Post.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
-  private Post postInPostLike;
-
+  private Post postId;
 
 }

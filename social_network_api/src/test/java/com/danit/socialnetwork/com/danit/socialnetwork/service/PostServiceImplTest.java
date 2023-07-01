@@ -8,6 +8,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.model.Repost;
+import com.danit.socialnetwork.repository.PostCommentRepository;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
 import com.danit.socialnetwork.repository.RepostRepository;
@@ -48,6 +49,9 @@ public class PostServiceImplTest {
   PostLikeRepository postLikeRepository;
   @Mock
   RepostRepository repostRepository;
+
+  @Mock
+  PostCommentRepository postCommentRepository;
 
   @Mock
   ImageHandlingConf imageHandlingConf;
@@ -228,11 +232,22 @@ public class PostServiceImplTest {
 
   }
 
-
   @Test
   void incrementViewCount() {
     Integer postId = 1;
     assertEquals(postId, postService.incrementViewCount(postId));
   }
 
+  @Test
+  void deletePost() {
+
+    Integer postId = 1;
+    Post tempPost = new Post();
+    tempPost.setPostId(postId);
+    tempPost.setPostComments(new ArrayList<>());
+    when(postRepository.findById(postId)).thenReturn(Optional.of(tempPost));
+    Post result = postService.deletePost(postId);
+    Assertions.assertEquals(postId, result.getPostId());
+
+  }
 }

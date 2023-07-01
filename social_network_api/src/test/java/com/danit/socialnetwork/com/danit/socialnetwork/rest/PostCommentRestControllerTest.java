@@ -3,6 +3,7 @@ package com.danit.socialnetwork.rest;
 import com.danit.socialnetwork.dto.post.PostCommentDtoResponse;
 import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
+import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -130,6 +131,37 @@ class PostCommentRestControllerTest {
     Validator validator = factory.getValidator();
     Set<ConstraintViolation<PostCommentDtoSave>> violations = validator.validate(postCommentDtoSave);
     assertEquals(2, violations.size());
+
+  }
+
+  @Test
+  void deletePostComment() {
+    Integer userId = 3;
+    Integer postId = 2;
+    Integer postCommentId = 1;
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUserId(userId);
+
+    Post post = new Post();
+    post.setPostId(postId);
+    post.setUserPost(dbUser);
+
+    PostComment postComment = new PostComment();
+    postComment.setUserId(dbUser);
+    postComment.setPostId(post);
+    postComment.setPostCommentId(postCommentId);
+
+    when(postCommentService.deletePostComment(postCommentId)).thenReturn(postComment);
+
+
+    ResponseEntity<PostCommentDtoResponse> responseEntity = postCommentRestController.deletePostComment(postCommentId);
+
+    Assertions.assertEquals(postCommentId, responseEntity.getBody().getPostCommentId());
+    Assertions.assertEquals(userId, responseEntity.getBody().getUserId());
+    Assertions.assertNotEquals(userId + 1, responseEntity.getBody().getUserId());
+    Assertions.assertNotEquals(postCommentId + 1, responseEntity.getBody().getPostCommentId());
+
 
   }
 }

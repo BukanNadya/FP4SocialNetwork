@@ -7,14 +7,12 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
 import com.danit.socialnetwork.service.PostServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -196,6 +194,25 @@ class PostRestControllerTest {
 
     assertEquals(httpStatus, result);
 
+
+  }
+
+  @Test
+  void deletePost() {
+
+    Integer postId = 1;
+    Post post = new Post();
+    post.setPostId(postId);
+    DbUser user = new DbUser();
+    user.setUsername("Nick");
+    user.setName("nick");
+    post.setUserPost(user);
+
+    when(postService.deletePost(postId)).thenReturn(post);
+    ResponseEntity<PostDtoResponse> responseEntity = postRestController.deletePost(postId);
+
+    assertEquals(postId, responseEntity.getBody().getPostId());
+    assertEquals(user.getUsername(), responseEntity.getBody().getUsername());
 
   }
 }

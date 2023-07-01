@@ -31,4 +31,5 @@ public interface PostService {
 
   Post findPostByPostId(Integer postId);
 
+  Post deletePost(Integer postId);
 }

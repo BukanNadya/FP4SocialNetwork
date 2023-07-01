@@ -56,8 +56,8 @@ public class PostLikeRestControllerTest {
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
-    postLike.setPostInPostLike(post);
-    postLike.setUserPostLike(dbUser);
+    postLike.setPostId(post);
+    postLike.setUserId(dbUser);
     postLike.setCreatedDateTime(LocalDateTime.now());
 
     when(postLikeService.savePostLike(any(PostLikeDto.class))).thenReturn(postLike);
@@ -86,12 +86,12 @@ public class PostLikeRestControllerTest {
     post.setUserPost(new DbUser());
 
     PostLike postLike1 = new PostLike();
-    postLike1.setUserPostLike(dbUser1);
-    postLike1.setPostInPostLike(post);
+    postLike1.setUserId(dbUser1);
+    postLike1.setPostId(post);
 
     PostLike postLike2 = new PostLike();
-    postLike2.setUserPostLike(dbUser2);
-    postLike2.setPostInPostLike(post);
+    postLike2.setUserId(dbUser2);
+    postLike2.setPostId(post);
 
     List<PostLike> postLikeList = new ArrayList<>(Arrays.asList(postLike1, postLike2));
     when(postLikeService.getCountAllLikesByPostId(postId)).thenReturn(2);
@@ -136,8 +136,8 @@ public class PostLikeRestControllerTest {
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
-    postLike.setPostInPostLike(post);
-    postLike.setUserPostLike(dbUser);
+    postLike.setPostId(post);
+    postLike.setUserId(dbUser);
     postLike.setCreatedDateTime(LocalDateTime.now());
 
 

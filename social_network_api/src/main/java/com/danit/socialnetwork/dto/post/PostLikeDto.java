@@ -22,8 +22,8 @@ public class PostLikeDto {
 
   public static PostLikeDto from(PostLike thePostLike) {
     PostLikeDto postLikeDto = new PostLikeDto();
-    postLikeDto.setPostId(thePostLike.getPostInPostLike().getPostId());
-    postLikeDto.setUserId(thePostLike.getUserPostLike().getUserId());
+    postLikeDto.setPostId(thePostLike.getPostId().getPostId());
+    postLikeDto.setUserId(thePostLike.getUserId().getUserId());
     return postLikeDto;
   }
 

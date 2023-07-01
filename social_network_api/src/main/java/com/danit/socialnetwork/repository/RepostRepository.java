@@ -22,4 +22,9 @@ public interface RepostRepository extends JpaRepository<Repost, Integer> {
   @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM REPOSTS R "
       + "WHERE R.POST_ID= :postId")
   Integer findCountAllRepostsByPostId(Integer postId);
+
+  @Query(nativeQuery = true, value = "SELECT * FROM REPOSTS "
+      + "WHERE POST_ID= :postId")
+  List<Repost> findAllByPostId(Integer postId);
+
 }

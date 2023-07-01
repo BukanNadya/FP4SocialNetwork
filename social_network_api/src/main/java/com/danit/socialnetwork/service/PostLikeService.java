@@ -16,4 +16,6 @@ public interface PostLikeService {
   PostLike deletePostLike(Integer postId, Integer userId);
 
   Integer getCountAllLikesByPostId(Integer postId);
+
+
 }

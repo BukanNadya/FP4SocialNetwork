@@ -10,7 +10,6 @@ import com.danit.socialnetwork.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,8 +23,8 @@ public class PostLikeServiceImpl implements PostLikeService {
 
   private final PostLikeRepository postLikeRepository;
   private final PostRepository postRepository;
-  @Autowired
-  private ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
+
 
   @Override
   public PostLike savePostLike(PostLikeDto postLikeDto) {
@@ -35,18 +34,18 @@ public class PostLikeServiceImpl implements PostLikeService {
     if (tempPostLike.isPresent()) {
       return tempPostLike.get();
     }
-
-    PostLike postLike = this.modelMapper.map(postLikeDto, PostLike.class);
-    postLike.setPostLikeId(0);
-    postLike.setCreatedDateTime(LocalDateTime.now());
-    Optional<Post> tempPost = postRepository.findById(postLikeDto.getPostId());
-    if (tempPost.isPresent()) {
-      postLike.setPostInPostLike(tempPost.get());
-    } else {
+    Optional<Post> optionalPost = postRepository.findById(postLikeDto.getPostId());
+    if (optionalPost.isEmpty()) {
       throw new PostNotFoundException(String.format("Post with postId %s not found",
           postLikeDto.getPostId()));
     }
-    return postLikeRepository.save(postLike);
+    Post tempPost = optionalPost.get();
+    PostLike postLike = modelMapper.map(postLikeDto, PostLike.class);
+    postLike.setPostLikeId(0);
+    postLike.setCreatedDateTime(LocalDateTime.now());
+    tempPost.getPostLikes().add(postLike);
+    postRepository.save(tempPost);
+    return tempPost.getPostLikes().get(tempPost.getPostLikes().size() - 1);
   }
 
   @Override

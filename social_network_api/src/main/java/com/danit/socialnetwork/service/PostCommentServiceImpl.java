@@ -1,6 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
+import com.danit.socialnetwork.exception.post.PostCommentNotFoundException;
 import com.danit.socialnetwork.exception.post.PostNotFoundException;
 import com.danit.socialnetwork.model.Post;
 import com.danit.socialnetwork.model.PostComment;
@@ -9,7 +10,6 @@ import com.danit.socialnetwork.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,5 +50,15 @@ public class PostCommentServiceImpl implements PostCommentService {
     Pageable pagedByTenPosts =
         PageRequest.of(page, 10);
     return postCommentRepository.findAllCommentsByPostId(postId, pagedByTenPosts);
+  }
+
+  @Override
+  public PostComment deletePostComment(Integer postCommentId) {
+    Optional<PostComment> optionalPostComment = postCommentRepository.findById(postCommentId);
+    if (optionalPostComment.isEmpty()) {
+      throw new PostCommentNotFoundException(String.format("Comment with postCommentId %s not found", postCommentId));
+    }
+    postCommentRepository.deleteById(postCommentId);
+    return optionalPostComment.get();
   }
 }

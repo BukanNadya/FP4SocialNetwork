@@ -10,4 +10,6 @@ public interface PostCommentService {
   PostComment savePostComment(PostCommentDtoSave postCommentDtoSave);
 
   List<PostComment> getAllPostCommentsByPostId(Integer postId, Integer page);
+
+  PostComment deletePostComment(Integer postCommentId);
 }

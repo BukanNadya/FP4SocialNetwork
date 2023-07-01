@@ -51,8 +51,11 @@ public class Post {
   @Column(name = "view_count")
   private Integer viewCount;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "postId", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "postCommentId", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostComment> postComments;
+
+  @OneToMany(mappedBy = "postLikeId", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PostLike> postLikes;
 
   @ManyToOne(targetEntity = DbUser.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -71,8 +74,5 @@ public class Post {
     tempPost.setUserPost(userPost);
     return tempPost;
   }
-
-
-
 
 }

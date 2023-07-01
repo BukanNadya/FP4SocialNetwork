@@ -35,6 +35,7 @@ class PostCommentServiceImplTest {
   PostRepository postRepository;
   @Mock
   ModelMapper modelMapper;
+
   @Test
   void savePostComment() {
 
@@ -126,6 +127,35 @@ class PostCommentServiceImplTest {
     Assertions.assertEquals(userId2, postCommentList.get(0).getUserId().getUserId());
     Assertions.assertEquals(userId3, postCommentList.get(1).getUserId().getUserId());
     Assertions.assertEquals("Nick", postCommentList.get(0).getUserId().getUsername());
+
+  }
+
+  @Test
+  void deletePostComment() {
+
+    Integer postId = 2;
+    Integer userId = 2;
+
+    DbUser dbUser = new DbUser();
+    dbUser.setUserId(userId);
+    dbUser.setUsername("Nick");
+
+    Post post = new Post();
+    post.setPostId(postId);
+
+    PostComment postComment = new PostComment();
+    postComment.setPostId(post);
+    postComment.setCommentText("Hello world 1");
+    postComment.setUserId(dbUser);
+    postComment.setPostCommentId(1);
+
+    when(postCommentRepository.findById(postComment.getPostCommentId())).thenReturn(Optional.of(postComment));
+    PostComment response = postCommentService.deletePostComment(postComment.getPostCommentId());
+
+    Assertions.assertEquals(userId, response.getUserId().getUserId());
+    Assertions.assertEquals(postId, response.getPostId().getPostId());
+    Assertions.assertEquals("Hello world 1", response.getCommentText());
+
 
   }
 }

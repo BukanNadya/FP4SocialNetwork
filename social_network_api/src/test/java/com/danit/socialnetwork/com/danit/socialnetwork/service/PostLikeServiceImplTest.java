@@ -48,16 +48,16 @@ class PostLikeServiceImplTest {
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
-    postLike.setPostInPostLike(post);
-    postLike.setUserPostLike(dbUser);
+    postLike.setPostId(post);
+    postLike.setUserId(dbUser);
     postLike.setCreatedDateTime(LocalDateTime.now());
 
     when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId))
         .thenReturn(Optional.of(postLike));
 
     PostLike result = postLikeService.savePostLike(postLikeDto);
-    Assertions.assertEquals(postId, result.getPostInPostLike().getPostId());
-    Assertions.assertEquals(userId, result.getUserPostLike().getUserId());
+    Assertions.assertEquals(postId, result.getPostId().getPostId());
+    Assertions.assertEquals(userId, result.getUserId().getUserId());
 
   }
 
@@ -79,19 +79,19 @@ class PostLikeServiceImplTest {
     post.setUserPost(new DbUser());
 
     PostLike postLike1 = new PostLike();
-    postLike1.setUserPostLike(dbUser1);
-    postLike1.setPostInPostLike(post);
+    postLike1.setUserId(dbUser1);
+    postLike1.setPostId(post);
 
     PostLike postLike2 = new PostLike();
-    postLike2.setUserPostLike(dbUser2);
-    postLike2.setPostInPostLike(post);
+    postLike2.setUserId(dbUser2);
+    postLike2.setPostId(post);
 
     List<PostLike> postLikeList = new ArrayList<>(Arrays.asList(postLike1, postLike2));
     when(postLikeRepository.findAllPostLikesByPostId(postId)).thenReturn(postLikeList);
     List<PostLike> result = postLikeService.getAllPostLikesByPostId(postId);
-    Assertions.assertEquals(postId, result.get(0).getPostInPostLike().getPostId());
-    Assertions.assertEquals(userId1, result.get(0).getUserPostLike().getUserId());
-    Assertions.assertEquals(userId2, result.get(1).getUserPostLike().getUserId());
+    Assertions.assertEquals(postId, result.get(0).getPostId().getPostId());
+    Assertions.assertEquals(userId1, result.get(0).getUserId().getUserId());
+    Assertions.assertEquals(userId2, result.get(1).getUserId().getUserId());
     Assertions.assertEquals(2, result.size());
 
   }
@@ -111,8 +111,8 @@ class PostLikeServiceImplTest {
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
-    postLike.setPostInPostLike(post);
-    postLike.setUserPostLike(dbUser);
+    postLike.setPostId(post);
+    postLike.setUserId(dbUser);
     postLike.setCreatedDateTime(LocalDateTime.now());
     when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(postLike));
     Boolean result = postLikeService.isPresentPostLike(postId, userId);
@@ -138,14 +138,14 @@ class PostLikeServiceImplTest {
 
     PostLike postLike = new PostLike();
     postLike.setPostLikeId(4);
-    postLike.setPostInPostLike(post);
-    postLike.setUserPostLike(dbUser);
+    postLike.setPostId(post);
+    postLike.setUserId(dbUser);
     when(postLikeRepository.findPostLikeByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(postLike));
     PostLike result = postLikeService.deletePostLike(postId, userId);
 
-    Assertions.assertEquals(postId, result.getPostInPostLike().getPostId());
-    Assertions.assertEquals(userId, result.getUserPostLike().getUserId());
-    Assertions.assertEquals("John1", result.getUserPostLike().getUsername());
+    Assertions.assertEquals(postId, result.getPostId().getPostId());
+    Assertions.assertEquals(userId, result.getUserId().getUserId());
+    Assertions.assertEquals("John1", result.getUserId().getUsername());
   }
 
 }
