@@ -25,6 +25,8 @@ import {
     clearMessages
 } from "../../../store/actions";
 import { setClickedInboxTrue } from "../../../store/actions";
+import { apiUrl } from "../../../apiConfig";
+
 
 export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage }) {
 
@@ -62,7 +64,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             handleClick={(event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                    fetch(`http://localhost:8080/api/getMessages`, {
+                                    fetch(`${apiUrl}/api/getMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
                                             inboxUid: item.inboxUid,

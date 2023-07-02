@@ -430,7 +430,7 @@ export function Message() {
     }, []);
 
     async function sendDataReadMessage(inboxUid) {
-        await fetch("http://localhost:8080/api/readMessages", {
+        await fetch(`${apiUrl}/api/readMessages`, {
             method: "POST",
             body: JSON.stringify({
                 inboxUid: inboxUid,
