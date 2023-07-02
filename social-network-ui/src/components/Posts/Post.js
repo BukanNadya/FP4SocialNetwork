@@ -80,7 +80,6 @@ export const Post = ({
                      }) => {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
-    const [showMore, setShowMore] = useState(false);
     const [isCommentOpen, setIsCommentOpen] = useState(false);
     const [postCommentCount, setPostCommentCount] = useState(postComments);
     const comments = useSelector(state => state.comments.comments);
@@ -89,16 +88,12 @@ export const Post = ({
     const [isReposted, setIsReposted] = useState(reposted);
     const [likeCount, setLikeCount] = useState(postLikes);
     const [showLike, setShowLike] = useState(false);
-    const [usersWhoLike, setUsersWhoLike] = useState([]);
-    const [likesIsLoading, setLikesIsLoading] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
     const [repostCountView, setRepostCountView] = useState(repostsCount);
     const [anchorEl, setAnchorEl] = useState(null);
     const [openWindow, setOpenWindow] = useState(false);
     const open = Boolean(anchorEl);
     const explorePosts = useSelector(state => state.Posts.explorePosts);
-    const userPosts = useSelector(state => state.Posts.posts);
-    const registrationPageUsersPosts = useSelector(state => state.Posts.registrationPagePosts);
     const profilePosts = useSelector(state => state.Posts.profilePosts)
     const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
     const profileReposts = useSelector(state => state.Posts.profileReposts)
@@ -369,25 +364,19 @@ export const Post = ({
     };
 
     const deletePost = async () => {
+        const filterPostPredicate = (post) => post.postId !== postId;
         if(location.pathname === "/explore"){
-            let filteredExplorePosts = explorePosts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredExplorePosts = explorePosts.filter(filterPostPredicate);
             dispatch(deleteExplorePost(filteredExplorePosts))
         }else if(location.pathname === "/profile"){
-            let filteredProfilePosts = profilePosts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredProfilePosts = profilePosts.filter(filterPostPredicate);
             dispatch(deleteProfilePost(filteredProfilePosts))
-            let filteredProfileLikePosts= profileLikePosts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredProfileLikePosts= profileLikePosts.filter(filterPostPredicate);
             dispatch(deleteProfileLikePosts(filteredProfileLikePosts))
-            let filteredProfileReposts = profileReposts.filter((post) => {
-                return post.postId !== postId;
-            });
+            let filteredProfileReposts = profileReposts.filter(filterPostPredicate);
             dispatch(deleteProfileRepostsPosts(filteredProfileReposts))
         }
+
     };
 
     const handleCommentToggle = async () => {
@@ -434,7 +423,7 @@ export const Post = ({
     };
 
     return (
-        <Card sx={styles.AdaptivePostCard}>
+        <Card sx={styles.AdaptivePostCard} data-testid={`postId_${postId}`}>
             <CardContent sx={CardContentPost}>
                 {profileImage ? <img src={profileImage ? profileImage : ""}
                                      style={ProfileImgStyles} alt=""/> :
@@ -445,7 +434,9 @@ export const Post = ({
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
                         {name} <span style={{ color: "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
-                    <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
+                    <div data-testid="user_post_text">
+                        <Typography  variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
+                    </div>
                 </div>
             </CardContent>
             <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveSmallText}>{text}</Typography>
@@ -523,14 +514,12 @@ export const Post = ({
                 </Tooltip>
                 <Tooltip title={like ? "Undo like" : "Like"}>
                     <IconButton onClick={addLikeHandle}>
-                        {like ? <Favorite fontSize="small" sx={{ color: "red" }}/> : <FavoriteBorder fontSize="small"/>}
+                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> : <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small"/>}
                     </IconButton>
                 </Tooltip>
                 <Typography onClick={()=>{
                     navigate(`/likes/${postId}`)
                 }} variant="body2" sx={userLikeCount}>{likeCount}</Typography>
-                {/*<UsersLikes showLike={showLike} likesIsLoading={likesIsLoading} usersWhoLike={usersWhoLike}*/}
-                {/*            toAnotherUserPage={toAnotherUserPage}/>*/}
             </CardActions>
             {isCommentOpen &&
                 <Comments comments={comments} isLoadingComments={isLoadingComments}

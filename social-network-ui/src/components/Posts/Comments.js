@@ -69,7 +69,7 @@ export function Comments({
 
     const deleteComment = async (deleteComment) => {
         let filteredComments = comments.filter((comment) => {
-            return comment.postCommentId === deleteComment.postCommentId;
+            return comment.postCommentId !== deleteComment.postCommentId;
         });
         dispatch(setComments(filteredComments));
         await fetch(`${apiUrl}/api/comments?postCommentId=${deleteComment.postCommentId}`, {

@@ -23,6 +23,7 @@ export function InputFieldWithError({
         type === "password" ? (<>
             <TextField
                 label={label}
+                data-testid="password_modal_input"
                 variant="outlined"
                 error={hasError}
                 name={name}

@@ -12,6 +12,7 @@ export const SendPostInput = ({ field, form, ...props }) => {
             }}
             {...field}
             {...props}
+            type={"text"}
             variant="standard"
             multiline
             helperText={form.errors[field.name] && form.touched[field.name] ? form.errors[field.name] : ""}

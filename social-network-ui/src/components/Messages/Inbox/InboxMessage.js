@@ -54,7 +54,18 @@ const dateStyle = {
     fontFamily: "'Lato', sans-serif",
 };
 
-export const InboxMessage = ({ image, senderName, sender, receiver, message, date, handleClick, unreadMessage }) => {
+export const InboxMessage = ({
+                                 inboxId,
+                                 image,
+                                 senderName,
+                                 sender,
+                                 receiver,
+                                 message,
+                                 date,
+                                 handleClick,
+                                 unreadMessage,
+                                 selectedMessage
+                             }) => {
     const postDate = () => {
         const date2 = new Date(date);
         const diffDays = differenceInDays(new Date(), date2);
@@ -71,14 +82,14 @@ export const InboxMessage = ({ image, senderName, sender, receiver, message, dat
         <Box sx={messageContainerStyle} onClick={handleClick}>
             {image
 
-                ? <Badge color="primary" badgeContent={unreadMessage}>
-                    <img src={image} alt="Avatar" style={{...avatarStyle, marginRight:"0"}}/>
+                ? <Badge color="primary" badgeContent={selectedMessage.inboxId === inboxId ? 0 : unreadMessage}>
+                    <img src={image} alt="Avatar" style={{ ...avatarStyle, marginRight: "0" }}/>
                 </Badge>
-                : <Badge color="primary" badgeContent={unreadMessage}>
-                    <Avatar alt={senderName} src="#" style={{...avatarStyle, marginRight:"0"}}/>
+                : <Badge color="primary" badgeContent={selectedMessage.inboxId === inboxId ? 0 : unreadMessage}>
+                    <Avatar alt={senderName} src="#" style={{ ...avatarStyle, marginRight: "0" }}/>
                 </Badge>
             }
-            <div style={{...contentStyle, marginLeft:"20px"}}>
+            <div style={{ ...contentStyle, marginLeft: "20px" }}>
                 <div style={senderStyle}>{senderName}</div>
                 <div style={messageStyle}>{message}</div>
             </div>
@@ -88,6 +99,8 @@ export const InboxMessage = ({ image, senderName, sender, receiver, message, dat
 };
 
 InboxMessage.propTypes = {
+    inboxId: PropTypes.any,
+    selectedMessage: PropTypes.any,
     unreadMessage: PropTypes.number,
     senderName: PropTypes.string,
     sender: PropTypes.number,

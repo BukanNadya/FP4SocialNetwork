@@ -8,7 +8,7 @@
 /dataSources/
 /dataSources.local.xml
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 package-lock.json

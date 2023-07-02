@@ -123,7 +123,7 @@ export function PopularPeopleSidebar() {
 
     return (
         isLoading ? <CircularProgress sx={{ marginTop: "20%", alignSelf: "center" }}/> :
-            <Paper elevation={3} sx={styles.PaperAdaptiveStyles}>
+            <Paper elevation={3} sx={styles.PaperAdaptiveStyles} data-testid={"popular_people_sidebar"}>
                 {mostPopularPeople.length > 0 ?
                     <ul style={ElementUl}>
                         {mostPopularPeople.map((user, index) => (

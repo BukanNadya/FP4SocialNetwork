@@ -1,17 +1,14 @@
 {
   "name": "e2e",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "capitweet project automated tests",
+  "version": "0.0.1",
+  "author": "Anastasiia Mielnikova",
   "scripts": {
     "test": "playwright test",
     "show-report": "playwright show-report"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "proxy": "http://localhost:3000",
-  "devDependencies": {
-    "@playwright/test": "^1.35.1"
+  "dependencies": {
+    "@playwright/test": "^1.35.1",
+    "dotenv": "^16.3.1"
   }
 }

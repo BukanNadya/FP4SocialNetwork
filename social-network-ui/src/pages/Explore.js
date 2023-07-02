@@ -65,7 +65,7 @@ export function Explore() {
     };
 
     return (
-        <div style={PostsWrapper} onScroll={handleScroll}>
+        <div data-testid={"explore_posts_wrapper"} style={PostsWrapper} onScroll={handleScroll}>
             <PostsDisplaying userPosts={explorePosts} isLoading={isLoading}/>
         </div>
     );

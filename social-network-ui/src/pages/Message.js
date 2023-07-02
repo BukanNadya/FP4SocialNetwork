@@ -396,25 +396,51 @@ export function Message() {
     }, [inbox]);
 
     useEffect(() => {
-        const onConnected = () => {
-            stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
-        };
-        const onError = (err) => {
-            console.log(err);
-        };
+        console.log(selectedMessage, "selectedMessage");
+    }, [selectedMessage]);
 
-        let Sock = new SockJS(`${apiUrl}/websocket`);
-        stompClient = over(Sock);
-        stompClient.connect({}, onConnected, onError);
+    useEffect(() => {
+        try {
+            const onConnected = () => {
+                stompClient.subscribe(`/user/${userId}/inbox`, newMessage);
+            };
+            const onError = (err) => {
+                console.log(err);
+            };
 
-        return () => {
-            if (stompClient) {
-                stompClient.disconnect();
-            }
-        };
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
+
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn("message - failed to disconnect the stomp client", e);
+                    }
+                }else{
+                    console.warn("message - no websocket to disconnect from");
+                }
+            };
+        } catch (e) {
+            console.warn("message - failed to disconnect the stomp client", e);
+        }
+
     }, []);
 
-    const newMessage = (payload) => {
+    async function sendDataReadMessage(inboxUid) {
+        await fetch("http://localhost:8080/api/readMessages", {
+            method: "POST",
+            body: JSON.stringify({
+                inboxUid: inboxUid,
+                userId: userId,
+            }),
+            headers: { "Content-Type": "application/json" }
+        });
+    }
+
+    const newMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
         let messageData = {
             inboxUid: payloadData.inboxUid,
@@ -423,7 +449,9 @@ export function Message() {
             message: payloadData.message,
             createdAt: payloadData.createdAt
         };
-        console.log(messageData)
+        if (selectedMessage.inboxId === payloadData.inboxId) {
+            await sendDataReadMessage(payloadData.inboxUid);
+        }
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
@@ -452,9 +480,6 @@ export function Message() {
         }
     }, [isXl, isLg, isMd, clicked]);
 
-    function handleSelectMessage(message) {
-        setSelectedMessage(message);
-    }
 
     const handleScroll = async (event) => {
         if (isFetchingTexts || allTextsLoaded) {
@@ -479,7 +504,7 @@ export function Message() {
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked &&
-                <div style={styles.AdaptiveLeftBlockInboxAndSearch}>
+                <div style={styles.AdaptiveLeftBlockInboxAndSearch} data-testid={"message_search_and_inbox_wrapper"}>
                     <HeaderInformation/>
                     <MessageSearch/>
                     <div style={styles.AdaptiveInboxContainerStyle}>
@@ -497,7 +522,7 @@ export function Message() {
                             <div style={{
                                 fontSize: "1.1rem",
                                 fontFamily: "'Lato', sans-serif"
-                            }}>Почніть переписку
+                            }} data-testid={"start_chat_text"}>Почніть переписку
                             </div>
                         </div>
                     ) : (
@@ -554,6 +579,10 @@ export function Message() {
                                                     }),
                                                     headers: { "Content-Type": "application/json" },
                                                 });
+                                                stompClient.send("/app/getMessages", {}, JSON.stringify({
+                                                    userId: selectedMessage.userId,
+                                                    inboxUid: selectedMessage.inboxUid,
+                                                }));
                                                 event.preventDefault();
                                                 stompClient.send("/app/addMessage", {}, JSON.stringify({
                                                     userId: selectedMessage.userId,

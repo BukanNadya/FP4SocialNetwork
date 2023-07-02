@@ -40,6 +40,7 @@ import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlin
 
 export function HeaderInformation() {
     const [notificationCount, setNotificationCount] = useState(0);
+    const [messageCount, setMessageCount] = useState(0);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
     const location = useLocation();
     const dispatch = useDispatch();
@@ -61,6 +62,27 @@ export function HeaderInformation() {
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+
+    useEffect(() => {
+        async function getNotification() {
+            let notificationInformation = await fetch(`${apiUrl}/api/unread_notifications`, {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: userId,
+                }),
+                headers: { "Content-Type": "application/json" }
+            });
+            let notificationData = await notificationInformation.json();
+            setNotificationCount(notificationData.unreadNotifications);
+
+            let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
+            let messageData = await messageInformation.json();
+            setMessageCount(messageData.unread)
+        }
+        if(userId){
+            getNotification();
+        }
+    }, [userId]);
 
     const xxsStyles = {
         SidebarBox: {
@@ -356,6 +378,38 @@ export function HeaderInformation() {
         };
     }, [location.pathname]);
 
+    useEffect(() => {
+
+        let stompClient;
+
+        const onConnected = () => {
+            if (stompClient.connected) {
+                stompClient.subscribe("/user/" + userId + "/unread", onMessageUnread);
+            }
+        };
+
+        const onError = (err) => {
+            console.log(err);
+        };
+
+        if (location.pathname !== "/message") {
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
+        }
+
+        return () => {
+            if (stompClient && stompClient.connected) {
+                stompClient.disconnect();
+            }
+        };
+    }, [location.pathname]);
+
+    const onMessageUnread = (payload) => {
+        let payloadData = JSON.parse(payload.body);
+        setMessageCount(payloadData.unread);
+    };
+
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         setNotificationCount(payloadData.unreadNotifications);
@@ -457,6 +511,7 @@ export function HeaderInformation() {
                             d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"/>
                     </g>
                 </SvgIcon>,
+                badgeContentMessage: messageCount,
                 text: "Messages"
             },
             {
@@ -486,18 +541,28 @@ export function HeaderInformation() {
                 closeDrawer();
             };
 
+            let icon = component.svgIcon;
+
+            if (component.to === "/notifications" && component.badgeContent > 0) {
+                icon = (
+                    <Badge badgeContent={component.badgeContent} color="primary">
+                        {component.svgIcon}
+                    </Badge>
+                );
+            } else if (component.to === "/messages" && component.badgeContentMessage > 0) {
+                icon = (
+                    <Badge badgeContent={component.badgeContentMessage} color="primary">
+                        {component.svgIcon}
+                    </Badge>
+                );
+            }
+
             return (
                 <Link to={component.to} key={index} style={{ textDecoration: "none", }}>
                     <Fab variant="extended"
                          onClick={handleClick}
                          sx={{ ...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: "20px" }}>
-                        {component.to === "/notifications" && component.badgeContent > 0 ? (
-                            <Badge badgeContent={component.badgeContent} color={"primary"}>
-                                {component.svgIcon}
-                            </Badge>
-                        ) : (
-                            component.svgIcon
-                        )}
+                        {icon}
                         <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                             {component.text}
                         </Typography>
@@ -506,6 +571,7 @@ export function HeaderInformation() {
             );
         });
     }
+
 
     return (
         <AppBar position="fixed" color="primary" sx={Header} data-testid={"header_information_for_home_page"}>
@@ -570,12 +636,10 @@ export function HeaderInformation() {
                             </SwipeableDrawer>
                         </React.Fragment>
                     ))) : (null)}
-                <Typography variant="h5" component="div" sx={HeaderInformationParagraph}>
-                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between",}}>{location.pathname === "/messages" && clicked && !isXl && !isMd ? (
+                <Typography variant="h5" component="div" sx={HeaderInformationParagraph} >
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "space-between",}} data-testid={"header_text_routes"}>{location.pathname === "/messages" && clicked && !isXl && !isMd ? (
                         <ArrowBack sx={{...SvgIconStyles, marginRight: "15px"}} onClick={() => {dispatch(setClickedInboxFalse())}}/>
-                        ) : (
-                            null
-                        )}
+                        ) : null}
                     {getRouteName(pathname)}</div>
                 </Typography>
             </Toolbar>

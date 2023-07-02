@@ -25,7 +25,7 @@ import { apiUrl } from "../../apiConfig";
 import PropTypes from "prop-types";
 import { Post } from "../Posts/Post";
 
-let stompClient = null;
+let stompClient;
 
 export function SideBar() {
     const dispatch = useDispatch();
@@ -54,52 +54,82 @@ export function SideBar() {
             });
             let notificationData = await notificationInformation.json();
             setNotificationCount(notificationData.unreadNotifications);
-
             let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
             let messageData = await messageInformation.json();
-            setMessageCount(messageData.unread)
-            console.log(messageData)
+            setMessageCount(messageData.unread);
         }
-        if(userId){
+
+        if (userId) {
             getNotification();
         }
     }, [userId]);
 
     useEffect(() => {
-        if (location.pathname === "/notifications") {
-            setNotificationCount(0);
+        async function getNotification() {
+            let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
+            let messageData = await messageInformation.json();
+            setMessageCount(messageData.unread);
         }
 
-        let stompClient;
-
-        const onConnected = () => {
-            if (stompClient.connected) {
-                stompClient.subscribe("/user/" + userId + "/unread_notifications", onPrivateMessage);
-            }
-        };
-
-        const onError = (err) => {
-            console.log(err);
-        };
-
-        if (location.pathname !== "/notifications") {
-            let Sock = new SockJS(`${apiUrl}/websocket`);
-            stompClient = over(Sock);
-            stompClient.connect({}, onConnected, onError);
+        if (userId) {
+            getNotification();
         }
+    }, [userId, location.pathname]);
 
-        return () => {
-            if (stompClient && stompClient.connected) {
-                stompClient.disconnect();
-            }
-        };
-    }, [location.pathname]);
+    const onMessageUnread = (payload) => {
+        let payloadData = JSON.parse(payload.body);
+        console.log("ALOOOOOHAAA");
+        setMessageCount(payloadData.unread);
+        console.log(payloadData, "payloadDataonMessageUnread");
+    };
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         setNotificationCount(payloadData.unreadNotifications);
-        console.log(payloadData, "unreadNotificationsFromSidebar");
+
     };
+
+    useEffect(() => {
+        console.log(messageCount, "messageCountFromSidebarUseEffect");
+    }, [messageCount]);
+
+    useEffect(() => {
+        try {
+            if (location.pathname === "/notifications") {
+                setNotificationCount(0);
+            }
+            const socket = new SockJS(`${apiUrl}/websocket`);
+            stompClient = Stomp.over(socket);
+
+            const onConnected = () => {
+                if (stompClient?.connected) {
+                    stompClient.subscribe("/user/" + userId + "/unread_notifications", onPrivateMessage);
+                    stompClient.subscribe("/user/" + userId + "/unread", onMessageUnread);
+                }
+            };
+
+            const onError = (err) => {
+                console.log(err);
+            };
+
+            stompClient?.connect({}, onConnected, onError);
+
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn("sideBar - failed to disconnect the stomp client", e);
+                    }
+                } else {
+                    console.warn("sideBar - no websocket to disconnect from");
+                }
+            };
+        } catch (e) {
+            console.warn("sideBar - failed to create the stomp client", e);
+        }
+
+    }, [location.pathname]);
 
     const xxsStyles = {
         SidebarBox: {
@@ -384,7 +414,8 @@ export function SideBar() {
 
                     </Link>
                     <Link to="/explore" variant="contained" style={{ textDecoration: "none" }}>
-                        <Fab variant="extended" sx={pathname === "/explore" ? SidebarFabActive : SidebarFab}>
+                        <Fab variant="extended" sx={pathname === "/explore" ? SidebarFabActive : SidebarFab}
+                             data-testid={"fab_of_explore_text"}>
                             <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
                                      aria-hidden="true"
                                      className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
@@ -446,15 +477,16 @@ export function SideBar() {
                     </Link>
                     <Link to="/messages" variant="contained" style={{ textDecoration: "none" }}>
                         <Fab variant="extended" sx={pathname === "/messages" ? SidebarFabActive : SidebarFab}>
-                            <Badge badgeContent={location.pathname === "/messages" ? 0 : messageCount} color={"primary"}>
-                            <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
-                                     aria-hidden="true"
-                                     className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
-                                <g>
-                                    <path
-                                        d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"/>
-                                </g>
-                            </SvgIcon>
+                            <Badge badgeContent={location.pathname === "/messages" ? 0 : messageCount}
+                                   color={"primary"}>
+                                <SvgIcon sx={SvgIconStyles} viewBox="0 0 24 24"
+                                         aria-hidden="true"
+                                         className="r-1nao33i r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-cnnz9e">
+                                    <g>
+                                        <path
+                                            d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"/>
+                                    </g>
+                                </SvgIcon>
                             </Badge>
                             <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                                 Messages

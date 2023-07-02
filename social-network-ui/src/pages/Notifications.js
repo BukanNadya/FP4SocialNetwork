@@ -4,7 +4,7 @@ import { apiUrl } from "../apiConfig";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useNavigate } from "react-router-dom";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -138,27 +138,35 @@ export function Notifications() {
     }
 
     useEffect(() => {
-        const onConnected = () => {
-            stompClient.subscribe("/user/" + userId + "/notifications", onPrivateMessage);
-        };
-        const onError = (err) => {
-            console.log(err);
-        };
-        let Sock = new SockJS(`${apiUrl}/websocket`);
-        stompClient = over(Sock);
-        stompClient.connect({}, onConnected, onError);
+        try{
+            const onConnected = () => {
+                stompClient.subscribe("/user/" + userId + "/notifications", onPrivateMessage);
+            };
+            const onError = (err) => {
+                console.log(err);
+            };
+            let Sock = new SockJS(`${apiUrl}/websocket`);
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
 
-        return () => {
-            if (stompClient) {
-                stompClient.disconnect();
-            }
-        };
+            return () => {
+                if (stompClient && stompClient.connected) {
+                    try {
+                        stompClient.disconnect();
+                    } catch (e) {
+                        console.warn('home - failed to disconnect the stomp client', e);
+                    }
+                }
+            };
+        }catch (e){
+            console.warn('notifications - failed to create the stomp client', e);
+        }
 
     }, []);
 
     const onPrivateMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
-        console.log(payloadData)
+        console.log(payloadData);
         setNotifications(prevNotifications => [payloadData, ...prevNotifications]);
         await fetch(`${apiUrl}/api/read_notifications`, {
             method: "POST",
@@ -183,7 +191,7 @@ export function Notifications() {
     };
 
     return (
-        <List sx={styles.AdaptiveListStyles}>
+        <List sx={styles.AdaptiveListStyles} data-testid={"notifications_list"}>
             {isLoading ? <CircularProgress sx={{ marginTop: "20%" }}/> :
                 notifications.length > 0 ?
                     transitions((style, item) => (

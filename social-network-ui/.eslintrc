@@ -9,6 +9,7 @@
     "rules": {
       "no-trailing-spaces": ["error", { "skipBlankLines": true } ],
       "no-return-assign": 0,
-      "eol-last": 0
+      "eol-last": 0,
+      "react/no-unknown-property": ["off", { "ignore": ["data-testid"]  }]
     }
   }

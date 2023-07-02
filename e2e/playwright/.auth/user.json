@@ -1,0 +1,22 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "persist:root",
+          "value": "{\"userData\":\"{\\\"userData\\\":{\\\"userId\\\":\\\"63\\\",\\\"userName\\\":\\\"Asy\\\",\\\"name\\\":\\\"Asyyy\\\",\\\"date\\\":\\\"May 28 2023\\\",\\\"image\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1687524259/production/pa0mpufl9qeh6i75luss.jpg\\\",\\\"background\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1686229174/production/mmmtdtlunuucbau2eeh9.jpg\\\",\\\"followers\\\":9,\\\"followings\\\":10,\\\"address\\\":\\\"Huzara 20A\\\",\\\"birthday\\\":\\\"1990-01-27\\\"},\\\"searchData\\\":{\\\"userId\\\":null},\\\"followData\\\":{\\\"userFollow\\\":false},\\\"userFollowing\\\":{\\\"following\\\":[]}}\",\"_persist\":\"{\\\"version\\\":-1,\\\"rehydrated\\\":true}\"}"
+        },
+        {
+          "name": "stepInModal",
+          "value": "1"
+        },
+        {
+          "name": "userToken",
+          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODIwOTE4MiwiZXhwIjoxNjg5MDczMTgyfQ.-zWy05AiXWJ91dQSqs9Q021B-90uVIR8I83SCRjYVTPzMKgHG0GB_QdhMlZFqdrT_nZkoJZ_c8Kekf7cDajUqg\"}"
+        }
+      ]
+    }
+  ]
+}

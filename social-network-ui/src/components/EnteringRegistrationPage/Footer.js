@@ -169,9 +169,9 @@ export  function Footer () {
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} >
             <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0, backgroundColor: "rgb(29, 155, 240)"}}>
-                <Container sx={styles.ContainerStyle} >
+                <Container sx={styles.ContainerStyle} data-testid={"footer_registration_page"}>
                     <Box display="grid" gridTemplateColumns={styles.GridItem.item} gap={2} sx={{height: "72px", alignItems: "center"}}>
 
                         <div style={styles.DivStyles}/>

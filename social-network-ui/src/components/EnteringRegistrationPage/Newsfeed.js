@@ -213,7 +213,7 @@ export function Newsfeed() {
 
                         </AppBar>
                     </CardContent>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}   data-testid={"news_feed_registration_page_and_right_side_menu"}>
                         <PostsDisplaying userPosts={registrationPageUsersPosts} isLoading={isLoading}/>
                     </div>
                 </Card>
