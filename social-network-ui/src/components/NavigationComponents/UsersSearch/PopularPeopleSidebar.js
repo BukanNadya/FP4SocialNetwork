@@ -14,7 +14,13 @@ import {
     TextWrapper,
     userNameParagraph,
     userNickParagraph,
-    userNickLink, customButton, emptyArrParagraph,
+    userNickLink,
+    customButton,
+    emptyArrParagraph,
+    DarkPaperStyles,
+    darkUserNameParagraph,
+    darkUserNickParagraph,
+    darkUserNickLink,
 } from "./popularPeopleSidebarStyles";
 import { apiUrl } from "../../../apiConfig";
 import { ToggleButton } from "../../Buttons/ToggleButton/ToggleButton";
@@ -30,6 +36,7 @@ export function PopularPeopleSidebar() {
     const idUser = useSelector(state => state.userData.userData.userId);
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -40,7 +47,7 @@ export function PopularPeopleSidebar() {
 
 
     const xxsStyles = {
-        PaperAdaptiveStyles: {...PaperStyles , width:"220px"},
+        PaperAdaptiveStyles: darkMode ? {...DarkPaperStyles, width:"220px" } : { ...PaperStyles, width:"220px" },
         ElementLiAdaptiveStyles: {
             ...ElementLi,
             ...Wrapper
@@ -49,7 +56,7 @@ export function PopularPeopleSidebar() {
     };
 
     const xsStyles = {
-        PaperAdaptiveStyles: {...PaperStyles , width:"220px"},
+        PaperAdaptiveStyles: darkMode ? {...DarkPaperStyles, width:"220px" } : { ...PaperStyles, width:"220px" },
         ElementLiAdaptiveStyles: {
             ...ElementLi,
             ...Wrapper
@@ -58,7 +65,7 @@ export function PopularPeopleSidebar() {
     };
 
     const smStyles = {
-        PaperAdaptiveStyles: {...PaperStyles , width:"220px"},
+        PaperAdaptiveStyles: darkMode ? {...DarkPaperStyles, width:"220px" } : { ...PaperStyles, width:"220px" },
         ElementLiAdaptiveStyles: {
             ...ElementLi,
             ...Wrapper
@@ -67,7 +74,7 @@ export function PopularPeopleSidebar() {
     };
 
     const mdStyles = {
-        PaperAdaptiveStyles: {...PaperStyles, width:"220px" },
+        PaperAdaptiveStyles: darkMode ? {...DarkPaperStyles, width:"220px" } : { ...PaperStyles, width:"220px" },
         ElementLiAdaptiveStyles: {
             ...ElementLi,
             ...Wrapper,
@@ -76,7 +83,7 @@ export function PopularPeopleSidebar() {
     };
 
     const lgStyles = {
-        PaperAdaptiveStyles: {...PaperStyles },
+        PaperAdaptiveStyles: darkMode ? {...DarkPaperStyles} : { ...PaperStyles },
         ElementLiAdaptiveStyles: {
             ...ElementLi,
             ...Wrapper
@@ -85,7 +92,7 @@ export function PopularPeopleSidebar() {
     };
 
     const xlStyles = {
-        PaperAdaptiveStyles: {...PaperStyles },
+        PaperAdaptiveStyles: darkMode ? {...DarkPaperStyles} : { ...PaperStyles },
         ElementLiAdaptiveStyles: {
             ...ElementLi,
             ...Wrapper
@@ -135,14 +142,14 @@ export function PopularPeopleSidebar() {
                                         <Avatar alt={user.username} style={{ width: "50px", height: "50px" }}
                                                 src={user.avatar}/>}
                                     <div style={TextWrapper}>
-                                        <Typography style={userNameParagraph} onClick={() => {
+                                        <Typography style={darkMode ? darkUserNameParagraph : userNameParagraph} onClick={() => {
                                             toAnotherUserPage(user.userId);
                                         }}>{user.name}
                                         </Typography>
-                                        <Typography style={userNickParagraph} onClick={() => {
+                                        <Typography style={darkMode ? darkUserNickParagraph : userNickParagraph} onClick={() => {
                                             toAnotherUserPage(user.userId);
                                         }}>
-                                            <Link style={userNickLink}>@{user.username}</Link>
+                                            <Link style={darkMode ? darkUserNickLink : userNickLink}>@{user.username}</Link>
                                         </Typography>
                                     </div>
                                     { idUser == user.userId ? <Button disabled={true} sx={{...StyledBlackButton , width:`${styles.FollowButtonWidth}`, height:"30px", marginTop:0, color:"white",  '&.Mui-disabled': {

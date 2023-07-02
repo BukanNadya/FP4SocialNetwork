@@ -11,6 +11,19 @@ export const PaperStyles = {
     overflowX: "hidden",
 
 };
+export const DarkPaperStyles = {
+    minWidth: "200px",
+    maxHeight: "620px",
+    minHeight: "370px",
+    width: "250px",
+    marginTop: "20%",
+    justifyContent: "space-between",
+    marginLeft: "9%",
+    padding: "10px 20px",
+    overflowY: "scroll",
+    overflowX: "hidden",
+    backgroundColor: "rgb(30, 39, 50)",
+};
 
 export const ElementLi = {
     padding: "20px 0",
@@ -45,9 +58,18 @@ export const TextWrapper = {
     flexDirection: "column",
     textAlign: "center",
     justifyContent: "space-between",
+    overflow: "hidden"
 };
 export const userNameParagraph = {
     color: "rgb(113, 118, 123)",
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    fontWeight: "400",
+    textDecoration: "underline",
+    cursor: "pointer"
+};
+export const darkUserNameParagraph = {
+    color: "rgb(247, 249, 249)",
     fontFamily: "'Lato', sans-serif",
     fontSize: "15px",
     fontWeight: "400",
@@ -61,9 +83,20 @@ export const userNickParagraph = {
     fontSize: "13px",
     fontWeight: "400",
 };
+export const darkUserNickParagraph = {
+    color: "rgb(247, 249, 249)",
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "13px",
+    fontWeight: "400",
+};
 
 export const userNickLink = {
     color: "rgb(113, 118, 123)", fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    fontWeight: "400",
+};
+export const darkUserNickLink = {
+    color: "rgb(247, 249, 249)", fontFamily: "'Lato', sans-serif",
     fontSize: "15px",
     fontWeight: "400",
 };

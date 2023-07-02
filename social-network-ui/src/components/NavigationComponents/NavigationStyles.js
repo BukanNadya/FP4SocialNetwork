@@ -14,6 +14,23 @@ export const Header = {
     borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
     backdropFilter: "blur(15px)",
 };
+export const DarkHeader = {
+    position: "sticky",
+    maxHeight: "80px",
+    height: "70px",
+    width:"100%",
+    maxWidth: "600px",
+    top: 0,
+    backgroundColor: "rgba(21, 32, 43, 0.85)",
+    flexBasis: "600px",
+    boxShadow: "none",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+    backdropFilter: "blur(15px)",
+    border: "1px solid rgb(56, 68, 77)",
+    "& .MuiTypography-root": {
+        color: "rgb(247, 249, 249)"
+    },
+};
 
 export const SidebarBox = {
     "& > :not(style)": { m: 1 },
@@ -62,11 +79,28 @@ export const SidebarFab = {
     borderRadius: "40px",
     backgroundColor: "#ffffff",
     boxShadow: "none",
-    padding: "0",
+    padding: "25px 0",
     height: "40px",
     "&:hover": {
         transition: "0.7s",
+        padding: "25px 0",
         backgroundColor: "rgba(15, 20, 25, 0.15)",
+    },
+};
+export const DarkSidebarFab = {
+    fontFamily: "'Lato', sans-serif",
+    display: "flex",
+    justifyContent: "flex-start",
+    borderRadius: "40px",
+    color: "rgb(247, 249, 249)",
+    backgroundColor: "rgb(21, 32, 43)",
+    boxShadow: "none",
+    padding: "25px 0",
+    height: "40px",
+    "&:hover": {
+        transition: "0.7s",
+        padding: "25px 0",
+        backgroundColor: "rgba(247, 249, 249, 0.1)",
     },
 };
 
@@ -115,6 +149,20 @@ export const SidebarIconBackground = {
         backgroundColor: "#ffffff",
     },
 }
+export const DarkSidebarIconBackground = {
+    maxWidth: "60px",
+    marginTop: "5%",
+    display: "flex",
+    justifyContent: "flex-start",
+    backgroundColor: "rgb(21, 32, 43)",
+    boxShadow: "none",
+    padding: "0",
+    width: "150px",
+    height: "50px",
+    "&:hover": {
+        backgroundColor: "rgb(21, 32, 43)",
+    },
+}
 
 export const UserSearchWrapper = {
     display: "flex",
@@ -135,7 +183,7 @@ export const UserSearchAppBar = {
 };
 
 export const UserSearchTextField = {
-    width: "100%",
+    width: "300px",
     height: "30px",
     marginTop: "10px",
     borderRadius: "10px",
@@ -147,6 +195,36 @@ export const UserSearchTextField = {
         borderRadius: "40px",
     },
 };
+export const DarkUserSearchTextField = {
+    width: "300px",
+    height: "30px",
+    marginTop: "10px",
+    borderRadius: "10px",
+    marginLeft: "20px",
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "40px",
+        background: "rgb(39, 51, 64)",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+        borderRadius: "40px",
+    },
+    "& .MuiOutlinedInput-root .MuiAutocomplete-input": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiInputLabel-root": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiAutocomplete-popupIndicator": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiAutocomplete-clearIndicator": {
+        color: "rgb(247, 249, 249)",
+    },
+};
+export const DarkPopper = {
+    color: "rgb(247, 249, 249)",
+    background: "rgb(39, 51, 64)",
+}
 
 export const UserSearchContentWrapper = {
     height: "100vh",

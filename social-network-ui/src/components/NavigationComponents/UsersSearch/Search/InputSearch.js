@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
-import {UserSearchTextField} from "../../NavigationStyles";
+import {DarkPopper, DarkUserSearchTextField, UserSearchTextField} from "../../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../../store/actions";
 import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import {DarkPaperStyles, PaperStyles} from "../popularPeopleSidebarStyles";
 
 export const InputSearch = ({ ...props }) => {
     const users = useSelector(state => state.usersSearch.users)
     const userId = useSelector(state => state.userData.searchData.userId);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const theme = useTheme();
@@ -24,27 +26,27 @@ export const InputSearch = ({ ...props }) => {
 
 
     const xxsStyles = {
-          AdaptiveUserSearchTextField:{...UserSearchTextField, width:"92vw"}
+          AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"92vw"} : {...UserSearchTextField, width:"92vw"}
     };
 
     const xsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"92vw"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"92vw"} : {...UserSearchTextField, width:"92vw"}
     };
 
     const smStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"45%",marginLeft:"80px"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"45%",marginLeft:"80px"} : {...UserSearchTextField, width:"45%",marginLeft:"80px"}
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"58%"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"58%"} : {...UserSearchTextField, width:"58%"},
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField} : {...UserSearchTextField},
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"260px"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField} : {...UserSearchTextField},
     };
 
     let styles;
@@ -112,7 +114,7 @@ export const InputSearch = ({ ...props }) => {
                     renderOption={(props, option) => {
 
                     return (
-                        <li {...props} key={option.userId}>
+                        <li {...props} key={option.userId} style={DarkPopper}>
                             <Grid container alignItems="center" onClick={() => {
                                 dispatch(setSearchId(String(option.userId)))
                                 navigate("/view")

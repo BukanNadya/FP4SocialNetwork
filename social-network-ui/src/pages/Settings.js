@@ -20,9 +20,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { checkEmailFetch } from "../store/actions";
+import {checkEmailFetch, setUserMode} from "../store/actions";
 import { apiUrl } from "../apiConfig";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { StyledBlackButton } from "../components/LoginModal/loginModalStyles";
@@ -31,7 +31,8 @@ import { grey } from "@mui/material/colors";
 export function Settings() {
     const [showPassword, setShowPassword] = useState(false);
     const theme = useTheme();
-    const [darkMode, setDarkMode] = React.useState(false);
+    const dispatch = useDispatch();
+    const userMode = useSelector(state => state.userData.userMode.darkMode);
     const userId = useSelector(state => state.userData.userData.userId);
     const [error, setError] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -39,7 +40,7 @@ export function Settings() {
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
     const handleThemeChange = (event) => {
-        setDarkMode(event.target.checked);
+        dispatch(setUserMode(event.target.checked))
     };
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
@@ -353,8 +354,8 @@ export function Settings() {
                             </AccordionSummary>
                             <AccordionDetails>
                                 <FormControlLabel
-                                    control={<Switch checked={darkMode} onChange={handleThemeChange}/>}
-                                    label={darkMode ? "Dark Mode" : "Light Mode"}
+                                    control={<Switch checked={userMode} onChange={handleThemeChange}/>}
+                                    label={userMode ? "Dark Mode" : "Light Mode"}
                                 />
                             </AccordionDetails>
                         </Accordion>
