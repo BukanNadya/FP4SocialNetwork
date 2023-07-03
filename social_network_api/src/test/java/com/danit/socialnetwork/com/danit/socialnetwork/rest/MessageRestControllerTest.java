@@ -113,6 +113,20 @@ class MessageRestControllerTest {
   }
 
   @Test
+  void readMessage() throws Exception {
+    MessageDtoRequest request = new MessageDtoRequest();
+    request.setInboxUid(1);
+    request.setUserId(2);
+
+    mockMvc.perform(post("/api/readMessages")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(request)))
+        .andExpect(status().isOk());
+
+    verify(messageService).unreadToReadMessages(request);
+  }
+
+  @Test
   void handleMessageSearchPost() throws Exception {
     String StringSearch = "hel";
     SearchRequest request = new SearchRequest();

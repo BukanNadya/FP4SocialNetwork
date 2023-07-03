@@ -25,5 +25,4 @@ public interface MessageService {
   Integer numberUnreadMessages(Integer inboxUid);
 
   void  unreadToReadMessages(MessageDtoRequest request);
-
 }

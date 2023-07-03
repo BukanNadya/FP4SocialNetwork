@@ -60,6 +60,13 @@ public class MessageRestController {
     return new ResponseEntity<>(messages, HttpStatus.FOUND);
   }
 
+  /*The method convert messages to the read messages*/
+  @PostMapping(path = "/readMessages")
+  public void readMessage(
+      @RequestBody MessageDtoRequest request) {
+    messageService.unreadToReadMessages(request);
+  }
+
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string*/
   @PostMapping(path = "/messageSearch")
