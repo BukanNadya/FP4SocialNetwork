@@ -231,11 +231,22 @@ class WebSocketControllerTest {
 
     when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
     when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
-    when(messageService.numberUnreadMessages(1)).thenReturn(5);
 
     webSocketController.postReadMessages(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
+  }
+
+  @Test
+  void testPostGetUnread() {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
+
+    when(messageService.numberUnreadMessages(2)).thenReturn(5);
+
+    webSocketController.postGetUnread(messageDtoRequest);
+
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
   }
 
