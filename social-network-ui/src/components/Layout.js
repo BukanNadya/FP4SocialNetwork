@@ -52,6 +52,7 @@ const theme = createTheme({
 });
 
 export function Layout() {
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const navigate = useNavigate();
     const userToken = JSON.parse(localStorage.getItem("userToken")) || JSON.parse(sessionStorage.getItem("userToken"));
     const userBirthdateGoogle = useSelector(state => state.saveUserToken.userBirthdayFlag);
@@ -61,7 +62,7 @@ export function Layout() {
     const userId = useSelector(state => state.userData.userData.userId);
     const loadingPostsRef = useRef(false);
     const allPostsLoadedRef = useRef(false);
-    const darkMode = useSelector(state => state.userData.userMode.darkMode);
+
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));

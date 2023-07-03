@@ -12,9 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Badge from "@mui/material/Badge";
 
 import {
-    SidebarBox,
     SidebarFab,
-    SidebarTypography,
     SidebarLogOutButton,
     SidebarIconBackground,
     SidebarFabActive, SvgIconStyles, DarkSidebarIconBackground, DarkSidebarFab
@@ -22,8 +20,7 @@ import {
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { setUserToken } from "../../store/actions";
 import { apiUrl } from "../../apiConfig";
-import PropTypes from "prop-types";
-import { Post } from "../Posts/Post";
+
 
 let stompClient;
 
@@ -65,17 +62,17 @@ export function SideBar() {
         }
     }, [userId]);
 
-    useEffect(() => {
-        async function getNotification() {
-            let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
-            let messageData = await messageInformation.json();
-            setMessageCount(messageData.unread);
-        }
-
-        if (userId) {
-            getNotification();
-        }
-    }, [userId, location.pathname]);
+    // useEffect(() => {
+    //     async function getNotification() {
+    //         let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
+    //         let messageData = await messageInformation.json();
+    //         setMessageCount(messageData.unread);
+    //     }
+    //
+    //     if (userId) {
+    //         getNotification();
+    //     }
+    // }, [userId, location.pathname]);
 
     const onMessageUnread = (payload) => {
         let payloadData = JSON.parse(payload.body);
@@ -105,7 +102,7 @@ export function SideBar() {
             const onConnected = () => {
                 if (stompClient?.connected) {
                     stompClient.subscribe("/user/" + userId + "/unread_notifications", onPrivateMessage);
-                    stompClient.subscribe("/user/" + userId + "/unread", onMessageUnread);
+                    stompClient.subscribe("/user/" + userId + "/unread_to_read", onMessageUnread);
                 }
             };
 
@@ -130,7 +127,7 @@ export function SideBar() {
             console.warn("sideBar - failed to create the stomp client", e);
         }
 
-    }, [location.pathname]);
+    }, []);
 
     const xxsStyles = {
         SidebarBox: {

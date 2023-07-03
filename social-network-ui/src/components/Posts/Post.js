@@ -376,7 +376,12 @@ export const Post = ({
             let filteredProfileReposts = profileReposts.filter(filterPostPredicate);
             dispatch(deleteProfileRepostsPosts(filteredProfileReposts))
         }
-
+        await fetch(`${apiUrl}/api/post?postId=${postId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
     };
 
     const handleCommentToggle = async () => {

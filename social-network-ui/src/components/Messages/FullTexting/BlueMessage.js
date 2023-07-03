@@ -22,6 +22,6 @@ export const GenerateBlueMessage = ({text, timestampText}) => {
 
 
 GenerateBlueMessage.propTypes = {
-  text: PropTypes.string.isRequired,
-  timestampText: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  timestampText: PropTypes.string,
 }

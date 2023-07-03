@@ -64,7 +64,8 @@ export const InboxMessage = ({
                                  date,
                                  handleClick,
                                  unreadMessage,
-                                 selectedMessage
+                                 selectedMessage,
+                                 clickedMessages
                              }) => {
     const postDate = () => {
         const date2 = new Date(date);
@@ -82,10 +83,10 @@ export const InboxMessage = ({
         <Box sx={messageContainerStyle} onClick={handleClick}>
             {image
 
-                ? <Badge color="primary" badgeContent={selectedMessage.inboxId === inboxId ? 0 : unreadMessage}>
+                ? <Badge color="primary" badgeContent={clickedMessages.includes(inboxId) ? 0 : unreadMessage}>
                     <img src={image} alt="Avatar" style={{ ...avatarStyle, marginRight: "0" }}/>
                 </Badge>
-                : <Badge color="primary" badgeContent={selectedMessage.inboxId === inboxId ? 0 : unreadMessage}>
+                : <Badge color="primary" badgeContent={clickedMessages.includes(inboxId) ? 0 : unreadMessage}>
                     <Avatar alt={senderName} src="#" style={{ ...avatarStyle, marginRight: "0" }}/>
                 </Badge>
             }
@@ -99,6 +100,7 @@ export const InboxMessage = ({
 };
 
 InboxMessage.propTypes = {
+    clickedMessages:PropTypes.any,
     inboxId: PropTypes.any,
     selectedMessage: PropTypes.any,
     unreadMessage: PropTypes.number,

@@ -28,11 +28,12 @@ import { setClickedInboxTrue } from "../../../store/actions";
 import { apiUrl } from "../../../apiConfig";
 
 
-export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage }) {
+export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage, stompClient}) {
 
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
     const theme = useTheme();
+    const [clickedMessages, setClickedMessages] = useState([]);
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -59,12 +60,13 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             receiver={item.userId}
                             message={item.message}
                             date={item.createdAt}
+                            clickedMessages={clickedMessages}
                             selectedMessage={selectedMessage}
-                            unreadMessage={item.unreadByUser}
-                            handleClick={(event) => {
+                            unreadMessage={selectedMessage.inboxId === item.inboxId || clickedMessages.includes(item.inboxId) ? 0 : item.unreadByUser}
+                            handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                    fetch(`${apiUrl}/api/getMessages`, {
+                                   await fetch(`${apiUrl}/api/getMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
                                             inboxUid: item.inboxUid,
@@ -72,11 +74,16 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                                         }),
                                         headers: { "Content-Type": "application/json" }
                                     });
+                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+                                        inboxUid: item.inboxUid}));
                                     dispatch(clearMessages());
                                     setSelectedMessage(item);
                                     dispatch(setPageZeroForMessaging());
                                     dispatch(fetchTextsByPage(item.userId, userId, 0));
                                 }
+                                setClickedMessages(prevState => {
+                                   return [...prevState, item.inboxId]
+                                })
                                 if (!isXl && !isLg && !isMd) {
                                     dispatch(setClickedInboxTrue());
                                 }
@@ -105,6 +112,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
 }
 
 MessageInbox.propTypes = {
+    stompClient:PropTypes.any,
     setSelectedMessage: PropTypes.any,
     selectedMessage: PropTypes.any,
     inboxMessages: PropTypes.any,
