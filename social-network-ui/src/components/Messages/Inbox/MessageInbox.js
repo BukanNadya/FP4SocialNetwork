@@ -66,7 +66,9 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                   await fetch(`${apiUrl}/api/getMessages`, {
+                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+                                        inboxUid: item.inboxUid}));
+                                    await fetch(`${apiUrl}/api/readMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
                                             inboxUid: item.inboxUid,
@@ -74,8 +76,6 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                                         }),
                                         headers: { "Content-Type": "application/json" }
                                     });
-                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
-                                        inboxUid: item.inboxUid}));
                                     dispatch(clearMessages());
                                     setSelectedMessage(item);
                                     dispatch(setPageZeroForMessaging());

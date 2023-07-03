@@ -99,7 +99,7 @@ export function Comments({
             {() => (
                 <>
                     <Form>
-                        <Box style={CommentBox}>
+                        <Box style={CommentBox} data-testid={"comments_wrapper"}>
                             <Typography variant="h6" sx={CommentTypography}>Comments:</Typography>
                             {isLoadingComments ? <CircularProgress
                                 sx={CommentCircular}/> : comments.length > 0 ? (comments.map((comment, index) => (
@@ -185,7 +185,7 @@ export function Comments({
                                     style={{
                                         ...StyledBlackButton,
                                         ...CommentCustomButton
-                                    }}>Add comment</Button>
+                                    }} data-testid={"send_comment_button"}>Add comment</Button>
                         </Box>
                     </Form>
                 </>

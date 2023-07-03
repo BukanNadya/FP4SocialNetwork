@@ -439,7 +439,7 @@ export function Message() {
             stompClient.connect({}, onConnected, onError);
 
             return () => {
-                if (stompClient && stompClient.connected) {
+                if (stompClient.connected) {
                     try {
                         stompClient.disconnect();
                     } catch (e) {
@@ -455,7 +455,6 @@ export function Message() {
 
     }, []);
 
-
     const newMessage = async (payload) => {
         let payloadData = JSON.parse(payload.body);
         let messageData = {
@@ -465,7 +464,6 @@ export function Message() {
             message: payloadData.message,
             createdAt: payloadData.createdAt
         };
-        stompClient.send("/app/getUnread", {}, JSON.stringify({ userId: payloadData.userId, inboxUid: payloadData.inboxUid }));
         setInboxMessages((prevInboxMessages) => {
             if (prevInboxMessages.some(message => message.inboxId === payloadData.inboxId)) {
                 return prevInboxMessages.map(message =>
@@ -476,6 +474,18 @@ export function Message() {
             }
         });
         dispatch(addMessageFromWebsocket(messageData));
+        if(payloadData.inboxUid !== userId) {
+            await fetch(`${apiUrl}/api/readMessages`, {
+                method: "POST",
+                body: JSON.stringify({
+                    userId: messageData.userId,
+                    inboxUid: messageData.inboxUid,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }
     };
 
     useEffect(() => {
@@ -520,6 +530,7 @@ export function Message() {
     };
 
     const handleSend = async (event) => {
+        event.preventDefault();
         await fetch(`${apiUrl}/api/addMessage`, {
             method: "POST",
             body: JSON.stringify({
@@ -529,11 +540,6 @@ export function Message() {
             }),
             headers: { "Content-Type": "application/json" },
         });
-        stompClient.send("/app/getMessages", {}, JSON.stringify({
-            userId: selectedMessage.userId,
-            inboxUid: selectedMessage.inboxUid,
-        }));
-        event.preventDefault();
         stompClient.send("/app/addMessage", {}, JSON.stringify({
             userId: selectedMessage.userId,
             inboxUid: selectedMessage.inboxUid,

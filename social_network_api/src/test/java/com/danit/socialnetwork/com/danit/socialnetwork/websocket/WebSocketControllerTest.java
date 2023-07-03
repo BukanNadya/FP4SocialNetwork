@@ -213,10 +213,39 @@ class WebSocketControllerTest {
     MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
     messageDtoRequest.setInboxUid(1);
     messageDtoRequest.setUserId(2);
+    messageDtoRequest.setWrittenMessage("Test");
+
+    List<InboxDtoResponse> inboxesS = new ArrayList<>();
+    InboxDtoResponse inboxS = new InboxDtoResponse();
+    inboxS.setInboxUid(1);
+    inboxS.setUserId(2);
+    inboxS.setMessage("Test");
+    inboxesS.add(inboxS);
+
+    List<InboxDtoResponse> inboxesR = new ArrayList<>();
+    InboxDtoResponse inboxR = new InboxDtoResponse();
+    inboxR.setInboxUid(2);
+    inboxR.setUserId(1);
+    inboxR.setMessage("Test");
+    inboxesR.add(inboxR);
+
+    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
+    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
+
+    webSocketController.postReadMessages(messageDtoRequest);
+
+    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
+  }
+
+  @Test
+  void testPostGetUnread() {
+    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
+    messageDtoRequest.setInboxUid(1);
+    messageDtoRequest.setUserId(2);
 
     when(messageService.numberUnreadMessages(2)).thenReturn(5);
 
-    webSocketController.postReadMessages(messageDtoRequest);
+    webSocketController.postGetUnread(messageDtoRequest);
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
   }

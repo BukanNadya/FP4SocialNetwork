@@ -310,14 +310,6 @@ export const Post = ({
         styles = xxsStyles;
     }
 
-    const ShowUsersWhoLike = async () => {
-        if (userId) {
-
-        } else {
-            dispatch(openLoginModal());
-        }
-    };
-
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -325,10 +317,6 @@ export const Post = ({
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const validationSchema = Yup.object().shape({
-        comment: Yup.string()
-            .required("Please enter a comment").max(250, "Comment must be no longer than 250 characters")
-    });
 
     useEffect(() => {
         if (showLike) {
@@ -505,7 +493,7 @@ export const Post = ({
                 </Dialog>
             </div>
             <CardActions sx={{ padding: "20px 20px" }}>
-                <Tooltip title={"See comments"}>
+                <Tooltip title={"See comments"} data-testid={"open_comments_button"}>
                     <IconButton onClick={handleCommentToggle}>
                         <ChatBubbleOutline fontSize="small"/>
                         <Typography variant="body2" sx={{ marginLeft: "5px" }}>{postCommentCount}</Typography>

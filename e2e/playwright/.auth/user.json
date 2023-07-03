@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "persist:root",
-          "value": "{\"userData\":\"{\\\"userData\\\":{\\\"userId\\\":\\\"63\\\",\\\"userName\\\":\\\"Asy\\\",\\\"name\\\":\\\"Asyyy\\\",\\\"date\\\":\\\"May 28 2023\\\",\\\"image\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1687524259/production/pa0mpufl9qeh6i75luss.jpg\\\",\\\"background\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1686229174/production/mmmtdtlunuucbau2eeh9.jpg\\\",\\\"followers\\\":9,\\\"followings\\\":10,\\\"address\\\":\\\"Huzara 20A\\\",\\\"birthday\\\":\\\"1990-01-27\\\"},\\\"searchData\\\":{\\\"userId\\\":null},\\\"followData\\\":{\\\"userFollow\\\":false},\\\"userFollowing\\\":{\\\"following\\\":[]},\\\"userMode\\\":{\\\"darkMode\\\":false}}\",\"_persist\":\"{\\\"version\\\":-1,\\\"rehydrated\\\":true}\"}"
+          "value": "{\"userData\":\"{\\\"userData\\\":{\\\"userId\\\":\\\"63\\\",\\\"userName\\\":\\\"Asy\\\",\\\"name\\\":\\\"Asyyy\\\",\\\"date\\\":\\\"May 28 2023\\\",\\\"image\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1687524259/production/pa0mpufl9qeh6i75luss.jpg\\\",\\\"background\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1686229174/production/mmmtdtlunuucbau2eeh9.jpg\\\",\\\"followers\\\":9,\\\"followings\\\":10,\\\"address\\\":\\\"Huzara 20A\\\",\\\"birthday\\\":\\\"1990-01-27\\\"},\\\"searchData\\\":{\\\"userId\\\":null},\\\"followData\\\":{\\\"userFollow\\\":false},\\\"userFollowing\\\":{\\\"following\\\":[\\\"69\\\",\\\"8\\\",\\\"65\\\",\\\"66\\\",\\\"7\\\",\\\"67\\\",\\\"2\\\",\\\"10\\\",\\\"64\\\",\\\"14\\\"]},\\\"userMode\\\":{\\\"darkMode\\\":false}}\",\"_persist\":\"{\\\"version\\\":-1,\\\"rehydrated\\\":true}\"}"
         },
         {
           "name": "stepInModal",
@@ -14,7 +14,7 @@
         },
         {
           "name": "userToken",
-          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODM5Mzg5OCwiZXhwIjoxNjg5MjU3ODk4fQ.1G8mXU8hhaPGTjD4ckm0Ekxasl18i6U_t_JLGEdj4O1ZulzC9oClLGy8z4wDPlNXkti3ePEfM5qpbljgmVr3OQ\"}"
+          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODQxMjIwNCwiZXhwIjoxNjg5Mjc2MjA0fQ.-Jn4vKLn9Qo7MbXdJ2k_4l76ukJB7wDJHtRBFUj9Kvj_q6VM6EUjd9PYqWCosrgZEG2PFJ1qUdW5TPPWHq8DqA\"}"
         }
       ]
     }

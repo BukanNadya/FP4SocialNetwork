@@ -267,7 +267,7 @@ export const sendComments = (values, userId, postId) => {
             let userCommentData = await userCommentResponse.json();
             dispatch(setCommentFromUser(userCommentData));
         } catch (error) {
-            console.error("Ошибка:", error);
+            console.warn("Ошибка:", error);
         }
     };
 };

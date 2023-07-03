@@ -2,7 +2,6 @@ import { BASE_API_URL, BASE_URL } from "../utils/constants";
 import { expect } from "../base";
 
 export class HomePage {
-
     static SELECTOR = {
         POSTING_BUTTON: "posting_button",
         POST_TEXT_INPUT: "post_text_input",
@@ -14,7 +13,10 @@ export class HomePage {
         REPOST_POST: "repost_post",
         REPOST_BUTTON: "repost_button",
         REPOST_COUNT: "repost_count",
-        LIKE_COUNT:"like_count",
+        LIKE_COUNT: "like_count",
+        OPEN_COMMENTS_BUTTON: "open_comments_button",
+        COMMENTS_WRAPPER: "comments_wrapper",
+        SEND_COMMENT_BUTTON: "send_comment_button",
     };
 
     constructor(page) {
@@ -50,13 +52,37 @@ export class HomePage {
     async verifyAddLikeHandle() {
         await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.ICON_BUTTON_ADD_LIKE).click();
         await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.RED_LIKE_ICON)).toBeVisible();
-        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.LIKE_COUNT).locator('text=4')).toBeVisible();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.LIKE_COUNT).locator("text=4")).toBeVisible();
 
     }
 
     async verifyAddRepostHandle() {
         await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.REPOST_BUTTON).click();
-        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.REPOST_COUNT).locator('text=1')).toBeVisible();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.REPOST_COUNT).locator("text=1")).toBeVisible();
+    }
+
+    async verifyAddComment() {
+        const mocComment = {
+            profileImageLink: "http://res.cloudinary.com/dir4ciwiy/image/upload/v1686407058/production/pmtn5n3rijffz4zuq4km.png",
+            name: "Sanchoous",
+            username: "banan",
+            createdDateTime: "2023-06-28T20:58:51.580775",
+            userId: 65,
+            commentText: "this is a test comment",
+        };
+        await this.page.route(`${BASE_API_URL}/api/comments`, (route, req) => {
+            route.fulfill({
+                body: JSON.stringify(mocComment)
+            });
+        });
+        await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.OPEN_COMMENTS_BUTTON).click();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)).toBeVisible();
+        await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)
+            .getByLabel("Please enter your comment").fill("this is a test comment");
+        await this.page.waitForTimeout(10000);
+        await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)
+            .getByTestId(HomePage.SELECTOR.SEND_COMMENT_BUTTON).click();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER).getByText(mocComment.commentText)).toBeVisible();
     }
 
     async openHomePage() {

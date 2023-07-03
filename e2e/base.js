@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { CommonActions } from "./pages/CommonActions";
 import { SideBar } from "./pages/SideBar";
+import { Notifications } from "./pages/Notifications";
 
 export const test = base.extend({
     notFoundPage: async ({ page }, use) => {
@@ -16,6 +17,9 @@ export const test = base.extend({
     },
     sideBar: async ({ page }, use) => {
         await use(new SideBar(page));
+    },
+    notifications: async ({ page }, use) => {
+        await use(new Notifications(page));
     }
 });
 

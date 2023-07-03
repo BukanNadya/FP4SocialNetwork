@@ -62,29 +62,15 @@ export function SideBar() {
         }
     }, [userId]);
 
-    // useEffect(() => {
-    //     async function getNotification() {
-    //         let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
-    //         let messageData = await messageInformation.json();
-    //         setMessageCount(messageData.unread);
-    //     }
-    //
-    //     if (userId) {
-    //         getNotification();
-    //     }
-    // }, [userId, location.pathname]);
-
     const onMessageUnread = (payload) => {
         let payloadData = JSON.parse(payload.body);
         console.log("ALOOOOOHAAA");
         setMessageCount(payloadData.unread);
-        console.log(payloadData, "payloadDataonMessageUnread");
     };
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         setNotificationCount(payloadData.unreadNotifications);
-
     };
 
     useEffect(() => {
@@ -102,7 +88,7 @@ export function SideBar() {
             const onConnected = () => {
                 if (stompClient?.connected) {
                     stompClient.subscribe("/user/" + userId + "/unread_notifications", onPrivateMessage);
-                    stompClient.subscribe("/user/" + userId + "/unread_to_read", onMessageUnread);
+                    stompClient.subscribe("/user/" + userId + "/unread", onMessageUnread);
                 }
             };
 
@@ -127,7 +113,7 @@ export function SideBar() {
             console.warn("sideBar - failed to create the stomp client", e);
         }
 
-    }, []);
+    }, [location.pathname]);
 
     const xxsStyles = {
         SidebarBox: {

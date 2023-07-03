@@ -189,6 +189,7 @@ export function Notifications() {
             return format(date, "MMM d, yyyy");
         }
     };
+    console.log(notifications)
 
     return (
         <List sx={styles.AdaptiveListStyles} data-testid={"notifications_list"}>
@@ -196,7 +197,7 @@ export function Notifications() {
                 notifications.length > 0 ?
                     transitions((style, item) => (
                         <animated.div style={{ ...style, width: "100%" }} key={item.eventId}>
-                            <ListItem
+                            <ListItem data-testid={`notification_${item.eventId}`}
                                 sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                                 onClick={() => {
                                     navigate(`/post/${item.eventId}`);
