@@ -249,7 +249,6 @@ class WebSocketControllerTest {
 
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
   }
-
 }
 
 

@@ -9,8 +9,12 @@ export class HomePage {
         USER_POST_TEXT: "user_post_text",
         ICON_BUTTON_ADD_LIKE: "icon_button_add_like",
         WHITE_LIKE_BUTTON: "white_like_icon",
-        RED_LIKE_ICON:"red_like_icon",
-        POST_ID: "postId_35056"
+        RED_LIKE_ICON: "red_like_icon",
+        POST_ID: "postId_35056",
+        REPOST_POST: "repost_post",
+        REPOST_BUTTON: "repost_button",
+        REPOST_COUNT: "repost_count",
+        LIKE_COUNT:"like_count",
     };
 
     constructor(page) {
@@ -46,6 +50,13 @@ export class HomePage {
     async verifyAddLikeHandle() {
         await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.ICON_BUTTON_ADD_LIKE).click();
         await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.RED_LIKE_ICON)).toBeVisible();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.LIKE_COUNT).locator('text=4')).toBeVisible();
+
+    }
+
+    async verifyAddRepostHandle() {
+        await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.REPOST_BUTTON).click();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.REPOST_COUNT).locator('text=1')).toBeVisible();
     }
 
     async openHomePage() {

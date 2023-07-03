@@ -74,10 +74,18 @@ export const InboxMessage = ({
         if (diffDays < 1) {
             return formatDistanceToNow(date2, { addSuffix: true });
         } else if (diffDays < 365) {
-            return format(date2, "MMM d");
+            return formatDateWithTimezone(date2, "MMM d");
         } else {
-            return format(date2, "MMM d, yyyy");
+            return formatDateWithTimezone(date2, "MMM d, yyyy");
         }
+    };
+
+    const formatDateWithTimezone = (date, format) => {
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const options = { timeZone: userTimezone, year: 'numeric', month: '2-digit', day: '2-digit' };
+
+        const formattedDate = date.toLocaleString(undefined, options);
+        return formattedDate;
     };
     return (
         <Box sx={messageContainerStyle} onClick={handleClick}>
