@@ -244,8 +244,7 @@ public class WebSocketController {
 
   @MessageMapping("/addMessage")
   public InboxDtoResponse postAddMessage(
-      @Payload MessageDtoRequest messageDtoRequest) {
-
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
@@ -265,16 +264,16 @@ public class WebSocketController {
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
-
+    Thread.sleep(500);
     sendUnreadMessagesToUserReceiver(userId);
-
     return inboxS;
   }
 
   @MessageMapping("/getMessages")
   public InboxDtoResponse postReadMessages(
-      @Payload MessageDtoRequest messageDtoRequest) {
-    messageRestController.readMessage(messageDtoRequest);
+      @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
+    messageService.unreadToReadMessages(messageDtoRequest);
+    Thread.sleep(500);
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
     getLog(inboxUid, userId);
