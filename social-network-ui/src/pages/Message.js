@@ -7,7 +7,6 @@ import { Button, TextField, Typography } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
@@ -23,10 +22,8 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import CircularProgress from "@mui/material/CircularProgress";
-import { height, padding } from "@mui/system";
 import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
 import { Avatar } from "@mui/material";
-import EmojiPicker from "emoji-picker-react";
 
 let stompClient = null;
 
@@ -45,30 +42,7 @@ export function Message() {
     const [inboxMessages, setInboxMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
-    const [isOpenEmoji, setIsOpenEmoji] = useState(false);
-    const emojiPickerRef = useRef();
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
-
-    useEffect(() => {
-        console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
-    }, [selectedMessage]);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                emojiPickerRef.current &&
-                !emojiPickerRef.current.contains(event.target) &&
-                event.target !== document.getElementById("emoji-icon")
-            ) {
-                setIsOpenEmoji(false);
-            }
-        };
-
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
 
     const theme = useTheme();
 
@@ -405,7 +379,6 @@ export function Message() {
             setIsLoading(true);
             const response1 = await fetch(`${apiUrl}/api/${userId}/inbox`);
             const userData = await response1.json();
-            console.log(userData);
             setInboxMessages(userData);
         } finally {
             setIsLoading(false);
@@ -415,10 +388,6 @@ export function Message() {
     useEffect(() => {
         fetchMessages();
     }, [inbox]);
-
-    useEffect(() => {
-        console.log(selectedMessage, "selectedMessage");
-    }, [selectedMessage]);
 
     useEffect(() => {
         try {
@@ -470,22 +439,22 @@ export function Message() {
         });
         dispatch(addMessageFromWebsocket(messageData));
         if(payloadData.userId == userId) {
-            await fetch(`${apiUrl}/api/readMessages`, {
-                method: "POST",
-                body: JSON.stringify({
-                    userId: messageData.userId,
-                    inboxUid: messageData.inboxUid,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            try {
+                await fetch(`${apiUrl}/api/readMessages`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userId: messageData.userId,
+                        inboxUid: messageData.inboxUid,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+            } catch (error) {
+                console.error("An error occurred:", error);
+            }
         }
     };
-
-    useEffect(() => {
-        console.log(messages);
-    }, [messages]);
 
     useEffect(() => {
         if (textingContainerRef.current) {
@@ -494,7 +463,6 @@ export function Message() {
     }, [selectedMessage]);
 
     useEffect(() => {
-        console.log(clicked);
         if (isXl && clicked) {
             dispatch(setClickedInboxFalse());
         } else if (isLg && clicked) {
@@ -548,34 +516,6 @@ export function Message() {
             handleSend(event);
         }
     };
-
-    const handleEmojiClick = (emojiData) => {
-        const emojiCodePoint = parseInt(emojiData.unified, 16);
-        console.log(emojiCodePoint);
-        const emojiChar = String.fromCodePoint(emojiCodePoint);
-        console.log(emojiChar, "emojiChar");
-        setInputValue((prevValue) => prevValue + emojiChar);
-    };
-
-    const handleClickOutside = (event) => {
-        if (!isOpenEmoji) {
-            return;
-        }
-        if (
-            emojiPickerRef.current &&
-            !emojiPickerRef.current.contains(event.target) &&
-            event.target !== document.getElementById("emoji-icon")
-        ) {
-            setIsOpenEmoji(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-    }, [isOpenEmoji, emojiPickerRef]);
 
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
@@ -648,37 +588,21 @@ export function Message() {
                                     value={inputValue}
                                     onChange={(event) => {
                                         event.preventDefault();
-                                        console.log("Data from input: " + event.target.value.toString());
                                         setInputValue(event.target.value.toString());
                                     }}
                                     onKeyPress={handleKeyPress}
                                     InputProps={{
                                         endAdornment: (
-                                            <>
-                                                <EmojiEmotionsIcon
-                                                    id="emoji-icon"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                        setIsOpenEmoji(!isOpenEmoji);}}
-                                                    sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
-                                                />
-                                                <Button
-                                                    sx={{color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem"}}
-                                                    onClick={handleSend}
-                                                >
-                                                    <SendIcon/>
-                                                </Button>
-                                            </>
+                                            <Button
+                                                sx={{color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem"}}
+                                                onClick={handleSend}
+                                            >
+                                                <SendIcon/>
+                                            </Button>
                                         ),
                                     }}
                                     style={{ width: "100%"}}
                                 />
-                                {isOpenEmoji && (
-                                    <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
-
-                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker/>
-                                    </div>
-                                )}
                             </>
                         )}
                     </div>
