@@ -123,7 +123,8 @@ export const Post = ({
             overflowAnchor: "none",
             backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             color: darkMode ? "rgb(247, 249, 249)" : "#000000",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderBottom: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderTop: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
@@ -155,7 +156,8 @@ export const Post = ({
             overflowAnchor: "none",
             backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             color: darkMode ? "rgb(247, 249, 249)" : "#000000",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderBottom: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderTop: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "90vw",
@@ -188,7 +190,8 @@ export const Post = ({
             overflowAnchor: "none",
             backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             color: darkMode ? "rgb(247, 249, 249)" : "#000000",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderBottom: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderTop: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -222,7 +225,8 @@ export const Post = ({
             overflowAnchor: "none",
             backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             color: darkMode ? "rgb(247, 249, 249)" : "#000000",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderBottom: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderTop: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -256,7 +260,8 @@ export const Post = ({
             overflowAnchor: "none",
             backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             color: darkMode ? "rgb(247, 249, 249)" : "#000000",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderBottom: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderTop: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",
@@ -291,7 +296,8 @@ export const Post = ({
             overflowAnchor: "none",
             backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
             color: darkMode ? "rgb(247, 249, 249)" : "#000000",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderBottom: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderTop: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveUserPhotoWrapper: {
             maxWidth: "600px",

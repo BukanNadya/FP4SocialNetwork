@@ -3,6 +3,7 @@ import React from "react";
 import { AppBar } from "@mui/material";
 
 import {
+    DarkUserSearchWrapper,
     UserSearchAppBar,
     UserSearchContentWrapper,
     UserSearchWrapper
@@ -80,7 +81,7 @@ export function UsersSearch() {
     }
 
     return (
-        <div style={UserSearchWrapper}>
+        <div style={darkMode ? DarkUserSearchWrapper : UserSearchWrapper}>
             <AppBar position="sticky" style={styles.AdaptiveUserSearchAppBar}>
                 <Search/>
                 <PopularPeopleSidebar/>

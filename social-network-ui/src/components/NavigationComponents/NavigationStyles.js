@@ -170,6 +170,15 @@ export const UserSearchWrapper = {
     position: "sticky",
     top: 0,
     zIndex: "2",
+    borderLeft: "1px solid rgba(0, 0, 0, 0.1)"
+};
+export const DarkUserSearchWrapper = {
+    display: "flex",
+    flexDirection: "column",
+    position: "sticky",
+    top: 0,
+    zIndex: "2",
+    borderLeft: "1px solid rgb(56, 68, 77)"
 };
 
 export const UserSearchAppBar = {
@@ -179,7 +188,6 @@ export const UserSearchAppBar = {
     boxShadow: "none",
     height: "70px",
     backgroundColor: "rgba(255, 255, 255, 0.85)",
-    borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
 };
 
 export const UserSearchTextField = {
@@ -225,7 +233,6 @@ export const DarkUserSearchTextField = {
 export const UserSearchContentWrapper = {
     height: "100vh",
     width: "300px",
-    borderLeft: "1px solid rgba(0, 0, 0, 0.1)",
 };
 
 export const HeaderInformationParagraph ={
