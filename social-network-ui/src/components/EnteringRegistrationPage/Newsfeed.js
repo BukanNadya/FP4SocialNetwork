@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPostsByPage } from "../../store/actions";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { SvgIconCapybara } from "../LoginModal/SvgIconCapybara";
 
 export function Newsfeed() {
     const registrationPageUsersPosts = useSelector(state => state.Posts.registrationPagePosts);

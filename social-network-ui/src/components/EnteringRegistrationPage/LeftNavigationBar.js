@@ -3,7 +3,6 @@ import {Box, Fab, Grid, SvgIcon, Typography} from '@mui/material'
 import { Link } from "react-router-dom"
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {SidebarLogOutButton} from "../NavigationComponents/NavigationStyles";
 
 export function LeftNavigationBar () {
 

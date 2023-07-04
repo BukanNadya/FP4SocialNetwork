@@ -1,7 +1,5 @@
 import React from "react";
-import { UsersSearch } from "../components/NavigationComponents/UsersSearch/UsersSearch";
 import { Search } from "../components/NavigationComponents/UsersSearch/Search/Search";
-import { PopularPeopleSidebar } from "../components/NavigationComponents/UsersSearch/PopularPeopleSidebar";
 import { useEffect, useState } from "react";
 import { PopularPeopleFetch, setSearchId, userFollowing } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";

@@ -2,7 +2,6 @@ import React from 'react'
 import {Box, Button, Card, CardContent, SvgIcon, Typography} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {openSignUpModal} from "../../store/actions";
-import { StyledBlackButton } from "../LoginModal/loginModalStyles";
 import {apiUrl} from "../../apiConfig";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
