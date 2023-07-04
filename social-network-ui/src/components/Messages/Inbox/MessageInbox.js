@@ -66,7 +66,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: item.userId,
                                         inboxUid: item.inboxUid}));
                                     await fetch(`${apiUrl}/api/readMessages`, {
                                         method: "POST",

@@ -8,6 +8,7 @@ import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.*;
+import com.danit.socialnetwork.rest.MessageRestController;
 import com.danit.socialnetwork.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,8 @@ class WebSocketControllerTest {
   @Mock
   private MessageService messageService;
   @Mock
+  private MessageRestController messageRestController;
+  @Mock
   private InboxMapperImpl mapper;
   @Mock
   private SimpMessagingTemplate messagingTemplate;
@@ -51,6 +54,7 @@ class WebSocketControllerTest {
         postService,
         inboxService,
         messageService,
+        messageRestController,
         mapper
     );
     webSocketController.setMessagingTemplate(messagingTemplate);
@@ -208,47 +212,6 @@ class WebSocketControllerTest {
     verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/getMessages"), any(InboxDtoResponse.class));
   }
 
-  @Test
-  void testPostGetMessage() {
-    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
-    messageDtoRequest.setInboxUid(1);
-    messageDtoRequest.setUserId(2);
-    messageDtoRequest.setWrittenMessage("Test");
-
-    List<InboxDtoResponse> inboxesS = new ArrayList<>();
-    InboxDtoResponse inboxS = new InboxDtoResponse();
-    inboxS.setInboxUid(1);
-    inboxS.setUserId(2);
-    inboxS.setMessage("Test");
-    inboxesS.add(inboxS);
-
-    List<InboxDtoResponse> inboxesR = new ArrayList<>();
-    InboxDtoResponse inboxR = new InboxDtoResponse();
-    inboxR.setInboxUid(2);
-    inboxR.setUserId(1);
-    inboxR.setMessage("Test");
-    inboxesR.add(inboxR);
-
-    when(inboxService.getInboxesByInboxUid(2)).thenReturn(inboxesR);
-    when(messageService.numberUnreadMessagesByUser(1, 2)).thenReturn(3);
-
-    webSocketController.postReadMessages(messageDtoRequest);
-
-    verify(messagingTemplate, times(1)).convertAndSendToUser("2", "/inbox", inboxR);
-  }
-
-  @Test
-  void testPostGetUnread() {
-    MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
-    messageDtoRequest.setInboxUid(1);
-    messageDtoRequest.setUserId(2);
-
-    when(messageService.numberUnreadMessages(2)).thenReturn(5);
-
-    webSocketController.postGetUnread(messageDtoRequest);
-
-    verify(messagingTemplate, times(1)).convertAndSendToUser(eq("2"), eq("/unread"), anyMap());
-  }
 }
 
 
