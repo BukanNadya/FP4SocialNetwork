@@ -27,9 +27,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Cacheable;
-
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,7 +64,7 @@ public class PostServiceImpl implements PostService {
   // Method returns all available posts
   @Override
   public List<PostDtoResponse> getAllPosts(Integer pageNumber) {
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAll(
         offset, pageSize);
@@ -111,7 +108,7 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts done by user*/
   @Override
   public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer pageNumber) {
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllByUserIdOneQuery(
         userId, offset, pageSize);
@@ -123,7 +120,7 @@ public class PostServiceImpl implements PostService {
   /*Method returns all posts liked by user*/
   @Override
   public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer pageNumber) {
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllByUserIdLikedOneQuery(
         userId, offset, pageSize);
@@ -136,7 +133,7 @@ public class PostServiceImpl implements PostService {
    they were posted (for own posts) and reposted (for reposts) by user*/
   @Override
   public List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer pageNumber) {
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllPostsAndRepostsByUserIdAsPostOneQuery(
         userId, offset, pageSize);

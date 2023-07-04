@@ -2,8 +2,8 @@ package com.danit.socialnetwork.config;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.danit.socialnetwork.exception.imege.FolderCreationException;
-import com.danit.socialnetwork.exception.imege.FolderDeletionException;
+import com.danit.socialnetwork.exception.image.FolderCreationException;
+import com.danit.socialnetwork.exception.image.FolderDeletionException;
 import com.danit.socialnetwork.exception.user.PhotoNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.danit.socialnetwork.exception.imege;
+package com.danit.socialnetwork.exception.image;
 
 public class FolderCreationException extends RuntimeException {
   public FolderCreationException(String message) {

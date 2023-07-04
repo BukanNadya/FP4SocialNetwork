@@ -102,7 +102,7 @@ public class PostServiceImplTest {
         3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = 0 * pageSize;
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);
@@ -154,7 +154,7 @@ public class PostServiceImplTest {
         3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = 0 * pageSize;
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);
@@ -178,7 +178,7 @@ public class PostServiceImplTest {
         3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = 0 * pageSize;
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);
@@ -202,7 +202,7 @@ public class PostServiceImplTest {
         3, 4, "John2", "Johny2", "photoLink1", new BigInteger(String.valueOf(2)), new BigInteger(String.valueOf(2)),
         new BigInteger(String.valueOf(4)), false};
 
-    int pageSize = 12;
+    int pageSize = 100;
     int offset = 0 * pageSize;
 
     List<Object[]> testList = Arrays.asList(objects1, objects2);

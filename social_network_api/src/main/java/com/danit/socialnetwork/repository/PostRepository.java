@@ -1,7 +1,6 @@
 package com.danit.socialnetwork.repository;
 
 import com.danit.socialnetwork.model.Post;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -67,16 +66,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
   List<Object[]> findAllByUserIdOneQuery(Integer userId, @Param("offset") int offset,
                                          @Param("pageSize") int pageSize);
 
-  @Query(nativeQuery = true, value = "SELECT * FROM POSTS WHERE POSTS.USER_ID = :userId "
-      + "ORDER BY POSTS.SENT_DATETIME DESC")
-  List<Post> findAllByUserId(Integer userId,  Pageable pageable);
-
-
-  @Query(nativeQuery = true, value = "SELECT * FROM POSTS LEFT JOIN POST_LIKES on "
-      + "POSTS.P_ID = POST_LIKES.POST_ID WHERE POST_LIKES.USER_ID = :userId "
-      + "ORDER BY POSTS.SENT_DATETIME DESC")
-  List<Post> findAllByUserIdLiked(Integer userId, Pageable pageable);
-
   @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME, "
       + "POSTS.WRITTEN_TEXT, POSTS.USER_ID, POSTS.VIEW_COUNT, "
       + "USERS.USERNAME, USERS.NAME, USERS.PROFILE_IMAGE_URL, "
@@ -95,16 +84,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
       + "ORDER BY POSTS.SENT_DATETIME DESC "
       + "OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY;")
   List<Object[]> findAllByUserIdLikedOneQuery(Integer userId, @Param("offset") int offset,
-                                          @Param("pageSize") int pageSize);
-
-  @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.*, "
-      + " CASE WHEN POSTS.USER_ID = :userId THEN POSTS.SENT_DATETIME"
-      + " ELSE COALESCE(REPOSTED_DATETIME, SENT_DATETIME)"
-      + " END AS JOINED_TIME"
-      + " FROM POSTS LEFT JOIN "
-      + " REPOSTS R on POSTS.P_ID = R.POST_ID WHERE R.USER_ID = :userId or  POSTS.USER_ID = :userId"
-      + " ORDER BY JOINED_TIME DESC")
-  List<Post> findAllPostsAndRepostsByUserIdAsPost(Integer userId, Pageable pagedByTenPosts);
+                                              @Param("pageSize") int pageSize);
 
   @Query(nativeQuery = true, value = "SELECT DISTINCT POSTS.P_ID, POSTS.PHOTO_FILE, POSTS.SENT_DATETIME,"
       + " POSTS.WRITTEN_TEXT, POSTS.USER_ID, POSTS.VIEW_COUNT,"
