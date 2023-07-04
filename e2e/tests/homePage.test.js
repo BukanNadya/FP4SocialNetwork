@@ -37,14 +37,15 @@ describe("Home Page", () => {
         await homePage.verifyAddPost();
         await homePage.verifyAddRepostHandle();
     });
-    // test("Add comment success", async ({ homePage, page }) => {
+
+    // test.only("Add comment success", async ({ homePage, page }) => {
     //     await homePage.openHomePage();
     //     await page.waitForTimeout(8000);
     //     await homePage.verifyAddPost();
     //     await homePage.verifyAddComment();
     // });
 
-    test.afterAll("Log out success", async ({ homePage, page, sideBar, }) => {
+    test("Log out success", async ({ homePage, page, sideBar, }) => {
         await homePage.openHomePage();
         await sideBar.verifyLogOut();
     });

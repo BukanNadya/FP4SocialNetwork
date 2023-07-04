@@ -442,7 +442,6 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
-        console.log(messageData.userId, messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
         if(payloadData.userId == userId) {
             try {
@@ -523,9 +522,10 @@ export function Message() {
         }
     };
 
-    const stompClientSendMessage = (event) => {
+    const stompClientSendMessage = () => {
         stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
             inboxUid: selectedMessage.inboxUid}));
+
     };
 
     const handleEmojiClick = (emojiData) => {
