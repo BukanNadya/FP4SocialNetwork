@@ -12,6 +12,7 @@ export class SideBar {
         POPUlAR_PEOPLE_SIDEBAR: "popular_people_sidebar",
         MESSAGE_SEARCH_AND_INBOX_WRAPPER: "message_search_and_inbox_wrapper",
         START_CHAT_TEXT: "start_chat_text",
+        REGISTRATION_CONTAINER:"registration_page_container",
 
     };
 
@@ -39,4 +40,11 @@ export class SideBar {
         await expect(this.page.getByTestId(SideBar.SELECTOR.START_CHAT_TEXT)).toBeInViewport();
         await this.page.getByTestId(SideBar.SELECTOR.HEADER_TEXT_ROUTES).textContent("Messages");
     }
+
+    async verifyLogOut() {
+        await this.page.getByText("Log out").click();
+        await expect(this.page.getByTestId(SideBar.SELECTOR.REGISTRATION_CONTAINER)).toBeInViewport();
+    }
+
+
 }

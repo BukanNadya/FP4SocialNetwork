@@ -4,6 +4,8 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { CommonActions } from "./pages/CommonActions";
 import { SideBar } from "./pages/SideBar";
 import { Notifications } from "./pages/Notifications";
+import { ProfilePage } from "./pages/ProfilePage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 export const test = base.extend({
     notFoundPage: async ({ page }, use) => {
@@ -20,6 +22,12 @@ export const test = base.extend({
     },
     notifications: async ({ page }, use) => {
         await use(new Notifications(page));
+    },
+    profile: async ({ page }, use) => {
+        await use(new ProfilePage(page));
+    },
+    settings: async ({ page }, use) => {
+        await use(new SettingsPage(page));
     }
 });
 

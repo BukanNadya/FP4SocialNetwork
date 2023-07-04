@@ -150,6 +150,7 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
+            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
@@ -191,6 +192,7 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
+            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
@@ -234,22 +236,24 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
+            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
-            LogoutButton: {
-                ...SidebarLogOutButton,
-                padding: "0",
-                minWidth: "20px",
-                width: "40px",
-                borderRadius: "100px",
-                marginLeft: "40px",
-                height: "40px",
-                marginTop: 0
-            },
-            ExitSvgIcon: {
-                height: "15px",
-                width: "15px",
-                marginRight: "0"
-            }
+        },
+        LogoutButton: {
+            ...SidebarLogOutButton,
+            padding: "0",
+            minWidth: "20px",
+            width: "40px",
+            borderRadius: "100px",
+            marginLeft: "40px",
+            height: "40px",
+            color:"#FFF",
+            marginTop: 0
+        },
+        ExitSvgIcon: {
+            height: "15px",
+            width: "15px",
+            marginRight: "0"
         }
     };
 
@@ -275,6 +279,7 @@ export function HeaderInformation() {
             fontSize: "22px",
             display: "flex",
             alignItems: "center",
+            color: darkMode ? "#FFF" : "#000000",
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
@@ -308,6 +313,7 @@ export function HeaderInformation() {
             fontSize: "22px",
             display: "flex",
             alignItems: "center",
+            color: darkMode ? "#FFF" : "#000000",
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
@@ -587,6 +593,7 @@ export function HeaderInformation() {
                                 open={state[anchor]}
                                 onClose={toggleDrawer(anchor, false)}
                                 onOpen={toggleDrawer(anchor, true)}
+                                sx={{ backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA" }}
                             >
                                 <Link to="/home" variant="contained">
                                     <Fab variant="extended" sx={{ ...SidebarIconBackground, marginLeft: "40px" }}>

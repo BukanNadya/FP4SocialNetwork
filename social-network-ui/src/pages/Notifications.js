@@ -82,7 +82,6 @@ export function Notifications() {
     };
 
     const smStyles = {
-
         AdaptiveListStyles: {
             width: "470px",
             display: "flex",

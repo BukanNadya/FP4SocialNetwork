@@ -28,7 +28,7 @@ import { setClickedInboxTrue } from "../../../store/actions";
 import { apiUrl } from "../../../apiConfig";
 
 
-export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage, stompClient}) {
+export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessage, stompClientSendMessage}) {
 
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.userData.userData.userId);
@@ -66,8 +66,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                    stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: item.userId,
-                                        inboxUid: item.inboxUid}));
+                                    stompClientSendMessage()
                                     await fetch(`${apiUrl}/api/readMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
@@ -112,6 +111,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
 }
 
 MessageInbox.propTypes = {
+    stompClientSendMessage:PropTypes.any,
     stompClient:PropTypes.any,
     setSelectedMessage: PropTypes.any,
     selectedMessage: PropTypes.any,

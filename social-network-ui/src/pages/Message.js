@@ -1,28 +1,27 @@
-import React, { useEffect, useCallback, useContext, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { apiUrl } from "../apiConfig";
-import { InboxMessage } from "../components/Messages/Inbox/InboxMessage";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
     textingContainerWithScroll, textingConatinerScrollFromBottom,
     textingConatinerScrollFromTop, DarkTextingContainerWithScroll
 } from "./pagesStyles/MessageStyles";
-import PropTypes from "prop-types";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
-import { setMessages, setPageForMessage, setPageZeroForMessaging } from "../store/actions";
+import { setPageForMessage } from "../store/actions";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HeaderInformation } from "../components/NavigationComponents/HeaderInformation";
 import CircularProgress from "@mui/material/CircularProgress";
-import { setClickedInboxFalse, setClickedInboxTrue } from "../store/actions";
+import { setClickedInboxFalse } from "../store/actions";
 import { Avatar } from "@mui/material";
 
 let stompClient = null;
@@ -57,7 +56,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -109,7 +109,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -161,7 +162,8 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             maxWidth: "500px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -213,11 +215,12 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "800px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -263,11 +266,12 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -313,11 +317,12 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "900px",
-            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : null,
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
-            borderRight: "1px solid rgba(0, 0, 0, 0.1)",
+            borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveInboxContainerStyle: {
             ...inboxContainerStyle,
@@ -437,6 +442,7 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
+        console.log(messageData.userId, messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
         if(payloadData.userId == userId) {
             try {
@@ -504,7 +510,7 @@ export function Message() {
             headers: { "Content-Type": "application/json" },
         });
         stompClient.send("/app/addMessage", {}, JSON.stringify({
-            userId: selectedMessage.userId,
+            userId:  selectedMessage.userId,
             inboxUid: selectedMessage.inboxUid,
             writtenMessage: inputValue,
         }));
@@ -517,6 +523,33 @@ export function Message() {
         }
     };
 
+    const stompClientSendMessage = (event) => {
+        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
+            inboxUid: selectedMessage.inboxUid}));
+    };
+
+    const handleEmojiClick = (emojiData) => {
+        const emojiCodePoint = parseInt(emojiData.unified, 16);
+        console.log(emojiCodePoint);
+        const emojiChar = String.fromCodePoint(emojiCodePoint);
+        console.log(emojiChar, "emojiChar");
+        setInputValue((prevValue) => prevValue + emojiChar);
+    };
+
+    const handleClickOutside = (event) => {
+        if (!isOpenEmoji) {
+            return;
+        }
+        if (
+            emojiPickerRef.current &&
+            !emojiPickerRef.current.contains(event.target) &&
+            event.target !== document.getElementById("emoji-icon")
+        ) {
+            setIsOpenEmoji(false);
+        }
+    };
+
+
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>
             {!clicked && (
@@ -528,7 +561,7 @@ export function Message() {
                             <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/>
                         ) : (
                             <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
-                                          stompClient={stompClient} setSelectedMessage={setSelectedMessage}/>
+                                          stompClientSendMessage={stompClientSendMessage} setSelectedMessage={setSelectedMessage}/>
                         )}
                     </div>
                 </div>

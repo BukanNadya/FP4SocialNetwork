@@ -35,7 +35,7 @@ export function PostPage() {
     }, []);
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50vw" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50vw" }} data-testid={"notifications_post_wrapper_view"}>
             {notFoundPost ?
                 <div style={{
                     display: "flex",

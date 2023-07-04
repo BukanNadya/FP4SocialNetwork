@@ -234,6 +234,7 @@ export function Settings() {
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon/>}
                                 aria-controls="panel1a-content"
+                                data-testid={"password_settings"}
                             >
                                 <Typography sx={{
                                     padding: "30px 0", fontFamily: "'Lato', sans-serif",
@@ -241,7 +242,7 @@ export function Settings() {
                                     fontSize: "22px",
                                 }}>Password Settings</Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails data-testid={"password_settings_details"}>
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend" style={{ marginBottom: "20px" }}>Change
                                         Password</FormLabel>
@@ -358,6 +359,7 @@ export function Settings() {
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon/>}
                                 aria-controls="panel2a-content"
+                                data-testid={"theme_settings"}
                             >
                                 <Typography sx={{
                                     padding: "30px 0", fontFamily: "'Lato', sans-serif",
@@ -365,7 +367,7 @@ export function Settings() {
                                     fontSize: "22px",
                                 }}>Theme Settings</Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails data-testid={"theme_label"}>
                                 <FormControlLabel
                                     control={<Switch checked={userMode} onChange={handleThemeChange}/>}
                                     label={userMode ? "Dark Mode" : "Light Mode"}
@@ -376,7 +378,6 @@ export function Settings() {
                 </Form>
             )}
         </Formik>
-
     );
 }
 

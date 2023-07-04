@@ -162,11 +162,11 @@ export function SubscriptionSwipeableViews () {
             <Box sx={darkMode ? DarkBoxStyles : BoxStyles}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth" sx={darkMode ? DarkTabsStyle : TabsStyle}>
                     <Tab label="Followers" {...a11yProps(0)} sx={darkMode ? DarkTabStyles : TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(0))}/>
-                    <Tab label="Following" {...a11yProps(1)} sx={darkMode ? DarkTabStyles : TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(1))}/>
+                    <Tab label="Following" {...a11yProps(1)} sx={darkMode ? DarkTabStyles : TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(1))} data-testid={"profile_following_tab_panel"}/>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <List sx={{pt: "0"}}>
+                <List sx={{pt: "0"}} data-testid={"followings_list"}>
                     {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center", marginTop: "30px" }}/> :
                         followers.map(el =>  (
                         <ListItem key={el.userId} sx={darkMode ? DarkListItemStyles : ListItemStyles}>
@@ -180,7 +180,7 @@ export function SubscriptionSwipeableViews () {
                 </List>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <List sx={{pt: "0"}}>
+                <List sx={{pt: "0"}} data-testid={"followers_list"}>
                 {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center", marginTop: "30px" }}/> :
                     followings.map(el =>  (
                     <ListItem key={el.userId} sx={darkMode ? DarkListItemStyles : ListItemStyles}>

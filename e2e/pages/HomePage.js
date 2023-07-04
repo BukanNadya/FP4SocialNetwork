@@ -82,7 +82,7 @@ export class HomePage {
         await this.page.waitForTimeout(10000);
         await this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER)
             .getByTestId(HomePage.SELECTOR.SEND_COMMENT_BUTTON).click();
-        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByTestId(HomePage.SELECTOR.COMMENTS_WRAPPER).getByText(mocComment.commentText)).toBeVisible();
+        await expect(this.page.getByTestId(HomePage.SELECTOR.POST_ID).getByText(mocComment.commentText)).toBeVisible();
     }
 
     async openHomePage() {

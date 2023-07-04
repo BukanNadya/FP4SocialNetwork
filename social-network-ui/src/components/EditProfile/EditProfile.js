@@ -285,7 +285,7 @@ export function EditProfile (props) {
                     }
                 }}>
                     {(formikProps) => (
-                    <Form style={styles.Form}>
+                    <Form style={styles.Form} data-testid={"edit_profile_form"}>
                         <FormControl sx={styles.FormStyle} >
                             <div style={darkMode ? DarkStyleHead : StyleHead}>
                                 <div style={{ display: "flex", gap: "50px",}}>

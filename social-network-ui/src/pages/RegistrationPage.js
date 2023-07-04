@@ -114,7 +114,7 @@ if(isAllSetModal) id="allSet"
 
     return (
         <>
-        <Container sx={styles.ContainerStyle} >
+        <Container sx={styles.ContainerStyle} data-testid={"registration_page_container"}>
             <Grid container spacing={styles.AdaptiveSpacing} sx={{height:"100vh"}}>
                 {isXxs || isXs ? null  :   <LeftNavigationBar/>}
                     <Newsfeed/>

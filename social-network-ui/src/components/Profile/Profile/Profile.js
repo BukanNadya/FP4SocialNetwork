@@ -137,9 +137,9 @@ export function Profile (props) {
     return (
 
         <div style={styles.ContainerStyle}>
-            <div style={BgImgStyle}>
+            <div style={BgImgStyle} data-testid={"bg_image_wrapper"}>
                 {props.background ?
-                    <img src={props.background} alt={props.name} style={PhotoStyle} />
+                    <img src={props.background}  alt={props.name} style={PhotoStyle} />
                     :
                     false
                 }
@@ -147,7 +147,7 @@ export function Profile (props) {
             <div style={ProfileStyles}>
                 <div style={imgStyle}>
 
-                    <Avatar alt={props.name} src={props.image ? props.image : ""} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
+                    <Avatar alt={props.name} src={props.image ? props.image : ""} data-testid={"user_profile_photo"} sx={{ bgcolor: "rgb(29, 155, 240)", width: "140px", height: "140px", marginTop: "-15%" }}/>
 
                     {isFollow
                         ?
@@ -179,7 +179,7 @@ export function Profile (props) {
                         <UnSubscriptionButton width="170px" height="45px" searchId={props.userId} btnClick={() => dispatch(userSearchUnfollow())}/>
                         </div>
                         :
-                        <Button type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => {
+                        <Button data-testid={"edit_profile_button"} type="submit" variant="contained" sx={editButtonStyles} fullWidth={true} onClick={() => {
                             dispatch(userSearchFollow())
                             dispatch(userFollow())
                             props.btnClick()
@@ -189,8 +189,8 @@ export function Profile (props) {
                 </div>
                 <div>
                     <div style={{ margin: "15px 0", display: "flex", flexDirection: "column", gap: "5px" }}>
-                        <span style={darkMode ? DarkNameStyles : NameStyles}>{props.name}</span>
-                        <span style={darkMode ? DarkNicknameStyles : NicknameStyles}>@{props.userName}</span>
+                        <span style={darkMode ? DarkNameStyles : NameStyles} data-testid={"profile_name_user"}>{props.name}</span>
+                        <span style={darkMode ? DarkNicknameStyles : NicknameStyles} data-testid={"profile_nik_user"}>@{props.userName}</span>
                     </div>
                     <div style={infoStyle}>
                         {props.address ?
@@ -210,17 +210,17 @@ export function Profile (props) {
                                     <path d="M7 4V3h2v1h6V3h2v1h1.5C19.89 4 21 5.12 21 6.5v12c0 1.38-1.11 2.5-2.5 2.5h-13C4.12 21 3 19.88 3 18.5v-12C3 5.12 4.12 4 5.5 4H7zm0 2H5.5c-.27 0-.5.22-.5.5v12c0 .28.23.5.5.5h13c.28 0 .5-.22.5-.5v-12c0-.28-.22-.5-.5-.5H17v1h-2V6H9v1H7V6zm0 6h2v-2H7v2zm0 4h2v-2H7v2zm4-4h2v-2h-2v2zm0 4h2v-2h-2v2zm4-4h2v-2h-2v2z"/>
                                 </g>
                             </SvgIcon>
-                            <span style={darkMode ? DarkInfoTextStyles : infoTextStyles}>Registration Date: {props.date}</span>
+                            <span style={darkMode ? DarkInfoTextStyles : infoTextStyles} data-testid={"profile_registration_date"}>Registration Date: {props.date}</span>
                         </div>
                     </div>
                     <div style={{ display: "flex", gap: "20px" }}>
                         <Link to="/subscribe" state={{ userId: props.userId }} variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(1))}>
-                            <Typography sx={darkMode ? DarkLinkTextStyles : LinkTextStyles}>
+                            <Typography sx={darkMode ? DarkLinkTextStyles : LinkTextStyles} data-testid={"profile_following"}>
                                 <span style={darkMode ? DarkLinkQuantityStyles : LinkQuantityStyles}>{props.followings}</span> following
                             </Typography>
                         </Link>
                         <Link to="/subscribe" state={{ userId: props.userId }} variant="contained" style={LinkStyles} onClick={() =>  localStorage.setItem("subscribe", JSON.stringify(0))}>
-                            <Typography sx={darkMode ? DarkLinkTextStyles : LinkTextStyles}>
+                            <Typography sx={darkMode ? DarkLinkTextStyles : LinkTextStyles} data-testid={"profile_followers"}>
                                 <span style={darkMode ? DarkLinkQuantityStyles : LinkQuantityStyles}>{props.followers}</span> followers
                             </Typography>
                         </Link>

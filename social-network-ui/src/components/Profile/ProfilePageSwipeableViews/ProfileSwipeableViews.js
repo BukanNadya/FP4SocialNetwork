@@ -121,22 +121,22 @@ export function ProfileSwipeableViews (props) {
             <Box sx={darkMode ? DarkBoxStyles : BoxStyles}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth" sx={darkMode ? DarkTabsStyle : TabsStyle}>
                     <Tab label="Posts" {...a11yProps(0)} sx={darkMode ? DarkTabStyles : TabStyles}/>
-                    <Tab label="Reposts" {...a11yProps(1)} sx={darkMode ? DarkTabStyles : TabStyles}/>
-                    <Tab label="Likes" {...a11yProps(2)} sx={darkMode ? DarkTabStyles : TabStyles}/>
+                    <Tab label="Reposts" {...a11yProps(1)} sx={darkMode ? DarkTabStyles : TabStyles} data-testid={"reposts_profile_button"}/>
+                    <Tab label="Likes" {...a11yProps(2)} sx={darkMode ? DarkTabStyles : TabStyles} data-testid={"like_profile_button"}/>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <div style={PostsWrapper}>
+                <div style={PostsWrapper} data-testid={"profile_posts_tab"}>
                     <PostsDisplaying userPosts={profilePosts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
-            <TabPanel value={value} index={1}>
-                <div style={PostsWrapper}>
+            <TabPanel value={value} index={1} >
+                <div style={PostsWrapper} data-testid={"profile_reposts_tab"}>
                     <PostsDisplaying userPosts={profileReposts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <div style={PostsWrapper}>
+                <div style={PostsWrapper} data-testid={"profile_likes_tab"}>
                     <PostsDisplaying userPosts={profileLikePosts} isLoading={isLoading}/>
                 </div>
             </TabPanel>
