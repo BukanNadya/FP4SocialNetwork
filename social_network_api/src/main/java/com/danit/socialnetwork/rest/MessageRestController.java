@@ -7,6 +7,7 @@ import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.search.MessageSearchDto;
 import com.danit.socialnetwork.dto.search.SearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
+import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.MessageService;
 import com.danit.socialnetwork.service.UserService;
@@ -62,9 +63,10 @@ public class MessageRestController {
 
   /*The method convert messages to the read messages*/
   @PostMapping(path = "/readMessages")
-  public void readMessage(
-      @RequestBody MessageDtoRequest request) {
-    messageService.unreadToReadMessages(request);
+  public void readMessage(@RequestBody MessageDtoRequest request) {
+    DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
+    DbUser userR = userService.findDbUserByUserId(request.getUserId());
+    messageService.unreadToReadMessages(userS, userR);
   }
 
   /*The method writes all messages to cache if there is no cache,

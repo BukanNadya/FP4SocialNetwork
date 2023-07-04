@@ -10,6 +10,7 @@ import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.service.InboxService;
 import com.danit.socialnetwork.service.MessageService;
+import com.danit.socialnetwork.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @ExtendWith(MockitoExtension.class)
 class MessageRestControllerTest {
   @Mock
   MessageService messageService;
   @Mock
   InboxService inboxService;
+  @Mock
+  UserService userService;
   @InjectMocks
   private MessageRestController controller;
   private MockMvc mockMvc;
@@ -118,12 +120,24 @@ class MessageRestControllerTest {
     request.setInboxUid(1);
     request.setUserId(2);
 
+    DbUser testUserSender1 = new DbUser();
+    testUserSender1.setUserId(1);
+    testUserSender1.setName("TestUser1");
+    testUserSender1.setUsername("TestUser1");
+    DbUser testUserReceiver1 = new DbUser();
+    testUserReceiver1.setUserId(2);
+    testUserReceiver1.setName("TestUser2");
+    testUserReceiver1.setUsername("TestUser2");
+
+    when(userService.findDbUserByUserId(1)).thenReturn(testUserSender1);
+    when(userService.findDbUserByUserId(2)).thenReturn(testUserReceiver1);
+
     mockMvc.perform(post("/api/readMessages")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isOk());
 
-    verify(messageService).unreadToReadMessages(request);
+    verify(messageService).unreadToReadMessages(testUserSender1, testUserReceiver1);
   }
 
   @Test

@@ -12,7 +12,6 @@ import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,9 +29,7 @@ public class MessageServiceImpl implements MessageService {
   private final MessageSearchMapper searchMapper;
   private final InboxServiceImpl inboxService;
   private final MessageMapper messageMapper;
-  private final SimpMessagingTemplate messagingTemplate;
   private static final String MESSAGE_CACHE = "MessageCache";
-  private static final String USER_NOT_FOUND = "User with userId %d not found";
 
   /*Method save a new message and returns it*/
   @Override
@@ -62,11 +59,12 @@ public class MessageServiceImpl implements MessageService {
     MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
     messageDtoRequest.setInboxUid(request.getInboxUid());
     messageDtoRequest.setUserId(request.getUserId());
-    unreadToReadMessages(messageDtoRequest);
-    int pageSize = 16;
-    int offset = page * pageSize;
     DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
     DbUser userR = userService.findDbUserByUserId(request.getUserId());
+    unreadToReadMessages(userS, userR);
+    int pageSize = 16;
+    int offset = page * pageSize;
+
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
         userS, userR, userS, userR, offset, pageSize);
     return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
@@ -74,9 +72,7 @@ public class MessageServiceImpl implements MessageService {
 
   /*The method finds all incoming unread messages and converts them to read messages*/
   @Override
-  public void unreadToReadMessages(MessageDtoRequest request) {
-    DbUser userS = userService.findDbUserByUserId(request.getInboxUid());
-    DbUser userR = userService.findDbUserByUserId(request.getUserId());
+  public void unreadToReadMessages(DbUser userS, DbUser userR) {
     List<Message> messages = messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(userS, userR, false);
     convertMessages(messages, userS);
   }

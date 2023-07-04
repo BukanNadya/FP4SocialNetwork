@@ -2,17 +2,14 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
-import com.danit.socialnetwork.exception.user.UserNotFoundException;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.InboxRepository;
 import com.danit.socialnetwork.repository.MessageRepository;
-import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,11 +21,9 @@ import java.util.Optional;
 @Log4j2
 public class InboxServiceImpl implements InboxService {
   private final InboxRepository inboxRepository;
-  private final UserRepository userRepository;
   private final MessageRepository messageRepository;
   private final UserServiceImpl userService;
   private final InboxMapperImpl mapper;
-  private final SimpMessagingTemplate messagingTemplate;
 
   /*The method finds inbox by message sender and receiver and returns it*/
   @Override

@@ -7,15 +7,12 @@ import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 import com.danit.socialnetwork.repository.InboxRepository;
 import com.danit.socialnetwork.repository.MessageRepository;
-import com.danit.socialnetwork.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +33,6 @@ class InboxServiceImplTest {
   UserServiceImpl userService;
   @Mock
   InboxMapperImpl mapper;
-  @Mock
-  SimpMessagingTemplate messagingTemplate;
 
   @Test
   void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenExists() {

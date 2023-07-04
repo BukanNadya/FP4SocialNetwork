@@ -8,7 +8,6 @@ import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
 import com.danit.socialnetwork.mappers.InboxMapperImpl;
 import com.danit.socialnetwork.model.*;
-import com.danit.socialnetwork.rest.MessageRestController;
 import com.danit.socialnetwork.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +35,6 @@ class WebSocketControllerTest {
   @Mock
   private MessageService messageService;
   @Mock
-  private MessageRestController messageRestController;
-  @Mock
   private InboxMapperImpl mapper;
   @Mock
   private SimpMessagingTemplate messagingTemplate;
@@ -54,7 +51,6 @@ class WebSocketControllerTest {
         postService,
         inboxService,
         messageService,
-        messageRestController,
         mapper
     );
     webSocketController.setMessagingTemplate(messagingTemplate);

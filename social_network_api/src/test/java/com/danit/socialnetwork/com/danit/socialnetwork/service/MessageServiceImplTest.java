@@ -18,8 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Pageable;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +42,6 @@ class MessageServiceImplTest {
   MessageMapperImpl messageMapper;
   @Mock
   MessageSearchMapper messageSearchMapper;
-  @Mock
-  SimpMessagingTemplate messagingTemplate;
-  @Mock
-  Pageable pageable;
 
   @Test
   void saveMessage() {
@@ -226,17 +220,11 @@ class MessageServiceImplTest {
     List<Message> testAllUnreadMessagesByTwoUsers = new ArrayList<>();
     testAllUnreadMessagesByTwoUsers.add(testMessage1);
 
-    MessageDtoRequest testRequest = new MessageDtoRequest();
-    testRequest.setInboxUid(1);
-    testRequest.setUserId(2);
-
-    when(userService.findDbUserByUserId(1)).thenReturn(testUserSender1);
-    when(userService.findDbUserByUserId(2)).thenReturn(testUserReceiver1);
     when(messageRepository.findAllByInboxUidAndUserIdAndMessageReadeEquals(
         testUserSender1, testUserReceiver1, false))
         .thenReturn(testAllUnreadMessagesByTwoUsers);
 
-    messageService.unreadToReadMessages(testRequest);
+    messageService.unreadToReadMessages(testUserSender1, testUserReceiver1);
 
     Assert.assertEquals(true, testMessage1.getMessageReade());
     Assert.assertEquals(false, testMessage2.getMessageReade());
