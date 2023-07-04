@@ -38,6 +38,14 @@
     boxSizing: "border-box",
     height: "40px",
   };
+  export const DarkTextingContainerWithScroll = {
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "rgb(21, 32, 43)",
+    padding: "0 20px",
+    boxSizing: "border-box",
+    height: "40px",
+  };
   
   export const textingConatinerScrollFromBottom = {
     display: "flex",

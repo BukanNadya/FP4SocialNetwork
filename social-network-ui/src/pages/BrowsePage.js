@@ -18,7 +18,6 @@ export function BrowsePage () {
         const fetchData = async () => {
             const response = await fetch(`${apiUrl}/api/profile/${searchId}`);
             const userData = await response.json();
-            console.log(userData, "userData")
             dispatch(setSearchData(userData));
         };
         if (searchId) {

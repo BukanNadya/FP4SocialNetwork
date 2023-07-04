@@ -39,22 +39,6 @@ export const noticesButton = {
         backgroundColor: "rgba(15, 20, 25, 0.15)",
     },
 }
-// export const unsubscribeButtonStyles = {
-//     height: "45px",
-//     padding: "0 12px",
-//     color: "#ffffff",
-//     mb: "20px",
-//     mt: "12px", width: "170px", background: "#000000",
-//     transition: "0.7s", "&:hover": {
-//         transition: "0.7s",
-//         backgroundColor: "rgba(244, 33, 46, 0.1)",
-//         borderColor: "rgb(253, 201, 206)",
-//         color: "#c21818"
-//     },
-//     fontWeight: 700,
-//     borderRadius: "20px",
-//     fontFamily: "'Lato', sans-serif",
-// }
 export const BgImgStyle = {
     width: "100%",
     height: "200px",
@@ -77,6 +61,13 @@ export const NicknameStyles = {
     fontFamily: "'Lato', sans-serif",
     color: "rgb(83, 100, 113)"
 }
+export const DarkNicknameStyles = {
+    fontWeight: "400",
+    lineHeight: "20px",
+    fontSize: "15px",
+    fontFamily: "'Lato', sans-serif",
+    color: "rgb(139, 152, 165)"
+}
 export const NameStyles = {
     fontWeight: "800",
     lineHeight: "24px",
@@ -84,11 +75,25 @@ export const NameStyles = {
     fontFamily: "'Lato', sans-serif",
     color: "rgb(15, 20, 25)"
 }
+export const DarkNameStyles = {
+    fontWeight: "800",
+    lineHeight: "24px",
+    fontSize: "20px",
+    fontFamily: "'Lato', sans-serif",
+    color: "rgb(247, 249, 249)"
+}
 export const infoTextStyles = {
     fontFamily: "'Lato', sans-serif",
     fontWeight: "400",
     lineHeight: "16px",
     fontSize: "15px"
+}
+export const DarkInfoTextStyles = {
+    fontFamily: "'Lato', sans-serif",
+    fontWeight: "400",
+    lineHeight: "16px",
+    fontSize: "15px",
+    color: "rgb(139, 152, 165)",
 }
 export const infoStyle = {
     marginBottom: "15px",
@@ -100,8 +105,12 @@ export const SvgStyles = {
     gap: "5px",
     color: "rgb(83, 100, 113)",
 }
+export const DarkSvgStyles = {
+    display: "flex",
+    gap: "5px",
+    color: "rgb(139, 152, 165)",
+}
 export const ProfileStyles = {
-    marginBottom: "20px",
     padding: "12px 16px 0"
 }
 export const LinkTextStyles = {
@@ -109,7 +118,17 @@ export const LinkTextStyles = {
         textDecoration: "underline"
     }
 }
+export const DarkLinkTextStyles = {
+    color: "rgb(139, 152, 165)",
+    "&:hover": {
+        textDecoration: "underline"
+    }
+}
 export const LinkQuantityStyles = {
     color: "rgb(15, 20, 25)",
+    fontWeight: "700"
+}
+export const DarkLinkQuantityStyles = {
+    color: "rgb(247, 249, 249)",
     fontWeight: "700"
 }

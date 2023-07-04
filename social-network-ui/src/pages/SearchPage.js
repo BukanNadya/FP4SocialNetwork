@@ -7,6 +7,8 @@ import { PopularPeopleFetch, setSearchId, userFollowing } from "../store/actions
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
+    darkUserNameParagraph,
+    DarkUserNameParagraph, darkUserNickLink,
     ElementLi,
     ElementUl, emptyArrParagraph,
     imgStyles, PaperStyles,
@@ -28,6 +30,7 @@ export function SearchPage() {
     const navigate = useNavigate();
     const idUser = useSelector(state => state.userData.userData.userId);
     const [mostPopularPeople, setMostPopularPeople] = useState([]);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const transitions = useTransition(mostPopularPeople, {
         from: { opacity: 0, transform: 'translate3d(0,50%,0)' },
@@ -78,6 +81,7 @@ export function SearchPage() {
             marginLeft: "0px",
             alignItems: "center",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
             justifyItems: "center",
         },
         FollowButtonWidth: "100px",
@@ -101,6 +105,7 @@ export function SearchPage() {
             marginLeft: "0px",
             alignItems: "center",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
             justifyItems: "center",
         },
         FollowButtonWidth: "150px",
@@ -124,6 +129,7 @@ export function SearchPage() {
             marginLeft: "140px",
             alignItems: "center",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
             justifyItems: "center",
         },
         FollowButtonWidth: "150px",
@@ -147,6 +153,7 @@ export function SearchPage() {
             marginLeft: "10px",
             alignItems: "center",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
             justifyItems: "center",
         },
         FollowButtonWidth: "200px",
@@ -170,6 +177,7 @@ export function SearchPage() {
             marginLeft: "10px",
             alignItems: "center",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
             justifyItems: "center",
         },
         FollowButtonWidth: "100px",
@@ -193,6 +201,7 @@ export function SearchPage() {
             marginLeft: "10px",
             alignItems: "center",
             borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
             justifyItems: "center",
         },
         FollowButtonWidth: "100px",
@@ -247,7 +256,7 @@ export function SearchPage() {
                                     <Avatar alt={user.username} style={{ width: "50px", height: "50px" }}
                                             src={user.avatar}/>}
                                 <div style={styles.AdaptiveTextWrapper}>
-                                    <Typography style={userNameParagraph} onClick={() => {
+                                    <Typography style={darkMode ? darkUserNameParagraph : userNameParagraph} onClick={() => {
                                         toAnotherUserPage(user.userId);
                                     }}>{user.name}
                                     </Typography>
@@ -256,7 +265,7 @@ export function SearchPage() {
                                     }} onClick={() => {
                                         toAnotherUserPage(user.userId);
                                     }}>
-                                        <Link style={userNickLink}>@{user.username}</Link>
+                                        <Link style={darkMode ? darkUserNickLink : userNickLink}>@{user.username}</Link>
                                     </Typography>
                                 </div>
                                 {idUser == user.userId ? <Button disabled={true} sx={{

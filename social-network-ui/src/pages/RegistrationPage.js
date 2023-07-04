@@ -8,7 +8,6 @@ import {Newsfeed} from "../components/EnteringRegistrationPage/Newsfeed";
 import {useSelector} from "react-redux";
 import {LoginModal} from "../components/LoginModal/LoginModal";
 import {Content} from "../components/CreateAccountModal/Content";
-import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import {ForgotPasswordModal} from "../components/ForgotPassword/Modal"
 import { useModal } from '../context/ModalContext';
 import {useTheme} from "@mui/material/styles";

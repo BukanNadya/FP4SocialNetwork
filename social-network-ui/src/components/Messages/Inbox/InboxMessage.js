@@ -23,6 +23,24 @@ const messageContainerStyle = {
         transform: "translateY(-2px)",
     }
 };
+const DarkMessageContainerStyle = {
+    width: "95%",
+    boxSizing: "border-box",
+    display: "flex",
+    padding: "20px 20px",
+    borderRadius: "8px",
+    backgroundColor: "rgb(39, 51, 64)",
+    marginBottom: "10px",
+    alignItems: "center",
+    cursor: "pointer",
+    transition: "0.3s",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0)",
+    "&:hover": {
+        backgroundColor: "rgba(247, 249, 249, 0.25)", // Более нежный оттенок серого с голубизной
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)", // Сделаем тень более мягкой
+        transform: "translateY(-2px)",
+    }
+};
 
 const avatarStyle = {
     width: "40px",
@@ -41,10 +59,20 @@ const senderStyle = {
     marginBottom: "5px",
     fontFamily: "'Lato', sans-serif",
 };
+const DarkSenderStyle = {
+    marginBottom: "5px",
+    fontFamily: "'Lato', sans-serif",
+    color: "rgb(247, 249, 249)"
+};
 
 const messageStyle = {
     fontSize: "14px",
     fontFamily: "'Lato', sans-serif",
+};
+const DarkMessageStyle = {
+    fontSize: "14px",
+    fontFamily: "'Lato', sans-serif",
+    color: "rgb(247, 249, 249)"
 };
 
 const dateStyle = {
@@ -67,6 +95,7 @@ export const InboxMessage = ({
                                  selectedMessage,
                                  clickedMessages
                              }) => {
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const postDate = () => {
         const date2 = new Date(date);
         const diffDays = differenceInDays(new Date(), date2);
@@ -88,7 +117,7 @@ export const InboxMessage = ({
         return formattedDate;
     };
     return (
-        <Box sx={messageContainerStyle} onClick={handleClick}>
+        <Box sx={darkMode ? DarkMessageContainerStyle : messageContainerStyle} onClick={handleClick}>
             {image
 
                 ? <Badge color="primary" badgeContent={clickedMessages.includes(inboxId) ? 0 : unreadMessage}>
@@ -99,8 +128,8 @@ export const InboxMessage = ({
                 </Badge>
             }
             <div style={{ ...contentStyle, marginLeft: "20px" }}>
-                <div style={senderStyle}>{senderName}</div>
-                <div style={messageStyle}>{message}</div>
+                <div style={darkMode ? DarkSenderStyle : senderStyle}>{senderName}</div>
+                <div style={darkMode ? DarkMessageStyle : messageStyle}>{message}</div>
             </div>
             {message && <div style={dateStyle}>{postDate()}</div>}
         </Box>

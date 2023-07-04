@@ -27,7 +27,7 @@ import {
     WrittenPostWrapper,
     HomeScreenWrapper,
     PostWrapper,
-    SendingPostButtonsContainer, imgStyles, textWrapper
+    SendingPostButtonsContainer, imgStyles, textWrapper, DarkNameOfUser
 } from "./pagesStyles/HomeScreenStyles";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { SendPostInput } from "../components/Posts/SendPostInput";
@@ -60,6 +60,7 @@ export function HomeScreen() {
     const [isOpenEmoji, setIsOpenEmoji] = useState(false);
     const [open, setOpen] = useState(false);
     const emojiPickerRef = useRef();
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const theme = useTheme();
 
@@ -514,12 +515,8 @@ export function HomeScreen() {
                                                     <div style={WrittenPostWrapper}>
                                                         <div
                                                             style={textWrapper}>
-                                                            <h2 style={NameOfUser}>{userData.name}</h2>
-                                                            <h2 style={{
-                                                                ...NameOfUser,
-                                                                color: "grey",
-                                                                marginLeft: "10px"
-                                                            }}>@ {userData.userName}</h2>
+                                                            <h2 style={darkMode ? DarkNameOfUser : NameOfUser}>{userData.name}</h2>
+                                                            <h2 style={darkMode ? {...DarkNameOfUser, color: "rgb(83, 100, 113)", marginLeft: "10px"} : {...NameOfUser, color: "grey", marginLeft: "10px"}}>@ {userData.userName}</h2>
 
                                                         </div>
                                                         <Field
@@ -666,12 +663,8 @@ export function HomeScreen() {
                                         <div style={WrittenPostWrapper}>
                                             <div
                                                 style={textWrapper}>
-                                                <h2 style={NameOfUser}>{userData.name}</h2>
-                                                <h2 style={{
-                                                    ...NameOfUser,
-                                                    color: "grey",
-                                                    marginLeft: "10px"
-                                                }}>@ {userData.userName}</h2>
+                                                <h2 style={darkMode ? DarkNameOfUser : NameOfUser}>{userData.name}</h2>
+                                                <h2 style={darkMode ? {...DarkNameOfUser, color: "rgb(83, 100, 113)", marginLeft: "10px"} : {...NameOfUser, color: "grey", marginLeft: "10px"}}>@ {userData.userName}</h2>
 
                                             </div>
                                             <Field

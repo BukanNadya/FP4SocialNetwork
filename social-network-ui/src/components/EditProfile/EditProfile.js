@@ -6,7 +6,7 @@ import {
     StyledCloseSvgIcon,
     StyledModal,
     StyleHead,
-    StyleTitle, StyleButton, StyledForm
+    StyleTitle, StyleButton, StyledForm, DarkStyledModal, DarkStyledBox, DarkStyledForm, DarkStyleHead, DarkStyleTitle
 } from "./EditProfileStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {closeEditModal, setUserData} from "../../store/actions";
@@ -33,6 +33,7 @@ export function EditProfile (props) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch()
     const userId = useSelector(state => state.userData.userData.userId);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const [photo, setPhoto] = useState(null);
     const [bgPhoto, setBgPhoto] = useState(null);
 
@@ -52,87 +53,141 @@ export function EditProfile (props) {
 
 
     const xxsStyles = {
-        BoxStyle: {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
-        FormStyle: {...StyledForm, width: "auto"},
+        BoxStyle: darkMode ? {...DarkStyledBox, width:"100vw", height: "100vh", borderRadius: "0"} : {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
+        FormStyle: darkMode ? {...DarkStyledForm, width: "auto"} : {...StyledForm, width: "auto"},
         Form: {width: "80%"},
-        FieldStyle: {width: "100%", margin: "20px 0" },
+        FieldStyle: {width: "100%", margin: "20px 0",
+            "& .MuiOutlinedInput-root": {
+                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+            "& .MuiInputLabel-root": {
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+        },
         DateStyle: {
             width: "80%",
             display: "flex",
             justifyContent: "space-around",
+            gap: "5px",
             marginTop: "40px",
         },
         TitleStyle: {...StyleTitle, display: "none"},
     };
 
     const xsStyles = {
-        BoxStyle: {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
-        FormStyle: {...StyledForm, width: "auto"},
+        BoxStyle: darkMode ? {...DarkStyledBox, width:"100vw", height: "100vh", borderRadius: "0"} : {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
+        FormStyle: darkMode ? {...DarkStyledForm, width: "auto"} : {...StyledForm, width: "auto"},
         Form: {width: "80%"},
-        FieldStyle: {width: "100%", margin: "20px 0" },
+        FieldStyle: {width: "100%", margin: "20px 0",
+            "& .MuiOutlinedInput-root": {
+                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+            "& .MuiInputLabel-root": {
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+        },
         DateStyle: {
             width: "80%",
             display: "flex",
             justifyContent: "space-around",
+            gap: "5px",
             marginTop: "40px",
         },
-        TitleStyle: {...StyleTitle},
+        TitleStyle: darkMode ? {...DarkStyleTitle} : {...StyleTitle},
     };
 
     const smStyles = {
-        BoxStyle: {...StyledBox, height: "600px"},
-        FormStyle: {...StyledForm},
+        BoxStyle: darkMode ? {...DarkStyledBox, height: "600px"} : {...StyledBox, height: "600px"},
+        FormStyle: darkMode ? {...DarkStyledForm} : {...StyledForm},
         Form: {width: "100%"},
-        FieldStyle: {width: "550px", margin: "20px 0" },
+        FieldStyle: {width: "550px", margin: "20px 0",
+            "& .MuiOutlinedInput-root": {
+                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+            "& .MuiInputLabel-root": {
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+        },
         DateStyle: {
             width: "400px",
             display: "flex",
             justifyContent: "space-around",
+            gap: "5px",
             marginTop: "40px",
         },
-        TitleStyle: {...StyleTitle},
+        TitleStyle: darkMode ? {...DarkStyleTitle} : {...StyleTitle},
     };
 
     const mdStyles = {
-        BoxStyle: {...StyledBox, height: "600px"},
-        FormStyle: {...StyledForm},
+        BoxStyle: darkMode ? {...DarkStyledBox, height: "600px"} : {...StyledBox, height: "600px"},
+        FormStyle: darkMode ? {...DarkStyledForm} : {...StyledForm},
         Form: {width: "100%"},
-        FieldStyle: {width: "550px", margin: "20px 0" },
+        FieldStyle: {width: "550px", margin: "20px 0",
+            "& .MuiOutlinedInput-root": {
+                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+            "& .MuiInputLabel-root": {
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+        },
         DateStyle: {
             width: "400px",
             display: "flex",
             justifyContent: "space-around",
+            gap: "5px",
             marginTop: "40px",
         },
-        TitleStyle: {...StyleTitle},
+        TitleStyle: darkMode ? {...DarkStyleTitle} : {...StyleTitle},
     };
 
     const lgStyles = {
-        BoxStyle: {...StyledBox, height: "600px"},
-        FormStyle: {...StyledForm},
+        BoxStyle: darkMode ? {...DarkStyledBox, height: "600px"} : {...StyledBox, height: "600px"},
+        FormStyle: darkMode ? {...DarkStyledForm} : {...StyledForm},
         Form: {width: "100%"},
-        FieldStyle: {width: "550px", margin: "20px 0" },
+        FieldStyle: {width: "550px", margin: "20px 0",
+            "& .MuiOutlinedInput-root": {
+                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+            "& .MuiInputLabel-root": {
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+        },
         DateStyle: {
             width: "400px",
             display: "flex",
             justifyContent: "space-around",
+            gap: "5px",
             marginTop: "40px",
         },
-        TitleStyle: {...StyleTitle},
+        TitleStyle: darkMode ? {...DarkStyleTitle} : {...StyleTitle},
     };
 
     const xlStyles = {
-        BoxStyle: {...StyledBox},
-        FormStyle: {...StyledForm},
+        BoxStyle: darkMode ? {...DarkStyledBox} : {...StyledBox},
+        FormStyle: darkMode ? {...DarkStyledForm} : {...StyledForm},
         Form: {width: "100%"},
-        FieldStyle: {width: "550px", margin: "20px 0" },
+        FieldStyle: {width: "550px", margin: "20px 0",
+            "& .MuiOutlinedInput-root": {
+                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+            "& .MuiInputLabel-root": {
+                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+            },
+        },
         DateStyle: {
             width: "400px",
             display: "flex",
             justifyContent: "space-around",
+            gap: "5px",
             marginTop: "40px",
         },
-        TitleStyle: {...StyleTitle},
+        TitleStyle: darkMode ? {...DarkStyleTitle} : {...StyleTitle},
     };
 
 
@@ -232,13 +287,13 @@ export function EditProfile (props) {
                     {(formikProps) => (
                     <Form style={styles.Form}>
                         <FormControl sx={styles.FormStyle} >
-                            <div style={StyleHead}>
+                            <div style={darkMode ? DarkStyleHead : StyleHead}>
                                 <div style={{ display: "flex", gap: "50px",}}>
                                     <SvgIcon sx={StyledCloseSvgIcon} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                              onClick={() => {dispatch(closeEditModal())}}>
                                         <path fillRule="evenodd" clipRule="evenodd"
                                               d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
-                                              fill="#000000"/>
+                                              fill={darkMode ? "#ffffff" : "#000000"}/>
                                     </SvgIcon>
                                     <Typography sx={styles.TitleStyle}>Edit profile</Typography>
                                 </div>
@@ -251,7 +306,20 @@ export function EditProfile (props) {
                             <Field as={InputName} sx={styles.FieldStyle} name={"address"} id="address" label="Location" type="text" />
                             {/*<Field as={InputName} sx={{ width: "550px", margin: "20px 0" }} name={"himself"} id="himself" label="himself" type="text" />*/}
                             <Box sx={styles.DateStyle}>
-                                <FormControl sx={{ width: "300px" }}>
+                                <FormControl sx={
+                                    darkMode ? {width: "300px", "& .MuiOutlinedInput-root": {
+                                            background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                        },
+                                        "& .MuiInputLabel-root": {
+                                            color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                        }, "& .MuiSelect-icon": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                        }
+                                        :
+                                        {width: "300px" }
+                                }>
                                     <InputLabel id="month-label">Month</InputLabel>
                                     <Field
                                         as={Select}
@@ -280,7 +348,20 @@ export function EditProfile (props) {
                                     }}/>
                                 </FormControl>
 
-                                <FormControl sx={{ width: "300px" }}>
+                                <FormControl sx={
+                                    darkMode ? {width: "300px", "& .MuiOutlinedInput-root": {
+                                                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                            "& .MuiInputLabel-root": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            }, "& .MuiSelect-icon": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                        }
+                                        :
+                                        {width: "300px" }
+                                }>
                                     <InputLabel id="day-label">Day</InputLabel>
                                     <Field
                                         as={Select}
@@ -301,7 +382,21 @@ export function EditProfile (props) {
                                 </FormControl>
 
 
-                                <FormControl sx={{ width: "300px" }}>
+                                <FormControl sx={
+                                    darkMode ? {width: "300px", "& .MuiOutlinedInput-root": {
+                                                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                            "& .MuiInputLabel-root": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                            "& .MuiSelect-icon": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                        }
+                                        :
+                                        {width: "300px" }
+                                }>
                                     <InputLabel id="year-label">Year</InputLabel>
                                     <Field
                                         as={Select}
@@ -326,7 +421,7 @@ export function EditProfile (props) {
                     )}
                 </Formik>
 
-                <Typography sx={{ marginTop: "30px" }}>Edit profile</Typography>
+                <Typography sx={{ marginTop: "30px", marginBottom: "15px", color: darkMode ? "rgb(247, 249, 249)" : "#000000", }}>Edit profile</Typography>
             </Box>
         </Modal>
     )

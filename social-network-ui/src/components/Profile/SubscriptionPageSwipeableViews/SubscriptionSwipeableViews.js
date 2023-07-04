@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Tabs, Tab,       Box, List, ListItem, ListItemAvatar, Avatar, ListItemText} from '@mui/material';
 import CircularProgress from "@mui/material/CircularProgress";
-import {TabStyles} from "./SubscriptionSwipeableViewsStyles";
+import {ListItemStyles, TabStyles, BoxStyles, DarkBoxStyles, DarkTabsStyle, DarkTabStyles, TabsStyle, DarkListItemStyles} from "./SubscriptionSwipeableViewsStyles";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setSearchId, userFollowing} from "../../../store/actions";
@@ -11,6 +11,7 @@ import { apiUrl } from "../../../apiConfig";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {fetchUserFollowingData} from "../../../store/Thunks/fetchUserFollowingDataThunk";
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -46,6 +47,7 @@ export function SubscriptionSwipeableViews () {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { state } = useLocation()
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
 
     useEffect(() => {
@@ -157,41 +159,35 @@ export function SubscriptionSwipeableViews () {
     return (
         <div style={styles.ContainerStyle}>
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth">
-                    <Tab label="Followers" {...a11yProps(0)} sx={TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(0))}/>
-                    <Tab label="Following" {...a11yProps(1)} sx={TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(1))}/>
+            <Box sx={darkMode ? DarkBoxStyles : BoxStyles}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth" sx={darkMode ? DarkTabsStyle : TabsStyle}>
+                    <Tab label="Followers" {...a11yProps(0)} sx={darkMode ? DarkTabStyles : TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(0))}/>
+                    <Tab label="Following" {...a11yProps(1)} sx={darkMode ? DarkTabStyles : TabStyles} onClick={() => localStorage.setItem("subscribe", JSON.stringify(1))}/>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <List>
+                <List sx={{pt: "0"}}>
                     {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center", marginTop: "30px" }}/> :
                         followers.map(el =>  (
-                        <ListItem key={el.userId} sx={{cursor: "pointer", fontFamily: "'Lato', sans-serif", height: "90px", "&:hover": {
-                                transition: "0.7s",
-                                backgroundColor: "rgba(0, 0, 0, 0.05)",
-                            }}}>
+                        <ListItem key={el.userId} sx={darkMode ? DarkListItemStyles : ListItemStyles}>
                             <ListItemAvatar>
                                 <Avatar alt="" src={el.profileImageLink ? el.profileImageLink : ""} onClick={() => toUserPage(el.userId)}/>
                             </ListItemAvatar>
-                            <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)}/>
+                            <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)} sx={{color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)", "& .MuiTypography-root": {color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"} }}/>
                             <ToggleButton width="140px" height="40px" searchId={String(el.userId)}/>
                         </ListItem>
                     ))}
                 </List>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <List>
+                <List sx={{pt: "0"}}>
                 {isLoading ? <CircularProgress sx={{ marginLeft: "calc(50% - 20px)", alignSelf:"center", marginTop: "30px" }}/> :
                     followings.map(el =>  (
-                    <ListItem key={el.userId} sx={{cursor: "pointer", fontFamily: "'Lato', sans-serif", height: "90px", "&:hover": {
-                            transition: "0.7s",
-                            backgroundColor: "rgba(0, 0, 0, 0.05)",
-                        }}}>
+                    <ListItem key={el.userId} sx={darkMode ? DarkListItemStyles : ListItemStyles}>
                         <ListItemAvatar>
                             <Avatar alt="" src={el.profileImageLink ? el.profileImageLink : ""} onClick={() => toUserPage(el.userId)}/>
                         </ListItemAvatar>
-                        <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)}/>
+                        <ListItemText primary={el.name} secondary={`@${el.username}`} onClick={() => toUserPage(el.userId)} sx={{color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)", "& .MuiTypography-root": {color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}}}/>
                         <ToggleButton width="140px" height="40px" searchId={String(el.userId)}/>
                     </ListItem>
                 ))}

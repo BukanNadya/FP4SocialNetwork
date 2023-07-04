@@ -27,9 +27,14 @@ export const PostWrapper = {
 export const NameOfUser = {
     fontFamily: "'Lato', sans-serif",
     fontSize: "15px",
-    margin: "0"
+    margin: "0",
 };
-
+export const DarkNameOfUser = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "15px",
+    margin: "0",
+    color: "rgb(247, 249, 249)"
+};
 export const PostWrittenInput = {
     width: "90%",
     marginTop: "20px",

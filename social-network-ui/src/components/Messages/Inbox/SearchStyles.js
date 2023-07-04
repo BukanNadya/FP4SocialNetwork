@@ -39,3 +39,29 @@ export const UserSearchTextField = {
         borderRadius: "40px",
     },
 };
+export const DarkUserSearchTextField = {
+    width: "300px",
+    height: "30px",
+    marginTop: "10px",
+    borderRadius: "10px",
+    marginLeft: "20px",
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "40px",
+        background: "rgb(39, 51, 64)",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+        borderRadius: "40px",
+    },
+    "& .MuiOutlinedInput-root .MuiAutocomplete-input": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiInputLabel-root": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiAutocomplete-popupIndicator": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiAutocomplete-clearIndicator": {
+        color: "rgb(247, 249, 249)",
+    },
+};

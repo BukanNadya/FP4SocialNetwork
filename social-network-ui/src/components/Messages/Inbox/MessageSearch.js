@@ -17,12 +17,6 @@ export function MessageSearch() {
     const dispatch = useDispatch();
 
     return (
-      // <div style={searchContainerStyle}>
-      //   <div style={searchInputContainerStyle}>
-      //     <input type="text" placeholder="Search" style={searchInputStyle} />
-      //     <SearchIcon style={searchIconStyle} />
-      //   </div>
-      // </div>
         <div style={searchContainerStyle}>
         <Formik initialValues={{
             userName: "",

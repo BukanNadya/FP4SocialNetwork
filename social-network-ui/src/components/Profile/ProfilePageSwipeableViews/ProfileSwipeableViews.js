@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import {TabStyles} from "./ProfileSwipeableViewsStyles";
+import {
+    BoxStyles,
+    DarkBoxStyles,
+    DarkTabsStyle,
+    DarkTabStyles,
+    TabsStyle,
+    TabStyles
+} from "./ProfileSwipeableViewsStyles";
 import {PostsWrapper} from "../../Posts/PostStyles";
 import {PostsDisplaying} from "../../Posts/PostsDisplaying";
 import {useEffect} from "react";
@@ -47,6 +54,7 @@ export function ProfileSwipeableViews (props) {
     const profilePosts = useSelector(state => state.Posts.profilePosts)
     const profileLikePosts = useSelector(state => state.Posts.profileLikePosts)
     const profileReposts = useSelector(state => state.Posts.profileReposts)
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const [isLoading, setIsLoading] = React.useState(false)
     const dispatch = useDispatch();
@@ -110,11 +118,11 @@ export function ProfileSwipeableViews (props) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth">
-                    <Tab label="Posts" {...a11yProps(0)} sx={TabStyles}/>
-                    <Tab label="Reposts" {...a11yProps(1)} sx={TabStyles}/>
-                    <Tab label="Likes" {...a11yProps(2)} sx={TabStyles}/>
+            <Box sx={darkMode ? DarkBoxStyles : BoxStyles}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" variant="fullWidth" sx={darkMode ? DarkTabsStyle : TabsStyle}>
+                    <Tab label="Posts" {...a11yProps(0)} sx={darkMode ? DarkTabStyles : TabStyles}/>
+                    <Tab label="Reposts" {...a11yProps(1)} sx={darkMode ? DarkTabStyles : TabStyles}/>
+                    <Tab label="Likes" {...a11yProps(2)} sx={darkMode ? DarkTabStyles : TabStyles}/>
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>

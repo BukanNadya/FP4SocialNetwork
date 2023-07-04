@@ -104,9 +104,23 @@ export const CommentLi = {
     fontSize: "13px",
     fontWeight: "400", marginRight: "10px"
 };
+export const DarkCommentLi = {
+    color: "rgb(139, 152, 165)", fontFamily: "'Lato', sans-serif",
+    fontSize: "13px",
+    fontWeight: "400", marginRight: "10px"
+};
 
 export const CommentCustomLi = {
     color: "rgb(113, 118, 123)",
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "13px",
+    fontWeight: "400",
+    marginRight: "10px",
+    textDecoration: "underline",
+    cursor: "pointer"
+};
+export const DarkCommentCustomLi = {
+    color: "rgb(139, 152, 165)",
     fontFamily: "'Lato', sans-serif",
     fontSize: "13px",
     fontWeight: "400",
@@ -131,6 +145,32 @@ export const EmptyCommentsText = {
     marginBottom: "10px",
     marginTop: "10px"
 };
+export const FieldStyles = {
+    "& .MuiOutlinedInput-root": { borderRadius: "40px" },
+    marginTop: "10px"
+}
+export const DarkFieldStyles = {
+    "& .MuiOutlinedInput-root": {
+        borderRadius: "40px",
+        background: "rgb(39, 51, 64)",
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+        borderRadius: "40px",
+    },
+    "& .MuiOutlinedInput-root .MuiAutocomplete-input": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiInputLabel-root": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiAutocomplete-popupIndicator": {
+        color: "rgb(247, 249, 249)",
+    },
+    "& .MuiAutocomplete-clearIndicator": {
+        color: "rgb(247, 249, 249)",
+    },
+}
 
 export const PostDisplayingEmptyPostsText = {
     marginTop: "20%",
@@ -138,6 +178,14 @@ export const PostDisplayingEmptyPostsText = {
     lineHeight: "20px",
     fontSize: "22px",
     fontFamily: "'Lato', sans-serif",
+};
+export const DarkPostDisplayingEmptyPostsText = {
+    marginTop: "20%",
+    fontWeight: "400",
+    lineHeight: "20px",
+    fontSize: "22px",
+    fontFamily: "'Lato', sans-serif",
+    color: "rgb(247, 249, 249)",
 };
 
 export const ProfileImgStyles = {
@@ -154,6 +202,14 @@ export const PostTextWrapper = {
 export const userNameParagraph = {
     textDecoration: "underline",
     cursor: "pointer"
+};
+export const DarkUserNameParagraph = {
+    textDecoration: "none",
+    cursor: "pointer",
+    "&:hover": {
+        transition: "0.7s",
+        textDecoration: "underline rgb(139, 152, 165)",
+    },
 };
 export const UserPhotoWrapper = {
     maxWidth: "600px",

@@ -6,12 +6,14 @@ import {DeleteMessageSuccess, setSearchData} from "../../../store/actions";
 import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+import {createTheme, useTheme, ThemeProvider} from "@mui/material/styles";
 import {fetchUserInbox} from "../../../store/Thunks/fetchUserInboxThunk";
+import {DarkUserSearchTextField} from "../../NavigationComponents/NavigationStyles";
 
 export const InputMessageSearch = ({ ...props }) => {
     const message = useSelector(state => state.messageSearch.message)
     const userId = useSelector(state => state.userData.searchData.userId);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const theme = useTheme();
@@ -25,27 +27,27 @@ export const InputMessageSearch = ({ ...props }) => {
 
 
     const xxsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, margin: "10px", width: "calc(100% - 25px)"} : {...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
     };
 
     const xsStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, margin: "10px", width: "calc(100% - 25px)"} : {...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
     };
 
     const smStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, margin: "10px", width: "calc(100% - 25px)"} : {...UserSearchTextField, margin: "10px", width: "calc(100% - 25px)"}
     };
 
     const mdStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"350px", marginLeft:"25px"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"350px", marginLeft:"25px"} : {...UserSearchTextField, width:"350px", marginLeft:"25px"}
     };
 
     const lgStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"420px", marginLeft:"15px"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"420px", marginLeft:"15px"} : {...UserSearchTextField, width:"420px", marginLeft:"15px"}
     };
 
     const xlStyles = {
-        AdaptiveUserSearchTextField:{...UserSearchTextField, width:"420px", marginLeft:"15px"}
+        AdaptiveUserSearchTextField: darkMode ? {...DarkUserSearchTextField, width:"420px", marginLeft:"15px"} : {...UserSearchTextField, width:"420px", marginLeft:"15px"}
     };
 
     let styles;
@@ -76,8 +78,33 @@ export const InputMessageSearch = ({ ...props }) => {
         }
     }, [userId]);
 
+    const paperStyle = createTheme({
+        components: {
+            // Name of the component
+            MuiAutocomplete: {
+                styleOverrides: {
+                    // Name of the slot
+                    noOptions: {
+                        // Some CSS
+                        color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                        background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                    },
+                    paper: {
+                        background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                    },
+                    listbox: {
+                        "&& .Mui-focused": {
+                            backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(0, 0, 0, 0.1)",
+                        },
+                    },
+                },
+            },
+        },
+    });
+
 
     return (
+        <ThemeProvider theme={paperStyle}>
         <Autocomplete
             getOptionLabel={(option) => option.username}
             filterOptions={(x) => x}
@@ -125,16 +152,19 @@ export const InputMessageSearch = ({ ...props }) => {
                             <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
                                 <Box
                                     component="span"
-                                    sx={{ fontWeight: 'bold' }}
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"
+                                    }}
                                 >
                                     {option.name}
                                 </Box>
                                 {option.message ?
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography variant="body2" color="text.secondary" sx={{color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}}>
                                         {option.message}
                                     </Typography>
                                     :
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography variant="body2" color="text.secondary" sx={{color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}}>
                                          @{option.username}
                                     </Typography>
                                 }
@@ -144,5 +174,6 @@ export const InputMessageSearch = ({ ...props }) => {
                 );
             }}
         />
+        </ThemeProvider>
     )
 }

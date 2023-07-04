@@ -18,6 +18,20 @@ export const StyledBox = {
     overflowY: "scroll",
     overflowX: "hidden",
 }
+export const DarkStyledBox = {
+    width: 600,
+    height: 650,
+    background: "#ffff",
+    outline: "none",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    borderRadius: "10px",
+    position: "relative",
+    overflowY: "scroll",
+    overflowX: "hidden",
+    backgroundColor: "rgb(21, 32, 43)"
+}
 export const StyledForm = {
     width: 600,
     height: 650,
@@ -28,6 +42,18 @@ export const StyledForm = {
     flexDirection: "column",
     borderRadius: "10px",
     position: "relative",
+}
+export const DarkStyledForm = {
+    width: 600,
+    height: 650,
+    background: "#ffff",
+    outline: "none",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    borderRadius: "10px",
+    position: "relative",
+    backgroundColor: "rgb(21, 32, 43)"
 }
 export const StyledCloseSvgIcon = {
     marginLeft: "20px",
@@ -44,6 +70,19 @@ export const StyleHead = {
     top: "0",
     zIndex: "3",
     backgroundColor: "rgba(255, 255, 255, 0.85)",
+}
+export const DarkStyleHead = {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    height: "53px",
+    alignItems: "center",
+    padding: "14px",
+    position: "sticky",
+    top: "0",
+    zIndex: "3",
+    backgroundColor: "rgba(21, 32, 43, 0.85)",
+    border: "1px solid rgb(56, 68, 77)"
 }
 export const StyleButton = {
     height: "35px",
@@ -65,6 +104,13 @@ export const StyleTitle = {
     lineHeight: "24px",
     fontSize: "20px",
     fontWeight: "700",
+}
+export const DarkStyleTitle = {
+    fontFamily: "'Lato', sans-serif",
+    lineHeight: "24px",
+    fontSize: "20px",
+    fontWeight: "700",
+    color: "rgb(247, 249, 249)"
 }
 export const BgPhotoStyle = {
     width: "100%",

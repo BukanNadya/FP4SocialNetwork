@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import thunk from "redux-thunk";
 import  rootReducer  from "./store/rootReduser";
 import { createStore, applyMiddleware, compose } from "redux";
-import { ModalContext, ModalProvider } from "./context/ModalContext";
+import { ModalProvider } from "./context/ModalContext";
 // import 'normalize.css';
 
 import { App } from "./App";

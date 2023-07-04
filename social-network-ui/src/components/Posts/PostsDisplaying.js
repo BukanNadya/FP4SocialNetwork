@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import { Post } from "./Post";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
-import { PostDisplayingEmptyPostsText } from "./PostStyles";
+import {DarkPostDisplayingEmptyPostsText, PostDisplayingEmptyPostsText} from "./PostStyles";
 import { useTransition, animated } from "react-spring";
 import SockJS from "sockjs-client";
 import { apiUrl } from "../../apiConfig";
+import {useSelector} from "react-redux";
 
 let stompClient = null;
 
 export const PostsDisplaying = ({ userPosts, isLoading }) => {
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const transitions = useTransition(userPosts, {
         from: { opacity: 0, transform: "translate3d(0,50%,0)" },
         enter: { opacity: 1, transform: "translate3d(0%,0%,0)" },
@@ -60,7 +62,7 @@ console.log(userPosts)
     if (isLoading) {
         return <CircularProgress sx={{ marginTop: "20%" }}/>;
     } else if (userPosts.length === 0) {
-        return <div style={PostDisplayingEmptyPostsText}>Here will be posts from your friends</div>;
+        return <div style={darkMode ? DarkPostDisplayingEmptyPostsText : PostDisplayingEmptyPostsText}>Here will be posts from your friends</div>;
     } else {
         return (
             <>

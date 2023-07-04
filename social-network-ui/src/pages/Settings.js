@@ -25,7 +25,7 @@ import { apiUrl } from "../apiConfig";
 import {useDispatch, useSelector} from "react-redux";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { StyledBlackButton } from "../components/LoginModal/loginModalStyles";
+import {AccordionStyle, DarkAccordionStyle, StyledBlackButton} from "../components/LoginModal/loginModalStyles";
 import { grey } from "@mui/material/colors";
 
 export function Settings() {
@@ -38,6 +38,7 @@ export function Settings() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const handleThemeChange = (event) => {
         dispatch(setUserMode(event.target.checked))
@@ -53,6 +54,8 @@ export function Settings() {
     const xxsStyles = {
         AdaptiveListStyles: {
             width: "100vw",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveFormStyles: {
             width: "90vw",
@@ -70,6 +73,8 @@ export function Settings() {
     const xsStyles = {
         AdaptiveListStyles: {
             width: "100vw",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveFormStyles: {
             width: "92vw",
@@ -87,6 +92,8 @@ export function Settings() {
     const smStyles = {
         AdaptiveListStyles: {
             width: "470px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveFormStyles: {
             width: "440px",
@@ -104,6 +111,8 @@ export function Settings() {
     const mdStyles = {
         AdaptiveListStyles: {
             width: "600px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveFormStyles: {
             width: "550px",
@@ -121,6 +130,8 @@ export function Settings() {
     const lgStyles = {
         AdaptiveListStyles: {
             width: "600px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveFormStyles: {
             width: "550px",
@@ -138,6 +149,8 @@ export function Settings() {
     const xlStyles = {
         AdaptiveListStyles: {
             width: "600px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "none",
         },
         AdaptiveFormStyles: {
             width: "550px",
@@ -217,7 +230,7 @@ export function Settings() {
             {({ isSubmitting }) => (
                 <Form>
                     <Box sx={styles.AdaptiveListStyles}>
-                        <Accordion>
+                        <Accordion sx={darkMode ? DarkAccordionStyle : AccordionStyle}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon/>}
                                 aria-controls="panel1a-content"
@@ -341,7 +354,7 @@ export function Settings() {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion>
+                        <Accordion sx={darkMode ? DarkAccordionStyle : AccordionStyle}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon/>}
                                 aria-controls="panel2a-content"

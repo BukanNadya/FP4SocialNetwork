@@ -12,7 +12,7 @@ import {
     leftBlockInboxAndSearch, inboxContainerStyle,
     textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
     textingContainerWithScroll, textingConatinerScrollFromBottom,
-    textingConatinerScrollFromTop
+    textingConatinerScrollFromTop, DarkTextingContainerWithScroll
 } from "./pagesStyles/MessageStyles";
 import PropTypes from "prop-types";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
@@ -47,6 +47,7 @@ export function Message() {
     const clicked = useSelector((state) => state.inboxOrTexting.click);
     const [isOpenEmoji, setIsOpenEmoji] = useState(false);
     const emojiPickerRef = useRef();
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     useEffect(() => {
         console.log(selectedMessage, "selectedMessageFROMMESSAGEEL");
@@ -82,6 +83,7 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -108,20 +110,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
             height: "50px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "34px",
@@ -135,6 +135,7 @@ export function Message() {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
             width: "100vw",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -161,20 +162,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
             height: "50px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "34px",
@@ -187,7 +186,8 @@ export function Message() {
     const smStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            maxWidth: "500px"
+            maxWidth: "500px",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -214,20 +214,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
             height: "50px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "34px",
@@ -240,7 +238,8 @@ export function Message() {
     const mdStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            width: "800px"
+            width: "800px",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -265,20 +264,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             minHeight: "80px",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "40px",
@@ -291,7 +288,8 @@ export function Message() {
     const lgStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            width: "900px"
+            width: "900px",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -316,20 +314,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             minHeight: "80px",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "40px",
@@ -342,7 +338,8 @@ export function Message() {
     const xlStyles = {
         AdaptiveLeftBlockAndRightBlockContainer: {
             ...leftBlockAndRightBlockContainer,
-            width: "900px"
+            width: "900px",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveLeftBlockInboxAndSearch: {
             ...leftBlockInboxAndSearch,
@@ -367,20 +364,18 @@ export function Message() {
         AdaptiveTextingContainerScrollFromBottom: {
             ...textingConatinerScrollFromBottom
         },
-        AdaptiveTextingContainerWithScroll: {
-            ...textingContainerWithScroll,
-        },
+        AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
             boxSizing: "border-box",
             display: "flex",
-            borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-            backgroundColor: "#F5F8FA",
             alignItems: "center",
             minHeight: "80px",
             fontFamily: "'Lato', sans-serif",
             flexGrow: 1,
             padding: "0 20px 0 10px",
+            backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveAvatarStyle: {
             width: "40px",
@@ -605,7 +600,8 @@ export function Message() {
                         <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                             <div style={{
                                 fontSize: "1.1rem",
-                                fontFamily: "'Lato', sans-serif"
+                                fontFamily: "'Lato', sans-serif",
+                                color: darkMode ? "rgb(247, 249, 249)" : "#000000"
                             }} data-testid={"start_chat_text"}>Почніть переписку
                             </div>
                         </div>
@@ -619,11 +615,8 @@ export function Message() {
                                     <Avatar src="#" style={styles.AdaptiveAvatarStyle}/>
                                 )}
                                 <div style={{ flex: "1", height: "40px", overflow: "hidden" }}>
-                                    <div style={{ fontFamily: "'Lato', sans-serif" }}>{selectedMessage.name}</div>
-                                    <div style={{
-                                        fontFamily: "'Lato', sans-serif",
-                                        color: "gray"
-                                    }}>@{selectedMessage.username}</div>
+                                    <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(247, 249, 249)" : "#000000", }}>{selectedMessage.name}</div>
+                                    <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(139, 152, 165)" : "gray", }}>@{selectedMessage.username}</div>
                                 </div>
                             </div>
                             <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom}
@@ -638,6 +631,16 @@ export function Message() {
                             <>
                                 <TextField
                                     id="outlined-basic"
+                                    sx={
+                                        darkMode ?
+                                            {"& .MuiOutlinedInput-root": {
+                                                    background: "rgb(39, 51, 64)",
+                                                    color: "rgb(247, 249, 249)",
+                                                }
+                                            }
+                                            :
+                                            {backgroundColor: "white"}
+                                    }
                                     type="search"
                                     variant="outlined"
                                     placeholder="Input message"
@@ -656,18 +659,11 @@ export function Message() {
                                                     id="emoji-icon"
                                                     onClick={(event) => {
                                                         event.stopPropagation();
-                                                        setIsOpenEmoji(!isOpenEmoji);
-                                                    }}
+                                                        setIsOpenEmoji(!isOpenEmoji);}}
                                                     sx={{ cursor: "pointer", marginRight: "10px", color: "#9e9e9e" }}
                                                 />
                                                 <Button
-                                                    sx={{
-                                                        color: "#9e9e9e",
-                                                        minWidth: "35px",
-                                                        height: "35px",
-                                                        padding: "0",
-                                                        fontSize: "2rem"
-                                                    }}
+                                                    sx={{color: "#9e9e9e", minWidth: "35px", height: "35px", padding: "0", fontSize: "2rem"}}
                                                     onClick={handleSend}
                                                 >
                                                     <SendIcon/>
@@ -675,14 +671,12 @@ export function Message() {
                                             </>
                                         ),
                                     }}
-                                    style={{ width: "100%", marginTop: "5px" }}
+                                    style={{ width: "100%"}}
                                 />
                                 {isOpenEmoji && (
-                                    <div ref={emojiPickerRef}
-                                         style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
+                                    <div ref={emojiPickerRef} style={{ position: "absolute", bottom: "55px", right: "20px", zIndex: "1" }}>
 
-                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick}
-                                                     disableSearchBar disableSkinTonePicker/>
+                                        <EmojiPicker emojiStyle={"google"} onEmojiClick={handleEmojiClick} disableSearchBar disableSkinTonePicker/>
                                     </div>
                                 )}
                             </>

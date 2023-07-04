@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {DarkPaperStyles, PaperStyles} from "../popularPeopleSidebarStyles";
 
 export const InputSearch = ({ ...props }) => {
@@ -77,8 +78,33 @@ export const InputSearch = ({ ...props }) => {
         }
     }, [userId]);
 
+    const paperStyle = createTheme({
+        components: {
+            // Name of the component
+            MuiAutocomplete: {
+                styleOverrides: {
+                    // Name of the slot
+                    noOptions: {
+                        // Some CSS
+                        color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                        background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                    },
+                    paper: {
+                        background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                    },
+                    listbox: {
+                        "&& .Mui-focused": {
+                                    backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(0, 0, 0, 0.1)",
+                                },
+                    },
+                },
+            },
+        },
+    });
+
 
     return (
+        <ThemeProvider theme={paperStyle}>
             <Autocomplete
                 getOptionLabel={(option) => option.username}
                 filterOptions={(x) => x}
@@ -113,8 +139,11 @@ export const InputSearch = ({ ...props }) => {
                 )}
                     renderOption={(props, option) => {
 
+
                     return (
-                        <li {...props} key={option.userId} style={DarkPopper}>
+                        <li {...props} key={option.userId}
+
+                        >
                             <Grid container alignItems="center" onClick={() => {
                                 dispatch(setSearchId(String(option.userId)))
                                 navigate("/view")
@@ -125,11 +154,14 @@ export const InputSearch = ({ ...props }) => {
                                 <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
                                         <Box
                                             component="span"
-                                            sx={{ fontWeight: 'bold' }}
+                                            sx={{
+                                                fontWeight: 'bold',
+                                                color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"
+                                            }}
                                         >
                                             {option.name}
                                         </Box>
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography variant="body2" color="text.secondary" sx={{color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}}>
                                         @{option.username}
                                     </Typography>
                                 </Grid>
@@ -138,5 +170,6 @@ export const InputSearch = ({ ...props }) => {
                     );
                 }}
             />
+        </ThemeProvider>
     )
 }

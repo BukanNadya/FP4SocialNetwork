@@ -221,10 +221,6 @@ export const DarkUserSearchTextField = {
         color: "rgb(247, 249, 249)",
     },
 };
-export const DarkPopper = {
-    color: "rgb(247, 249, 249)",
-    background: "rgb(39, 51, 64)",
-}
 
 export const UserSearchContentWrapper = {
     height: "100vh",

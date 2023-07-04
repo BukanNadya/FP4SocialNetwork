@@ -9,14 +9,8 @@ import { HeaderInformation } from "./NavigationComponents/HeaderInformation";
 import { UsersSearch } from "./NavigationComponents/UsersSearch/UsersSearch";
 import { SideBar } from "./NavigationComponents/SideBar";
 import {
-  ContainerStyled,
-  ContentContainer,
-  ItemWrapper,
   ItemWrapperMessage,
-  ItemWrapperContainer,
   ItemWrapperContainerMessage,
-  OutletContainer,
-  OutletWrapper,
   OutletWrapperMessage,
 } from "./LayoutStyles";
 
@@ -26,13 +20,7 @@ import {
   fetchPostsByUserId,
   fetchExplorePosts,
   setPage,
-  setUserData,
-  setUserPostsClear,
-  setPageZero,
-  fetchData,
 } from "../store/actions";
-import { decodeToken } from "./Posts/decodeToken";
-import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { BirthdateForm } from "./LoginModal/BirthdateForm";
 
@@ -113,6 +101,7 @@ export function Layout() {
             width: "100vw",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -163,6 +152,7 @@ export function Layout() {
             width: "100vw",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -213,6 +203,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -264,6 +255,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -315,6 +307,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -377,6 +370,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",
@@ -440,6 +434,7 @@ export function Layout() {
             maxWidth: "700px",
             position: "relative",
             alignItems: "center",
+            border: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
         AdaptiveOutletContainer:{
             position: "relative",

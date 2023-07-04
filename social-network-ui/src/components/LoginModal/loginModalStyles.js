@@ -3,7 +3,7 @@ export const StyledModal = {
     justifyContent: "center",
     alignItems: "center",
     outline: "none",
-    overflow:"hidden"
+    overflow:"hidden",
 };
 
 export const StyledBox = {
@@ -19,6 +19,20 @@ export const StyledBox = {
     position: "relative",
     overflow:"hidden"
 };
+export const DarkStyledBox = {
+    width:"600px",
+    height:"700px",
+    background: "#ffff",
+    outline: "none",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    borderRadius: "10px",
+    position: "relative",
+    overflow:"hidden",
+    backgroundColor: "rgb(21, 32, 43)"
+}
 
 export const StyledTwitSvgIcon = {
     width: "45px",
@@ -72,6 +86,24 @@ export const StyledBlackButton = {
     fontWeight: 700,
     borderRadius: "20px",
 };
+
+export const AccordionStyle = {
+    backgroundColor:  "#ffffff",
+}
+export const DarkAccordionStyle = {
+    backgroundColor:  "rgb(21, 32, 43)",
+    color: "rgba(255, 255, 255, 0.85)",
+    border: "1px solid rgb(56, 68, 77)",
+    "& .MuiFormLabel-root": {
+        color: "rgba(255, 255, 255, 0.85)",
+    },
+    "& .MuiTextField-root": {
+        border: "1px solid rgb(56, 68, 77)",
+    },
+    "& .MuiSvgIcon-root": {
+        color: "rgba(255, 255, 255, 0.85)",
+    },
+}
 
 export const StyledCheckbox = {
     fontFamily: "'Lato', sans-serif",
@@ -130,7 +162,7 @@ export const BirthDateForm = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
 };
 export const BirthDateParagraph = {
     fontFamily: "'Lato', sans-serif",
@@ -138,11 +170,19 @@ export const BirthDateParagraph = {
     textAlign: "center",
     margin: "0 auto"
 };
+export const DarkBirthDateParagraph = {
+    fontFamily: "'Lato', sans-serif",
+    fontSize: "25px",
+    textAlign: "center",
+    margin: "0 auto",
+    color: "rgb(247, 249, 249)"
+};
 export const BirthDateBox = {
     width: "400px",
     display: "flex",
     justifyContent: "space-around",
     marginTop: "40px",
+    gap: "5px",
     "@media(max-width: 576px)": {
         width: "80% !important",
         overflow: "hidden"

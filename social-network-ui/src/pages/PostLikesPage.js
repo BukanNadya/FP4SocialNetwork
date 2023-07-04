@@ -23,6 +23,7 @@ export function PostLikesPage() {
     const [showLike, setShowLike] = useState(true);
     const navigate = useNavigate();
     const theme = useTheme();
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -131,7 +132,7 @@ export function PostLikesPage() {
                     usersWhoLike.length > 0 ?
                         usersWhoLike.map(user => (
                             <ListItem key={user.userId} onClick={() => toAnotherUserPage(user.userId)}
-                                      style={{ borderBottom: '1px solid #ccc' }}>
+                                      style={darkMode ? {border: "1px solid rgb(56, 68, 77)"} : { borderBottom: '1px solid #ccc' }}>
                                 <ListItemAvatar>
                                     <Avatar alt={user.username} src={user.profileImageUrl} />
                                 </ListItemAvatar>
@@ -144,6 +145,8 @@ export function PostLikesPage() {
                                         justifyContent: "space-between",
                                         wordWrap: "break-word",
                                         overflowWrap: "anywhere",
+                                        color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)",
+                                        "& .MuiTypography-root": {color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.6)"}
                                     }}
                                 />
                             </ListItem>

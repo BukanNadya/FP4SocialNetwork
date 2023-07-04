@@ -31,7 +31,14 @@ import {
     CommentCircular,
     CommentsContentBox,
     CommentImg,
-    CommentListWrapper, CommentUl, CommentLi, CommentCustomLi, CommentText, CommentCustomButton, EmptyCommentsText
+    CommentListWrapper,
+    CommentUl,
+    CommentLi,
+    CommentCustomLi,
+    CommentText,
+    CommentCustomButton,
+    EmptyCommentsText,
+    FieldStyles, DarkFieldStyles, DarkCommentLi, DarkCommentCustomLi
 } from "./PostStyles";
 
 export function Comments({
@@ -49,6 +56,7 @@ export function Comments({
     const open = Boolean(anchorEl);
     const [openWindow, setOpenWindow] = useState(false);
     const commentsFromRedux = useSelector(state => state.comments.comments);
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -110,13 +118,13 @@ export function Comments({
                                         <Avatar alt={comment.username} src="#"/>}
                                     <div style={CommentListWrapper}>
                                         <ul style={CommentUl}>
-                                            <li style={CommentLi}>
+                                            <li style={darkMode ? DarkCommentLi : CommentLi}>
                                                 <Link onClick={toAnotherUserPage}
-                                                      style={CommentLi}> {comment.name}</Link>
+                                                      style={darkMode ? DarkCommentLi : CommentLi}> {comment.name}</Link>
                                             </li>
-                                            <li onClick={toAnotherUserPage} style={CommentCustomLi}>@{comment.username}
+                                            <li onClick={toAnotherUserPage} style={darkMode ? DarkCommentCustomLi : CommentCustomLi}>@{comment.username}
                                             </li>
-                                            <li style={CommentLi}>{formatDistanceToNow(new Date(comment.createdDateTime), { addSuffix: true })}
+                                            <li style={darkMode ? DarkCommentLi : CommentLi}>{formatDistanceToNow(new Date(comment.createdDateTime), { addSuffix: true })}
                                             </li>
                                             {comment.userId == userId ?
                                                 <li style={{ position: "absolute", right: "30px" }}>
@@ -173,7 +181,7 @@ export function Comments({
                                 comment!</Typography>}
                             <Field
                                 as={TextField}
-                                sx={{ "& .MuiOutlinedInput-root": { borderRadius: "40px" }, marginTop: "10px" }}
+                                sx={darkMode ? DarkFieldStyles : FieldStyles}
                                 fullWidth
                                 margin="normal"
                                 variant="outlined"

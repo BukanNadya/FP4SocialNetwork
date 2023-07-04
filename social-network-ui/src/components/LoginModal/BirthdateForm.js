@@ -7,7 +7,7 @@ import {
     StyledBox,
     StyledModal,
     BirthDateForm,
-    BirthDateParagraph, BirthDateBox, BirthDateErrorMessage
+    BirthDateParagraph, BirthDateBox, BirthDateErrorMessage, DarkStyledBox, DarkBirthDateParagraph
 } from "./loginModalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
@@ -22,6 +22,7 @@ export function BirthdateForm() {
     const userId = useSelector(state => state.userData.userData.userId);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     function getDaysInMonth(month, year) {
         return new Date(year, month, 0).getDate();
@@ -42,10 +43,7 @@ export function BirthdateForm() {
 
     const xxsStyles = {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
-        AdaptiveStyledBox: {
-            ...StyledBox,
-            width:"100%",  borderRadius: "0"
-        },
+        AdaptiveStyledBox: darkMode ? {...DarkStyledBox, width:"100%",  borderRadius: "0"} : {...StyledBox, width:"100%",  borderRadius: "0"},
         AdaptiveBirthDateForm:{
             ...BirthDateForm, width:"300px"
         }
@@ -53,10 +51,7 @@ export function BirthdateForm() {
 
     const xsStyles = {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
-        AdaptiveStyledBox: {
-            ...StyledBox,
-            width:"100%",  borderRadius: "0"
-        },
+        AdaptiveStyledBox: darkMode ? {...DarkStyledBox, width:"100%",  borderRadius: "0"} : {...StyledBox, width:"100%",  borderRadius: "0"},
         AdaptiveBirthDateForm:{
             ...BirthDateForm, width:"400px"
         }
@@ -64,9 +59,7 @@ export function BirthdateForm() {
 
     const smStyles = {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px",  width: "70%"  },
-        AdaptiveStyledBox: {
-            ...StyledBox,
-        },
+        AdaptiveStyledBox: darkMode ? {...DarkStyledBox} : {...StyledBox},
         AdaptiveBirthDateForm:{
             ...BirthDateForm, width:"500px"
         }
@@ -75,9 +68,7 @@ export function BirthdateForm() {
 
     const mdStyles = {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
-        AdaptiveStyledBox: {
-            ...StyledBox,
-        },
+        AdaptiveStyledBox: darkMode ? {...DarkStyledBox} : {...StyledBox},
         AdaptiveBirthDateForm:{
             ...BirthDateForm, width:"500px"
         }
@@ -85,9 +76,7 @@ export function BirthdateForm() {
 
     const lgStyles = {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px"  },
-        AdaptiveStyledBox: {
-            ...StyledBox,
-        },
+        AdaptiveStyledBox: darkMode ? {...DarkStyledBox} : {...StyledBox},
         AdaptiveBirthDateForm:{
             ...BirthDateForm
         }
@@ -95,9 +84,7 @@ export function BirthdateForm() {
 
     const xlStyles = {
         AdaptiveStyledBlackButton:{ ...StyledBlackButton, marginTop: "20px" },
-        AdaptiveStyledBox: {
-            ...StyledBox,
-        },
+        AdaptiveStyledBox: darkMode ? {...DarkStyledBox} : {...StyledBox},
         AdaptiveBirthDateForm:{
             ...BirthDateForm
         }
@@ -161,10 +148,23 @@ export function BirthdateForm() {
                 >
                     {(formikProps) => (
                         <Form onSubmit={formikProps.handleSubmit} style={styles.AdaptiveBirthDateForm}>
-                            <Typography component="span" sx={BirthDateParagraph}>Please, enter your
+                            <Typography component="span" sx={darkMode ? DarkBirthDateParagraph : BirthDateParagraph}>Please, enter your
                                 birthdate.</Typography>
                             <Box sx={BirthDateBox}>
-                                <FormControl sx={{ width: "300px" }}>
+                                <FormControl sx={
+                                    darkMode ? {width: "300px", "& .MuiOutlinedInput-root": {
+                                                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                            "& .MuiInputLabel-root": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            }, "& .MuiSelect-icon": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                        }
+                                        :
+                                        {width: "300px" }
+                                }>
                                     <InputLabel id="month-label">Month</InputLabel>
                                     <Field
                                         as={Select}
@@ -189,7 +189,20 @@ export function BirthdateForm() {
                                     <ErrorMessage name="month" component="div" style={BirthDateErrorMessage}/>
                                 </FormControl>
 
-                                <FormControl sx={{ width: "300px" }}>
+                                <FormControl sx={
+                                    darkMode ? {width: "300px", "& .MuiOutlinedInput-root": {
+                                                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                            "& .MuiInputLabel-root": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            }, "& .MuiSelect-icon": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                        }
+                                        :
+                                        {width: "300px" }
+                                }>
                                     <InputLabel id="day-label">Day</InputLabel>
                                     <Field
                                         as={Select}
@@ -205,7 +218,20 @@ export function BirthdateForm() {
                                     <ErrorMessage name="day" component="div" style={BirthDateErrorMessage}/>
                                 </FormControl>
 
-                                <FormControl sx={{ width: "300px" }}>
+                                <FormControl sx={
+                                    darkMode ? {width: "300px", "& .MuiOutlinedInput-root": {
+                                                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                            "& .MuiInputLabel-root": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            }, "& .MuiSelect-icon": {
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+                                        }
+                                        :
+                                        {width: "300px" }
+                                }>
                                     <InputLabel id="year-label">Year</InputLabel>
                                     <Field
                                         as={Select}
