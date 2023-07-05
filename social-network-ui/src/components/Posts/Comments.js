@@ -86,9 +86,33 @@ export function Comments({
                 "Content-Type": "application/json"
             }
         });
-        setPostCommentCount(postCommentCount-1)
+        setPostCommentCount(postCommentCount - 1);
     };
 
+    const postDate = (dataTime) => {
+        const date = new Date(dataTime);
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+            timeZone: userTimezone,
+            locale: "en-US", // Указываем полный идентификатор языка
+        };
+
+        const formatter = new Intl.DateTimeFormat(undefined, options);
+        const parts = formatter.formatToParts(date);
+        const formattedDate = parts.map(part => {
+            if (part.type === "literal") {
+                return part.value;
+            }
+            return part.value.toLowerCase();
+        }).join("");
+
+        return formattedDate;
+
+    };
 
     return (
         <Formik
@@ -119,9 +143,10 @@ export function Comments({
                                                 <Link onClick={toAnotherUserPage}
                                                       style={darkMode ? DarkCommentLi : CommentLi}> {comment.name}</Link>
                                             </li>
-                                            <li onClick={toAnotherUserPage} style={darkMode ? DarkCommentCustomLi : CommentCustomLi}>@{comment.username}
+                                            <li onClick={toAnotherUserPage}
+                                                style={darkMode ? DarkCommentCustomLi : CommentCustomLi}>@{comment.username}
                                             </li>
-                                            <li style={darkMode ? DarkCommentLi : CommentLi}>{formatDistanceToNow(new Date(comment.createdDateTime), { addSuffix: true })}
+                                            <li style={darkMode ? DarkCommentLi : CommentLi}>{postDate(comment.createdDateTime)}
                                             </li>
                                             {comment.userId == userId ?
                                                 <li style={{ position: "absolute", right: "30px" }}>

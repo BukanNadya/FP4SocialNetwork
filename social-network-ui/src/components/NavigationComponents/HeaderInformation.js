@@ -114,8 +114,8 @@ export function HeaderInformation() {
             ...SidebarLogOutButton,
             padding: "0",
             minWidth: "20px",
-            width: "100px",
-            borderRadius: "100px",
+            width: "130px",
+            borderRadius: "40px",
             marginLeft: "40px",
             height: "40px",
             marginTop: 0
@@ -150,17 +150,17 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
-            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0 20px",
+            padding: "20",
             minWidth: "20px",
-            width: "135px",
+            width: "130px",
+            borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
-            marginTop: 0
+            marginTop: 0,
         },
         ExitSvgIcon: {
             height: "20px",
@@ -192,14 +192,13 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
-            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0",
+            padding: "20",
             minWidth: "20px",
-            width: "40px",
+            width: "130px",
             borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
@@ -236,18 +235,16 @@ export function HeaderInformation() {
             display: "flex",
             alignItems: "center",
             padding: "0 20px 0 10px",
-            color: darkMode ? "#FFF" : "#000000",
             textTransform: "none",
         },
         LogoutButton: {
             ...SidebarLogOutButton,
-            padding: "0",
+            padding: "10",
             minWidth: "20px",
-            width: "40px",
+            width: "130px",
             borderRadius: "100px",
             marginLeft: "40px",
             height: "40px",
-            color:"#FFF",
             marginTop: 0
         },
         ExitSvgIcon: {
@@ -279,7 +276,6 @@ export function HeaderInformation() {
             fontSize: "22px",
             display: "flex",
             alignItems: "center",
-            color: darkMode ? "#FFF" : "#000000",
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
@@ -313,7 +309,6 @@ export function HeaderInformation() {
             fontSize: "22px",
             display: "flex",
             alignItems: "center",
-            color: darkMode ? "#FFF" : "#000000",
             padding: "0 20px 0 10px",
             textTransform: "none",
         },
@@ -607,7 +602,7 @@ export function HeaderInformation() {
                                     {createComponents(pathname, toggleDrawer(anchor, false))}
                                 </div>
                                 <Button onClick={clearLocaleStorage}
-                                        variant="contained" sx={styles.LogoutButton} fullWidth={true}>
+                                        variant="contained" sx={{...styles.LogoutButton}} fullWidth={true}>
                                     <SvgIcon fill="#000000" sx={styles.ExitSvgIcon} version="1.1"
                                              id="Capa_1"
                                              viewBox="0 0 384.971 384.971">
@@ -639,7 +634,8 @@ export function HeaderInformation() {
                                         fontSize: "15px",
                                         padding: "0",
                                         marginLeft: "8px",
-                                        textTransform: "uppercase"
+                                        textTransform: "uppercase",
+                                        color:"#ffffff",
                                     }}>
                                         Log out
                                     </Typography>

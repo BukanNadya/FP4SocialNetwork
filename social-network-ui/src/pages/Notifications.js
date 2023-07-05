@@ -190,16 +190,32 @@ export function Notifications() {
 
     const postDate = (dataTime) => {
         const date = new Date(dataTime);
-        const diffDays = differenceInDays(new Date(), date);
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        if (diffDays < 1) {
-            return formatDistanceToNow(date, { addSuffix: true });
-        } else if (diffDays < 365) {
-            return format(date, "MMM d");
-        } else {
-            return format(date, "MMM d, yyyy");
-        }
+        const options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+            timeZone: userTimezone,
+            locale: "en-US", // Указываем полный идентификатор языка
+        };
+
+        const formatter = new Intl.DateTimeFormat(undefined, options);
+        const parts = formatter.formatToParts(date);
+        const formattedDate = parts.map(part => {
+            if (part.type === "literal") {
+                return part.value;
+            }
+            return part.value.toLowerCase();
+        }).join("");
+
+        const currentDate = new Date();
+        const timeDiffInMinutes = Math.round((currentDate - date) / (1000 * 60));
+
+        return formattedDate;
+
     };
+
 
     return (
         <List sx={styles.AdaptiveListStyles} data-testid={"notifications_list"}>

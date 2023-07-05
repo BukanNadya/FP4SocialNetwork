@@ -448,7 +448,6 @@ export const Post = ({
         }).join("");
 
         const currentDate = new Date();
-        const timeDiffInMinutes = Math.round((currentDate - date) / (1000 * 60));
 
         return formattedDate;
 
