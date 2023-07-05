@@ -466,6 +466,7 @@ export function Message() {
                 return [...prevInboxMessages, payloadData];
             }
         });
+        console.log(messageData.userId, messageData.inboxUid,)
         dispatch(addMessageFromWebsocket(messageData));
         if(payloadData.userId == userId) {
             try {
@@ -546,11 +547,10 @@ export function Message() {
         }
     };
 
-    const stompClientSendMessage = () => {
-        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: selectedMessage.userId,
-            inboxUid: selectedMessage.inboxUid}));
-
-    };
+    const stompClientSendMessage = (userId, inboxUid) => {
+        stompClient.send("/app/getMessages", {}, JSON.stringify({ userId: userId,
+            inboxUid: inboxUid}));
+    }
 
     const handleEmojiClick = (emojiData) => {
         const emojiCodePoint = parseInt(emojiData.unified, 16);
@@ -572,7 +572,6 @@ export function Message() {
             setIsOpenEmoji(false);
         }
     };
-
 
     return (
         <div style={styles.AdaptiveLeftBlockAndRightBlockContainer}>

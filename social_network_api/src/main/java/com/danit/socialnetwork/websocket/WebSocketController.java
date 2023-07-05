@@ -283,8 +283,7 @@ public class WebSocketController {
     String userIdString = userId.toString();
     messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
     messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
-    sendUnreadMessagesToUserReceiver(userId);
+    sendUnreadMessagesToUserReceiver(inboxUid);
     return inboxR;
   }
-
 }

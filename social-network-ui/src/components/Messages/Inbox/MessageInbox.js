@@ -42,6 +42,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
+
     return (
         <div style={{ height: "100vh", marginTop: "10px" }}>
             {inboxMessages.length > 0 ? (
@@ -66,7 +67,7 @@ export function MessageInbox({ inboxMessages, selectedMessage, setSelectedMessag
                             handleClick={async (event) => {
                                 event.preventDefault();
                                 if (selectedMessage !== item) {
-                                    stompClientSendMessage()
+                                    stompClientSendMessage(item.userId, item.inboxUid);
                                     await fetch(`${apiUrl}/api/readMessages`, {
                                         method: "POST",
                                         body: JSON.stringify({
