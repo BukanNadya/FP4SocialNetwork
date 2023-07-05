@@ -23,6 +23,16 @@ export const DarkPaperStyles = {
     overflowY: "scroll",
     overflowX: "hidden",
     backgroundColor: "rgb(30, 39, 50)",
+    "&::-webkit-scrollbar": {
+        width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+        background: "rgb(30, 39, 50)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgb(39, 51, 64)",
+        borderRadius: "20px",
+    },
 };
 
 export const ElementLi = {

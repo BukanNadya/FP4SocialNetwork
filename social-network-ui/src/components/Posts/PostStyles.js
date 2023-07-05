@@ -55,8 +55,27 @@ export const ShowMoreLinkStyles = {
 export const CommentBox = {
     padding: "10px 20px",
     borderTop: "1px solid #ddd",
-    overflow: "scroll",
-    height: "50xp"
+    overflowY: "scroll",
+    overflowX: "none",
+    height: "50xp",
+};
+export const DarkCommentBox = {
+    padding: "10px 20px",
+    borderTop: "1px solid #ddd",
+    overflowY: "scroll",
+    overflowX: "none",
+    height: "50xp",
+    // maxHeight: "300px",
+    "&::-webkit-scrollbar": {
+        width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+        background: "rgb(30, 39, 50)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgb(39, 51, 64)",
+        borderRadius: "20px",
+    },
 };
 export const CommentTypography = {
     marginBottom: "10px",

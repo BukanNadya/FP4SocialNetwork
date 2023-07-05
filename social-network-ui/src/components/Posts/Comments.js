@@ -38,7 +38,7 @@ import {
     CommentText,
     CommentCustomButton,
     EmptyCommentsText,
-    FieldStyles, DarkFieldStyles, DarkCommentLi, DarkCommentCustomLi
+    FieldStyles, DarkFieldStyles, DarkCommentLi, DarkCommentCustomLi, DarkCommentBox
 } from "./PostStyles";
 
 export function Comments({
@@ -107,7 +107,7 @@ export function Comments({
             {() => (
                 <>
                     <Form>
-                        <Box style={CommentBox} data-testid={"comments_wrapper"}>
+                        <Box sx={darkMode ? DarkCommentBox : CommentBox} data-testid={"comments_wrapper"}>
                             <Typography variant="h6" sx={CommentTypography}>Comments:</Typography>
                             {isLoadingComments ? <CircularProgress
                                 sx={CommentCircular}/> : comments.length > 0 ? (comments.map((comment, index) => (

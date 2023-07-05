@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/material";
-import {DarkPopper, DarkUserSearchTextField, UserSearchTextField} from "../../NavigationStyles";
+import {DarkUserSearchTextField, UserSearchTextField} from "../../NavigationStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {DeleteUsersSuccess, setSearchData, setSearchId} from "../../../../store/actions";
 import {useNavigate} from "react-router-dom";
@@ -8,7 +8,7 @@ import {apiUrl} from "../../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {DarkPaperStyles, PaperStyles} from "../popularPeopleSidebarStyles";
+
 
 export const InputSearch = ({ ...props }) => {
     const users = useSelector(state => state.usersSearch.users)
@@ -96,6 +96,16 @@ export const InputSearch = ({ ...props }) => {
                         "&& .Mui-focused": {
                                     backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(0, 0, 0, 0.1)",
                                 },
+                        "&::-webkit-scrollbar": {
+                            width: darkMode ? "10px" : false,
+                        },
+                        "&::-webkit-scrollbar-track": {
+                            background: darkMode ? "rgb(30, 39, 50)" : false
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: darkMode ? "rgb(39, 51, 64)" : false,
+                            borderRadius: darkMode ? "20px" : false,
+                        },
                     },
                 },
             },

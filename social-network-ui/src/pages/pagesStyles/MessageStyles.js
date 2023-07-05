@@ -18,6 +18,23 @@
     width: "100%",
     height:"100vh",
     margin: "0 auto",
+
+  };
+  export const DarkInboxContainerStyle = {
+    overflowY: "scroll",
+    width: "100%",
+    height:"100vh",
+    margin: "0 auto",
+    "&::-webkit-scrollbar": {
+      width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgb(30, 39, 50)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgb(39, 51, 64)",
+      borderRadius: "20px",
+    },
   };
   
   export const textingContainerWithInputStyle = {
@@ -55,6 +72,24 @@
     boxSizing: "border-box",
     flexDirection: "column-reverse", // Доданий стиль для прокрутки знизу вгору
   };
+  export const DarkTextingConatinerScrollFromBottom = {
+    display: "flex",
+    overflowY: "scroll",
+    height:"90vh",
+    padding: "20px 20px 0 20px",
+    boxSizing: "border-box",
+    flexDirection: "column-reverse",
+    "&::-webkit-scrollbar": {
+      width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgb(30, 39, 50)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgb(39, 51, 64)",
+      borderRadius: "20px",
+    },
+  };
 
   export const textingConatinerScrollFromTop = {
     display: "flex",
@@ -63,6 +98,25 @@
     maxHeight: "calc(100vh - 160px)",
     height: "calc(100vh - 160px)",
     padding: "20px 20px 0 20px",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+  };
+  export const DarkTextingConatinerScrollFromTop = {
+    display: "flex",
+    flexDirection: "column",
+    overflowY: "scroll",
+    maxHeight: "calc(100vh - 160px)",
+    height: "calc(100vh - 160px)",
+    padding: "20px 20px 0 20px",
+    boxSizing: "border-box",
+    "&::-webkit-scrollbar": {
+      width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgb(30, 39, 50)"
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgb(39, 51, 64)",
+      borderRadius: "20px",
+    },
   };
   

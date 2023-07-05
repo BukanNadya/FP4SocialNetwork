@@ -2,16 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import { apiUrl } from "../apiConfig";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Box } from "@mui/material";
 import { TextingMessage } from "../components/Messages/FullTexting/TextingMessage";
 import { MessageSearch } from "../components/Messages/Inbox/MessageSearch";
 import { MessageInbox } from "../components/Messages/Inbox/MessageInbox";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import {
-    leftBlockInboxAndSearch, inboxContainerStyle,
-    textingContainerWithInputStyle, leftBlockAndRightBlockContainer,
-    textingContainerWithScroll, textingConatinerScrollFromBottom,
-    textingConatinerScrollFromTop, DarkTextingContainerWithScroll
+    leftBlockInboxAndSearch,
+    inboxContainerStyle,
+    textingContainerWithInputStyle,
+    leftBlockAndRightBlockContainer,
+    textingContainerWithScroll,
+    textingConatinerScrollFromBottom,
+    textingConatinerScrollFromTop,
+    DarkTextingContainerWithScroll,
+    DarkInboxContainerStyle,
+    DarkTextingConatinerScrollFromTop, DarkTextingConatinerScrollFromBottom
 } from "./pagesStyles/MessageStyles";
 import { addMessageFromWebsocket, fetchTextsByPage } from "../store/actions";
 import { setPageForMessage } from "../store/actions";
@@ -64,9 +70,7 @@ export function Message() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             width: "100%"
         },
-        AdaptiveInboxContainerStyle: {
-            ...inboxContainerStyle,
-        },
+        AdaptiveInboxContainerStyle: darkMode ? {...DarkInboxContainerStyle} : {...inboxContainerStyle},
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
@@ -74,16 +78,21 @@ export function Message() {
             width: "100vw",
             maxHeight: "100vh",
         },
-        AdaptiveTextingConatinerScrollFromTop: {
-            ...textingConatinerScrollFromTop,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-        },
-        AdaptiveTextingContainerScrollFromBottom: {
-            ...textingConatinerScrollFromBottom
-        },
+        AdaptiveTextingConatinerScrollFromTop: darkMode ?
+            {...DarkTextingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }
+            :
+            {...textingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            },
+        AdaptiveTextingContainerScrollFromBottom: darkMode ? {...DarkTextingConatinerScrollFromBottom} : {...textingConatinerScrollFromBottom},
         AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
@@ -117,9 +126,7 @@ export function Message() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             width: "100%",
         },
-        AdaptiveInboxContainerStyle: {
-            ...inboxContainerStyle,
-        },
+        AdaptiveInboxContainerStyle: darkMode ? {...DarkInboxContainerStyle} : {...inboxContainerStyle},
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
@@ -127,16 +134,21 @@ export function Message() {
             width: "100vw",
             maxHeight: "100vh",
         },
-        AdaptiveTextingConatinerScrollFromTop: {
-            ...textingConatinerScrollFromTop,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-        },
-        AdaptiveTextingContainerScrollFromBottom: {
-            ...textingConatinerScrollFromBottom
-        },
+        AdaptiveTextingConatinerScrollFromTop: darkMode ?
+            {...DarkTextingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }
+            :
+            {...textingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            },
+        AdaptiveTextingContainerScrollFromBottom: darkMode ? {...DarkTextingConatinerScrollFromBottom} : {...textingConatinerScrollFromBottom},
         AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
@@ -170,9 +182,7 @@ export function Message() {
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             width: "100%"
         },
-        AdaptiveInboxContainerStyle: {
-            ...inboxContainerStyle,
-        },
+        AdaptiveInboxContainerStyle: darkMode ? {...DarkInboxContainerStyle} : {...inboxContainerStyle},
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
@@ -180,16 +190,21 @@ export function Message() {
             width: "100vw",
             maxHeight: "100vh",
         },
-        AdaptiveTextingConatinerScrollFromTop: {
-            ...textingConatinerScrollFromTop,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-        },
-        AdaptiveTextingContainerScrollFromBottom: {
-            ...textingConatinerScrollFromBottom
-        },
+        AdaptiveTextingConatinerScrollFromTop: darkMode ?
+            {...DarkTextingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }
+            :
+            {...textingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            },
+        AdaptiveTextingContainerScrollFromBottom: darkMode ? {...DarkTextingConatinerScrollFromBottom} : {...textingConatinerScrollFromBottom},
         AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
@@ -222,25 +237,28 @@ export function Message() {
             ...leftBlockInboxAndSearch,
             borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveInboxContainerStyle: {
-            ...inboxContainerStyle,
-        },
+        AdaptiveInboxContainerStyle: darkMode ? {...DarkInboxContainerStyle} : {...inboxContainerStyle},
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             maxHeight: "100vh",
         },
-        AdaptiveTextingConatinerScrollFromTop: {
-            ...textingConatinerScrollFromTop,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-        },
-        AdaptiveTextingContainerScrollFromBottom: {
-            ...textingConatinerScrollFromBottom
-        },
+        AdaptiveTextingConatinerScrollFromTop: darkMode ?
+            {...DarkTextingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }
+            :
+            {...textingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            },
+        AdaptiveTextingContainerScrollFromBottom: darkMode ? {...DarkTextingConatinerScrollFromBottom} : {...textingConatinerScrollFromBottom},
         AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
@@ -273,25 +291,28 @@ export function Message() {
             ...leftBlockInboxAndSearch,
             borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveInboxContainerStyle: {
-            ...inboxContainerStyle,
-        },
+        AdaptiveInboxContainerStyle: darkMode ? {...DarkInboxContainerStyle} : {...inboxContainerStyle},
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             maxHeight: "100vh",
         },
-        AdaptiveTextingConatinerScrollFromTop: {
-            ...textingConatinerScrollFromTop,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-        },
-        AdaptiveTextingContainerScrollFromBottom: {
-            ...textingConatinerScrollFromBottom
-        },
+        AdaptiveTextingConatinerScrollFromTop: darkMode ?
+            {...DarkTextingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }
+            :
+            {...textingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            },
+        AdaptiveTextingContainerScrollFromBottom: darkMode ? {...DarkTextingConatinerScrollFromBottom} : {...textingConatinerScrollFromBottom},
         AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
@@ -324,25 +345,28 @@ export function Message() {
             ...leftBlockInboxAndSearch,
             borderRight: darkMode ? "1px solid rgb(56, 68, 77)" : "1px solid rgba(0, 0, 0, 0.1)",
         },
-        AdaptiveInboxContainerStyle: {
-            ...inboxContainerStyle,
-        },
+        AdaptiveInboxContainerStyle: darkMode ? {...DarkInboxContainerStyle} : {...inboxContainerStyle},
         AdaptiveTextingContainerWithInputStyle: {
             ...textingContainerWithInputStyle,
             borderRight: "1px solid rgba(0, 0, 0, 0.1)",
             height: "100vh",
             maxHeight: "100vh",
         },
-        AdaptiveTextingConatinerScrollFromTop: {
-            ...textingConatinerScrollFromTop,
+        AdaptiveTextingConatinerScrollFromTop: darkMode ?
+            {...DarkTextingConatinerScrollFromTop,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+            }
+            :
+            {...textingConatinerScrollFromTop,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "100vh",
         },
-        AdaptiveTextingContainerScrollFromBottom: {
-            ...textingConatinerScrollFromBottom
-        },
+        AdaptiveTextingContainerScrollFromBottom: darkMode ? {...DarkTextingConatinerScrollFromBottom} : {...textingConatinerScrollFromBottom},
         AdaptiveTextingContainerWithScroll: darkMode ? {...DarkTextingContainerWithScroll} : {...textingContainerWithScroll},
         AdaptiveMessageContainerStyle: {
             width: "100%",
@@ -556,28 +580,28 @@ export function Message() {
                 <div style={styles.AdaptiveLeftBlockInboxAndSearch} data-testid={"message_search_and_inbox_wrapper"}>
                     <HeaderInformation/>
                     <MessageSearch/>
-                    <div style={styles.AdaptiveInboxContainerStyle}>
+                    <Box sx={styles.AdaptiveInboxContainerStyle}>
                         {isLoading ? (
                             <CircularProgress sx={{ marginTop: "20%", marginLeft: "40%" }}/>
                         ) : (
                             <MessageInbox inboxMessages={inboxMessages} selectedMessage={selectedMessage}
                                           stompClientSendMessage={stompClientSendMessage} setSelectedMessage={setSelectedMessage}/>
                         )}
-                    </div>
+                    </Box>
                 </div>
             )}
             {(isXl || isLg || isMd || clicked) && (
                 <div style={styles.AdaptiveTextingContainerWithInputStyle}>
                     {clicked && <HeaderInformation/>}
                     {!selectedMessage ? (
-                        <div style={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
+                        <Box sx={styles.AdaptiveTextingConatinerScrollFromTop} ref={textingContainerRef}>
                             <div style={{
                                 fontSize: "1.1rem",
                                 fontFamily: "'Lato', sans-serif",
                                 color: darkMode ? "rgb(247, 249, 249)" : "#000000"
                             }} data-testid={"start_chat_text"}>Почніть переписку
                             </div>
-                        </div>
+                        </Box>
                     ) : (
                         <>
                             <div style={styles.AdaptiveMessageContainerStyle}>
@@ -592,11 +616,11 @@ export function Message() {
                                     <div style={{ fontFamily: "'Lato', sans-serif", color: darkMode ? "rgb(139, 152, 165)" : "gray", }}>@{selectedMessage.username}</div>
                                 </div>
                             </div>
-                            <div onScroll={handleScroll} style={styles.AdaptiveTextingContainerScrollFromBottom}
+                            <Box onScroll={handleScroll} sx={styles.AdaptiveTextingContainerScrollFromBottom}
                                  ref={textingContainerRef}>
                                 <TextingMessage sender={selectedMessage.inboxUid} receiver={selectedMessage.userId}
                                                 selectedMessage2={messages} key={Math.floor(Math.random() * 1000)}/>
-                            </div>
+                            </Box>
                         </>
                     )}
                     <div style={{ ...styles.AdaptiveTextingContainerWithScroll, width: "100%", position: "relative" }}>

@@ -3,7 +3,6 @@ import {TextField, Autocomplete, Typography, Grid, Avatar, Box} from "@mui/mater
 import {UserSearchTextField} from "./SearchStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {DeleteMessageSuccess, setSearchData} from "../../../store/actions";
-import {useNavigate} from "react-router-dom";
 import {apiUrl} from "../../../apiConfig";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {createTheme, useTheme, ThemeProvider} from "@mui/material/styles";
@@ -15,7 +14,6 @@ export const InputMessageSearch = ({ ...props }) => {
     const userId = useSelector(state => state.userData.searchData.userId);
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const dispatch = useDispatch()
-    const navigate = useNavigate();
     const theme = useTheme();
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
@@ -96,6 +94,16 @@ export const InputMessageSearch = ({ ...props }) => {
                         "&& .Mui-focused": {
                             backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(0, 0, 0, 0.1)",
                         },
+                        "&::-webkit-scrollbar": {
+                            width: darkMode ? "10px" : false,
+                        },
+                        "&::-webkit-scrollbar-track": {
+                            background: darkMode ? "rgb(30, 39, 50)" : false
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: darkMode ? "rgb(39, 51, 64)" : false,
+                            borderRadius: darkMode ? "20px" : false,
+                        },
                     },
                 },
             },
@@ -143,8 +151,6 @@ export const InputMessageSearch = ({ ...props }) => {
                     <li {...props} key={option.userId}>
                         <Grid container alignItems="center" onClick={() => {
                             dispatch(fetchUserInbox(option.userId))
-                            // dispatch(setSearchId(String(option.userId)))
-                            // navigate("/view")
                         }}>
                             <Grid item sx={{ display: 'flex', width: 44 }}>
                                 <Avatar alt={option.username} src={option.profileImageUrl}/>
