@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
+import React, { useEffect, useState, } from "react";
 import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
@@ -25,7 +25,7 @@ export function PostPage() {
                     setNotFoundPost(true);
                 }
             } catch (e) {
-                console.warn(e, "can't load the post!")
+                console.warn(e, "can't load the post!");
             } finally {
                 setIsLoading(false);
             }
@@ -35,7 +35,8 @@ export function PostPage() {
     }, []);
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50vw" }} data-testid={"notifications_post_wrapper_view"}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "50vw" }}
+             data-testid={"notifications_post_wrapper_view"}>
             {notFoundPost ?
                 <div style={{
                     display: "flex",

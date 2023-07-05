@@ -51,8 +51,6 @@ export function Profile (props) {
                         headers: { "Content-Type": "application/json" }
             });
             const userIsFollow = await response.json();
-            console.log(userIsFollow.notification)
-            console.log(isNotices)
             if (userIsFollow.following === "true") {
                 dispatch(userFollow())
                 if (userIsFollow.notification === "true") {

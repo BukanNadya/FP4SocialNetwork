@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "persist:root",
-          "value": "{\"userData\":\"{\\\"userData\\\":{\\\"userId\\\":\\\"63\\\",\\\"userName\\\":\\\"Asy\\\",\\\"name\\\":\\\"@Asy\\\",\\\"date\\\":\\\"May 28 2023\\\",\\\"image\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1687524259/production/pa0mpufl9qeh6i75luss.jpg\\\",\\\"background\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1688488173/profile_background_63/vsix03bdnae3ad2p6azs.jpg\\\",\\\"followers\\\":9,\\\"followings\\\":11,\\\"address\\\":\\\"Huzara 20A\\\",\\\"birthday\\\":\\\"2000-11-24\\\"},\\\"searchData\\\":{\\\"userId\\\":null},\\\"followData\\\":{\\\"userFollow\\\":false},\\\"userFollowing\\\":{\\\"following\\\":[]},\\\"userMode\\\":{\\\"darkMode\\\":false}}\",\"_persist\":\"{\\\"version\\\":-1,\\\"rehydrated\\\":true}\"}"
+          "value": "{\"userData\":\"{\\\"userData\\\":{\\\"userId\\\":\\\"63\\\",\\\"userName\\\":\\\"Asy\\\",\\\"name\\\":\\\"@Asy\\\",\\\"date\\\":\\\"May 28 2023\\\",\\\"image\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1687524259/production/pa0mpufl9qeh6i75luss.jpg\\\",\\\"background\\\":\\\"http://res.cloudinary.com/dir4ciwiy/image/upload/v1688488173/profile_background_63/vsix03bdnae3ad2p6azs.jpg\\\",\\\"followers\\\":9,\\\"followings\\\":11,\\\"address\\\":\\\"Huzara 20A\\\",\\\"birthday\\\":\\\"2000-11-24\\\"},\\\"searchData\\\":{\\\"userId\\\":null},\\\"followData\\\":{\\\"userFollow\\\":false},\\\"userFollowing\\\":{\\\"following\\\":[\\\"8\\\",\\\"9\\\",\\\"65\\\",\\\"66\\\",\\\"7\\\",\\\"67\\\",\\\"2\\\",\\\"10\\\",\\\"64\\\",\\\"14\\\",\\\"69\\\"]},\\\"userMode\\\":{\\\"darkMode\\\":false}}\",\"_persist\":\"{\\\"version\\\":-1,\\\"rehydrated\\\":true}\"}"
         },
         {
           "name": "stepInModal",
@@ -14,7 +14,7 @@
         },
         {
           "name": "userToken",
-          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODUzOTIwNiwiZXhwIjoxNjg5NDAzMjA2fQ.ztQbgnYaV9w3T8uXiv7UmJ3wDgd3i-AgDX_qeYiClqO1aiSZKb-hRtdxdMvjlKROvqQk5WJqJSjklDzzyvyOug\"}"
+          "value": "{\"token\":\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MyIsImlhdCI6MTY4ODU1MDMzMSwiZXhwIjoxNjg5NDE0MzMxfQ.Ky2ArWHFmFW20CwAbpRA54_69ZQ8TZKfMz5REWi_uhwVCC5kgweDv_ZzBvbosA8oqIjB9cQjYGXQf78MzJ_d2g\"}"
         }
       ]
     }

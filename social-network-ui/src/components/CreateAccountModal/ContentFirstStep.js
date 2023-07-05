@@ -5,14 +5,13 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { NEW_USER_DATA_FIRST_STEP_REGISTRATION} from "../../store/types";
-import { StyledContentBox, StyledFirstStepFormControl, StyledFirstStepInputLabel,
+import { StyledFirstStepFormControl, StyledFirstStepInputLabel,
     StyledFirstStepTypographyPlaceholder, StyledFirstStepTypographyCounter,
     StyledFirstStepDateofBirthBox, StyledFirstStepButton, StyledFirstStepTypography,
     StyledFirstStepTypographyDateofBirth, StyledFirstStepTypographyDateofBirthInfo} from "./CreateAccountModalStyles";
 import {apiUrl} from "../../apiConfig";
 import {useTheme} from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {StyledBox, StyledForm, StyleTitle} from "../EditProfile/EditProfileStyles";
 
 export function ContentFirstStep() {
     const dispatch = useDispatch();
@@ -253,7 +252,6 @@ export function ContentFirstStep() {
                                 setErrors({ email: "A user with this email already exists" });
                             } else {
                                 const userExistData = await response.json();
-                                console.log("resp from server", userExistData)
                                 dispatch({ type: NEW_USER_DATA_FIRST_STEP_REGISTRATION, payload: { valuesState: values } });
                             }
                     }}

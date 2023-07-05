@@ -1,13 +1,7 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
-import { PostsDisplaying } from "../components/Posts/PostsDisplaying";
-import { PostWrapper } from "./pagesStyles/HomeScreenStyles";
+import React, { useEffect, useState,} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Post } from "../components/Posts/Post";
-import PropTypes from "prop-types";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiUrl } from "../apiConfig";
-import { Box, Paper, Typography, Avatar, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
-import { EmptyLikesUserArrParagraph, LikeBox, LikesCircular, PostPaper } from "../components/Posts/PostStyles";
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { fetchLikes, openLoginModal, setSearchId } from "../store/actions";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -17,7 +11,6 @@ export function PostLikesPage() {
     const userId = useSelector(state => state.userData.userData.userId);
     const [likesIsLoading, setLikesIsLoading] = useState(false);
     const { postId } = useParams();
-    console.log(postId, "postId");
     const [usersWhoLike, setUsersWhoLike] = useState([]);
     const dispatch = useDispatch();
     const [showLike, setShowLike] = useState(true);

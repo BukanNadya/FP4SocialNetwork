@@ -8,7 +8,6 @@ export function LeftNavigationBar () {
 
     const theme = useTheme();
 
-    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));

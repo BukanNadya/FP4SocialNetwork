@@ -13,7 +13,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { SidebarLogOutButton } from "../NavigationComponents/NavigationStyles";
 import { useTheme } from "@mui/material/styles";
 
-
 export function LoginModal() {
     const userDataState = useSelector(state => state.loginUserData.userLoginData);
     const dispatch = useDispatch();
@@ -24,7 +23,6 @@ export function LoginModal() {
         dispatch(closeLoginModal());
     }
 
-
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -32,56 +30,53 @@ export function LoginModal() {
     const isLg = useMediaQuery(theme.breakpoints.between("lg", "xl"));
     const isXl = useMediaQuery(theme.breakpoints.up("xl"));
 
-
-    console.log(isXxs, isXs, isSm, isMd, isLg, isXl);
-
     const xxsStyles = {
-        AdaptiveStyledBox:{
+        AdaptiveStyledBox: {
             ...StyledBox,
-            width:"100%",
-            height:"100%",
-            overflow:"hidden",
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
             borderRadius: "0"
         }
     };
 
     const xsStyles = {
-        AdaptiveStyledBox:{
+        AdaptiveStyledBox: {
             ...StyledBox
             ,
-            width:"100%",
-            height:"100%",
-            overflow:"hidden",
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
             borderRadius: "0"
         }
     };
 
     const smStyles = {
-        AdaptiveStyledBox:{
+        AdaptiveStyledBox: {
             ...StyledBox,
-            width:"100%",
-            height:"100%",
-            overflow:"hidden",
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
             borderRadius: "0"
         }
     };
 
     const mdStyles = {
-        AdaptiveStyledBox:{
+        AdaptiveStyledBox: {
             ...StyledBox,
         }
     };
 
     const lgStyles = {
-        AdaptiveStyledBox:{
+        AdaptiveStyledBox: {
             ...StyledBox
         }
     };
 
     const xlStyles = {
-    AdaptiveStyledBox:{
-        ...StyledBox
-    }
+        AdaptiveStyledBox: {
+            ...StyledBox
+        }
     };
 
     let styles;
@@ -109,7 +104,9 @@ export function LoginModal() {
             }}
             sx={StyledModal}>
             <Box sx={styles.AdaptiveStyledBox}>
-                <CloseSvgIcon closeFunction={  ()=>{dispatch(closeLoginModal())}}/>
+                <CloseSvgIcon closeFunction={() => {
+                    dispatch(closeLoginModal());
+                }}/>
                 <SvgIconCapybara/>
                 {userDataState.email ? (<EnterPasswordModal userData={userDataState}/>) : (
                     <EnterEmailModal userData={userDataState}/>)}

@@ -89,14 +89,11 @@ export function Comments({
         setPostCommentCount(postCommentCount-1)
     };
 
-    console.log(comments);
 
     return (
-
         <Formik
             initialValues={{ comment: "" }}
             onSubmit={async (values, actions) => {
-                console.log(userId, postId, values.comment,);
                 await dispatch(sendComments(values, userId, postId));
                 actions.resetForm();
                 setPostCommentCount(postCommentCount + 1);

@@ -45,7 +45,6 @@ export const SendCodeModal = ({ id }) => {
 
     const theme = useTheme();
 
-    const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
     const isSm = useMediaQuery(theme.breakpoints.between("sm", "md"));
     const isMd = useMediaQuery(theme.breakpoints.between("md", "lg"));
@@ -130,7 +129,6 @@ export const SendCodeModal = ({ id }) => {
                     email: email,
                 })
             });
-            console.log(res);
             if (res.ok) {
                 const data = await res.json();
                 dispatch(checkEmail(data.email));
@@ -138,7 +136,7 @@ export const SendCodeModal = ({ id }) => {
                 setOpenWeSend(true);
             }
         } catch (error) {
-            console.error("An error occurred:", error);
+            console.warn("An error occurred:", error);
             setErrors({ email: "An error occurred, please try again" });
         }
     };

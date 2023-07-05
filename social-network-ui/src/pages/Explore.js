@@ -22,6 +22,7 @@ export function Explore() {
     useEffect(() => {
         dispatch(setPageZero());
         dispatch(setUserPostsClear([]));
+
         async function getPosts() {
             try {
                 setIsLoading(true);

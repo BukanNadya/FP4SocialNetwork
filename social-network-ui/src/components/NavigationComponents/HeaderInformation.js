@@ -420,7 +420,6 @@ export function HeaderInformation() {
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
         dispatch(setNotificationsCount(payloadData.unreadNotifications));
-        console.log(payloadData, "unreadNotificationsFromSidebar");
     };
 
     const getRouteName = (path) => {

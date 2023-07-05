@@ -19,7 +19,6 @@ export const PostsDisplaying = ({ userPosts, isLoading }) => {
         keys: post => post.postId,
         config: { duration: 600, delay: 200 },
     });
-console.log(userPosts)
 
     useEffect(() => {
         try {
@@ -52,9 +51,7 @@ console.log(userPosts)
     const handleLikesClick = (postId, userId) => {
         let numUserId = parseInt(userId);
         let numPostId = Number(postId);
-        console.log(numPostId);
         if (stompClient) {
-            console.log("hi");
             stompClient.send("/app/post_like", {}, JSON.stringify({ userId: numUserId, postId: numPostId }));
         }
     };

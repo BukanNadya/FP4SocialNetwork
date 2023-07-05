@@ -9,7 +9,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 export function Newsfeed() {
     const registrationPageUsersPosts = useSelector(state => state.Posts.registrationPagePosts);
-    console.log("registrationPageUsersPosts", registrationPageUsersPosts)
     const page = useSelector(state => state.pageCount.page);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);

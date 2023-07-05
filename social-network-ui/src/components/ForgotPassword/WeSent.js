@@ -149,7 +149,6 @@ export const WeSent = ({ id }) => {
                                     code: values.password
                             })
                         })
-                        console.log(res)
                         if (res.ok) {
                             const data = await res.json()
                             setOpenWeSend(false);
@@ -158,7 +157,7 @@ export const WeSent = ({ id }) => {
                         }
                     }
                     catch (error) {
-                        console.error("An error occurred:", error);
+                        console.warn("An error occurred:", error);
                         setErrors({ email: "An error occurred, please try again" });
                     }
             

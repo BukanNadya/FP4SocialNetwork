@@ -20,12 +20,12 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {checkEmailFetch, setUserMode} from "../store/actions";
+import { setUserMode } from "../store/actions";
 import { apiUrl } from "../apiConfig";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import {AccordionStyle, DarkAccordionStyle, StyledBlackButton} from "../components/LoginModal/loginModalStyles";
+import { AccordionStyle, DarkAccordionStyle, StyledBlackButton } from "../components/LoginModal/loginModalStyles";
 import { grey } from "@mui/material/colors";
 
 export function Settings() {
@@ -34,14 +34,13 @@ export function Settings() {
     const dispatch = useDispatch();
     const userMode = useSelector(state => state.userData.userMode.darkMode);
     const userId = useSelector(state => state.userData.userData.userId);
-    const [error, setError] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [snackbarSeverity, setSnackbarSeverity] = useState("success");
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
 
     const handleThemeChange = (event) => {
-        dispatch(setUserMode(event.target.checked))
+        dispatch(setUserMode(event.target.checked));
     };
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
@@ -60,13 +59,13 @@ export function Settings() {
         AdaptiveFormStyles: {
             width: "90vw",
         },
-        AdaptiveStyledBlackButton: { ...StyledBlackButton,  width: "100%" },
+        AdaptiveStyledBlackButton: { ...StyledBlackButton, width: "100%" },
         DisabledButton: {
             ...StyledBlackButton,
             opacity: 0.5,
-            backgroundColor:grey,
+            backgroundColor: grey,
             width: "100%",
-            color:"white",
+            color: "white",
         },
     };
 
@@ -79,13 +78,13 @@ export function Settings() {
         AdaptiveFormStyles: {
             width: "92vw",
         },
-        AdaptiveStyledBlackButton: { ...StyledBlackButton,  width: "100%" },
+        AdaptiveStyledBlackButton: { ...StyledBlackButton, width: "100%" },
         DisabledButton: {
             ...StyledBlackButton,
             opacity: 0.5,
-            backgroundColor:grey,
+            backgroundColor: grey,
             width: "100%",
-            color:"white"
+            color: "white"
         },
     };
 
@@ -98,13 +97,13 @@ export function Settings() {
         AdaptiveFormStyles: {
             width: "440px",
         },
-        AdaptiveStyledBlackButton: { ...StyledBlackButton,  width: "435px" },
+        AdaptiveStyledBlackButton: { ...StyledBlackButton, width: "435px" },
         DisabledButton: {
             ...StyledBlackButton,
             opacity: 0.5,
-            backgroundColor:grey,
+            backgroundColor: grey,
             width: "435px",
-            color:"white"
+            color: "white"
         },
     };
 
@@ -117,12 +116,12 @@ export function Settings() {
         AdaptiveFormStyles: {
             width: "550px",
         },
-        AdaptiveStyledBlackButton: { ...StyledBlackButton,  width: "560px" },
+        AdaptiveStyledBlackButton: { ...StyledBlackButton, width: "560px" },
         DisabledButton: {
             ...StyledBlackButton,
             opacity: 0.5,
-            backgroundColor:grey,
-            color:"white",
+            backgroundColor: grey,
+            color: "white",
             width: "560px"
         },
     };
@@ -136,13 +135,13 @@ export function Settings() {
         AdaptiveFormStyles: {
             width: "550px",
         },
-        AdaptiveStyledBlackButton: { ...StyledBlackButton,  width: "560px" },
+        AdaptiveStyledBlackButton: { ...StyledBlackButton, width: "560px" },
         DisabledButton: {
             ...StyledBlackButton,
             opacity: 0.5,
-            backgroundColor:grey,
+            backgroundColor: grey,
             width: "560px",
-            color:"white"
+            color: "white"
         },
     };
 
@@ -159,8 +158,8 @@ export function Settings() {
         DisabledButton: {
             ...StyledBlackButton,
             opacity: 0.5,
-            backgroundColor:grey,
-            color:"white",
+            backgroundColor: grey,
+            color: "white",
             width: "560px"
         },
     };

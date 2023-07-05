@@ -6,10 +6,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import SockJS from "sockjs-client";
-import ImageIcon from '@mui/icons-material/Image';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import LinearProgress from '@mui/material/LinearProgress';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import ImageIcon from "@mui/icons-material/Image";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import LinearProgress from "@mui/material/LinearProgress";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
 import {
     fetchData,
@@ -40,8 +40,7 @@ import PostAddIcon from "@mui/icons-material/PostAdd";
 import { ScrollContext } from "../components/Layout.js";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import EmojiPicker from 'emoji-picker-react';
-import { maxWidth } from "@mui/system";
+import EmojiPicker from "emoji-picker-react";
 
 let stompClient = null;
 
@@ -73,8 +72,8 @@ export function HomeScreen() {
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if(!isOpenEmoji){
-                return
+            if (!isOpenEmoji) {
+                return;
             }
             if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target)) {
                 setIsOpenEmoji(false);
@@ -85,8 +84,7 @@ export function HomeScreen() {
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
-    }, [isOpenEmoji,emojiPickerRef]);
-
+    }, [isOpenEmoji, emojiPickerRef]);
 
     const xxsStyles = {
         AdaptivePostWrapper: {
@@ -128,8 +126,7 @@ export function HomeScreen() {
         AdaptivePostImgWrapper: {
             ...PostImgWrapper, marginTop: "10px"
         },
-        AdaptiveContainerForProgress:{
-        },
+        AdaptiveContainerForProgress: {},
     };
 
     const xsStyles = {
@@ -171,8 +168,7 @@ export function HomeScreen() {
         AdaptivePostImgWrapper: {
             ...PostImgWrapper, marginTop: "10px"
         },
-        AdaptiveContainerForProgress:{
-        },
+        AdaptiveContainerForProgress: {},
     };
 
     const smStyles = {
@@ -211,8 +207,7 @@ export function HomeScreen() {
             bottom: "16px",
             right: "16px",
         },
-        AdaptiveContainerForProgress:{
-        },
+        AdaptiveContainerForProgress: {},
 
     };
 
@@ -252,8 +247,7 @@ export function HomeScreen() {
             bottom: "16px",
             right: "16px",
         },
-        AdaptiveContainerForProgress:{
-        },
+        AdaptiveContainerForProgress: {},
     };
 
     const lgStyles = {
@@ -295,8 +289,8 @@ export function HomeScreen() {
             bottom: "16px",
             right: "16px",
         },
-        AdaptiveContainerForProgress:{
-            maxWidth:"600px", marginLeft:"30px"
+        AdaptiveContainerForProgress: {
+            maxWidth: "600px", marginLeft: "30px"
         },
     };
 
@@ -339,8 +333,8 @@ export function HomeScreen() {
             bottom: "16px",
             right: "16px",
         },
-        AdaptiveContainerForProgress:{
-            maxWidth:"600px", marginLeft:"30px"
+        AdaptiveContainerForProgress: {
+            maxWidth: "600px", marginLeft: "30px"
         },
     };
 
@@ -374,12 +368,12 @@ export function HomeScreen() {
                     try {
                         stompClient.disconnect();
                     } catch (e) {
-                        console.warn('home - failed to disconnect the stomp client', e);
+                        console.warn("home - failed to disconnect the stomp client", e);
                     }
                 }
             };
         } catch (e) {
-            console.warn('home - failed to create the stomp client', e);
+            console.warn("home - failed to create the stomp client", e);
         }
     }, []);
 
@@ -418,7 +412,7 @@ export function HomeScreen() {
     const handlePostSubmit = async (values, setSubmitting) => {
         if (values.postText.trim() !== "" || postImage) {
             setSubmitting(true);
-    console.log(values)
+            console.log(values);
             let photoFileByteArray = [];
             if (postImage) {
                 const reader = new FileReader();
@@ -452,7 +446,6 @@ export function HomeScreen() {
         }
     };
 
-
     const handleScroll = async (event) => {
         if (isFetchingPosts || allPostsLoaded) {
             return;
@@ -479,7 +472,7 @@ export function HomeScreen() {
     };
 
     return (
-        <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper} >
+        <div onScroll={handleScroll} style={styles.AdaptiveHomeScreenWrapper}>
             {isXs || isXxs ? <>
                     <Modal open={open} onClose={() => setOpen(false)}
                            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -500,10 +493,10 @@ export function HomeScreen() {
                                     const onEmojiClick2 = (emojiData, event) => {
                                         const emojiCodePoint = parseInt(emojiData.unified, 16); // Преобразование из шестнадцатеричного в десятичный формат
                                         const emojiChar = String.fromCodePoint(emojiCodePoint);
-                                        setFieldValue('postText', values.postText + emojiChar);
+                                        setFieldValue("postText", values.postText + emojiChar);
                                     };
 
-                                    return(
+                                    return (
                                         <Form>
                                             <div style={styles.AdaptiveHomeScreenWrapper}>
                                                 <div style={styles.AdaptivePostWrapper}>
@@ -516,7 +509,15 @@ export function HomeScreen() {
                                                         <div
                                                             style={textWrapper}>
                                                             <h2 style={darkMode ? DarkNameOfUser : NameOfUser}>{userData.name}</h2>
-                                                            <h2 style={darkMode ? {...DarkNameOfUser, color: "rgb(83, 100, 113)", marginLeft: "10px"} : {...NameOfUser, color: "grey", marginLeft: "10px"}}>@ {userData.userName}</h2>
+                                                            <h2 style={darkMode ? {
+                                                                ...DarkNameOfUser,
+                                                                color: "rgb(83, 100, 113)",
+                                                                marginLeft: "10px"
+                                                            } : {
+                                                                ...NameOfUser,
+                                                                color: "grey",
+                                                                marginLeft: "10px"
+                                                            }}>@ {userData.userName}</h2>
 
                                                         </div>
                                                         <Field
@@ -558,13 +559,24 @@ export function HomeScreen() {
                                                             <div style={styles.AdaptiveSendingPostButtonsContainer}>
                                                                 <div>
                                                                     <label htmlFor="post-image-input"
-                                                                           style={{ height: "30px", borderRadius: "20px", }}>
+                                                                           style={{
+                                                                               height: "30px",
+                                                                               borderRadius: "20px",
+                                                                           }}>
                                                                         <Tooltip title={"Add image"}>
                                                                             <Button
                                                                                 component="span"
                                                                                 variant="contained"
                                                                                 color="primary"
-                                                                                sx={{ ...SidebarLogOutButton, marginTop: 0, padding:0, width:"40px", maxWidth:"40px", minWidth:"0px", height:"40px" }}
+                                                                                sx={{
+                                                                                    ...SidebarLogOutButton,
+                                                                                    marginTop: 0,
+                                                                                    padding: 0,
+                                                                                    width: "40px",
+                                                                                    maxWidth: "40px",
+                                                                                    minWidth: "0px",
+                                                                                    height: "40px"
+                                                                                }}
                                                                                 disabled={!!postImage}
                                                                             ><ImageIcon/></Button>
                                                                         </Tooltip>
@@ -576,15 +588,31 @@ export function HomeScreen() {
                                                                                 component="span"
                                                                                 variant="contained"
                                                                                 color="primary"
-                                                                                sx={{ ...SidebarLogOutButton, marginTop: 0, padding:0, width:"40px", maxWidth:"40px", minWidth:"0px", height:"40px", marginLeft:"10px", alignSelf:"start" }}
+                                                                                sx={{
+                                                                                    ...SidebarLogOutButton,
+                                                                                    marginTop: 0,
+                                                                                    padding: 0,
+                                                                                    width: "40px",
+                                                                                    maxWidth: "40px",
+                                                                                    minWidth: "0px",
+                                                                                    height: "40px",
+                                                                                    marginLeft: "10px",
+                                                                                    alignSelf: "start"
+                                                                                }}
                                                                                 onClick={(event) => {
                                                                                     event.stopPropagation();
                                                                                     setIsOpenEmoji(!isOpenEmoji);
                                                                                 }}
                                                                             ><EmojiEmotionsIcon/></Button>
                                                                         </Tooltip>
-                                                                        { isOpenEmoji &&  <div ref={emojiPickerRef} style={{marginTop:"10px", position:"absolute", zIndex:"10"}}>
-                                                                            <EmojiPicker width={"300px"} height={"300px"} emojiStyle={"google"}  onEmojiClick={onEmojiClick2}/>
+                                                                        {isOpenEmoji && <div ref={emojiPickerRef} style={{
+                                                                            marginTop: "10px",
+                                                                            position: "absolute",
+                                                                            zIndex: "10"
+                                                                        }}>
+                                                                            <EmojiPicker width={"300px"} height={"300px"}
+                                                                                         emojiStyle={"google"}
+                                                                                         onEmojiClick={onEmojiClick2}/>
                                                                         </div>}
 
                                                                     </label>
@@ -605,7 +633,11 @@ export function HomeScreen() {
                                                                     >
                                                                         {isXxs ?
                                                                             <PostAddIcon/> : (isSubmitting ? "Posting..." : "Post")}
-                                                                        <SendOutlinedIcon sx={{marginLeft:"10px", height:"20px", width:"20px"}}/>
+                                                                        <SendOutlinedIcon sx={{
+                                                                            marginLeft: "10px",
+                                                                            height: "20px",
+                                                                            width: "20px"
+                                                                        }}/>
                                                                     </Button>
                                                                 </label>
                                                             </div>
@@ -615,13 +647,14 @@ export function HomeScreen() {
                                             </div>
                                             <div style={styles.AdaptiveContainerForProgress}>
                                                 {280 - values.postText.length >= 0 ? (
-                                                    <LinearProgress variant="determinate" value={(values.postText.length / 280) * 100} />
+                                                    <LinearProgress variant="determinate"
+                                                                    value={(values.postText.length / 280) * 100}/>
                                                 ) : (
                                                     <p>Maximum number of characters 280</p>
                                                 )}
                                             </div>
                                         </Form>
-                                    )
+                                    );
                                 }}
                             </Formik>
                         </div>
@@ -648,7 +681,7 @@ export function HomeScreen() {
                         const onEmojiClick2 = (emojiData, event) => {
                             const emojiCodePoint = parseInt(emojiData.unified, 16); // Преобразование из шестнадцатеричного в десятичный формат
                             const emojiChar = String.fromCodePoint(emojiCodePoint);
-                            setFieldValue('postText', values.postText + emojiChar);
+                            setFieldValue("postText", values.postText + emojiChar);
                         };
 
                         return (
@@ -664,7 +697,15 @@ export function HomeScreen() {
                                             <div
                                                 style={textWrapper}>
                                                 <h2 style={darkMode ? DarkNameOfUser : NameOfUser}>{userData.name}</h2>
-                                                <h2 style={darkMode ? {...DarkNameOfUser, color: "rgb(83, 100, 113)", marginLeft: "10px"} : {...NameOfUser, color: "grey", marginLeft: "10px"}}>@ {userData.userName}</h2>
+                                                <h2 style={darkMode ? {
+                                                    ...DarkNameOfUser,
+                                                    color: "rgb(83, 100, 113)",
+                                                    marginLeft: "10px"
+                                                } : {
+                                                    ...NameOfUser,
+                                                    color: "grey",
+                                                    marginLeft: "10px"
+                                                }}>@ {userData.userName}</h2>
 
                                             </div>
                                             <Field
@@ -692,51 +733,86 @@ export function HomeScreen() {
                                                     onChange={handlePostImageChange}
                                                     style={{ display: "none" }}
                                                 />
-                                                <div style={styles.AdaptiveSendingPostButtonsContainer}  data-testid="posting_button" >
+                                                <div style={styles.AdaptiveSendingPostButtonsContainer}
+                                                     data-testid="posting_button">
                                                     <div>
                                                         <label htmlFor="post-image-input"
                                                                style={{ height: "30px", borderRadius: "20px", }}>
                                                             <Tooltip title={"Add image"}>
-                                                            <Button
-                                                                component="span"
-                                                                variant="contained"
-                                                                color="primary"
-                                                                sx={{ ...SidebarLogOutButton, marginTop: 0, padding:0, width:"40px", maxWidth:"40px", minWidth:"0px", height:"40px" }}
-                                                                disabled={!!postImage}
-                                                            ><ImageIcon/></Button>
+                                                                <Button
+                                                                    component="span"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    sx={{
+                                                                        ...SidebarLogOutButton,
+                                                                        marginTop: 0,
+                                                                        padding: 0,
+                                                                        width: "40px",
+                                                                        maxWidth: "40px",
+                                                                        minWidth: "0px",
+                                                                        height: "40px"
+                                                                    }}
+                                                                    disabled={!!postImage}
+                                                                ><ImageIcon/></Button>
                                                             </Tooltip>
                                                         </label>
                                                         <label
                                                             style={{ height: "30px", borderRadius: "20px", }}>
                                                             <Tooltip title={"Add emoji"}>
-                                                            <Button
-                                                                component="span"
-                                                                variant="contained"
-                                                                color="primary"
-                                                                sx={{ ...SidebarLogOutButton, marginTop: 0, padding:0, width:"40px", maxWidth:"40px", minWidth:"0px", height:"40px", marginLeft:"10px", alignSelf:"start" }}
-                                                                onClick={(event) => {
-                                                                    event.stopPropagation();
-                                                                    setIsOpenEmoji(!isOpenEmoji);
-                                                                }}
-                                                            ><EmojiEmotionsIcon/></Button>
+                                                                <Button
+                                                                    component="span"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    sx={{
+                                                                        ...SidebarLogOutButton,
+                                                                        marginTop: 0,
+                                                                        padding: 0,
+                                                                        width: "40px",
+                                                                        maxWidth: "40px",
+                                                                        minWidth: "0px",
+                                                                        height: "40px",
+                                                                        marginLeft: "10px",
+                                                                        alignSelf: "start"
+                                                                    }}
+                                                                    onClick={(event) => {
+                                                                        event.stopPropagation();
+                                                                        setIsOpenEmoji(!isOpenEmoji);
+                                                                    }}
+                                                                ><EmojiEmotionsIcon/></Button>
                                                             </Tooltip>
-                                                            { isOpenEmoji &&  <div ref={emojiPickerRef} style={{marginTop:"10px", position:"absolute", zIndex:"10"}}>
-                                                                <EmojiPicker width={"300px"} height={"350px"} emojiStyle={"google"}  onEmojiClick={onEmojiClick2}/>
+                                                            {isOpenEmoji && <div ref={emojiPickerRef} style={{
+                                                                marginTop: "10px",
+                                                                position: "absolute",
+                                                                zIndex: "10"
+                                                            }}>
+                                                                <EmojiPicker width={"300px"} height={"350px"}
+                                                                             emojiStyle={"google"}
+                                                                             onEmojiClick={onEmojiClick2}/>
                                                             </div>}
 
                                                         </label>
                                                     </div>
-                                                    <label htmlFor="post-image-input"  style={{ height: "30px", borderRadius: "20px", }}>
+                                                    <label htmlFor="post-image-input"
+                                                           style={{ height: "30px", borderRadius: "20px", }}>
                                                         <Button
                                                             type="submit"
                                                             variant="contained"
-                                                            sx={{ ...SidebarLogOutButton, marginTop: 0, width: "100px", height:"40px" }}
+                                                            sx={{
+                                                                ...SidebarLogOutButton,
+                                                                marginTop: 0,
+                                                                width: "100px",
+                                                                height: "40px"
+                                                            }}
                                                             fullWidth={true}
                                                             disabled={isSubmitting}
                                                             onClick={handleClick}
                                                         >
-                                                            {isSubmitting ?"Posting..." : "Post"}
-                                                            <SendOutlinedIcon sx={{marginLeft:"10px", height:"20px", width:"20px"}}/>
+                                                            {isSubmitting ? "Posting..." : "Post"}
+                                                            <SendOutlinedIcon sx={{
+                                                                marginLeft: "10px",
+                                                                height: "20px",
+                                                                width: "20px"
+                                                            }}/>
                                                         </Button>
                                                     </label>
 
@@ -748,7 +824,8 @@ export function HomeScreen() {
                                 </div>
                                 <div style={styles.AdaptiveContainerForProgress}>
                                     {280 - values.postText.length >= 0 ? (
-                                        <LinearProgress variant="determinate" value={(values.postText.length / 280) * 100} />
+                                        <LinearProgress variant="determinate"
+                                                        value={(values.postText.length / 280) * 100}/>
                                     ) : (
                                         <p>Maximum number of characters 280</p>
                                     )}

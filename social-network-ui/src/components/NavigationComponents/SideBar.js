@@ -32,9 +32,6 @@ export function SideBar() {
     const [messageCount, setMessageCount] = useState(0);
     const notificationsCount = useSelector(state => state.notificationsCount.notificationsCount);
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
-    useEffect(() => {
-        console.log(notificationsCount, " notificationsCount");
-    }, [notificationsCount]);
 
     const isXxs = useMediaQuery(theme.breakpoints.down("xxs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -66,7 +63,6 @@ export function SideBar() {
 
     const onMessageUnread = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        console.log("ALOOOOOHAAA");
         setMessageCount(payloadData.unread);
     };
 
@@ -75,15 +71,9 @@ export function SideBar() {
         dispatch(setNotificationsCount(payloadData.unreadNotifications));
     };
 
-    useEffect(() => {
-        console.log(messageCount, "messageCountFromSidebarUseEffect");
-    }, [messageCount]);
 
     useEffect(() => {
         try {
-            // if (location.pathname === "/notifications") {
-            //     dispatch(setNotificationsCount(0));
-            // }
             const socket = new SockJS(`${apiUrl}/websocket`);
             stompClient = Stomp.over(socket);
 
@@ -95,7 +85,7 @@ export function SideBar() {
             };
 
             const onError = (err) => {
-                console.log(err);
+                console.warn(err);
             };
 
             stompClient?.connect({}, onConnected, onError);
