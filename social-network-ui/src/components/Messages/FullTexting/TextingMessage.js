@@ -19,8 +19,6 @@ export function TextingMessage({ sender, receiver, selectedMessage2 }) {
             month: "long",
             day: "numeric",
             year: "numeric",
-            hour: "numeric",
-            minute: "numeric"
         };
         const formattedDate = date.toLocaleDateString("en-US", options);
 

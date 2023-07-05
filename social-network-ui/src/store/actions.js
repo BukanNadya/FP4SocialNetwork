@@ -161,6 +161,11 @@ export const setUserPostToPostsArr = (post) => ({
     payload: post
 });
 
+export const setNotificationsCount = (count) => ({
+    type: "SET_NOTIFICATIONS_COUNT",
+    payload: count,
+});
+
 export const setPosts = (posts) => ({
     type: SET_POSTS,
     payload: posts,

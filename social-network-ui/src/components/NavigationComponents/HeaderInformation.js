@@ -29,7 +29,7 @@ import Badge from "@mui/material/Badge";
 import { Header, HeaderInformationParagraph } from "./NavigationStyles";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { setClickedInboxFalse, setUserToken } from "../../store/actions";
+import { setClickedInboxFalse, setUserToken, setNotificationsCount } from "../../store/actions";
 import { CapybaraSvgIcon } from "../SvgIcons/CapybaraSvgIcon";
 import { useEffect } from "react";
 import SockJS from "sockjs-client";
@@ -39,7 +39,6 @@ import { ArrowBack } from "@mui/icons-material";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 
 export function HeaderInformation() {
-    const [notificationCount, setNotificationCount] = useState(0);
     const [messageCount, setMessageCount] = useState(0);
     const clicked = useSelector((state) => state.inboxOrTexting.click);
     const location = useLocation();
@@ -56,6 +55,7 @@ export function HeaderInformation() {
 
     const [isOpen, setIsOpen] = useState(false);
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
+    const notificationsCount = useSelector(state => state.notificationsCount.notificationsCount);
 
     const isXxs = useMediaQuery(theme.breakpoints.between("xxs", "xs"));
     const isXs = useMediaQuery(theme.breakpoints.between("xs", "sm"));
@@ -74,7 +74,7 @@ export function HeaderInformation() {
                 headers: { "Content-Type": "application/json" }
             });
             let notificationData = await notificationInformation.json();
-            setNotificationCount(notificationData.unreadNotifications);
+            dispatch(setNotificationsCount(notificationData.unreadNotifications));
 
             let messageInformation = await fetch(`${apiUrl}/api/${userId}/unread`);
             let messageData = await messageInformation.json();
@@ -357,7 +357,7 @@ export function HeaderInformation() {
 
     useEffect(() => {
         if (location.pathname === "/notifications") {
-            setNotificationCount(0);
+            dispatch(setNotificationsCount(0));
         }
 
         let stompClient;
@@ -419,7 +419,7 @@ export function HeaderInformation() {
 
     const onPrivateMessage = (payload) => {
         let payloadData = JSON.parse(payload.body);
-        setNotificationCount(payloadData.unreadNotifications);
+        dispatch(setNotificationsCount(payloadData.unreadNotifications));
         console.log(payloadData, "unreadNotificationsFromSidebar");
     };
 
@@ -492,9 +492,9 @@ export function HeaderInformation() {
                     </SvgIcon>
                 ),
                 text: "Notifications",
-                badgeContent: notificationCount,
+                badgeContent: notificationsCount,
                 color: "error",
-                onClick: () => setNotificationCount(0)
+                onClick: () => dispatch(setNotificationsCount(0))
             },
             {
                 to: "/search",

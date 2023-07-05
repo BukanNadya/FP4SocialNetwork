@@ -98,20 +98,35 @@ export const InboxMessage = ({
     const darkMode = useSelector(state => state.userData.userMode.darkMode);
     const postDate = () => {
         const date2 = new Date(date);
-        const diffDays = differenceInDays(new Date(), date2);
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        if (diffDays < 1) {
-            return formatDistanceToNow(date2, { addSuffix: true });
-        } else if (diffDays < 365) {
-            return formatDateWithTimezone(date2, "MMM d");
-        } else {
-            return formatDateWithTimezone(date2, "MMM d, yyyy");
-        }
+        const options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+            timeZone: userTimezone,
+            locale: "en-US", // Указываем полный идентификатор языка
+        };
+
+        const formatter = new Intl.DateTimeFormat(undefined, options);
+        const parts = formatter.formatToParts(date2);
+        const formattedDate = parts.map(part => {
+            if (part.type === "literal") {
+                return part.value;
+            }
+            return part.value.toLowerCase();
+        }).join("");
+
+        const currentDate = new Date();
+        const timeDiffInMinutes = Math.round((currentDate - date2) / (1000 * 60));
+
+        return formattedDate;
+
     };
 
     const formatDateWithTimezone = (date, format) => {
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const options = { timeZone: userTimezone, year: 'numeric', month: '2-digit', day: '2-digit' };
+        const options = { timeZone: userTimezone, year: "numeric", month: "2-digit", day: "2-digit" };
 
         const formattedDate = date.toLocaleString(undefined, options);
         return formattedDate;
@@ -137,7 +152,7 @@ export const InboxMessage = ({
 };
 
 InboxMessage.propTypes = {
-    clickedMessages:PropTypes.any,
+    clickedMessages: PropTypes.any,
     inboxId: PropTypes.any,
     selectedMessage: PropTypes.any,
     unreadMessage: PropTypes.number,

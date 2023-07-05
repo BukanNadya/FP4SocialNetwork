@@ -11,9 +11,10 @@ import { PageDisplaing } from "./Reducers/PageDisplaing";
 import { likeReducer } from "./Reducers/likeReducer";
 import { CommentsReducer } from "./Reducers/CommentsReducer";
 import { messageReducer } from "./Reducers/messageReducer";
-import {messageSearchReducer} from "./Reducers/messageSearchReducer";
+import { messageSearchReducer } from "./Reducers/messageSearchReducer";
 import { PageForMessaging } from "./Reducers/PageForMessaging";
 import { inboxClickReducer } from "./Reducers/inboxClickReducer";
+import { NotificationCount } from "./Reducers/NotificationCountReducer";
 
 const rootReducer = combineReducers({
     loginUserData: userDataLoginReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     messages: messageReducer,
     pageCountMessage: PageForMessaging,
     inboxOrTexting: inboxClickReducer,
+    notificationsCount: NotificationCount
 });
 
 export default rootReducer;

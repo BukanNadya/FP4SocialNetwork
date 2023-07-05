@@ -431,29 +431,28 @@ export const Post = ({
         const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         const options = {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
             timeZone: userTimezone,
-            locale: 'en-US',
+            locale: "en-US", // Указываем полный идентификатор языка
         };
 
-        const formattedDate = new Intl.DateTimeFormat(undefined, options).format(date);
+        const formatter = new Intl.DateTimeFormat(undefined, options);
+        const parts = formatter.formatToParts(date);
+        const formattedDate = parts.map(part => {
+            if (part.type === "literal") {
+                return part.value;
+            }
+            return part.value.toLowerCase();
+        }).join("");
+
         const currentDate = new Date();
         const timeDiffInMinutes = Math.round((currentDate - date) / (1000 * 60));
 
-        if (timeDiffInMinutes < 1) {
-            return 'less than a minute ago';
-        } else if (timeDiffInMinutes < 60) {
-            return `${timeDiffInMinutes} minutes ago`;
-        } else {
-            return formattedDate;
-        }
+        return formattedDate;
+
     };
-
-
 
     return (
         <Card sx={styles.AdaptivePostCard} data-testid={`postId_${postId}`}>
@@ -463,9 +462,13 @@ export const Post = ({
                     <Avatar alt={userName} src="#"/>}
                 <div style={PostTextWrapper}>
                     <Typography variant="subtitle1" component="div"
-                                sx={darkMode ? {...DarkUserNameParagraph, maxWidth:"300px"} : {...userNameParagraph, maxWidth:"300px"}}
+                                sx={darkMode ? { ...DarkUserNameParagraph, maxWidth: "300px" } : {
+                                    ...userNameParagraph,
+                                    maxWidth: "300px"
+                                }}
                                 onClick={() => toAnotherUserPage(userIdWhoSendPost)}>
-                        {name} <span style={{ color: darkMode ? "rgb(139, 152, 165)" : "#5b7083" }}>@{userName}</span> · {postDate()}
+                        {name} <span
+                        style={{ color: darkMode ? "rgb(139, 152, 165)" : "#5b7083" }}>@{userName}</span> · {postDate()}
                     </Typography>
                     <div data-testid="user_post_text">
                         <Typography variant="body1" component="div" mt={1} sx={styles.AdaptiveText}>{text}</Typography>
@@ -528,32 +531,53 @@ export const Post = ({
             </div>
             <CardActions sx={{ padding: "20px 20px" }}>
                 <Tooltip title={"See comments"} data-testid={"open_comments_button"}>
-                    <IconButton onClick={handleCommentToggle} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
-                        <ChatBubbleOutline fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{postCommentCount}</Typography>
+                    <IconButton onClick={handleCommentToggle}
+                                sx={{ "&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" } }}>
+                        <ChatBubbleOutline fontSize="small"
+                                           sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
+                        <Typography variant="body2" sx={{
+                            marginLeft: "5px",
+                            color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)"
+                        }}>{postCommentCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={isReposted ? "Undo repost" : "Repost"}>
-                    <IconButton onClick={sendRepost} data-testid={"repost_button"} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
-                        {isReposted ? <Repeat data-testid={"repost_post"} fontSize="small" htmlColor={ "rgb(0, 186, 124)" }/> : <Repeat data-testid={"repost_post"} fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
-                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}
+                    <IconButton onClick={sendRepost} data-testid={"repost_button"}
+                                sx={{ "&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" } }}>
+                        {isReposted ?
+                            <Repeat data-testid={"repost_post"} fontSize="small" htmlColor={"rgb(0, 186, 124)"}/> :
+                            <Repeat data-testid={"repost_post"} fontSize="small"
+                                    sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
+                        <Typography variant="body2" sx={{
+                            marginLeft: "5px",
+                            color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)"
+                        }}
                                     data-testid={"repost_count"}>{repostCountView}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={"Views"}>
-                    <IconButton sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
+                    <IconButton
+                        sx={{ "&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" } }}>
                         <BarChartIcon sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>
-                        <Typography variant="body2" sx={{ marginLeft: "5px", color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}>{viewCount}</Typography>
+                        <Typography variant="body2" sx={{
+                            marginLeft: "5px",
+                            color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)"
+                        }}>{viewCount}</Typography>
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={like ? "Undo like" : "Like"}>
-                    <IconButton onClick={addLikeHandle} sx={{"&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" }}}>
-                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> : <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small" sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
+                    <IconButton onClick={addLikeHandle}
+                                sx={{ "&:hover": { backgroundColor: darkMode ? "rgba(247, 249, 249, 0.1)" : "rgba(225, 225, 225, 0.5)" } }}>
+                        {like ? <Favorite fontSize="small" sx={{ color: "red" }} data-testid={"red_like_icon"}/> :
+                            <FavoriteBorder data-testid={"icon_button_add_like"} fontSize="small"
+                                            sx={{ color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}/>}
                     </IconButton>
                 </Tooltip>
-                <Typography onClick={()=>{
-                    navigate(`/likes/${postId}`)
-                }} variant="body2" sx={{...userLikeCount, color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)"}} data-testid={"like_count"}>{likeCount}</Typography>
+                <Typography onClick={() => {
+                    navigate(`/likes/${postId}`);
+                }} variant="body2"
+                            sx={{ ...userLikeCount, color: darkMode ? "rgb(247, 249, 249)" : "rgba(0, 0, 0, 0.54)" }}
+                            data-testid={"like_count"}>{likeCount}</Typography>
             </CardActions>
             {isCommentOpen &&
                 <Comments comments={comments} isLoadingComments={isLoadingComments}
