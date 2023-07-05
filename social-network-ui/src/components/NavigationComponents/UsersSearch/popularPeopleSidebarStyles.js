@@ -83,7 +83,7 @@ export const darkUserNameParagraph = {
     fontFamily: "'Lato', sans-serif",
     fontSize: "15px",
     fontWeight: "400",
-    textDecoration: "underline",
+    textDecoration: "underline rgb(113, 118, 123)",
     cursor: "pointer"
 };
 
@@ -98,6 +98,7 @@ export const darkUserNickParagraph = {
     fontFamily: "'Lato', sans-serif",
     fontSize: "13px",
     fontWeight: "400",
+    textDecoration: "underline rgb(113, 118, 123)",
 };
 
 export const userNickLink = {
@@ -109,6 +110,7 @@ export const darkUserNickLink = {
     color: "rgb(247, 249, 249)", fontFamily: "'Lato', sans-serif",
     fontSize: "15px",
     fontWeight: "400",
+    textDecoration: "underline rgb(113, 118, 123)",
 };
 
 export const customButton = {
