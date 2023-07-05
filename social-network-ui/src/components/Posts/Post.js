@@ -111,6 +111,7 @@ export const Post = ({
     const xxsStyles = {
         AdaptiveUserPhoto: {
             width: "100%",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "100vw",
@@ -144,6 +145,7 @@ export const Post = ({
     const xsStyles = {
         AdaptiveUserPhoto: {
             width: "100%",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "100vw",
@@ -178,6 +180,7 @@ export const Post = ({
         AdaptiveUserPhoto: {
             width: "430px",
             marginRight: "130px",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "470px",
@@ -212,7 +215,8 @@ export const Post = ({
     const mdStyles = {
         AdaptiveUserPhoto: {
             width: "450px",
-            margin: "0 auto"
+            margin: "0 auto",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "600px",
@@ -247,7 +251,8 @@ export const Post = ({
     const lgStyles = {
         AdaptiveUserPhoto: {
             width: "450px",
-            margin: "0 auto"
+            margin: "0 auto",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "600px",
@@ -282,7 +287,8 @@ export const Post = ({
     const xlStyles = {
         AdaptiveUserPhoto: {
             width: "450px",
-            margin: "0 auto"
+            margin: "0 auto",
+            borderRadius: "20px",
         },
         AdaptivePostCard: {
             width: "600px",

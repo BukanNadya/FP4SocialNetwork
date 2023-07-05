@@ -270,8 +270,9 @@ export function SearchPage() {
                                     "&.Mui-disabled": {
                                         color: "white",
                                         opacity: 1,
+                                        boxShadow: "0px 3px 1px -2px rgba(255,255,255,0.5), 0px 2px 2px 0px rgba(255,255,255,0.54), 0px 1px 5px 0px rgba(255,255,255,0.52)",
                                     },
-                                }}>You</Button> : <ToggleButton href="#" width={styles.FollowButtonWidth} height="30px"
+                                }}>Me</Button> : <ToggleButton href="#" width={styles.FollowButtonWidth} height="30px"
                                                                 searchId={`${user.userId}`}/>}
                             </animated.li>
                         ))}

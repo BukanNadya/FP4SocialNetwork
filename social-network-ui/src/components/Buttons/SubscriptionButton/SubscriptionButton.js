@@ -23,6 +23,7 @@ export function SubscriptionButton (props) {
                     mb: "20px",
                     mt: "12px", background: "#000000",
                     boxShadow: "0px 3px 1px -2px rgba(255,255,255,0.5), 0px 2px 2px 0px rgba(255,255,255,0.54), 0px 1px 5px 0px rgba(255,255,255,0.52)",
+                    // boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.5), 0px 2px 2px 0px rgba(0,0,0,0.54), 0px 1px 5px 0px rgba(0,0,0,0.52)",
                     transition: "0.7s", "&:hover": {
                         transition: "0.7s",
                         backgroundColor: "#ffffff",

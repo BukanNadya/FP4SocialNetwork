@@ -103,6 +103,9 @@ export const DarkAccordionStyle = {
     "& .MuiSvgIcon-root": {
         color: "rgba(255, 255, 255, 0.85)",
     },
+    "& .MuiOutlinedInput-input": {
+        color: "rgba(255, 255, 255, 0.85)",
+    },
 }
 
 export const StyledCheckbox = {

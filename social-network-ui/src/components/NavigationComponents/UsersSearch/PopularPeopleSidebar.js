@@ -155,7 +155,8 @@ export function PopularPeopleSidebar() {
                                     { idUser == user.userId ? <Button disabled={true} sx={{...StyledBlackButton , width:`${styles.FollowButtonWidth}`, height:"30px", marginTop:0, color:"white",  '&.Mui-disabled': {
                                             color: "white",
                                             opacity: 1,
-                                        },}}>You</Button> : <ToggleButton href="#"  width={styles.FollowButtonWidth} height="30px" searchId={`${user.userId}`}/>}
+                                            boxShadow: "0px 3px 1px -2px rgba(255,255,255,0.5), 0px 2px 2px 0px rgba(255,255,255,0.54), 0px 1px 5px 0px rgba(255,255,255,0.52)",
+                                        },}}>Me</Button> : <ToggleButton href="#"  width={styles.FollowButtonWidth} height="30px" searchId={`${user.userId}`}/>}
                             </li>
                         ))}
                     </ul> : <Typography sx={emptyArrParagraph}>we have no ideas to show</Typography>

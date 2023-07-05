@@ -55,8 +55,8 @@ export function EditProfile (props) {
     const xxsStyles = {
         BoxStyle: darkMode ? {...DarkStyledBox, width:"100vw", height: "100vh", borderRadius: "0"} : {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
         FormStyle: darkMode ? {...DarkStyledForm, width: "auto"} : {...StyledForm, width: "auto"},
-        Form: {width: "80%"},
-        FieldStyle: {width: "100%", margin: "20px 0",
+        Form: {width: "100%"},
+        FieldStyle: {width: "80%", margin: "20px 0",
             "& .MuiOutlinedInput-root": {
                 background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
                 color: darkMode ? "rgb(247, 249, 249)" : "#000000",
@@ -78,8 +78,8 @@ export function EditProfile (props) {
     const xsStyles = {
         BoxStyle: darkMode ? {...DarkStyledBox, width:"100vw", height: "100vh", borderRadius: "0"} : {...StyledBox, width:"100vw", height: "100vh", borderRadius: "0"},
         FormStyle: darkMode ? {...DarkStyledForm, width: "auto"} : {...StyledForm, width: "auto"},
-        Form: {width: "80%"},
-        FieldStyle: {width: "100%", margin: "20px 0",
+        Form: {width: "100%"},
+        FieldStyle: {width: "80%", margin: "20px 0",
             "& .MuiOutlinedInput-root": {
                 background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
                 color: darkMode ? "rgb(247, 249, 249)" : "#000000",
@@ -327,6 +327,13 @@ export function EditProfile (props) {
                                         name="month"
                                         labelId="month-label"
                                         label={"month"}
+                                        sx={{
+                                            "& .MuiMenu-paper": {
+                                                background: darkMode ? "rgb(39, 51, 64)" : "#ffffff",
+                                                color: darkMode ? "rgb(247, 249, 249)" : "#000000",
+                                            },
+
+                                    }}
                                     >
                                         <MenuItem value="12">December</MenuItem>
                                         <MenuItem value="1">January</MenuItem>

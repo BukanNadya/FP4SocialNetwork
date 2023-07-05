@@ -20,7 +20,7 @@ import {
     SidebarTypography,
     SidebarLogOutButton,
     SidebarIconBackground,
-    SidebarFabActive, SvgIconStyles, DarkHeader
+    SidebarFabActive, SvgIconStyles, DarkHeader, DarkSidebarFab, DarkSidebarIconBackground
 } from "./NavigationStyles";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useDispatch, useSelector } from "react-redux";
@@ -568,7 +568,7 @@ export function HeaderInformation() {
                 <Link to={component.to} key={index} style={{ textDecoration: "none", }}>
                     <Fab variant="extended"
                          onClick={handleClick}
-                         sx={{ ...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: "20px" }}>
+                         sx={darkMode ? {...DarkSidebarFab, marginBottom: "20px"} : { ...pathname === component.to ? SidebarFabActive : SidebarFab, marginBottom: "20px" }}>
                         {icon}
                         <Typography variant="h6" component="div" sx={styles.SidebarTypography}>
                             {component.text}
@@ -593,10 +593,14 @@ export function HeaderInformation() {
                                 open={state[anchor]}
                                 onClose={toggleDrawer(anchor, false)}
                                 onOpen={toggleDrawer(anchor, true)}
-                                sx={{ backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#F5F8FA" }}
+                                sx={{ "& .MuiDrawer-paper": {backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff"}}}
                             >
                                 <Link to="/home" variant="contained">
-                                    <Fab variant="extended" sx={{ ...SidebarIconBackground, marginLeft: "40px" }}>
+                                    <Fab variant="extended" sx={
+                                        darkMode ? {...DarkSidebarIconBackground, marginLeft: "40px"}
+                                            :
+                                        { ...SidebarIconBackground, marginLeft: "40px" }
+                                    }>
                                         <CapybaraSvgIcon/>
                                     </Fab>
                                 </Link>
