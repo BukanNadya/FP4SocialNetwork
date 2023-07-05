@@ -6,7 +6,7 @@ setup("Login via UI modal", async ({ page }) => {
     await page.getByText("Log in").click();
     await page.locator("input[name=\"email\"]").fill("slonotop2103@gmail.com");
     await page.getByText("Next").click();
-    await page.getByTestId("password_modal_input").locator("input[name=\"password\"]").fill("241120Na");
+    await page.getByTestId("password_modal_input").locator("input[name=\"password\"]").fill("241120NaN");
     await page.getByTestId("log_in_button_modal").click();
     await page.waitForURL(`${BASE_URL}/home`);
     await page.waitForResponse((req) => req.url().endsWith("/unread"));
