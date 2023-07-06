@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {SvgIcon, Button } from "@mui/material";
+import {SvgIcon, Button, Avatar} from "@mui/material";
 import {BgPhotoStyle, PhotoStyle, svgStyle} from "../EditProfileStyles";
 import PropTypes from "prop-types";
 
@@ -41,7 +41,7 @@ export function InputPhoto ({onImageUpload, ...props }) {
         <div style={BgPhotoStyle}>
             {selectedFile ?
                 // <img src={props.background ? URL.createObjectURL(selectedFile.file): `data:image/png;base64,${background}`} alt="Selected" style={PhotoStyle} />
-                <img src={props.background ? background : URL.createObjectURL(selectedFile.file)} alt="Selected" style={PhotoStyle} />
+                <img src={URL.createObjectURL(selectedFile.file)} alt="Selected" style={PhotoStyle}/>
                 :
                 false
             }

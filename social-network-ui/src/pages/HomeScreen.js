@@ -476,7 +476,7 @@ export function HomeScreen() {
             {isXs || isXxs ? <>
                     <Modal open={open} onClose={() => setOpen(false)}
                            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <div style={{ backgroundColor: "white", width: "80vw", padding: "15px 15px" }}>
+                        <div style={{ backgroundColor: darkMode ? "rgb(21, 32, 43)" : "#ffffff", width: "80vw", padding: "15px 15px" }}>
                             <Formik
                                 initialValues={{ postText: "" }}
                                 validationSchema={

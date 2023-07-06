@@ -39,6 +39,22 @@ export const noticesButton = {
         backgroundColor: "rgba(15, 20, 25, 0.15)",
     },
 }
+export const DarkNoticesButton = {
+    borderRadius: "50%",
+    border: "1px solid #000000",
+    backgroundColor: "#000000",
+    boxShadow: "none",
+    padding: "0",
+    marginRight: "20px",
+    marginBottom: "6px",
+    minWidth: "0",
+    width: "40px",
+    height: "40px",
+    "&:hover": {
+        transition: "0.7s",
+        backgroundColor: "rgb(39, 51, 64)",
+    },
+}
 export const BgImgStyle = {
     width: "100%",
     height: "200px",
