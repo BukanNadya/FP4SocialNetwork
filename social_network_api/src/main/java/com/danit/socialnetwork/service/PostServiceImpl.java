@@ -99,7 +99,7 @@ public class PostServiceImpl implements PostService {
       if (photoFileByteArray != null && photoFileByteArray.length != 0) {
         return postRepository.save(Post.from(thePostDtoSave, user,
             imageHandlingConf.uploadImage(photoFileByteArray,
-                "production")));
+                "production", 800, 500)));
       }
       return postRepository.save(Post.from(thePostDtoSave, user, null));
     }

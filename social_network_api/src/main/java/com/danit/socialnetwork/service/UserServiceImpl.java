@@ -247,7 +247,7 @@ public class UserServiceImpl implements UserService {
         imageHandlingConf.deleteFolder(folderProfileName, oldProfileImageUrl);
         imageHandlingConf.createFolder(folderProfileName);
         updateUser.setProfileImageUrl(imageHandlingConf
-            .uploadImage(profileImage, folderProfileName));
+            .uploadImage(profileImage, folderProfileName, 200, 200));
       } else if (profileImage == null && profileImageString == null) {
         updateUser.setProfileImageUrl(null);
       }
@@ -256,7 +256,7 @@ public class UserServiceImpl implements UserService {
         imageHandlingConf.deleteFolder(folderProfileBackgroundName, oldProfileBackgroundImageUrl);
         imageHandlingConf.createFolder("profile_background_" + userId);
         updateUser.setProfileBackgroundImageUrl(imageHandlingConf
-            .uploadImage(profileBackgroundImage, folderProfileBackgroundName));
+            .uploadImage(profileBackgroundImage, folderProfileBackgroundName, 800, 500));
       } else if ((profileBackgroundImage == null && profileBackgroundImageString == null)
           || (profileBackgroundImage != null && profileBackgroundImage.length == 0)) {
         String oldProfileBackgroundImageUrl = userFromDb.get().getProfileBackgroundImageUrl();

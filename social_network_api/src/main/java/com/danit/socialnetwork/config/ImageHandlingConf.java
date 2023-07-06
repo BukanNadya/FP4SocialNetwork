@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.imageio.ImageIO;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
@@ -36,15 +42,46 @@ public class ImageHandlingConf {
 
   /*The method writes the picture to the cloud storage to the specified folder
  ("local" or "production") and returns the url.*/
-  public String uploadImage(byte[] imageBytes, String folderName) {
+
+  public String uploadImage(byte[] imageBytes, String folderName, int maxWidth, int maxHeight) {
     if (imageBytes != null) {
       try {
+        ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+        BufferedImage originalImage = ImageIO.read(bis);
+
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+        int newWidth = width;
+        int newHeight = height;
+        if (width > maxWidth || height > maxHeight) {
+          double aspectRatio = (double) width / height;
+          if (aspectRatio > 1) {
+            newWidth = maxWidth;
+            newHeight = (int) (newWidth / aspectRatio);
+          } else {
+            newHeight = maxHeight;
+            newWidth = (int) (newHeight * aspectRatio);
+          }
+        }
+
+        Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(scaledImage, 0, 0, null);
+        g.dispose();
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "jpg", bos);
+        byte[] compressedImageBytes = bos.toByteArray();
+
         Map<String, Object> uploadParams = ObjectUtils.asMap(
             "folder", folderName,
             "resource_type", "image"
         );
         Map<String, Object> uploadResult = getImageHandlingConf(cloudName, apiKey, apiSecret)
-            .uploader().upload(imageBytes, uploadParams);
+            .uploader().upload(compressedImageBytes, uploadParams);
+
         return uploadResult.get("url").toString();
       } catch (IOException e) {
         log.debug("Photo not found");

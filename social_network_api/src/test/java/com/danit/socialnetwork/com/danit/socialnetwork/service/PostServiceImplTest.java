@@ -134,7 +134,7 @@ public class PostServiceImplTest {
 
     when(userRepository.findById(postDtoSave.getUserId())).thenReturn(Optional.of(user));
     when(postRepository.save(any(Post.class))).thenReturn(tempPost);
-    when(imageHandlingConf.uploadImage(photoFileByteArray, "production")).thenReturn("photoLink");
+    when(imageHandlingConf.uploadImage(photoFileByteArray, "production", 800, 500)).thenReturn("photoLink");
 
     Post post = postService.savePost(postDtoSave);
 
