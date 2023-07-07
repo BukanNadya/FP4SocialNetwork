@@ -6,8 +6,6 @@ import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.PostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.model.PostComment;
-import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.repository.PostCommentRepository;
 import com.danit.socialnetwork.repository.PostLikeRepository;
 import com.danit.socialnetwork.repository.PostRepository;
@@ -19,12 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -82,7 +77,7 @@ public class PostServiceImplTest {
     when(postRepository.findAllPostsFromToFollowOneRequest(user.getUserId(), offset, pageSize)).thenReturn(testList);
 
     List<PostDtoResponse> result = postService.getAllPostsFromToFollowWithNativeQuery(
-        user.getUserId(), 0);
+        user.getUserId(), 0, "Europe/Kiev");
     Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
     Assertions.assertEquals(result.get(1).getWrittenText(), objects2[3]);
     Assertions.assertEquals(result.get(0).getUsername(), objects1[6]);
@@ -108,7 +103,7 @@ public class PostServiceImplTest {
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
     when(postRepository.findAll(offset, pageSize)).thenReturn(testList);
-    List<PostDtoResponse> result = postService.getAllPosts(0);
+    List<PostDtoResponse> result = postService.getAllPosts(0, "Europe/Kiev");
     Assertions.assertEquals(result.get(0).getWrittenText(), objects1[3]);
     Assertions.assertEquals(result.get(1).getName(), objects2[7]);
     Assertions.assertEquals(2, result.toArray().length);
@@ -134,7 +129,8 @@ public class PostServiceImplTest {
 
     when(userRepository.findById(postDtoSave.getUserId())).thenReturn(Optional.of(user));
     when(postRepository.save(any(Post.class))).thenReturn(tempPost);
-    when(imageHandlingConf.uploadImage(photoFileByteArray, "production", 800, 500)).thenReturn("photoLink");
+    when(imageHandlingConf.uploadImage(photoFileByteArray, "production", 800, 500))
+        .thenReturn("photoLink");
 
     Post post = postService.savePost(postDtoSave);
 
@@ -160,7 +156,7 @@ public class PostServiceImplTest {
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
     when(postRepository.findAllByUserIdOneQuery(1, offset, pageSize)).thenReturn(testList);
-    List<PostDtoResponse> result = postService.getAllOwnPosts(1, 0);
+    List<PostDtoResponse> result = postService.getAllOwnPosts(1, 0, "Europe/Kiev");
 
     Assertions.assertEquals(objects1[3], result.get(0).getWrittenText());
     Assertions.assertEquals(objects2[7], result.get(1).getName());
@@ -184,7 +180,7 @@ public class PostServiceImplTest {
     List<Object[]> testList = Arrays.asList(objects1, objects2);
 
     when(postRepository.findAllByUserIdLikedOneQuery(1, offset, pageSize)).thenReturn(testList);
-    List<PostDtoResponse> result = postService.getAllLikedPosts(1, 0);
+    List<PostDtoResponse> result = postService.getAllLikedPosts(1, 0, "Europe/Kiev");
     Assertions.assertEquals(objects1[3], result.get(0).getWrittenText());
     Assertions.assertEquals(objects2[7], result.get(1).getName());
     Assertions.assertEquals(2, result.toArray().length);
@@ -209,7 +205,8 @@ public class PostServiceImplTest {
 
     when(postRepository.findAllPostsAndRepostsByUserIdAsPostOneQuery(1, offset, pageSize)).thenReturn(testList);
 
-    List<PostDtoResponse> result = postService.getAllPostsAndRepostsByUserId(1, 0);
+    List<PostDtoResponse> result = postService.getAllPostsAndRepostsByUserId(1, 0,
+        "Europe/Kiev");
 
     Assertions.assertEquals(objects2[7], result.get(1).getName());
     Assertions.assertEquals(2, result.toArray().length);

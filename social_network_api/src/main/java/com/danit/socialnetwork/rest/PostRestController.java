@@ -37,39 +37,50 @@ public class PostRestController {
   @GetMapping(path = "/posts")
   public List<PostDtoResponse> getAllPostsFromFollowing(@RequestParam(name = "userId",
       defaultValue = "0") @Positive Integer userFollowingId, @RequestParam(name = "page", defaultValue = "0")
-                                                        @Positive Integer page) {
+                                                        @Positive Integer page,
+                                                        @RequestParam(value = "time_zone",
+                                                            defaultValue = "Europe/London") String userTimeZone) {
     if (userFollowingId == 0) {
-      return postService.getAllPosts(page);
+      return postService.getAllPosts(page, userTimeZone);
     }
-    return postService.getAllPostsFromToFollowWithNativeQuery(userFollowingId, page);
+    return postService.getAllPostsFromToFollowWithNativeQuery(userFollowingId, page, userTimeZone);
   }
 
   /*Method returns  all posts from users*/
   @GetMapping(path = "/posts/explorer")
   public List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(@RequestParam(name = "userId",
       defaultValue = "0") @Positive Integer userId, @RequestParam(name = "page", defaultValue = "0")
-                                                                    @Positive Integer page) {
+                                                                    @Positive Integer page,
+                                                                    @RequestParam(value = "time_zone",
+                                                                        defaultValue = "Europe/London")
+                                                                    String userTimeZone) {
     if (userId == 0) {
-      return postService.getAllPosts(page);
+      return postService.getAllPosts(page, userTimeZone);
     }
-    return postService.getAllPostsWithShowingRepostByUserId(userId, page);
+    return postService.getAllPostsWithShowingRepostByUserId(userId, page, userTimeZone);
   }
 
 
   /*Method save a new post*/
   @PostMapping(path = "/posts")
-  public ResponseEntity<PostDtoResponse> addPost(@Valid @RequestBody PostDtoSave thePostDtoSave) {
+  public ResponseEntity<PostDtoResponse> addPost(@Valid @RequestBody PostDtoSave thePostDtoSave,
+                                                 @RequestParam(value = "time_zone",
+                                                     defaultValue = "Europe/London")
+                                                 String userTimeZone) {
     Post dbPost = postService.savePost(thePostDtoSave);
-    return new ResponseEntity<>(PostDtoResponse.from(dbPost), HttpStatus.CREATED);
+    return new ResponseEntity<>(PostDtoResponse.from(dbPost, userTimeZone), HttpStatus.CREATED);
   }
 
   /*Method returns all posts done by user*/
   @GetMapping(path = "/posts/{userId}")
   public List<PostDtoResponse> getAllOwnPosts(@PathVariable("userId") @Positive Integer userId,
                                               @RequestParam(name = "page", defaultValue = "0")
-                                              @Positive Integer page) {
+                                              @Positive Integer page,
+                                              @RequestParam(value = "time_zone",
+                                                  defaultValue = "Europe/London")
+                                              String userTimeZone) {
 
-    return postService.getAllOwnPosts(userId, page);
+    return postService.getAllOwnPosts(userId, page, userTimeZone);
   }
 
 
@@ -77,8 +88,11 @@ public class PostRestController {
   @GetMapping(path = "/posts/liked/{userId}")
   public List<PostDtoResponse> getAllLikedPosts(@PathVariable("userId") @Positive Integer userId,
                                                 @RequestParam(name = "page", defaultValue = "0")
-                                                @Positive Integer page) {
-    return postService.getAllLikedPosts(userId, page);
+                                                @Positive Integer page,
+                                                @RequestParam(value = "time_zone",
+                                                    defaultValue = "Europe/London")
+                                                String userTimeZone) {
+    return postService.getAllLikedPosts(userId, page, userTimeZone);
   }
 
   /*Method returns all posts and reposts in descending order by time when
@@ -87,19 +101,25 @@ public class PostRestController {
   public List<PostDtoResponse> getAllPostsAndRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                              @Positive Integer userId,
                                                              @RequestParam(name = "page", defaultValue = "0")
-                                                             @Positive Integer page) {
+                                                             @Positive Integer page,
+                                                             @RequestParam(value = "time_zone",
+                                                                 defaultValue = "Europe/London")
+                                                             String userTimeZone) {
     if (userId == 0) {
       return new ArrayList<>();
     }
-    return postService.getAllPostsAndRepostsByUserId(userId, page);
+    return postService.getAllPostsAndRepostsByUserId(userId, page, userTimeZone);
 
   }
 
   @GetMapping("/post/{postId}")
   public PostDtoResponse getPostByPostId(@PathVariable("postId") @Positive Integer postId,
-                                         @Positive @RequestParam(name = "userId") Integer userId) {
+                                         @Positive @RequestParam(name = "userId") Integer userId,
+                                         @RequestParam(value = "time_zone",
+                                             defaultValue = "Europe/London")
+                                         String userTimeZone) {
 
-    return postService.getPostByPostId(postId, userId);
+    return postService.getPostByPostId(postId, userId, userTimeZone);
   }
 
   @PutMapping(path = "/post/view")
@@ -110,9 +130,12 @@ public class PostRestController {
 
   @DeleteMapping("/post")
   public ResponseEntity<PostDtoResponse> deletePost(@RequestParam(name = "postId")
-                                                               @Positive @NotEmpty Integer postId) {
+                                                    @Positive @NotEmpty Integer postId,
+                                                    @RequestParam(value = "time_zone",
+                                                        defaultValue = "Europe/London")
+                                                    String userTimeZone) {
     Post post = postService.deletePost(postId);
-    return new ResponseEntity<>(PostDtoResponse.from(post), HttpStatus.OK);
+    return new ResponseEntity<>(PostDtoResponse.from(post, userTimeZone), HttpStatus.OK);
   }
 
 }

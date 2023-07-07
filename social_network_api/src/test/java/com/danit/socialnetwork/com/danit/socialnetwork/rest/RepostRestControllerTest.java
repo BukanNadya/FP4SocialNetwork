@@ -1,12 +1,9 @@
 package com.danit.socialnetwork.rest;
 
-import com.danit.socialnetwork.dto.post.PostCommentDtoSave;
-import com.danit.socialnetwork.dto.post.PostLikeDto;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Post;
-import com.danit.socialnetwork.model.PostLike;
 import com.danit.socialnetwork.model.Repost;
 import com.danit.socialnetwork.service.RepostServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -72,8 +68,8 @@ class RepostRestControllerTest {
 
     List<RepostDtoResponse> repostList = Arrays.asList(repost1, repost2, repost3, repost4);
 
-    when(repostService.getAllRepostsByUserId(1, 0)).thenReturn(repostList);
-    List<RepostDtoResponse> list = repostRestController.getAllRepostsByUserId(1, 0);
+    when(repostService.getAllRepostsByUserId(1, 0, "Europe/London")).thenReturn(repostList);
+    List<RepostDtoResponse> list = repostRestController.getAllRepostsByUserId(1, 0, "Europe/London");
 
     Assertions.assertEquals(4, list.size());
 

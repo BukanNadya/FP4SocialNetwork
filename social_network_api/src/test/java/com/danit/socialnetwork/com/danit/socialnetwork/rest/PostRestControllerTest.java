@@ -50,8 +50,9 @@ class PostRestControllerTest {
         "Tom", "tom", "Hello world 12",
         "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
-    when(postService.getAllPosts(0)).thenReturn(postDtoResponseList);
-    List<PostDtoResponse> result = postRestController.getAllPostsFromFollowing(0, 0);
+    when(postService.getAllPosts(0, "Europe/Kiev")).thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllPostsFromFollowing(0, 0,
+        "Europe/Kiev");
 
     assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     assertEquals(result.get(1).getName(), postDtoResponse2.getName());
@@ -83,7 +84,7 @@ class PostRestControllerTest {
     });
 
     when(postService.savePost(any(PostDtoSave.class))).thenReturn(post1);
-    ResponseEntity<PostDtoResponse> responseEntity = postRestController.addPost(postDtoSave);
+    ResponseEntity<PostDtoResponse> responseEntity = postRestController.addPost(postDtoSave, "Europe/Kiev");
     assertEquals(201, responseEntity.getStatusCodeValue());
     assertEquals("Hello world1", responseEntity.getBody().getWrittenText());
 
@@ -98,8 +99,8 @@ class PostRestControllerTest {
         "Tom", "tom", "Hello world 12",
         "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
-    when(postService.getAllOwnPosts(1, 0)).thenReturn(postDtoResponseList);
-    List<PostDtoResponse> result = postRestController.getAllOwnPosts(1, 0);
+    when(postService.getAllOwnPosts(1, 0, "Europe/Kiev")).thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllOwnPosts(1, 0, "Europe/Kiev");
 
     assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     assertEquals(result.get(1).getName(), postDtoResponse2.getName());
@@ -117,8 +118,8 @@ class PostRestControllerTest {
         "Tom", "tom", "Hello world 12",
         "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
-    when(postService.getAllLikedPosts(1, 0)).thenReturn(postDtoResponseList);
-    List<PostDtoResponse> result = postRestController.getAllLikedPosts(1, 0);
+    when(postService.getAllLikedPosts(1, 0, "Europe/Kiev")).thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllLikedPosts(1, 0, "Europe/Kiev");
 
     assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     assertEquals(result.get(1).getName(), postDtoResponse2.getName());
@@ -134,8 +135,10 @@ class PostRestControllerTest {
     PostDtoResponse post4 = new PostDtoResponse();
 
     List<PostDtoResponse> repostDtoMixes = Arrays.asList(post1, post2, post3, post4);
-    when(postService.getAllPostsAndRepostsByUserId(1, 0)).thenReturn(repostDtoMixes);
-    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1, 0);
+    when(postService.getAllPostsAndRepostsByUserId(1, 0, "Europe/Kiev"))
+        .thenReturn(repostDtoMixes);
+    List<PostDtoResponse> result = postRestController.getAllPostsAndRepostsByUserId(1, 0,
+        "Europe/Kiev");
     assertEquals(4, result.toArray().length);
   }
 
@@ -148,9 +151,10 @@ class PostRestControllerTest {
         "Tom", "tom", "Hello world 12",
         "photoLink2");
     List<PostDtoResponse> postDtoResponseList = Arrays.asList(postDtoResponse1, postDtoResponse2);
-    when(postService.getAllPostsWithShowingRepostByUserId(1, 0)).thenReturn(postDtoResponseList);
-    List<PostDtoResponse> result = postRestController.getAllPostsWithShowingRepostByUserId(1, 0);
-
+    when(postService.getAllPostsWithShowingRepostByUserId(1, 0, "Europe/Kiev"))
+        .thenReturn(postDtoResponseList);
+    List<PostDtoResponse> result = postRestController.getAllPostsWithShowingRepostByUserId(1, 0,
+        "Europe/Kiev");
     assertEquals(result.get(0).getUsername(), postDtoResponse1.getUsername());
     assertEquals(result.get(1).getName(), postDtoResponse2.getName());
     assertEquals(2, result.toArray().length);
@@ -175,9 +179,9 @@ class PostRestControllerTest {
     Integer userId = 2;
     post.setPostId(postId);
 
-    when(postService.getPostByPostId(postId, userId)).thenReturn(post);
+    when(postService.getPostByPostId(postId, userId, "Europe/Kiev")).thenReturn(post);
 
-    PostDtoResponse result = postRestController.getPostByPostId(1, 2);
+    PostDtoResponse result = postRestController.getPostByPostId(1, 2, "Europe/Kiev");
 
     assertEquals(1, result.getPostId());
 
@@ -207,9 +211,10 @@ class PostRestControllerTest {
     user.setUsername("Nick");
     user.setName("nick");
     post.setUserPost(user);
+    post.setSentDateTime(LocalDateTime.now());
 
     when(postService.deletePost(postId)).thenReturn(post);
-    ResponseEntity<PostDtoResponse> responseEntity = postRestController.deletePost(postId);
+    ResponseEntity<PostDtoResponse> responseEntity = postRestController.deletePost(postId, "Europe/Kiev");
 
     assertEquals(postId, responseEntity.getBody().getPostId());
     assertEquals(user.getUsername(), responseEntity.getBody().getUsername());

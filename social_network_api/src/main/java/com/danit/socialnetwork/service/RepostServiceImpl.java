@@ -1,5 +1,6 @@
 package com.danit.socialnetwork.service;
 
+import com.danit.socialnetwork.dto.post.PostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoResponse;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.exception.post.RepostNotFoundException;
@@ -26,8 +27,8 @@ public class RepostServiceImpl implements RepostService {
   private final ModelMapper modelMapper;
   private final PostLikeRepository postLikeRepository;
 
-  private RepostDtoResponse from(Repost repost) {
-    RepostDtoResponse repostDtoResponse = RepostDtoResponse.from(repost);
+  private RepostDtoResponse from(Repost repost, String userTimeZone) {
+    RepostDtoResponse repostDtoResponse = RepostDtoResponse.from(repost, userTimeZone);
     repostDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(repost.getPostId().getPostId()));
     repostDtoResponse.setPostCommentsCount(repost.getPostId().getPostComments().size());
@@ -35,6 +36,7 @@ public class RepostServiceImpl implements RepostService {
         repost.getPostId().getPostId(), repost.getUserId().getUserId())).isPresent());
     repostDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
         repost.getPostId().getPostId()));
+
     return repostDtoResponse;
   }
 
@@ -55,12 +57,12 @@ public class RepostServiceImpl implements RepostService {
 
   /*Method returns al the posts liked by user and paginated by 10 in descending order*/
   @Override
-  public List<RepostDtoResponse> getAllRepostsByUserId(Integer userId, Integer page) {
+  public List<RepostDtoResponse> getAllRepostsByUserId(Integer userId, Integer page, String userTimeZone) {
     Pageable pagedByTenPosts =
         PageRequest.of(page, 10);
     List<Repost> repostList = repostRepository.findAllByUserId(userId, pagedByTenPosts);
     return repostList.stream()
-        .map(this::from)
+        .map(repost -> this.from(repost, userTimeZone))
         .toList();
   }
 

@@ -20,9 +20,6 @@ import com.danit.socialnetwork.repository.RepostRepository;
 import com.danit.socialnetwork.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.annotations.Cache;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -50,39 +47,40 @@ public class PostServiceImpl implements PostService {
   // Map to store accumulated view counts
   private Map<Integer, Integer> accumulatedViewCounts = new HashMap<>();
 
-  private PostDtoResponse from(Post post, Integer userId) {
-    PostDtoResponse postDtoResponse = PostDtoResponse.from(post, userId);
+  private PostDtoResponse from(Post post, Integer userId, String userTimeZone) {
+    PostDtoResponse postDtoResponse = PostDtoResponse.from(post, userId, userTimeZone);
     postDtoResponse.setLikesCount(postLikeRepository
         .findCountAllLikesByPostId(post.getPostId()));
     postDtoResponse.setIsReposted((repostRepository.findRepostByPostIdAndUserId(
         post.getPostId(), userId)).isPresent());
     postDtoResponse.setRepostsCount(repostRepository.findCountAllRepostsByPostId(
         post.getPostId()));
+
     return postDtoResponse;
   }
 
   // Method returns all available posts
   @Override
-  public List<PostDtoResponse> getAllPosts(Integer pageNumber) {
+  public List<PostDtoResponse> getAllPosts(Integer pageNumber, String userTimeZone) {
     int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAll(
         offset, pageSize);
     return results.stream()
-        .map(PostDtoResponse::mapToPostDtoResponse)
+        .map(result -> PostDtoResponse.mapToPostDtoResponse(result, userTimeZone))
         .toList();
   }
 
   /*Method returns  all posts from users that a user follows by his id*/
   @Override
   public List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(
-      Integer userFollowerId, Integer pageNumber) {
+      Integer userFollowerId, Integer pageNumber, String userTimeZone) {
     int pageSize = 12;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllPostsFromToFollowOneRequest(
         userFollowerId, offset, pageSize);
     return results.stream()
-        .map(PostDtoResponse::mapToPostDtoResponse)
+        .map(result -> PostDtoResponse.mapToPostDtoResponse(result, userTimeZone))
         .toList();
   }
 
@@ -107,57 +105,58 @@ public class PostServiceImpl implements PostService {
 
   /*Method returns all posts done by user*/
   @Override
-  public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer pageNumber) {
+  public List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer pageNumber, String userTimeZone) {
     int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllByUserIdOneQuery(
         userId, offset, pageSize);
     return results.stream()
-        .map(PostDtoResponse::mapToPostDtoResponse)
+        .map(result -> PostDtoResponse.mapToPostDtoResponse(result, userTimeZone))
         .toList();
   }
 
   /*Method returns all posts liked by user*/
   @Override
-  public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer pageNumber) {
+  public List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer pageNumber, String userTimeZone) {
     int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllByUserIdLikedOneQuery(
         userId, offset, pageSize);
     return results.stream()
-        .map(PostDtoResponse::mapToPostDtoResponse)
+        .map(result -> PostDtoResponse.mapToPostDtoResponse(result, userTimeZone))
         .toList();
   }
 
   /*Method returns all posts and reposts in descending order by time when
    they were posted (for own posts) and reposted (for reposts) by user*/
   @Override
-  public List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer pageNumber) {
+  public List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer pageNumber, String userTimeZone) {
     int pageSize = 100;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllPostsAndRepostsByUserIdAsPostOneQuery(
         userId, offset, pageSize);
     return results.stream()
-        .map(PostDtoResponse::mapToPostDtoResponse)
+        .map(result -> PostDtoResponse.mapToPostDtoResponse(result, userTimeZone))
         .toList();
   }
 
   @Override
-  public List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer pageNumber) {
+  public List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer pageNumber,
+                                                                    String userTimeZone) {
     int pageSize = 12;
     int offset = pageNumber * pageSize;
     List<Object[]> results = postRepository.findAllPostsWithShowingRepostsByUserId(
         userId, offset, pageSize);
     return results.stream()
-        .map(PostDtoResponse::mapToPostDtoResponse)
+        .map(result -> PostDtoResponse.mapToPostDtoResponse(result, userTimeZone))
         .toList();
   }
 
   @Override
-  public PostDtoResponse getPostByPostId(Integer postId, Integer userId) {
+  public PostDtoResponse getPostByPostId(Integer postId, Integer userId, String userTimeZone) {
     Optional<Post> tempPost = postRepository.findById(postId);
     if (tempPost.isPresent()) {
-      return from(tempPost.get(), userId);
+      return from(tempPost.get(), userId, userTimeZone);
     } else {
       throw new PostNotFoundException(String.format("Post with postId %s not found",
           postId));

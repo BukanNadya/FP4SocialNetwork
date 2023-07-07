@@ -9,21 +9,21 @@ import java.util.List;
 
 public interface PostService {
 
-  List<PostDtoResponse> getAllPosts(Integer page);
+  List<PostDtoResponse> getAllPosts(Integer page, String userTimeZone);
 
-  List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(Integer userFollowerId, Integer page);
+  List<PostDtoResponse> getAllPostsFromToFollowWithNativeQuery(Integer userFollowerId, Integer page, String userTimeZone);
 
   Post savePost(PostDtoSave thePostDtoSave);
 
-  List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page);
+  List<PostDtoResponse> getAllOwnPosts(Integer userId, Integer page, String userTimeZone);
 
-  List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page);
+  List<PostDtoResponse> getAllLikedPosts(Integer userId, Integer page, String userTimeZone);
 
-  List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer page);
+  List<PostDtoResponse> getAllPostsAndRepostsByUserId(Integer userId, Integer page, String userTimeZone);
 
-  List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer page);
+  List<PostDtoResponse> getAllPostsWithShowingRepostByUserId(Integer userId, Integer page, String userTimeZone);
 
-  PostDtoResponse getPostByPostId(Integer postId, Integer userId);
+  PostDtoResponse getPostByPostId(Integer postId, Integer userId, String userTimeZone);
 
   Integer findLatestPostIdByUserId(Integer userId);
 

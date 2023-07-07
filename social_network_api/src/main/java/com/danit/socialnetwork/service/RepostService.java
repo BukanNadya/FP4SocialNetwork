@@ -8,7 +8,7 @@ import java.util.List;
 public interface RepostService {
   Repost saveRepost(com.danit.socialnetwork.dto.post.RepostDtoSave thePostSharedDto);
 
-  List<RepostDtoResponse> getAllRepostsByUserId(Integer userId, Integer page);
+  List<RepostDtoResponse> getAllRepostsByUserId(Integer userId, Integer page, String userTimeZone);
 
 
   Repost deleteRepost(Integer postId, Integer userId);

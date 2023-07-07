@@ -104,6 +104,7 @@ class RepostServiceImplTest {
     });
     repost1.setPostId(post1);
     repost1.setUserId(dbUser);
+    repost1.setRepostedDateTime(LocalDateTime.now());
 
     Repost repost2 = new Repost();
     repost1.setUserId(dbUser);
@@ -118,6 +119,7 @@ class RepostServiceImplTest {
     });
     repost2.setPostId(post2);
     repost2.setUserId(dbUser);
+    repost2.setRepostedDateTime(LocalDateTime.now());
 
     Integer page = 0;
     Pageable pagedByTenPosts =
@@ -126,7 +128,7 @@ class RepostServiceImplTest {
     List<Repost> repostList = Arrays.asList(repost1, repost2);
 
     when(repostRepository.findAllByUserId(1, pagedByTenPosts)).thenReturn(repostList);
-    List<RepostDtoResponse> responseList = repostService.getAllRepostsByUserId(1, 0);
+    List<RepostDtoResponse> responseList = repostService.getAllRepostsByUserId(1, 0, "Europe/London");
 
     Assertions.assertEquals(responseList.get(0).getWrittenText(), post1.getWrittenText());
     Assertions.assertEquals(responseList.get(1).getWrittenText(), post2.getWrittenText());

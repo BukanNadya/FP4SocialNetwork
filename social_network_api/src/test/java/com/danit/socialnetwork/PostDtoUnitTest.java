@@ -54,7 +54,7 @@ public class PostDtoUnitTest {
     post.setPostComments(new ArrayList<PostComment>() {
     });
 
-    PostDtoResponse postDtoResponse = PostDtoResponse.from(post);
+    PostDtoResponse postDtoResponse = PostDtoResponse.from(post,"Europe/London");
 
     assertEquals(post.getPostId(), postDtoResponse.getPostId());
     assertEquals(post.getUserPost().getUsername(), postDtoResponse.getUsername());

@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Data
 @NoArgsConstructor
@@ -38,7 +40,7 @@ public class PostDtoResponse {
     this.photoFileLink = photoFileLink;
   }
 
-  public static PostDtoResponse from(Post post) {
+  public static PostDtoResponse from(Post post, String userTimeZone) {
 
     PostDtoResponse tempPostDto = new PostDtoResponse();
     tempPostDto.setPostId(post.getPostId());
@@ -48,27 +50,37 @@ public class PostDtoResponse {
     tempPostDto.setWrittenText(post.getWrittenText());
     tempPostDto.setProfileImageLink(post.getUserPost().getProfileImageUrl());
     tempPostDto.setPhotoFileLink(post.getPhotoFile());
-    tempPostDto.setSentDateTime(post.getSentDateTime());
+    ZoneId utcZoneId = ZoneId.of("UTC"); // The stored time is in UTC
+    ZoneId userZoneId = ZoneId.of(userTimeZone);
+    ZonedDateTime utcDateTime = post.getSentDateTime().atZone(utcZoneId);
+    ZonedDateTime userDateTime = utcDateTime.withZoneSameInstant(userZoneId);
+    tempPostDto.setSentDateTime(userDateTime.toLocalDateTime());
     tempPostDto.setViewCount(post.getViewCount());
     return tempPostDto;
   }
 
-  public static PostDtoResponse from(Post post, Integer userId) {
-    PostDtoResponse postRepostDto = from(post);
+  public static PostDtoResponse from(Post post, Integer userId, String userTimeZone) {
+    PostDtoResponse postRepostDto = from(post, userTimeZone);
     postRepostDto.setPostCommentsCount(post.getPostComments().size());
     postRepostDto.setIsReposted(!post.getUserPost().getUserId().equals(userId));
     return postRepostDto;
 
   }
 
-  public static PostDtoResponse mapToPostDtoResponse(Object[] result) {
 
+  public static PostDtoResponse mapToPostDtoResponse(Object[] result, String userTimeZone) {
     PostDtoResponse postDtoResponse = new PostDtoResponse();
     postDtoResponse.setPostId((Integer) result[0]);
     postDtoResponse.setPhotoFileLink((String) result[1]);
     Timestamp timestamp = (Timestamp) result[2];
     LocalDateTime sentDateTime = timestamp.toLocalDateTime();
-    postDtoResponse.setSentDateTime(sentDateTime);
+
+    ZoneId utcZoneId = ZoneId.of("UTC"); // The stored time is in UTC
+    ZoneId userZoneId = ZoneId.of(userTimeZone);
+    ZonedDateTime utcDateTime = sentDateTime.atZone(utcZoneId);
+    ZonedDateTime userDateTime = utcDateTime.withZoneSameInstant(userZoneId);
+    postDtoResponse.setSentDateTime(userDateTime.toLocalDateTime());
+
     postDtoResponse.setWrittenText((String) result[3]);
     postDtoResponse.setUserId((Integer) result[4]);
     postDtoResponse.setViewCount((Integer) result[5]);
@@ -85,5 +97,6 @@ public class PostDtoResponse {
     }
     return postDtoResponse;
   }
+
 
 }

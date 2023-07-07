@@ -42,11 +42,14 @@ public class RepostRestController {
   public List<RepostDtoResponse> getAllRepostsByUserId(@RequestParam(name = "userId", defaultValue = "0")
                                                        @Positive Integer userId,
                                                        @RequestParam(name = "page", defaultValue = "0")
-                                                       @Positive Integer page) {
+                                                       @Positive Integer page,
+                                                       @RequestParam(value = "time_zone",
+                                                           defaultValue = "Europe/London")
+                                                       String userTimeZone) {
     if (userId == 0) {
       return new ArrayList<>();
     }
-    return repostService.getAllRepostsByUserId(userId, page);
+    return repostService.getAllRepostsByUserId(userId, page, userTimeZone);
 
   }
 
