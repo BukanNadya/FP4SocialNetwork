@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +39,9 @@ public class PostCommentServiceImpl implements PostCommentService {
     }
     Post tempPost = optionalPost.get();
     PostComment postComment = modelMapper.map(postCommentDtoSave, PostComment.class);
-    postComment.setCreatedDateTime(LocalDateTime.now());
+    ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneOffset.UTC);
+    LocalDateTime utcDateTime = currentDateTime.toLocalDateTime();
+    postComment.setCreatedDateTime(utcDateTime);
     postComment.setPostCommentId(0);
     Integer countCommentsBefore = tempPost.getPostComments().size();
     tempPost.getPostComments().add(postComment);

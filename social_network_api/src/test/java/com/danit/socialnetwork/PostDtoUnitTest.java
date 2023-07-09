@@ -31,7 +31,7 @@ public class PostDtoUnitTest {
     DbUser user = new DbUser();
     user.setUsername("John");
 
-    Post post = Post.from(postDtoSave, user, "photoLink");
+    Post post = Post.from(postDtoSave, user);
 
     assertEquals(post.getUserPost().getUsername(), user.getUsername());
     assertEquals(post.getWrittenText(), postDtoSave.getWrittenText());

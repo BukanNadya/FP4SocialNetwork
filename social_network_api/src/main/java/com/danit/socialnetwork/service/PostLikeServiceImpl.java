@@ -13,6 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +44,9 @@ public class PostLikeServiceImpl implements PostLikeService {
     Post tempPost = optionalPost.get();
     PostLike postLike = modelMapper.map(postLikeDto, PostLike.class);
     postLike.setPostLikeId(0);
-    postLike.setCreatedDateTime(LocalDateTime.now());
+    ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneOffset.UTC);
+    LocalDateTime utcDateTime = currentDateTime.toLocalDateTime();
+    postLike.setCreatedDateTime(utcDateTime);
     tempPost.getPostLikes().add(postLike);
     postRepository.save(tempPost);
     return tempPost.getPostLikes().get(tempPost.getPostLikes().size() - 1);

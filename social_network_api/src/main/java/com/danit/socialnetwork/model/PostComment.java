@@ -3,7 +3,6 @@ package com.danit.socialnetwork.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +31,6 @@ public class PostComment {
 
   @Column(name = "created_datetime", updatable = false)
   @NonNull
-  @CreationTimestamp
   private LocalDateTime createdDateTime;
 
   @NotEmpty

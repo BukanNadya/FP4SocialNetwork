@@ -125,12 +125,16 @@ public class PostServiceImplTest {
     user.setUsername("John1");
     user.setName("Johny1");
 
-    Post tempPost = Post.from(postDtoSave, user, "photoLink");
+    String folderPostRoot = "post_folder_";
 
+    Post tempPost = Post.from(postDtoSave, user);
     when(userRepository.findById(postDtoSave.getUserId())).thenReturn(Optional.of(user));
-    when(postRepository.save(any(Post.class))).thenReturn(tempPost);
-    when(imageHandlingConf.uploadImage(photoFileByteArray, "production", 800, 500))
+    imageHandlingConf.createFolder("production");
+    when(imageHandlingConf.uploadImage(photoFileByteArray, folderPostRoot + 0, 800, 500))
         .thenReturn("photoLink");
+    Post tempPost2 = Post.fromWithPhotoFileUrl(tempPost, "photoLink");
+
+    when(postRepository.save(any(Post.class))).thenReturn(tempPost2);
 
     Post post = postService.savePost(postDtoSave);
 

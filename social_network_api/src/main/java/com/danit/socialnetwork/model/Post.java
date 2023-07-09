@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.CascadeType;
@@ -21,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -44,7 +45,6 @@ public class Post {
 
   @Column(name = "sent_datetime", updatable = false)
   @NonNull
-  @CreationTimestamp
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy:MM:dd HH:mm:ss")
   private LocalDateTime sentDateTime;
 
@@ -65,14 +65,22 @@ public class Post {
     return userPost;
   }
 
-  public static Post from(PostDtoSave postDtoSave, DbUser userPost, String photoFile) {
+  public static Post from(PostDtoSave postDtoSave, DbUser userPost) {
     Post tempPost = new Post();
     tempPost.setPostId(0);
-    tempPost.setSentDateTime(LocalDateTime.now());
+    ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneOffset.UTC);
+    LocalDateTime utcDateTime = currentDateTime.toLocalDateTime();
+    tempPost.setSentDateTime(utcDateTime);
+    tempPost.setPhotoFile(null);
     tempPost.setWrittenText(postDtoSave.getWrittenText());
-    tempPost.setPhotoFile(photoFile);
     tempPost.setUserPost(userPost);
     return tempPost;
   }
+
+  public static Post fromWithPhotoFileUrl(Post post, String photoFile) {
+    post.setPhotoFile(photoFile);
+    return post;
+  }
+
 
 }

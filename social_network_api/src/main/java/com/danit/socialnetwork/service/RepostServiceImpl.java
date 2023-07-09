@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +53,9 @@ public class RepostServiceImpl implements RepostService {
     }
     Repost repost = this.modelMapper.map(theRepostDto, Repost.class);
     repost.setSharedId(0);
-    repost.setRepostedDateTime(LocalDateTime.now());
+    ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneOffset.UTC);
+    LocalDateTime utcDateTime = currentDateTime.toLocalDateTime();
+    repost.setRepostedDateTime(utcDateTime);
     return repostRepository.save(repost);
   }
 

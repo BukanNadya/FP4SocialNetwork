@@ -44,6 +44,8 @@ public class PostServiceImpl implements PostService {
   private final RepostRepository repostRepository;
   private final ImageHandlingConf imageHandlingConf;
 
+  String folderPostRoot = "post_folder_"; // Prefix for name of folder to store post photo
+
   // Map to store accumulated view counts
   private Map<Integer, Integer> accumulatedViewCounts = new HashMap<>();
 
@@ -94,12 +96,15 @@ public class PostServiceImpl implements PostService {
     } else {
       DbUser user = userPost.get();
       byte[] photoFileByteArray = thePostDtoSave.getPhotoFileByteArray();
+      Post tempPost = Post.from(thePostDtoSave, user);
+      Post savePost = postRepository.save(Post.fromWithPhotoFileUrl(tempPost, null));
       if (photoFileByteArray != null && photoFileByteArray.length != 0) {
-        return postRepository.save(Post.from(thePostDtoSave, user,
+        imageHandlingConf.createFolder(folderPostRoot + savePost.getPostId());
+        return postRepository.save(Post.fromWithPhotoFileUrl(savePost,
             imageHandlingConf.uploadImage(photoFileByteArray,
-                "production", 800, 500)));
+                folderPostRoot + savePost.getPostId(), 800, 500)));
       }
-      return postRepository.save(Post.from(thePostDtoSave, user, null));
+      return savePost;
     }
   }
 
@@ -256,6 +261,7 @@ public class PostServiceImpl implements PostService {
       postCommentRepository.delete(postComment);
     }
     Post post = postRepository.findById(postId).orElse(null);
+    imageHandlingConf.deleteFolder(folderPostRoot + post.getPostId(), post.getPhotoFile());
     postRepository.deleteById(postId);
     return post;
   }
