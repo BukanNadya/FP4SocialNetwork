@@ -199,12 +199,12 @@ class InboxServiceImplTest {
     Integer inboxUidTest = 1;
     when(inboxRepository.getInboxesByInboxUid(testUser1)).thenReturn(testInbox);
     when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
-    when(mapper.inboxToInboxDtoResponse(testInbox1)).thenReturn(testInboxDtoResponse1);
-    when(mapper.inboxToInboxDtoResponse(testInbox2)).thenReturn(testInboxDtoResponse2);
-    when(mapper.inboxToInboxDtoResponse(testInbox3)).thenReturn(testInboxDtoResponse3);
-    when(mapper.inboxToInboxDtoResponse(testInbox4)).thenReturn(testInboxDtoResponse4);
+    when(mapper.inboxToInboxDtoResponse(testInbox1, "Europe/Kiev")).thenReturn(testInboxDtoResponse1);
+    when(mapper.inboxToInboxDtoResponse(testInbox2, "Europe/Kiev")).thenReturn(testInboxDtoResponse2);
+    when(mapper.inboxToInboxDtoResponse(testInbox3, "Europe/Kiev")).thenReturn(testInboxDtoResponse3);
+    when(mapper.inboxToInboxDtoResponse(testInbox4, "Europe/Kiev")).thenReturn(testInboxDtoResponse4);
 
-    List<InboxDtoResponse> testFindInbox = inboxServiceImpl.getInboxesByInboxUid(inboxUidTest);
+    List<InboxDtoResponse> testFindInbox = inboxServiceImpl.getInboxesByInboxUid(inboxUidTest, "Europe/Kiev");
 
     Assert.assertEquals(4, testFindInbox.size());
     Assert.assertEquals(Integer.valueOf(2), testFindInbox.get(0).getUserId());

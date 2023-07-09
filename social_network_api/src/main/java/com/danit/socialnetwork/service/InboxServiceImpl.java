@@ -62,11 +62,11 @@ public class InboxServiceImpl implements InboxService {
 
   /*The method finds the inbox by sender and returns it*/
   @Override
-  public List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid) {
+  public List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid, String userTimeZone) {
     DbUser userS = userService.findDbUserByUserId(inboxUid);
     return inboxRepository.getInboxesByInboxUid(userS).stream()
         .map(inbox -> {
-          InboxDtoResponse inboxDto = mapper.inboxToInboxDtoResponse(inbox);
+          InboxDtoResponse inboxDto = mapper.inboxToInboxDtoResponse(inbox, userTimeZone);
           DbUser userR = userService.findDbUserByUserId(inboxDto.getUserId());
           inboxDto.setUnreadByUser(messageRepository
               .findAllByInboxUidAndUserIdAndMessageReadeEquals(userR, userS, false).size());
@@ -76,20 +76,20 @@ public class InboxServiceImpl implements InboxService {
 
   /*The method saves a new inbox, finds the inbox by sender and returns it*/
   @Override
-  public InboxDtoResponse addInbox(InboxParticipantsDtoRequest request) {
+  public InboxDtoResponse addInbox(InboxParticipantsDtoRequest request, String userTimeZone) {
     Integer senderId = request.getInboxUid();
     Integer receiverId = request.getUserId();
     DbUser userS = userService.findDbUserByUserId(senderId);
     DbUser userR = userService.findDbUserByUserId(receiverId);
     Optional<Inbox> inboxSenderO = inboxRepository.findByInboxUidAndUserId(userS, userR);
     if (inboxSenderO.isPresent()) {
-      return mapper.inboxToInboxDtoResponse(inboxSenderO.get());
+      return mapper.inboxToInboxDtoResponse(inboxSenderO.get(), userTimeZone);
     }
     List<Inbox> inboxesNew = saveInbox(userS, userR, null);
     Inbox inboxSender = inboxesNew.stream()
         .filter(inbox -> inbox.getInboxUid()
             .getUserId().equals(senderId)).toList().get(0);
-    return mapper.inboxToInboxDtoResponse(inboxSender);
+    return mapper.inboxToInboxDtoResponse(inboxSender, userTimeZone);
   }
 
 }

@@ -5,6 +5,8 @@ import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class MapperUtils {
 
@@ -79,16 +81,26 @@ public class MapperUtils {
     return message.getMessageText();
   }
 
-  public static LocalDateTime getCreatedAt(Message message) {
-    return message.getCreatedAt();
+  public static LocalDateTime getCreatedAt(Message message, String userTimeZone) {
+    ZoneId utcZoneId = ZoneId.of("UTC"); // The stored time is in UTC
+    ZoneId userZoneId = ZoneId.of(userTimeZone);
+
+    ZonedDateTime utcDateTimeRepost = message.getCreatedAt().atZone(utcZoneId);
+    ZonedDateTime userDateTimeMessage = utcDateTimeRepost.withZoneSameInstant(userZoneId);
+    return userDateTimeMessage.toLocalDateTime();
   }
 
-  public static LocalDateTime getCreatedAt(Inbox inbox) {
+  public static LocalDateTime getCreatedAt(Inbox inbox, String userTimeZone) {
     Message message = inbox.getLastMessage();
     if (message == null) {
       return null;
     }
-    return message.getCreatedAt();
+    ZoneId utcZoneId = ZoneId.of("UTC"); // The stored time is in UTC
+    ZoneId userZoneId = ZoneId.of(userTimeZone);
+
+    ZonedDateTime utcDateTimeRepost = message.getCreatedAt().atZone(utcZoneId);
+    ZonedDateTime userDateTimeMessage = utcDateTimeRepost.withZoneSameInstant(userZoneId);
+    return userDateTimeMessage.toLocalDateTime();
   }
 
   public static Integer getInboxId(Inbox inbox) {

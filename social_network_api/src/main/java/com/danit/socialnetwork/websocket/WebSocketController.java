@@ -62,12 +62,13 @@ public class WebSocketController {
     return unreadMessages;
   }
 
-  private InboxDtoResponse getInbox(Integer userId, Integer inboxUid) {
-    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId);
+  private InboxDtoResponse getInbox(Integer userId, Integer inboxUid, String userTimeZone) {
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(userId, userTimeZone);
     return inboxes.stream().filter(i -> i.getUserId().equals(inboxUid)).toList().get(0);
   }
 
-  private void setUnreadMessagesByUserNumToInboxDtoResponse(Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
+  private void setUnreadMessagesByUserNumToInboxDtoResponse(
+      Integer inboxUid, Integer userId, InboxDtoResponse inbox) {
     int unreadMessagesByUserNumSenderR = messageService
         .numberUnreadMessagesByUser(inboxUid, userId);
     Map<String, Integer> unreadMessagesByUserR = new HashMap<>();
@@ -244,17 +245,18 @@ public class WebSocketController {
       @Payload MessageDtoRequest messageDtoRequest) throws InterruptedException {
     Integer inboxUid = messageDtoRequest.getInboxUid();
     Integer userId = messageDtoRequest.getUserId();
+
     getLog(inboxUid, userId);
 
-    InboxDtoResponse inboxS = getInbox(inboxUid, userId);
-
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId, messageDtoRequest.getInboxUidTimeZone());
     setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
 
     String inboxUidString = inboxUid.toString();
     messagingTemplate.convertAndSendToUser(inboxUidString, "/inbox", inboxS);
     messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
+    InboxDtoResponse inboxR = getInbox(userId, inboxUid, messageDtoRequest.getUserIdTimeZone());
+    setUnreadMessagesByUserNumToInboxDtoResponse(inboxUid, userId, inboxR);
 
     inboxR.setInboxUid(inboxUid);
     inboxR.setUserId(userId);
@@ -276,14 +278,13 @@ public class WebSocketController {
     DbUser userR = userService.findDbUserByUserId(userId);
     messageService.unreadToReadMessages(userS, userR);
     Thread.sleep(500);
+    String userTimeZone = messageDtoRequest.getInboxUidTimeZone();
+    InboxDtoResponse inboxS = getInbox(inboxUid, userId, userTimeZone);
+    setUnreadMessagesByUserNumToInboxDtoResponse(userId, inboxUid, inboxS);
+    String inboxUidString = inboxUid.toString();
 
-    InboxDtoResponse inboxR = getInbox(userId, inboxUid);
-    inboxR.setInboxUid(inboxUid);
-    inboxR.setUserId(userId);
-    String userIdString = userId.toString();
-    messagingTemplate.convertAndSendToUser(userIdString, "/inbox", inboxR);
-    messagingTemplate.convertAndSendToUser(userIdString, "/getMessages", inboxR);
+    messagingTemplate.convertAndSendToUser(inboxUidString, "/getMessages", inboxS);
     sendUnreadMessagesToUserReceiver(inboxUid);
-    return inboxR;
+    return inboxS;
   }
 }

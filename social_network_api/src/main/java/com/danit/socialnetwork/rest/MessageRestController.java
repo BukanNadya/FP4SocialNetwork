@@ -39,15 +39,21 @@ public class MessageRestController {
 
   /*Method save a new message*/
   @PostMapping(path = "/addMessage")
-  public ResponseEntity<MessageDtoResponse> addMessage(@RequestBody MessageDtoRequest request) {
-    MessageDtoResponse dbMessage = messageService.saveMessage(request);
+  public ResponseEntity<MessageDtoResponse> addMessage(
+      @RequestBody MessageDtoRequest request,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) {
+    MessageDtoResponse dbMessage = messageService.saveMessage(request, userTimeZone);
     return new ResponseEntity<>(dbMessage, HttpStatus.CREATED);
   }
 
   /*The method finds inbox by message sender and receiver */
   @GetMapping(path = "/{inboxUid}/inbox")
-  public ResponseEntity<List<InboxDtoResponse>> getInbox(@PathVariable("inboxUid") Integer inboxUid) {
-    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid);
+  public ResponseEntity<List<InboxDtoResponse>> getInbox(
+      @PathVariable("inboxUid") Integer inboxUid,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) {
+    List<InboxDtoResponse> inboxes = inboxService.getInboxesByInboxUid(inboxUid, userTimeZone);
     return new ResponseEntity<>(inboxes, HttpStatus.FOUND);
   }
 
@@ -55,9 +61,11 @@ public class MessageRestController {
   @PostMapping(path = "/getMessages")
   public ResponseEntity<List<MessageDtoResponse>> getMessage(
       @RequestBody InboxParticipantsDtoRequest request,
-      @RequestParam(name = "page", defaultValue = "0") Integer page) {
+      @RequestParam(name = "page", defaultValue = "0") Integer page,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) {
     List<MessageDtoResponse> messages = messageService
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
+        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page, userTimeZone);
     return new ResponseEntity<>(messages, HttpStatus.FOUND);
   }
 
@@ -72,8 +80,11 @@ public class MessageRestController {
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string*/
   @PostMapping(path = "/messageSearch")
-  public ResponseEntity<Object> handleMessageSearchPost(@RequestBody SearchRequest request) {
-    List<MessageSearchDto> messageSearchDto = messageService.filterCachedMessageByString(request);
+  public ResponseEntity<Object> handleMessageSearchPost(
+      @RequestBody SearchRequest request,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) {
+    List<MessageSearchDto> messageSearchDto = messageService.filterCachedMessageByString(request, userTimeZone);
     if (messageSearchDto.isEmpty()) {
       List<SearchDto> searchDto = userService.filterCachedUsersByName(request);
       return new ResponseEntity<>(searchDto, HttpStatus.FOUND);
@@ -83,8 +94,11 @@ public class MessageRestController {
 
   /*Method save a new inbox*/
   @PostMapping(path = "/addInbox")
-  public ResponseEntity<InboxDtoResponse> addInbox(@RequestBody InboxParticipantsDtoRequest request) {
-    InboxDtoResponse dbInbox = inboxService.addInbox(request);
+  public ResponseEntity<InboxDtoResponse> addInbox(
+      @RequestBody InboxParticipantsDtoRequest request,
+      @RequestParam(value = "time_zone",
+          defaultValue = "Europe/London") String userTimeZone) {
+    InboxDtoResponse dbInbox = inboxService.addInbox(request, userTimeZone);
     return new ResponseEntity<>(dbInbox, HttpStatus.CREATED);
   }
 

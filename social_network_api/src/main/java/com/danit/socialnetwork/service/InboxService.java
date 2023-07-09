@@ -15,7 +15,7 @@ public interface InboxService {
 
   List<Inbox> saveInbox(DbUser senderId, DbUser receiverId, Message message);
 
-  List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid);
+  List<InboxDtoResponse> getInboxesByInboxUid(Integer inboxUid, String userTimeZone);
 
-  InboxDtoResponse addInbox(InboxParticipantsDtoRequest request);
+  InboxDtoResponse addInbox(InboxParticipantsDtoRequest request, String userTimeZone);
 }

@@ -12,6 +12,6 @@ public interface MessageSearchMapper {
   @Mapping(target = "username", expression = "java(MapperUtils.getUsername(message))")
   @Mapping(target = "name", expression = "java(MapperUtils.getName(message))")
   @Mapping(target = "message", expression = "java(MapperUtils.getMessage(message))")
-  @Mapping(target = "createdAt", expression = "java(MapperUtils.getCreatedAt(message))")
-  MessageSearchDto messageToMessageSearchDto(Message message);
+  @Mapping(target = "createdAt", expression = "java(MapperUtils.getCreatedAt(message, userTimeZone))")
+  MessageSearchDto messageToMessageSearchDto(Message message, String userTimeZone);
 }

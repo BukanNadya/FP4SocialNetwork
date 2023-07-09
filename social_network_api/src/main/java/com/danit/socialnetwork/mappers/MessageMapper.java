@@ -11,6 +11,6 @@ public interface MessageMapper {
   @Mapping(target = "userId", expression = "java(MapperUtils.getUserId(message))")
   @Mapping(target = "message", expression = "java(MapperUtils.getMessage(message))")
   @Mapping(target = "messageId", expression = "java(MapperUtils.getMessageId(message))")
-  @Mapping(target = "createdAt", expression = "java(MapperUtils.getCreatedAt(message))")
-  MessageDtoResponse messageToMessageDtoResponse(Message message);
+  @Mapping(target = "createdAt", expression = "java(MapperUtils.getCreatedAt(message, userTimeZone))")
+  MessageDtoResponse messageToMessageDtoResponse(Message message, String userTimeZone);
 }

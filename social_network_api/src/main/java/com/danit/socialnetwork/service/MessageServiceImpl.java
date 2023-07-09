@@ -33,7 +33,7 @@ public class MessageServiceImpl implements MessageService {
 
   /*Method save a new message and returns it*/
   @Override
-  public MessageDtoResponse saveMessage(MessageDtoRequest request) {
+  public MessageDtoResponse saveMessage(MessageDtoRequest request, String userTimeZone) {
     Integer userSenderId = request.getInboxUid();
     Integer userReceiverId = request.getUserId();
     DbUser userS = userService.findDbUserByUserId(userSenderId);
@@ -49,13 +49,13 @@ public class MessageServiceImpl implements MessageService {
     log.info(String.format("Save message: %s", savedMessage.getMessageText()));
 
     inboxService.saveInbox(userS, userR, savedMessage);
-    return messageMapper.messageToMessageDtoResponse(savedMessage);
+    return messageMapper.messageToMessageDtoResponse(savedMessage, userTimeZone);
   }
 
   /*The method finds all messages between the sender and the receiver and returns them*/
   @Override
   public List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(
-      InboxParticipantsDtoRequest request, Integer page) {
+      InboxParticipantsDtoRequest request, Integer page, String userTimeZone) {
     MessageDtoRequest messageDtoRequest = new MessageDtoRequest();
     messageDtoRequest.setInboxUid(request.getInboxUid());
     messageDtoRequest.setUserId(request.getUserId());
@@ -67,7 +67,9 @@ public class MessageServiceImpl implements MessageService {
 
     List<Message> messagePage = messageRepository.findByInboxUidAndUserIdOrUserIdAndInboxUid(
         userS, userR, userS, userR, offset, pageSize);
-    return messagePage.stream().map(messageMapper::messageToMessageDtoResponse).toList();
+    return messagePage.stream()
+        .map((Message message) -> messageMapper
+            .messageToMessageDtoResponse(message, userTimeZone)).toList();
   }
 
   /*The method finds all incoming unread messages and converts them to read messages*/
@@ -94,7 +96,7 @@ public class MessageServiceImpl implements MessageService {
   /*The method writes all messages to cache if there is no cache,
    and filters messages from cache by requested string. And returns them*/
   @Override
-  public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request) {
+  public List<MessageSearchDto> filterCachedMessageByString(SearchRequest request, String userTimeZone) {
     String messageSearch = request.getSearch();
     if (messageSearch.equals("")) {
       return new ArrayList<>();
@@ -111,7 +113,7 @@ public class MessageServiceImpl implements MessageService {
         + "Should find all messages by string.", messageSearch));
     search = messageCache.getIfPresent(MESSAGE_CACHE).stream()
         .filter(m -> m.getMessageText().toLowerCase().contains(messageSearch.toLowerCase()))
-        .map(searchMapper::messageToMessageSearchDto).toList();
+        .map(message -> searchMapper.messageToMessageSearchDto(message, userTimeZone)).toList();
     log.debug(String.format("filterCachedMessageByString: %s. Find all Messages by string.", messageSearch));
     return search;
   }

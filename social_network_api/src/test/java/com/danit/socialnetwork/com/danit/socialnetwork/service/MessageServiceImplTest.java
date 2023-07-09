@@ -75,9 +75,9 @@ class MessageServiceImplTest {
     when(messageRepository.save(any(Message.class))).thenReturn(testMessage);
     doReturn(testMessageDto)
         .when(messageMapper)
-        .messageToMessageDtoResponse(Mockito.any(Message.class));
+        .messageToMessageDtoResponse(Mockito.any(Message.class), Mockito.any(String.class));
 
-    MessageDtoResponse savedMessage = messageService.saveMessage(request);
+    MessageDtoResponse savedMessage = messageService.saveMessage(request, "Europe/Kiev");
     Mockito.verify(messageRepository).save(Mockito.any(Message.class));
 
     Assert.assertEquals("Hello world!", savedMessage.getMessage());
@@ -149,13 +149,13 @@ class MessageServiceImplTest {
         .findByInboxUidAndUserIdOrUserIdAndInboxUid(
             testUser1, testUser2, testUser1, testUser2, offset, pageSize))
         .thenReturn(testMessages);
-    when(messageMapper.messageToMessageDtoResponse(testMessage1)).thenReturn(testMessageDto1);
-    when(messageMapper.messageToMessageDtoResponse(testMessage2)).thenReturn(testMessageDto2);
-    when(messageMapper.messageToMessageDtoResponse(testMessage3)).thenReturn(testMessageDto3);
-    when(messageMapper.messageToMessageDtoResponse(testMessage4)).thenReturn(testMessageDto4);
+    when(messageMapper.messageToMessageDtoResponse(testMessage1, "Europe/Kiev")).thenReturn(testMessageDto1);
+    when(messageMapper.messageToMessageDtoResponse(testMessage2, "Europe/Kiev")).thenReturn(testMessageDto2);
+    when(messageMapper.messageToMessageDtoResponse(testMessage3, "Europe/Kiev")).thenReturn(testMessageDto3);
+    when(messageMapper.messageToMessageDtoResponse(testMessage4, "Europe/Kiev")).thenReturn(testMessageDto4);
 
     List<MessageDtoResponse> testFindMessages = messageService
-        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
+        .findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page, "Europe/Kiev");
     Assert.assertEquals(4, testFindMessages.size());
     Assert.assertEquals("Hallo", testFindMessages.get(0).getMessage());
     Assert.assertEquals("world!", testFindMessages.get(1).getMessage());
@@ -349,13 +349,16 @@ class MessageServiceImplTest {
 
     when(userService.findDbUserByUserId(1)).thenReturn(testUser1);
     when(userService.findDbUserByUserId(2)).thenReturn(testUser2);
-    when(messageSearchMapper.messageToMessageSearchDto(testMessage1)).thenReturn(testMessageSearchDto1);
-    when(messageSearchMapper.messageToMessageSearchDto(testMessage3)).thenReturn(testMessageSearchDto2);
-    when(messageSearchMapper.messageToMessageSearchDto(testMessage5)).thenReturn(testMessageSearchDto3);
+    when(messageSearchMapper.messageToMessageSearchDto(testMessage1, "Europe/Kiev"))
+        .thenReturn(testMessageSearchDto1);
+    when(messageSearchMapper.messageToMessageSearchDto(testMessage3, "Europe/Kiev"))
+        .thenReturn(testMessageSearchDto2);
+    when(messageSearchMapper.messageToMessageSearchDto(testMessage5, "Europe/Kiev"))
+        .thenReturn(testMessageSearchDto3);
 
-    List<MessageSearchDto> resultSearchDto1 = messageService.filterCachedMessageByString(request1);
-    List<MessageSearchDto> resultSearchDto2 = messageService.filterCachedMessageByString(request2);
-    List<MessageSearchDto> resultSearchDto3 = messageService.filterCachedMessageByString(request3);
+    List<MessageSearchDto> resultSearchDto1 = messageService.filterCachedMessageByString(request1, "Europe/Kiev");
+    List<MessageSearchDto> resultSearchDto2 = messageService.filterCachedMessageByString(request2, "Europe/Kiev");
+    List<MessageSearchDto> resultSearchDto3 = messageService.filterCachedMessageByString(request3, "Europe/Kiev");
 
     Assert.assertTrue(resultSearchDto1.size() <= 5);
     Assert.assertTrue(resultSearchDto2.size() <= 5);

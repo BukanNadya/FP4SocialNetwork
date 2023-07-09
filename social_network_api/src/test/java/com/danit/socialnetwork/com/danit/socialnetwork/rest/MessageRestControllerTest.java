@@ -1,9 +1,9 @@
 package com.danit.socialnetwork.rest;
 
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
-import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoRequest;
+import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.message.search.MessageSearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
 import com.danit.socialnetwork.model.DbUser;
@@ -62,24 +62,12 @@ class MessageRestControllerTest {
     request.setUserId(2);
     request.setWrittenMessage(message);
 
-    Message testSaveMessage = new Message();
-    testSaveMessage.setInboxUid(testUser1);
-    testSaveMessage.setUserId(testUser2);
-    testSaveMessage.setMessageText(message);
-
-    MessageDtoResponse testMessageDto = new MessageDtoResponse();
-    testMessageDto.setInboxUid(1);
-    testMessageDto.setUserId(2);
-    testMessageDto.setMessage("Hello World!");
-
-    when(messageService.saveMessage(any(MessageDtoRequest.class))).thenReturn(testMessageDto);
-
     mockMvc.perform(post("/api/addMessage")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isCreated());
 
-    verify(messageService).saveMessage(request);
+    verify(messageService).saveMessage(request, "Europe/London");
   }
 
   @Test
@@ -87,14 +75,14 @@ class MessageRestControllerTest {
     Integer inboxUidTest = 1;
     List<InboxDtoResponse> testInboxDto = new ArrayList<>();
 
-    when(inboxService.getInboxesByInboxUid(inboxUidTest)).thenReturn(testInboxDto);
+    when(inboxService.getInboxesByInboxUid(inboxUidTest, "Europe/London")).thenReturn(testInboxDto);
 
     mockMvc.perform(get("/api/1/inbox")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(inboxUidTest)))
         .andExpect(status().isFound());
 
-    verify(inboxService).getInboxesByInboxUid(inboxUidTest);
+    verify(inboxService).getInboxesByInboxUid(inboxUidTest, "Europe/London");
   }
 
   @Test
@@ -104,14 +92,14 @@ class MessageRestControllerTest {
     request.setUserId(2);
     List<MessageDtoResponse> testMessageDto = new ArrayList<>();
     Integer page = 0;
-    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page)).thenReturn(testMessageDto);
+    when(messageService.findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page, "Europe/London")).thenReturn(testMessageDto);
 
     mockMvc.perform(post("/api/getMessages")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isFound());
 
-    verify(messageService).findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page);
+    verify(messageService).findByInboxUidAndUserIdOrUserIdAndInboxUid(request, page, "Europe/London");
   }
 
   @Test
@@ -154,7 +142,7 @@ class MessageRestControllerTest {
     messageSearchDto.add(messageSearchDto1);
     messageSearchDto.add(messageSearchDto2);
 
-    when(messageService.filterCachedMessageByString(request)).thenReturn(messageSearchDto);
+    when(messageService.filterCachedMessageByString(request, "Europe/London")).thenReturn(messageSearchDto);
 
     mockMvc.perform(post("/api/messageSearch")
             .contentType(MediaType.APPLICATION_JSON)
@@ -173,17 +161,12 @@ class MessageRestControllerTest {
     request.setInboxUid(1);
     request.setUserId(2);
 
-    InboxDtoResponse testInboxDto = new InboxDtoResponse();
-    testInboxDto.setInboxUid(1);
-    testInboxDto.setUserId(2);
-    when(inboxService.addInbox(any(InboxParticipantsDtoRequest.class))).thenReturn(testInboxDto);
-
     mockMvc.perform(post("/api/addInbox")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(request)))
         .andExpect(status().isCreated());
 
-    verify(inboxService).addInbox(request);
+    verify(inboxService).addInbox(request, "Europe/London");
   }
 
 }

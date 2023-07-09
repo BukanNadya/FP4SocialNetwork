@@ -12,13 +12,14 @@ import java.util.List;
 
 public interface MessageService {
 
-  MessageDtoResponse saveMessage(MessageDtoRequest request);
+  MessageDtoResponse saveMessage(MessageDtoRequest request, String userTimeZone);
 
-  List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(InboxParticipantsDtoRequest request, Integer page);
+  List<MessageDtoResponse> findByInboxUidAndUserIdOrUserIdAndInboxUid(
+      InboxParticipantsDtoRequest request, Integer page, String userTimeZone);
 
   List<Message> findMessageByInboxUidOrUserId(DbUser inboxUid, DbUser userId);
 
-  List<MessageSearchDto> filterCachedMessageByString(SearchRequest request);
+  List<MessageSearchDto> filterCachedMessageByString(SearchRequest request, String userTimeZone);
 
   Integer numberUnreadMessagesByUser(Integer inboxUid, Integer userId);
 
