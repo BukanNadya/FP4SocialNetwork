@@ -2,7 +2,7 @@ package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
 import com.danit.socialnetwork.dto.message.InboxParticipantsDtoRequest;
-import com.danit.socialnetwork.mappers.InboxMapperImpl;
+import com.danit.socialnetwork.mappers.InboxMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
@@ -23,7 +23,7 @@ public class InboxServiceImpl implements InboxService {
   private final InboxRepository inboxRepository;
   private final MessageRepository messageRepository;
   private final UserServiceImpl userService;
-  private final InboxMapperImpl mapper;
+  private final InboxMapper mapper;
 
   /*The method finds inbox by message sender and receiver and returns it*/
   @Override

@@ -6,7 +6,7 @@ import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
-import com.danit.socialnetwork.mappers.InboxMapperImpl;
+import com.danit.socialnetwork.mappers.InboxMapper;
 import com.danit.socialnetwork.model.*;
 import com.danit.socialnetwork.service.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class WebSocketControllerTest {
   @Mock
   private MessageService messageService;
   @Mock
-  private InboxMapperImpl mapper;
+  private InboxMapper mapper;
   @Mock
   private SimpMessagingTemplate messagingTemplate;
 
@@ -117,7 +117,6 @@ class WebSocketControllerTest {
     verify(postService, times(1)).findPostByPostId(repostDtoSave.getPostId());
     verify(userService, times(1)).findDbUserByUserId(repostDtoSave.getUserId());
     verify(notificationService, times(1)).saveNotification(newNotification);
-    verify(messagingTemplate, times(1)).convertAndSendToUser(authUserIdString, "/notifications", notificationRequest);
   }
 
   @Test

@@ -1,7 +1,7 @@
 package com.danit.socialnetwork.service;
 
 import com.danit.socialnetwork.dto.message.InboxDtoResponse;
-import com.danit.socialnetwork.mappers.InboxMapperImpl;
+import com.danit.socialnetwork.mappers.InboxMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
 import com.danit.socialnetwork.model.Message;
@@ -32,7 +32,7 @@ class InboxServiceImplTest {
   @Mock
   UserServiceImpl userService;
   @Mock
-  InboxMapperImpl mapper;
+  InboxMapper mapper;
 
   @Test
   void findByInboxUidAndLastSentUserId_shouldFindInbox_WhenExists() {

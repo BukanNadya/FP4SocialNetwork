@@ -5,7 +5,7 @@ import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.message.MessageDtoResponse;
 import com.danit.socialnetwork.dto.message.search.MessageSearchDto;
 import com.danit.socialnetwork.dto.search.SearchRequest;
-import com.danit.socialnetwork.mappers.MessageMapperImpl;
+import com.danit.socialnetwork.mappers.MessageMapper;
 import com.danit.socialnetwork.mappers.MessageSearchMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Inbox;
@@ -39,7 +39,7 @@ class MessageServiceImplTest {
   @Mock
   UserService userService;
   @Mock
-  MessageMapperImpl messageMapper;
+  MessageMapper messageMapper;
   @Mock
   MessageSearchMapper messageSearchMapper;
 

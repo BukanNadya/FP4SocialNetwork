@@ -7,7 +7,7 @@ import com.danit.socialnetwork.dto.message.MessageDtoRequest;
 import com.danit.socialnetwork.dto.post.RepostDtoSave;
 import com.danit.socialnetwork.dto.user.UserDtoResponse;
 import com.danit.socialnetwork.dto.user.UserFollowDtoResponse;
-import com.danit.socialnetwork.mappers.InboxMapperImpl;
+import com.danit.socialnetwork.mappers.InboxMapper;
 import com.danit.socialnetwork.model.DbUser;
 import com.danit.socialnetwork.model.Notification;
 import com.danit.socialnetwork.model.Post;
@@ -42,7 +42,7 @@ public class WebSocketController {
   private final PostService postService;
   private final InboxService inboxService;
   private final MessageService messageService;
-  private final InboxMapperImpl mapper;
+  private final InboxMapper mapper;
 
   private static final String UNREAD_BY_USER = "unreadByUser";
   private static final String UNREAD = "unread";
