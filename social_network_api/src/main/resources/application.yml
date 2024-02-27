@@ -1,19 +1,22 @@
 spring:
   datasource:
+    #url: jdbc:postgres://dumbo.db.elephantsql.com/ivlyljhd
     url: ${SPRING_DATASOURCE_URL}
+    #username: ivlyljhd
     username: ${SPRING_DATASOURCE_USERNAME}
+    #password: Kt9d4Kj98XIPWwnOVUccEUuTLU4tC7t3
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 3
       minimum-idle: 0
-  #  jpa:
-  #    generate-ddl: true
-  #    show-sql: true
-  #    defer-datasource-initialization: true
-  #  sql:
-  #    init:
-  #      mode: always
+    #jpa:
+    #  generate-ddl: true
+    #  show-sql: true
+    #  defer-datasource-initialization: true
+    #sql:
+    #  init:
+    #    mode: always
   main:
     banner-mode: off
   security:
